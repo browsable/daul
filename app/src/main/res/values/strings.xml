@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TimeDAO</string>
+    <string name="app_menu"> 메뉴</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_open">Slider Menu Opened</string>
+    <string name="drawer_close">Slider Menu Closed</string>
+    <string name="Initialization">초기화 하시겠습니까?</string>
+    <string name="Overlap">중복되는 시간을 확인하세요</string>
+    <string name="Dbwarning">해당되는 학교의 DB가 존재하지 않습니다 hernia@koreatech.ac.kr로 문의 바랍니다.</string>
+    <string name="dataloading_error">데이터 로딩에 실패했습니다.</string>
+    
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item >시간표</item>
+        <item >친구시간표</item>
+        <item >커뮤니티</item>
+        <item >중고장터</item>
+        <item >분실물센터</item>
+        <item >주변전화번호</item>
+        <item >내프로필</item>
+    </string-array>
+    <string name="appupdate">APP 업데이트 버전이 있습니다. 업데이트 하시겠습니까?</string>
+    <string name="dbupdate">DB 업데이트 버전이 있습니다. 업데이트 하시겠습니까?</string>
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <!--<item>@drawable/ic_timetable</item>  -->
+        <item>@drawable/ic_schooltimetable_off</item>
+        <item>@drawable/ic_friend</item>
+        <item>@drawable/ic_community</item>
+        <item>@drawable/ic_used</item>
+        <item>@drawable/ic_lostandfound</item>
+        <item>@drawable/ic_phone</item>
+        <item>@drawable/ic_profile</item>
+    </array>
+    
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
+    
+    
+    
+       <string-array name="univ_name">
+        <item>koreatech</item>
+        <item>한국기술교육대학교</item>
+    </string-array>
+    
+       <string-array name="depgrade">
+        <item>전체</item>
+        <item>1학년</item>
+        <item>2학년</item>
+        <item>3학년</item>
+        <item>4학년</item>
+    </string-array>
+
+
+    <!--setting menu-->
+    <string name="setting_mail">메일주소 변경</string>
+    <string name="setting_univ">학교/학과 변경</string>
+    <string name="setting_timeinfo">시간표 표시정보</string>
+    <string name="setting_backup">백업</string>
+    <string name="setting_devinfo">개발자 정보</string>
+
+
+
+
+    <string name="jackson1_text">--- Jackson 1.x ---</string>
+    <string name="jackson2_text">--- Jackson 2.x ---</string>
+    <string name="waiting_for_response">Waiting for a response . . .</string>
+    <string name="amazon_activity_text">Amazon XML-format RSS Feed</string>
+    <string name="github_activity_text">Github JSON-format User API</string>
+    <string name="single_tap_zoom_network_image_view_activity_text">Single Tap Zoom NetworkImageView</string>
+    <string name="double_tap_zoom_network_image_view_activity_text">Double Tap Zoom NetworkImageView</string>
+
+
+</resources>

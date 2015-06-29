@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/slidingPage"
+        android:layout_width="230dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:background="#99F8F8FF"
+        android:orientation="vertical"
+        android:visibility="visible" >
+  
+	<LinearLayout
+	    		
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" 
+		        android:gravity="center"
+		        android:padding="2dp"
+		        android:background="#F8F8FF"
+		        android:visibility="visible"
+		        >
+	   
+	    
+	       <AutoCompleteTextView
+              android:id="@+id/searchuniv"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:ems="10"
+              android:hint="대학명을 입력하세요"
+              android:layout_weight="1" 
+              android:focusable="true"
+  		      android:focusableInTouchMode="true" 
+				 />
+    
+        <requestFocus />
+ 
+		</LinearLayout>
+		
+</LinearLayout><!-- From: file:/C:/daul/app/src/main/res/layout/fragment_dbdownload.xml -->

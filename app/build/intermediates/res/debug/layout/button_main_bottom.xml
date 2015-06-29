@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    <Button
+        android:id="@+id/btPlus"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/bt_plus"
+        android:layout_marginRight="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_l"
+        android:scaleType="fitXY" />
+
+</LinearLayout><!-- From: file:/C:/daul/app/src/main/res/layout/button_main_bottom.xml -->

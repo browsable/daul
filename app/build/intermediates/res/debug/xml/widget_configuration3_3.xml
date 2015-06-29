@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:minWidth = "220dp"
+  android:minHeight = "220dp"
+  android:previewImage="@drawable/appwidget"
+  android:initialLayout="@layout/mycustomwidget" 
+  android:updatePeriodMillis="0"
+  
+  />
+  <!--android:previewImage="@drawable/"
+	  android:"com.daemin.timetable.SubMainActivity"
+  -->
+  <!-- android:updatePeriodMillis="10000" --><!-- From: file:/C:/daul/app/src/main/res/xml/widget_configuration3_3.xml -->

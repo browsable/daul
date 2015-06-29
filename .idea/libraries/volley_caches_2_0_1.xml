@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="volley-caches-2.0.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.navercorp.volleyextensions/volley-caches/2.0.1/4a3985f28c5d92dcad7f3546cb57e6df8e51539e/volley-caches-2.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.navercorp.volleyextensions/volley-caches/2.0.1/4e7a1452311beb31b17c5f795b7c715f49d789d4/volley-caches-2.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

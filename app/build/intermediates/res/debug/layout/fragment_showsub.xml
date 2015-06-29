@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    	xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" 
+        android:gravity="center"
+        >
+        
+    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:orientation="vertical" 
+		        android:gravity="center"
+		        android:padding="2dp"
+		        android:layout_weight="1"
+		        >
+  
+    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" 
+		        android:padding="4dp"
+		        android:background="#F8F8FF"
+		        android:gravity="center_vertical"
+		        >
+     <TextView
+            android:id="@+id/showdepname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:singleLine="true" 
+            android:textSize="12dp"
+            android:padding="4dp"
+            android:textStyle="bold"
+            android:textColor="#4B0082"
+            />      
+    
+     <Button
+            android:id="@+id/btnUndo1"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:background="@drawable/btn_undo"
+            android:scaleType="fitXY"
+            android:singleLine="true" 
+            />  
+      <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" 
+		        android:gravity="right"
+		        android:padding="2dp"
+		        android:background="#99F8F8FF"
+		        >      
+     <Spinner
+    		android:id="@+id/depgradespinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+    		/>     
+    </LinearLayout>
+       
+     </LinearLayout>
+     
+     
+    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" 
+		        android:gravity="center"
+		        android:padding="2dp"
+		        android:background="#99F8F8FF"
+		        >
+		 
+
+          <AutoCompleteTextView
+              android:id="@+id/autoCompleteTextView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:ems="10"
+              android:hint="과목을 검색하세요"
+              android:textSize="6sp"
+              android:layout_weight="1" />
+    
+        <requestFocus />
+
+        
+        <Button
+            android:id="@+id/btnUndo2"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:background="@drawable/btn_undo"
+            android:scaleType="fitXY"
+            android:singleLine="true" 
+            android:gravity="center"
+             android:visibility="gone"
+            />
+        
+        </LinearLayout>
+   
+    <ListView  
+			android:id="@+id/list"
+		    android:layout_width="match_parent" 
+		    android:layout_height="match_parent" 
+		    android:dividerHeight="2dp" 
+		    android:divider="#909370DB"
+		    android:background="#99F8F8FF"
+		    />
+  	</LinearLayout>
+  	 <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" 
+		        android:gravity="right"
+		        android:background="#99F8F8FF"
+		        android:layout_marginRight="4dp"
+		        >
+    <TextView
+        		android:id="@+id/setOverlap"
+          		android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:layout_gravity="left"
+		        android:textColor="#FF0000"
+		        android:textSize="12sp"
+		        android:layout_marginLeft="12dp"
+        />
+    <TextView
+        		android:id="@+id/setCredit"
+          		android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="0"
+		        android:textColor="#FF0000"
+		        android:textSize="14sp"
+        />
+    <TextView
+          		android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="/21"
+		        android:textColor="#FF0000"
+		        android:textSize="14sp"
+        />
+     </LinearLayout>
+     <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" 
+		        android:layout_gravity="bottom"
+		        android:padding="2dp"
+		        android:background="#99F8F8FF"
+		        >
+		<LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" 
+		        android:layout_gravity="bottom"
+		        android:gravity="left"
+		        android:layout_weight="1"
+		        android:layout_marginLeft="10dp"
+		        android:padding="2dp"
+		        > 
+				<Button
+            android:id="@+id/btnAdd"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_add"
+            android:scaleType="fitXY"
+            android:singleLine="true" 
+            android:gravity="center"
+            android:layout_marginRight="20dp"
+            />
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_cancel"
+            android:scaleType="fitXY"
+            android:singleLine="true" 
+            android:gravity="center"
+            android:layout_marginRight="20dp"
+            />
+        <Button
+            android:id="@+id/btnRefresh"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_refresh"
+            android:scaleType="fitXY"
+            android:singleLine="true" 
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            />
+        
+        </LinearLayout>
+        	<LinearLayout
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" 
+		        android:layout_gravity="bottom"
+		        android:gravity="right"
+		        android:padding="2dp"
+		        > 
+		
+        	<Button
+            android:id="@+id/btnSave"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_save"
+            android:scaleType="fitXY"
+            android:singleLine="true" 
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            />
+        </LinearLayout>
+        </LinearLayout>
+       
+     
+   </LinearLayout>
+   
+	
+	<!-- From: file:/C:/daul/app/src/main/res/layout/fragment_showsub.xml -->

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:layout_margin="@dimen/margin_l"
+    android:paddingLeft="@dimen/margin_s"
+    >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_black_bottomline"
+        >
+        <AutoCompleteTextView
+            android:id="@+id/actvSelectUniv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="대학을 검색하세요"
+            android:textSize="@dimen/textsize_l"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:paddingLeft="@dimen/margin_xs"
+            android:background="@color/white"
+            />
+
+        <requestFocus />
+        <Button
+            android:id="@+id/btShowDropDown1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_action_expand"
+            />
+        </LinearLayout>
+</LinearLayout><!-- From: file:/C:/daul/app/src/main/res/layout/dialog_include_univ.xml -->
