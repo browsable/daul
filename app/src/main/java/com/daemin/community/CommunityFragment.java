@@ -1,4 +1,4 @@
-// 컨플릭트가 날까? 수정한번 해보자
+// 커밋푸시 테스트
 package com.daemin.community;
 
 import android.annotation.SuppressLint;
