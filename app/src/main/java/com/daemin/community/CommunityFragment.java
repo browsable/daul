@@ -1,4 +1,4 @@
-// 컨플릭트가 날까?
+// 컨플릭트가 날까? 수정됬을까
 package com.daemin.community;
 
 import android.annotation.SuppressLint;
