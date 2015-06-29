@@ -1,4 +1,4 @@
-// 컨플릭트가 날까? Test modified
+// 컨플릭트가 날까? Test
 package com.daemin.community;
 
 import android.annotation.SuppressLint;
