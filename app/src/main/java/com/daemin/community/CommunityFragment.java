@@ -50,21 +50,19 @@ public class CommunityFragment extends BasicFragment {
     }
 
     private void prepareListData(  ){
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<List<String>>>();
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
 
         listDataHeader.add("댓글");
 
-        List<List<String>> comment = new ArrayList<List<String>>();
+        List<List<String>> comment = new ArrayList<>();
 
-        List<String> comment1 = new ArrayList<String>();
-        comment1 = new ArrayList<String>();
+        List<String> comment1 = new ArrayList<>();
         comment1.add("joyyir");
         comment1.add("06.05 14:07");
         comment1.add("우와 신난다ㅎㅎㅎㅎ");
 
-        List<String> comment2 = new ArrayList<String>();
-        comment2 = new ArrayList<String>();
+        List<String> comment2 = new ArrayList<>();
         comment2.add("skyrocket");
         comment2.add("06.05 14:16");
         comment2.add("안녕하십니까?");
