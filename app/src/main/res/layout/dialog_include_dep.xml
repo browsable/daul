@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llIncludeDep"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:visibility="visible"
+    >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        >
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:background="@drawable/bg_dimgray_border"
+        >
+        <AutoCompleteTextView
+            android:id="@+id/actvSelectUniv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="학과 선택"
+            android:layout_weight="1"
+            android:textSize="@dimen/textsize_l"
+            android:singleLine="true"
+            android:layout_margin="@dimen/margin_xs"
+            android:background="@color/white"
+            />
+
+        <requestFocus />
+        <Button
+            android:id="@+id/btShowDropDown1"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:background="@drawable/ic_action_expand"
+            />
+    </LinearLayout>
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:singleLine="true"
+        android:hint="강의/교수/코드명 검색"
+        android:textSize="@dimen/textsize_l"
+        android:background="@drawable/bg_dimgray_border"
+        />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:background="@drawable/bg_dimgray_border"
+            >
+            <AutoCompleteTextView
+                android:id="@+id/actvSelectGrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="1~4학년"
+                android:layout_weight="1"
+                android:textSize="@dimen/textsize_l"
+                android:singleLine="true"
+                android:layout_margin="@dimen/margin_xs"
+                android:background="@color/white"
+                />
+
+            <requestFocus />
+            <Button
+                android:id="@+id/btShowDropDown2"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="@drawable/ic_action_expand"
+                />
+            </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -138,12 +138,6 @@
             android:layout_marginRight="@dimen/margin_l"
             android:background="@drawable/bt_cancel" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/whitesmoke" />
-
     <LinearLayout
         android:id="@+id/llNormal"
         android:layout_width="match_parent"
@@ -336,7 +330,10 @@
         android:orientation="vertical"
         android:visibility="gone" >
         <include
-            layout="@layout/dialog_include_univ" />
+            layout="@layout/dialog_include_univ"
+            />
+        <include
+            layout="@layout/dialog_include_dep" />
 
     </LinearLayout>
 

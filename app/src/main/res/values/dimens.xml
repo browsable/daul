@@ -20,10 +20,11 @@
 	<dimen name="textsize_xxl">18sp</dimen>
 	<dimen name="textsize_xl">16sp</dimen>
 	<dimen name="textsize_l">14sp</dimen>
-	<dimen name="textsize_default">10sp</dimen>
-	<dimen name="textsize_s">8sp</dimen>
-	<dimen name="textsize_xs">6sp</dimen>
-	<dimen name="textsize_xxs">4sp</dimen>
+	<dimen name="textsize_default">12sp</dimen>
+	<dimen name="textsize_s">10sp</dimen>
+	<dimen name="textsize_xs">8sp</dimen>
+	<dimen name="textsize_xxs">6sp</dimen>
+	<dimen name="textsize_xxxs">4sp</dimen>
 	
 	
 </resources>

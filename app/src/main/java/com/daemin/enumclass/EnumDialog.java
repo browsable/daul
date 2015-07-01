@@ -1,15 +1,21 @@
 package com.daemin.enumclass;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
@@ -22,6 +28,8 @@ import com.daemin.timetable.common.Common;
 import com.daemin.timetable.common.Convert;
 import com.daemin.timetable.common.CurrentTime;
 
+import java.util.ArrayList;
+
 /**
  * Created by hernia on 2015-06-27.
  */
@@ -32,6 +40,7 @@ public enum EnumDialog implements View.OnClickListener {
         CurrentTime ct;
         int sDayOfWeekIndex;
         String timeDialSetFlag="";
+
         @Override
         public void DialogSetting() {
             ct = new CurrentTime();
@@ -224,14 +233,21 @@ public enum EnumDialog implements View.OnClickListener {
     };
 
     String dialFlag = "",colorName;
+    ArrayList<String> univName = new ArrayList<>();
     Button btNormal, btUniv, btCancel, btAddTime, btSetting, btColor, btDialCancel;
-    LinearLayout llColor, llNormal, llUniv;
+    LinearLayout llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep;
     Dialog dialog;
     CalendarView cal;
     GradientDrawable gd;
     Boolean colorFlag = false;
     Context context;
+    AutoCompleteTextView actvSelectUniv;
+    Button btShowDropDown, btForward;
+    Boolean clickFlag=false;
 
+    public void setUnivName(ArrayList<String> univName) {
+        this.univName = univName;
+    }
     EnumDialog(String dialFlag) {
         this.dialFlag = dialFlag;
     }
@@ -312,6 +328,7 @@ public enum EnumDialog implements View.OnClickListener {
     public void Show(){
         dialog.show();
     }
+    @SuppressLint("NewApi")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -333,6 +350,64 @@ public enum EnumDialog implements View.OnClickListener {
                         R.color.gray));
                 btUniv.setTextColor(context.getResources().getColor(
                         R.color.white));
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+                        R.layout.dropdown_search, univName);
+                actvSelectUniv = (AutoCompleteTextView)dialog.findViewById(R.id.actvSelectUniv);
+                actvSelectUniv.requestFocus();
+                actvSelectUniv.setThreshold(1);// will start working from first character
+                actvSelectUniv.setAdapter(adapter);// setting the adapter data into the
+                actvSelectUniv.setTextColor(Color.DKGRAY);
+                actvSelectUniv.setTextSize(16);
+                actvSelectUniv.setDropDownVerticalOffset(10);
+                btForward = (Button) dialog.findViewById(R.id.btForward);
+                btShowDropDown = (Button) dialog.findViewById(R.id.btShowDropDown);
+                actvSelectUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    public void onItemClick(AdapterView<?> parent, View v,
+                                            int position, long id) {
+                        String detaildep;
+                        detaildep = actvSelectUniv.getText().toString();
+
+                        // 열려있는 키패드 닫기
+                        InputMethodManager imm = (InputMethodManager) context
+                                .getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(actvSelectUniv.getWindowToken(), 0);
+                        btShowDropDown.setVisibility(View.GONE);
+                        btForward.setVisibility(View.VISIBLE);
+                        llIncludeUniv = (LinearLayout) dialog.findViewById(R.id.llIncludeUniv);
+                        llIncludeDep = (LinearLayout) dialog.findViewById(R.id.llIncludeDep);
+                        btForward.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                llIncludeUniv.setVisibility(View.GONE);
+                                llIncludeDep.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
+                });
+
+                btShowDropDown.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (clickFlag) {
+                            actvSelectUniv.dismissDropDown();
+                            btShowDropDown.setBackgroundResource(R.drawable.ic_action_expand);
+                            clickFlag = false;
+                        } else {
+                            actvSelectUniv.showDropDown();
+                            btShowDropDown.setBackgroundResource(R.drawable.ic_action_collapse);
+                            clickFlag = true;
+                        }
+                    }
+                });
+
+                actvSelectUniv.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        btShowDropDown.setBackgroundResource(R.drawable.ic_action_expand);
+                    }
+                });
+
                 break;
             case R.id.btColor:
                 if (!colorFlag) {

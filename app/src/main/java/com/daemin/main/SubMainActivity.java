@@ -27,6 +27,7 @@ import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 import com.daemin.timetable.common.BackPressCloseHandler;
+import com.daemin.timetable.common.Common;
 import com.daemin.timetable.common.CurrentTime;
 
 import greendao.DaoSession;
@@ -73,7 +74,7 @@ public class SubMainActivity extends FragmentActivity implements OnClickListener
 		setContentView(R.layout.activity_main2);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		EnumDialog.BOTTOMDIAL.setContext(this);
-
+		EnumDialog.BOTTOMDIAL.setUnivName(Common.getGroupList());
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);

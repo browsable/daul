@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llIncludeUniv"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,10 +31,17 @@
 
         <requestFocus />
         <Button
-            android:id="@+id/btShowDropDown1"
+            android:id="@+id/btShowDropDown"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/ic_action_expand"
+            />
+        <Button
+            android:id="@+id/btForward"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_action_forward"
+            android:visibility="gone"
             />
         </LinearLayout>
 </LinearLayout>

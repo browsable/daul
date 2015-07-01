@@ -1,5 +1,6 @@
 package com.daemin.setting;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
@@ -24,10 +25,9 @@ import com.daemin.timetable.common.BasicFragment;
  */
 public class SettingUnivFragment extends BasicFragment {
     ImageButton ibMenu, ibBack;
+    AutoCompleteTextView actvSelectUniv, actvSelectDep;
     Button btShowDropDown1, btShowDropDown2;
     Boolean clickFlag1=false, clickFlag2=false;
-    ArrayAdapter<String> adapter1,adapter2;
-    AutoCompleteTextView actvSelectUniv, actvSelectDep;
     String[] arrayDep={};
     public SettingUnivFragment() {
         super(R.layout.fragment_setting_univ, "SettingUnivFragment");
@@ -63,27 +63,16 @@ public class SettingUnivFragment extends BasicFragment {
 
             }
         });
-        adapter1 = new ArrayAdapter<String>(getActivity(),
-                R.layout.dropdown_search,getActivity().getResources().getStringArray(R.array.array_univname));
-        actvSelectUniv = (AutoCompleteTextView) root
-                .findViewById(R.id.actvSelectUniv);
-        actvSelectUniv.requestFocus();
-        actvSelectUniv.setThreshold(1);// will start working from first character
-        actvSelectUniv.setAdapter(adapter1);// setting the adapter data into the
-        actvSelectUniv.setTextColor(Color.DKGRAY);
-        actvSelectUniv.setTextSize(16);
-        actvSelectUniv.setDropDownVerticalOffset(10);
 
-        adapter2 = new ArrayAdapter<String>(getActivity(),
-                R.layout.dropdown_search, arrayDep);
-        actvSelectDep = (AutoCompleteTextView) root
-                .findViewById(R.id.actvSelectDep);
-        actvSelectDep.requestFocus();
-        actvSelectDep.setThreshold(1);// will start working from first character
-        actvSelectDep.setAdapter(adapter2);// setting the adapter data into the
-        actvSelectDep.setTextColor(Color.DKGRAY);
-        actvSelectDep.setTextSize(16);
-        actvSelectDep.setDropDownVerticalOffset(10);
+        actvSelectUniv = makeACTV(root, getActivity(),
+                R.layout.dropdown_search,
+                R.id.actvSelectUniv,
+                getActivity().getResources().getStringArray(R.array.array_univname));
+        actvSelectDep = makeACTV(root, getActivity(),
+                R.layout.dropdown_search,
+                R.id.actvSelectDep,
+                getActivity().getResources().getStringArray(R.array.array_koreatech_depname));
+
 
         actvSelectUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -129,6 +118,15 @@ public class SettingUnivFragment extends BasicFragment {
                 }
             }
         });
+
+        actvSelectUniv.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                btShowDropDown1.setBackgroundResource(R.drawable.ic_action_expand);
+            }
+        });
+
+
         btShowDropDown2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,12 +141,7 @@ public class SettingUnivFragment extends BasicFragment {
                 }
             }
         });
-        actvSelectUniv.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                btShowDropDown1.setBackgroundResource(R.drawable.ic_action_expand);
-            }
-        });
+
         actvSelectDep.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -157,5 +150,21 @@ public class SettingUnivFragment extends BasicFragment {
         });
 
         return root;
+    }
+
+    @SuppressLint("NewApi")
+    public AutoCompleteTextView makeACTV(View root, Context context, int adapterres, int actvres, String[] objects){
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, adapterres,objects);
+        final AutoCompleteTextView actvSelect = (AutoCompleteTextView) root
+                .findViewById(actvres);
+        actvSelect.requestFocus();
+        actvSelect.setThreshold(1);// will start working from first character
+        actvSelect.setAdapter(adapter);// setting the adapter data into the
+        actvSelect.setTextColor(Color.DKGRAY);
+        actvSelect.setTextSize(16);
+        actvSelect.setDropDownVerticalOffset(10);
+
+        return actvSelect;
     }
 }
