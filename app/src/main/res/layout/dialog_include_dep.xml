@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:widget="http://schemas.android.com/apk/res-auto"
     android:id="@+id/llIncludeDep"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -84,4 +85,13 @@
                 />
             </LinearLayout>
     </LinearLayout>
+    <com.daemin.timetable.common.HorizontalListView
+        android:id="@+id/hlv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/dimgray"
+        android:fadingEdgeLength="1dp"
+        android:requiresFadingEdge="horizontal"
+        widget:dividerWidth="0.5dp"  />
+
 </LinearLayout>

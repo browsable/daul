@@ -7,10 +7,11 @@ import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.daemin.enumclass.EnumDialog;
 import com.daemin.enumclass.User;
 
-import greendao.DaoMaster;
-import greendao.DaoSession;
+import timedao_group.DaoMaster;
+import timedao_group.DaoSession;
 
 
 /**
@@ -18,10 +19,14 @@ import greendao.DaoSession;
  */
 public class AppController extends Application {
     public DaoSession daoSession;
-
+    static AppController singleton;
+    public static AppController getInstance() {
+        return singleton;
+    }
     @Override
     public void onCreate() {
         super.onCreate();
+        singleton = this;
         MyVolley.init(this);
         setupDatabase();
         TelephonyManager systemService = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -33,10 +38,11 @@ public class AppController extends Application {
             Log.i("phonenum", phonenum);
             User.USER.setPhoneNum(phonenum);
         }
+
     }
 
     private void setupDatabase() {
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "example-db", null);
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "timedao_group", null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();

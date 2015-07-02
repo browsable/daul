@@ -27,6 +27,7 @@
             android:singleLine="true"
             android:paddingLeft="@dimen/margin_xs"
             android:background="@color/white"
+            android:dropDownHeight="100dp"
             />
 
         <requestFocus />

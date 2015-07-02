@@ -27,10 +27,10 @@ import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 import com.daemin.timetable.common.BackPressCloseHandler;
-import com.daemin.timetable.common.Common;
 import com.daemin.timetable.common.CurrentTime;
+import com.daemin.timetable.common.MyRequest;
 
-import greendao.DaoSession;
+import timedao_group.DaoSession;
 
 
 public class SubMainActivity extends FragmentActivity implements OnClickListener {
@@ -73,8 +73,9 @@ public class SubMainActivity extends FragmentActivity implements OnClickListener
 		singleton = this;
 		setContentView(R.layout.activity_main2);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		//MyRequest.getGroupList();
 		EnumDialog.BOTTOMDIAL.setContext(this);
-		EnumDialog.BOTTOMDIAL.setUnivName(Common.getGroupList());
+		EnumDialog.BOTTOMDIAL.setUnivName(MyRequest.getGroupList());
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
@@ -95,13 +96,6 @@ public class SubMainActivity extends FragmentActivity implements OnClickListener
 			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
 
 		tvTitle.setText(getString(R.string.app_name));
-
-		/*Box box = new Box();
-		box.setId(5L); // if box with id 5 already exists in DB, it will be edited instead of created
-		box.setName("My box");
-		box.setSlots(39);
-		box.setDescription("This is my box. I can put in it anything I wish.");
-		BoxRepository.insertOrUpdate(this, box);*/
 
 		//Log.i("phone", User.USER.getPhoneNum());
 		backPressCloseHandler = new BackPressCloseHandler(this);

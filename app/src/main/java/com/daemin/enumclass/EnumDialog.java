@@ -23,12 +23,17 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
+import com.daemin.data.SubjectData;
 import com.daemin.timetable.R;
+import com.daemin.timetable.adapter.HorizontalListAdapter;
 import com.daemin.timetable.common.Common;
 import com.daemin.timetable.common.Convert;
 import com.daemin.timetable.common.CurrentTime;
+import com.daemin.timetable.common.DatabaseHandler;
+import com.daemin.timetable.common.HorizontalListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hernia on 2015-06-27.
@@ -245,8 +250,14 @@ public enum EnumDialog implements View.OnClickListener {
     Button btShowDropDown, btForward;
     Boolean clickFlag=false;
 
+   /* public void setUnivName(List<GroupListFromServer> univName) {
+        for(GroupListFromServer GLFS : univName){
+            this.univName.add(GLFS.getName());
+        }
+
+    }*/
     public void setUnivName(ArrayList<String> univName) {
-        this.univName = univName;
+            this.univName = univName ;
     }
     EnumDialog(String dialFlag) {
         this.dialFlag = dialFlag;
@@ -328,6 +339,10 @@ public enum EnumDialog implements View.OnClickListener {
     public void Show(){
         dialog.show();
     }
+
+
+    private HorizontalListView hlv;
+
     @SuppressLint("NewApi")
     @Override
     public void onClick(View v) {
@@ -338,6 +353,7 @@ public enum EnumDialog implements View.OnClickListener {
             case R.id.btNormal:
                 llNormal.setVisibility(View.VISIBLE);
                 llUniv.setVisibility(View.GONE);
+                btAddTime.setVisibility(View.VISIBLE);
                 btNormal.setTextColor(context.getResources().getColor(
                         R.color.white));
                 btUniv.setTextColor(context.getResources().getColor(
@@ -346,13 +362,15 @@ public enum EnumDialog implements View.OnClickListener {
             case R.id.btUniv:
                 llNormal.setVisibility(View.GONE);
                 llUniv.setVisibility(View.VISIBLE);
+                btAddTime.setVisibility(View.GONE);
+
                 btNormal.setTextColor(context.getResources().getColor(
                         R.color.gray));
                 btUniv.setTextColor(context.getResources().getColor(
                         R.color.white));
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
                         R.layout.dropdown_search, univName);
-                actvSelectUniv = (AutoCompleteTextView)dialog.findViewById(R.id.actvSelectUniv);
+                actvSelectUniv = (AutoCompleteTextView) dialog.findViewById(R.id.actvSelectUniv);
                 actvSelectUniv.requestFocus();
                 actvSelectUniv.setThreshold(1);// will start working from first character
                 actvSelectUniv.setAdapter(adapter);// setting the adapter data into the
@@ -381,6 +399,9 @@ public enum EnumDialog implements View.OnClickListener {
                             public void onClick(View v) {
                                 llIncludeUniv.setVisibility(View.GONE);
                                 llIncludeDep.setVisibility(View.VISIBLE);
+
+                                hlv = (HorizontalListView) dialog.findViewById(R.id.hlv);
+                                setupSubjectDatas();
                             }
                         });
                     }
@@ -419,5 +440,13 @@ public enum EnumDialog implements View.OnClickListener {
                 }
                 break;
         }
+    }
+
+    private void setupSubjectDatas() {
+
+        DatabaseHandler db = new DatabaseHandler(context);
+        List<SubjectData> contacts = db.getAllSubjectDatas();
+        HorizontalListAdapter adapter = new HorizontalListAdapter(context, contacts);
+        hlv.setAdapter(adapter);
     }
 }
