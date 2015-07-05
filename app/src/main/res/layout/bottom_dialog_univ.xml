@@ -44,5 +44,5 @@
             android:background="@drawable/ic_action_forward"
             android:visibility="gone"
             />
-        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

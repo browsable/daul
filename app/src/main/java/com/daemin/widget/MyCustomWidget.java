@@ -1,22 +1,21 @@
 package com.daemin.widget;
 
-import java.io.*;
-
-import com.daemin.timetable.*;
-import com.daemin.timetable.common.*;
-
-import android.app.*;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.*;
-import android.graphics.*;
-import android.net.*;
-import android.os.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.os.IBinder;
 import android.util.Log;
-import android.widget.*;
+import android.widget.RemoteViews;
+
+import com.daemin.common.Common;
+import com.daemin.timetable.R;
 
 public class MyCustomWidget extends AppWidgetProvider {
 	

@@ -1,4 +1,4 @@
-package com.daemin.timetable.common;
+package com.daemin.common;
 
 import android.os.AsyncTask;
 import android.util.Log;

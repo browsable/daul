@@ -1,17 +1,19 @@
 package com.daemin.friend;
-import java.util.*;
 
-import android.app.*;
-import android.database.*;
-import android.net.*;
-import android.os.*;
-import android.provider.*;
-import android.view.*;
-import android.widget.*;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.daemin.timetable.*;
-import com.daemin.timetable.common.*;
- 
+import com.daemin.common.BasicFragment;
+import com.daemin.timetable.R;
+
+import java.util.ArrayList;
 public class FriendFragment extends BasicFragment {
     
 	

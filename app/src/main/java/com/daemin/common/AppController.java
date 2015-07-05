@@ -1,4 +1,4 @@
-package com.daemin.timetable.common;
+package com.daemin.common;
 
 import android.app.Application;
 import android.content.Context;
@@ -6,9 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-
-import com.daemin.enumclass.EnumDialog;
-import com.daemin.enumclass.User;
 
 import timedao_group.DaoMaster;
 import timedao_group.DaoSession;
@@ -20,6 +17,7 @@ import timedao_group.DaoSession;
 public class AppController extends Application {
     public DaoSession daoSession;
     static AppController singleton;
+
     public static AppController getInstance() {
         return singleton;
     }
@@ -36,7 +34,7 @@ public class AppController extends Application {
             phonenum = "0" + phonenum;
             phonenum = PhoneNumberUtils.formatNumber(phonenum);
             Log.i("phonenum", phonenum);
-            User.USER.setPhoneNum(phonenum);
+            //User.USER.setPhoneNum(phonenum);
         }
 
     }

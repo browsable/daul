@@ -1,4 +1,4 @@
-package com.daemin.timetable.common;
+package com.daemin.common;
 
 import java.util.*;
 

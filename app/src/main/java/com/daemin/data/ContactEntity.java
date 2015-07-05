@@ -1,4 +1,4 @@
-package com.daemin.timetable.model;
+package com.daemin.data;
 
 public class ContactEntity {
     long photoid;

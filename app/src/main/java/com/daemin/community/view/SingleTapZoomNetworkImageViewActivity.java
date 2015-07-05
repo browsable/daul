@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.daemin.timetable.common.MyVolley;
+import com.daemin.common.MyVolley;
 import com.daemin.timetable.R;
 import com.navercorp.volleyextensions.view.ZoomableNetworkImageView;
 import com.navercorp.volleyextensions.view.ZoomableNetworkImageView.OnImageChangedListener;

@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.ImageLoader;
-import com.daemin.timetable.common.MyVolley;
+import com.daemin.common.MyVolley;
 import com.daemin.timetable.R;
 import com.navercorp.volleyextensions.request.SimpleXmlRequest;
 

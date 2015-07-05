@@ -10,7 +10,8 @@ public class MyDaoGenerator {
         Schema schema = new Schema(1, "timedao_group");
         Entity groupList = schema.addEntity("GroupListFromServer");
         groupList.addIdProperty();
-        groupList.addStringProperty("name");
+        groupList.addStringProperty("korname");
+        groupList.addStringProperty("engname");
         new DaoGenerator().generateAll(schema, args[0]);
     }
 }

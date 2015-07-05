@@ -1,4 +1,5 @@
-package com.daemin.timetable.common;
+package com.daemin.common;
+
 
 import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
@@ -16,10 +17,5 @@ public class Common {
 	public static final String MAIN_COLOR = SubMainActivity.getInstance().getResources().getString(R.color.maincolor);
 
 	public static boolean checkTableStateIsNothing = true;
-
-	// File url to download
-	public static final String UNIVDB_URL = "http://browsable.cafe24.com/timetable/schedule/";
-
-
 
 }

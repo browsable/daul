@@ -1,4 +1,4 @@
-package com.daemin.timetable.adapter;
+package com.daemin.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

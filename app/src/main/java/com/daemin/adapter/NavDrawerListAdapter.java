@@ -1,11 +1,4 @@
-package com.daemin.timetable.adapter;
-
-import com.daemin.timetable.R;
-
-
-import java.util.ArrayList;
-
-import com.daemin.timetable.model.*;
+package com.daemin.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.daemin.data.NavDrawerEntity;
+import com.daemin.timetable.R;
+
+import java.util.ArrayList;
 
 public class NavDrawerListAdapter extends BaseAdapter {
 	

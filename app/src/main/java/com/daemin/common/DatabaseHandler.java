@@ -1,4 +1,4 @@
-package com.daemin.timetable.common;
+package com.daemin.common;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -17,7 +17,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 
 	// Database Name
-	private static final String DATABASE_NAME = "/sdcard/koreatech.sqlite";
+	private static final String DATABASE_NAME = "/sdcard/.TimeDAO/subject.sqlite";
 
 	// SubjectDatas table name
 	private static final String TABLE_SCHEDULE = "schedule";

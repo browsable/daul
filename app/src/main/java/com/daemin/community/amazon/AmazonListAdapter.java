@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.daemin.timetable.common.MyVolley;
+import com.daemin.common.MyVolley;
 import com.daemin.timetable.R;
 
 import java.util.List;

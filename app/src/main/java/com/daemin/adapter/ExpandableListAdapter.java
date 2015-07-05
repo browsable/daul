@@ -1,4 +1,4 @@
-package com.daemin.timetable.adapter;
+package com.daemin.adapter;
 
 /**
  * Created by Jun-yeong on 2015-06-24.

@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,21 +18,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daemin.area.AreaFragment;
+import com.daemin.common.BackPressCloseHandler;
+import com.daemin.common.CurrentTime;
 import com.daemin.community.CommunityFragment;
-import com.daemin.enumclass.EnumDialog;
 import com.daemin.friend.FriendFragment;
+import com.daemin.main.bottomdialog.BottomDialFragment;
 import com.daemin.setting.SettingFragment;
 import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
-import com.daemin.timetable.common.BackPressCloseHandler;
-import com.daemin.timetable.common.CurrentTime;
-import com.daemin.timetable.common.MyRequest;
-
-import timedao_group.DaoSession;
 
 
-public class SubMainActivity extends FragmentActivity implements OnClickListener {
+public class SubMainActivity extends FragmentActivity {
 
 	static final String TAG = "MainActivity";
 	InitSurfaceView InitSurfaceView;
@@ -48,11 +44,11 @@ public class SubMainActivity extends FragmentActivity implements OnClickListener
 	Fragment mContent = null;
 	GradientDrawable gd;
 	CurrentTime ct;
-	Boolean surfaceFlag = false;
-	public DaoSession daoSession;
+	Boolean surfaceFlag = false, colorFlag = false;;
 	BackPressCloseHandler backPressCloseHandler;
 	String BackKeyName="";
-
+	FragmentManager fm = getSupportFragmentManager();
+	BottomDialFragment bottomDialFragment;
 	public static SubMainActivity getInstance() {
 		return singleton;
 	}
@@ -61,7 +57,6 @@ public class SubMainActivity extends FragmentActivity implements OnClickListener
 		return ibBack;
 	}
 	public ImageButton getIbMenu() { return ibMenu; }
-
 	public void setBackKeyName(String backKeyName) {
 		BackKeyName = backKeyName;
 	}
@@ -71,21 +66,19 @@ public class SubMainActivity extends FragmentActivity implements OnClickListener
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		singleton = this;
-		setContentView(R.layout.activity_main2);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		//MyRequest.getGroupList();
-		EnumDialog.BOTTOMDIAL.setContext(this);
-		EnumDialog.BOTTOMDIAL.setUnivName(MyRequest.getGroupList());
-
+		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN );
+		setContentView(R.layout.activity_main2);
+		//EnumDialog.BOTTOMDIAL.setContext(this);
+		bottomDialFragment = new BottomDialFragment();
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
-		ibMenu = (ImageButton) findViewById(R.id.ibMenu);
 		ibBack = (ImageButton) findViewById(R.id.ibBack);
 		btPlus = (Button) findViewById(R.id.btPlus);
-		ibMenu.setOnClickListener(this);
-		btPlus.setOnClickListener(this);
+
+
 		tvTitle = (TextView) findViewById(R.id.tvTitle);
 		rlBar = (RelativeLayout) findViewById(R.id.rlBar);
 		frame_container = (FrameLayout) findViewById(R.id.frame_container);
@@ -127,7 +120,6 @@ public class SubMainActivity extends FragmentActivity implements OnClickListener
 				return;
 			}
 		}
-
 		if (mContent != null)
 			ft.detach(mContent);
 
@@ -159,10 +151,8 @@ public class SubMainActivity extends FragmentActivity implements OnClickListener
 			onChangedFragment(title, barcolor);
 		}
 	}
-
 	private void onChangedFragment(String title, int barcolor) {
-		tvTitle.setText(title);
-
+		if(!title.equals("")) tvTitle.setText(title);
 		switch (barcolor) {
 		case R.color.maincolor:
 			rlBar.setBackgroundResource(R.color.maincolor);
@@ -173,7 +163,8 @@ public class SubMainActivity extends FragmentActivity implements OnClickListener
 		}
 	}
 
-	public void onClick(View v) {
+	// 드로어 메뉴 버튼 클릭 리스너
+	public void mOnClick(View v) {
 		switch (v.getId()) {
 			case R.id.ibMenu:
 				boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLeftDrawer);
@@ -181,65 +172,61 @@ public class SubMainActivity extends FragmentActivity implements OnClickListener
 					mDrawerLayout.closeDrawer(mLeftDrawer);
 				else
 					mDrawerLayout.openDrawer(mLeftDrawer);
+				if(bottomDialFragment.isVisible())bottomDialFragment.dismiss();
+				break;
+			case R.id.btTimetable:
+				changeFragment(TimetableFragment.class, "시간표", R.color.maincolor);
+				flSurface.setVisibility(View.VISIBLE);
+				btPlus.setVisibility(View.VISIBLE);
+				frame_container.setVisibility(View.GONE);
+				if (surfaceFlag) {
+					InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
+					surfaceFlag = false;
+				}
+				BackKeyName = "";
+				break;
+			case R.id.btFriend:
+				changeFragment(FriendFragment.class, "친구시간표", R.color.orange);
+				flSurface.setVisibility(View.GONE);
+				btPlus.setVisibility(View.GONE);
+				frame_container.setVisibility(View.VISIBLE);
+				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+				surfaceFlag = true;
+				BackKeyName = "";
+				break;
+			case R.id.btArea:
+				changeFragment(AreaFragment.class, "주변시간표", R.color.maincolor);
+				flSurface.setVisibility(View.GONE);
+				btPlus.setVisibility(View.GONE);
+				frame_container.setVisibility(View.VISIBLE);
+				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+				surfaceFlag = true;
+				BackKeyName = "";
+				break;
+			case R.id.btCommunity:
+				changeFragment(CommunityFragment.class, "커뮤니티", R.color.orange);
+				flSurface.setVisibility(View.GONE);
+				btPlus.setVisibility(View.GONE);
+				frame_container.setVisibility(View.VISIBLE);
+				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+				surfaceFlag = true;
+				BackKeyName = "";
+				break;
+			case R.id.btSetting:
+				changeFragment(SettingFragment.class, "설정", R.color.maincolor);
+				flSurface.setVisibility(View.GONE);
+				btPlus.setVisibility(View.GONE);
+				frame_container.setVisibility(View.VISIBLE);
+				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+				surfaceFlag = true;
+				BackKeyName = "";
 				break;
 			case R.id.btPlus:
-					//if(Common.checkTableStateIsNothing){
-						EnumDialog.BOTTOMDIAL.Show();
+				/*llBottom.setVisibility(View.VISIBLE);
+				changeBottomFragment(NormalFragment.class);*/
+				//EnumDialog.BOTTOMDIAL.Show();
+				bottomDialFragment.show(fm, "BottomDialFragment");
 				break;
-		}
-	}
-	// 드로어 메뉴 버튼 클릭 리스너
-	public void mOnClick(View v) {
-		switch (v.getId()) {
-
-		case R.id.btTimetable:
-			changeFragment(TimetableFragment.class, "시간표", R.color.maincolor);
-			flSurface.setVisibility(View.VISIBLE);
-			btPlus.setVisibility(View.VISIBLE);
-			frame_container.setVisibility(View.GONE);
-			if(surfaceFlag) {
-				InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
-				surfaceFlag = false;
-			}
-			BackKeyName ="";
-			break;
-		case R.id.btFriend:
-			changeFragment(FriendFragment.class, "친구시간표", R.color.orange);
-			flSurface.setVisibility(View.GONE);
-			btPlus.setVisibility(View.GONE);
-			frame_container.setVisibility(View.VISIBLE);
-			InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-			surfaceFlag = true;
-			BackKeyName ="";
-			break;
-		case R.id.btArea:
-			changeFragment(AreaFragment.class, "주변시간표", R.color.maincolor);
-			flSurface.setVisibility(View.GONE);
-			btPlus.setVisibility(View.GONE);
-			frame_container.setVisibility(View.VISIBLE);
-			InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-			surfaceFlag = true;
-			BackKeyName ="";
-			break;
-		case R.id.btCommunity:
-			changeFragment(CommunityFragment.class, "커뮤니티", R.color.orange);
-			flSurface.setVisibility(View.GONE);
-			btPlus.setVisibility(View.GONE);
-			frame_container.setVisibility(View.VISIBLE);
-			InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-			surfaceFlag = true;
-			BackKeyName ="";
-			break;
-		case R.id.btSetting:
-			changeFragment(SettingFragment.class, "설정", R.color.maincolor);
-			flSurface.setVisibility(View.GONE);
-			btPlus.setVisibility(View.GONE);
-			frame_container.setVisibility(View.VISIBLE);
-			InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-			surfaceFlag = true;
-			BackKeyName ="";
-			break;
-
 		}
 	}
 

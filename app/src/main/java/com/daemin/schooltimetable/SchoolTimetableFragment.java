@@ -1,38 +1,44 @@
 package com.daemin.schooltimetable;
 
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.concurrent.*;
-
-import org.apache.http.*;
-import org.apache.http.message.*;
-import org.json.*;
-
 import android.annotation.SuppressLint;
-import android.app.*;
-import android.content.*;
-import android.database.*;
-import android.graphics.*;
-import android.graphics.drawable.*;
-import android.os.*;
-import android.text.TextUtils.TruncateAt;
-import android.util.*;
-import android.view.*;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.LoaderManager;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Intent;
+import android.content.Loader;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
-import android.view.animation.*;
-import android.view.animation.Animation.AnimationListener;
-import android.view.inputmethod.*;
-import android.widget.*;
-import android.widget.AdapterView.OnItemClickListener;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
-import com.daemin.schooltimetable.DBdownloadFragment.*;
-import com.daemin.schooltimetable.ShowSubFragment.*;
-import com.daemin.timetable.*;
-import com.daemin.timetable.common.*;
-import com.daemin.widget.*;
+import com.daemin.common.Common;
+import com.daemin.schooltimetable.ShowSubFragment.MyCursorLoader;
+import com.daemin.timetable.R;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class SchoolTimetableFragment extends Fragment implements
 LoaderManager.LoaderCallbacks<Cursor>{

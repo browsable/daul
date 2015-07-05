@@ -4,7 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.daemin.timetable.common.Common;
+import com.daemin.common.Common;
+
 
 /**
  * Created by hernia on 2015-06-27.

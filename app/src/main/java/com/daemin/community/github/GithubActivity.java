@@ -15,8 +15,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.daemin.common.MyVolley;
 import com.daemin.timetable.R;
-import com.daemin.timetable.common.MyVolley;
 import com.navercorp.volleyextensions.request.Jackson2Request;
 import com.navercorp.volleyextensions.request.JacksonRequest;
 

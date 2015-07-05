@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
+import com.daemin.adapter.ExpandableListAdapter;
+import com.daemin.common.BasicFragment;
 import com.daemin.timetable.R;
-import com.daemin.timetable.adapter.ExpandableListAdapter;
-import com.daemin.timetable.common.BasicFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;

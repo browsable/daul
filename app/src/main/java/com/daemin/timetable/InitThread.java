@@ -7,12 +7,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 
+import com.daemin.common.Common;
+import com.daemin.common.Convert;
+import com.daemin.common.CurrentTime;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.SerialNumberGenerator;
 import com.daemin.enumclass.TimePos;
-import com.daemin.timetable.common.Common;
-import com.daemin.timetable.common.Convert;
-import com.daemin.timetable.common.CurrentTime;
 
 @SuppressLint("DefaultLocale")
 public class InitThread extends Thread {

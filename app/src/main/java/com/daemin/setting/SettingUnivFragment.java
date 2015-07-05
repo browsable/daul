@@ -16,9 +16,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.daemin.common.BasicFragment;
 import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
-import com.daemin.timetable.common.BasicFragment;
 
 /**
  * Created by hernia on 2015-06-20.
@@ -51,7 +51,7 @@ public class SettingUnivFragment extends BasicFragment {
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SubMainActivity.getInstance().changeFragment(SettingFragment.class, "설정", R.color.maincolor);
+                SubMainActivity.getInstance().changeFragment(SettingFragment.class, "설정",R.color.maincolor);
                 SubMainActivity.getInstance().setBackKeyName("");
                 ibMenu.setVisibility(View.VISIBLE);
                 ibBack.setVisibility(View.GONE);

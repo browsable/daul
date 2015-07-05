@@ -2,7 +2,7 @@ package com.daemin.repository;
 
 import android.content.Context;
 
-import com.daemin.timetable.common.AppController;
+import com.daemin.common.AppController;
 
 import java.util.List;
 

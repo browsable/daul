@@ -32,7 +32,9 @@
             android:background="@color/transparency"
             android:padding="@dimen/margin_l"
             android:scaleType="fitXY"
-            android:src="@drawable/bt_menu" />
+            android:src="@drawable/bt_menu"
+            android:onClick="mOnClick"
+            />
         <ImageButton
             android:id="@+id/ibBack"
             android:layout_width="50dp"
@@ -59,7 +61,7 @@
             android:layout_marginTop="14dp"
             android:gravity="center"
             android:orientation="vertical" />
-
+        <requestFocus />
         <FrameLayout
             android:id="@+id/frame_container"
             android:layout_width="match_parent"
@@ -73,7 +75,7 @@
             android:layout_height="wrap_content"
             android:gravity="right|bottom" >
 
-            <include layout="@layout/button_main_bottom"
+            <include layout="@layout/bottom_button"
                 android:id="@+id/include" />
 
         </RelativeLayout>

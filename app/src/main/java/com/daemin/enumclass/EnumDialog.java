@@ -1,3 +1,4 @@
+/*
 package com.daemin.enumclass;
 
 import android.annotation.SuppressLint;
@@ -23,21 +24,58 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
-import com.daemin.data.SubjectData;
 import com.daemin.timetable.R;
-import com.daemin.timetable.adapter.HorizontalListAdapter;
 import com.daemin.timetable.common.Common;
 import com.daemin.timetable.common.Convert;
 import com.daemin.timetable.common.CurrentTime;
-import com.daemin.timetable.common.DatabaseHandler;
 import com.daemin.timetable.common.HorizontalListView;
+import com.daemin.timetable.common.MyRequest;
 
 import java.util.ArrayList;
-import java.util.List;
 
+*//*
+
+
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TimePicker;
+
+import com.daemin.common.Common;
+import com.daemin.common.Convert;
+import com.daemin.common.CurrentTime;
+import com.daemin.common.HorizontalListView;
+import com.daemin.common.MyRequest;
+import com.daemin.enumclass.PosState;
+import com.daemin.enumclass.TimePos;
+import com.daemin.timetable.R;
+
+import java.util.ArrayList;
+
+*/
 /**
  * Created by hernia on 2015-06-27.
- */
+ *//*
+
+
 public enum EnumDialog implements View.OnClickListener {
     BOTTOMDIAL("BottomDialogUpByBtn") {
         String sYear, sMonthOfYear, sDayOfMonth, startHour, startMinute, endHour, endMinute, sDayOfWeek;
@@ -250,14 +288,8 @@ public enum EnumDialog implements View.OnClickListener {
     Button btShowDropDown, btForward;
     Boolean clickFlag=false;
 
-   /* public void setUnivName(List<GroupListFromServer> univName) {
-        for(GroupListFromServer GLFS : univName){
-            this.univName.add(GLFS.getName());
-        }
-
-    }*/
     public void setUnivName(ArrayList<String> univName) {
-            this.univName = univName ;
+        this.univName = univName ;
     }
     EnumDialog(String dialFlag) {
         this.dialFlag = dialFlag;
@@ -268,7 +300,10 @@ public enum EnumDialog implements View.OnClickListener {
         Window window = dialog.getWindow();
         switch (dialFlag) {
             case "BottomDialogUpByBtn":
-                dialog.setContentView(R.layout.dialog_addtime_bybtn);
+                dialog.setContentView(R.layout.);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
                 window.setGravity(Gravity.BOTTOM);
                 break;
             case "btTime":
@@ -399,9 +434,10 @@ public enum EnumDialog implements View.OnClickListener {
                             public void onClick(View v) {
                                 llIncludeUniv.setVisibility(View.GONE);
                                 llIncludeDep.setVisibility(View.VISIBLE);
+                                MyRequest.DownloadSqlite();
 
                                 hlv = (HorizontalListView) dialog.findViewById(R.id.hlv);
-                                setupSubjectDatas();
+                                //setupSubjectDatas();
                             }
                         });
                     }
@@ -442,11 +478,13 @@ public enum EnumDialog implements View.OnClickListener {
         }
     }
 
-    private void setupSubjectDatas() {
+
+*/
+/* private void setupSubjectDatas() {
 
         DatabaseHandler db = new DatabaseHandler(context);
         List<SubjectData> contacts = db.getAllSubjectDatas();
         HorizontalListAdapter adapter = new HorizontalListAdapter(context, contacts);
         hlv.setAdapter(adapter);
-    }
-}
+    }*//*
+*/

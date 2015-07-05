@@ -1,9 +1,12 @@
 package com.daemin.timetable;
 
-import android.os.*;
-import android.view.*;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.daemin.timetable.common.*;
+import com.daemin.common.BasicFragment;
+
 
 public class TimetableFragment extends BasicFragment {
 

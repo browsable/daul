@@ -22,9 +22,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.daemin.common.BasicFragment;
 import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
-import com.daemin.timetable.common.BasicFragment;
 
 import java.io.File;
 import java.io.FileInputStream;
