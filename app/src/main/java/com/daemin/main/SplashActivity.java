@@ -24,8 +24,12 @@ public class SplashActivity extends Activity {
 			singleton = this;
 			setContentView(R.layout.activity_splash);
 			if(Common.isOnline()) {
-				Toast.makeText(this, "첫 그룹리스트 다운로드", Toast.LENGTH_SHORT).show();
-				if (!User.USER.isGroupListDownloadState()) MyRequest.getGroupList();
+				if (!User.USER.isGroupListDownloadState()) {
+					Toast.makeText(this, "첫 그룹리스트 다운로드", Toast.LENGTH_SHORT).show();
+					MyRequest.getGroupList();
+				}else{
+					Toast.makeText(this, "그룹리스트다운로드되있는상태", Toast.LENGTH_SHORT).show();
+				}
 			}
 			else{
 				Toast.makeText(this, this.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
