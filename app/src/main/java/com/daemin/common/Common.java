@@ -5,7 +5,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.daemin.enumclass.PosState;
+import com.daemin.enumclass.TimePos;
 import com.daemin.timetable.R;
+
+import java.util.ArrayList;
 
 
 public class Common {
@@ -15,7 +19,6 @@ public class Common {
 	public static final String ACTION_CALL_ACTIVITY 	= "com.daemin.widget.widget.ACTION_CALL_ACTIVITY";
 	public static final String ACTION_UPDATE = "com.daemin.widget.widget.ACTION_UPDATE";
 	//public static final String ACTION_DIALOG 			= "com.daemin.widget.widget.ACTION_DIALOG";
-
 
 	public static final String MAIN_COLOR = AppController.getInstance().getResources().getString(R.color.maincolor);
 
@@ -37,5 +40,25 @@ public class Common {
 			return false;
 		}
 		return false;
+	}
+
+	static ArrayList<String> tempTimePos=new ArrayList<>();
+	public static ArrayList<String> getTempTimePos(){
+		return tempTimePos;
+	}
+	public static void setTempTimePos(ArrayList<String> tempTimePos) {
+		Common.tempTimePos = tempTimePos;
+	}
+
+
+	//원하는 상태의 TimePos 객체를 반환
+	public static void stateFilter(ArrayList<String> tempTimePos){
+		if(tempTimePos!=null) {
+			for(String t : tempTimePos){
+				TimePos.valueOf(t).setPosState(PosState.NO_PAINT);
+			}
+		}
+		Common.getTempTimePos().clear();
+		return;
 	}
 }
