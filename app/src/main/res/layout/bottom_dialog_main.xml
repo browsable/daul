@@ -71,7 +71,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/btcolor8" />
-         <ImageButton
+        <ImageButton
             android:id="@+id/btcolor9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -97,14 +97,15 @@
             android:textStyle="bold" />
 
         <Button
-        android:id="@+id/btUniv"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:background="@color/transparency"
-        android:text="대학"
-        android:textColor="@color/gray"
-        android:textSize="@dimen/textsize_l"
-        android:textStyle="bold" />
+            android:id="@+id/btUniv"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@color/transparency"
+            android:text="대학"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/btRecommend"
             android:layout_width="50dp"
@@ -114,19 +115,11 @@
             android:textColor="@color/gray"
             android:textSize="@dimen/textsize_l"
             android:textStyle="bold" />
-
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/transparency" />
-
-        <Button
-            android:id="@+id/btAddTime"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_marginRight="@dimen/margin_l"
-            android:background="@drawable/bt_plus" />
 
         <Button
             android:id="@+id/btColor"
@@ -136,17 +129,59 @@
             android:background="@drawable/bg_circle" />
 
         <Button
+            android:id="@+id/btAddTime"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginRight="@dimen/margin_l"
+            android:background="@drawable/bt_plus" />
+
+        <Button
             android:id="@+id/btCancel"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginRight="@dimen/margin_l"
             android:background="@drawable/bt_cancel" />
     </LinearLayout>
-    <FrameLayout
-        android:id="@+id/frame_container_bottom"
+    <LinearLayout
+        android:id="@+id/llNormal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:background="@color/white"
-        android:orientation="vertical" />
+        android:orientation="vertical" >
+        <include
+            layout="@layout/bottom_dialog_normal"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llUniv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone" >
+        <include
+            layout="@layout/bottom_dialog_univ"
+            />
+        <include
+            layout="@layout/bottom_dialog_dep" />
+        <include
+            layout="@layout/bottom_dialog_dummy" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llRecommend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone" >
+        <include
+            layout="@layout/bottom_dialog_recommend"
+            />
+    </LinearLayout>
+
 </LinearLayout>

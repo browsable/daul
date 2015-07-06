@@ -11,7 +11,7 @@ import com.daemin.common.Common;
  * Created by hernia on 2015-06-27.
  */
 public enum PosState {
-    INTERMEDIATE, END, ENROLL,
+    INTERMEDIATE, END, ENROLL,SUBJECT,
     NO_PAINT {
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
@@ -31,5 +31,10 @@ public enum PosState {
         Common.checkTableStateIsNothing = false;
         canvas.drawRect(width * xth / 15, height * yth / 32,
                 width * (xth + 2) / 15, height * (yth + 2) / 32, rp);
+    }
+    public void drawTimePosForSubject(Canvas canvas, int width, int height, int xth, int yth) {
+        Common.checkTableStateIsNothing = false;
+        canvas.drawRect(width * xth / 15, height * yth / 32,
+                width * (xth + 2) / 15, height * (yth + 1) / 32, rp);
     }
 }

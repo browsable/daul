@@ -32,7 +32,14 @@ public class GroupListFromServerRepository {
     public static GroupListFromServer getGroupListFromServerForId(Context context, long id) {
         return getGroupListFromServerDao(context).load(id);
     }
-
+    public static String getEngByKor(Context context, String key) {
+        return getGroupListFromServerDao(context)
+                .queryBuilder()
+                .where(GroupListFromServerDao.Properties.Korname.eq(key))
+                .list()
+                .get(0)
+                .getEngname();
+    }
     private static GroupListFromServerDao getGroupListFromServerDao(Context c) {
         return ((AppController) c.getApplicationContext()).getDaoSession().getGroupListFromServerDao();
     }

@@ -1,5 +1,6 @@
 package com.daemin.main;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,8 +22,10 @@ import com.daemin.area.AreaFragment;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.CurrentTime;
 import com.daemin.community.CommunityFragment;
+import com.daemin.enumclass.EnumDialog;
+import com.daemin.enumclass.MyPreferences;
+import com.daemin.enumclass.User;
 import com.daemin.friend.FriendFragment;
-import com.daemin.main.bottomdialog.BottomDialFragment;
 import com.daemin.setting.SettingFragment;
 import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.R;
@@ -48,7 +51,6 @@ public class SubMainActivity extends FragmentActivity {
 	BackPressCloseHandler backPressCloseHandler;
 	String BackKeyName="";
 	FragmentManager fm = getSupportFragmentManager();
-	BottomDialFragment bottomDialFragment;
 	public static SubMainActivity getInstance() {
 		return singleton;
 	}
@@ -69,12 +71,12 @@ public class SubMainActivity extends FragmentActivity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN );
 		setContentView(R.layout.activity_main2);
-		//EnumDialog.BOTTOMDIAL.setContext(this);
-		bottomDialFragment = new BottomDialFragment();
+		EnumDialog.BOTTOMDIAL.setContext(this);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
+		ibMenu = (ImageButton) findViewById(R.id.ibMenu);
 		ibBack = (ImageButton) findViewById(R.id.ibBack);
 		btPlus = (Button) findViewById(R.id.btPlus);
 
@@ -172,7 +174,7 @@ public class SubMainActivity extends FragmentActivity {
 					mDrawerLayout.closeDrawer(mLeftDrawer);
 				else
 					mDrawerLayout.openDrawer(mLeftDrawer);
-				if(bottomDialFragment.isVisible())bottomDialFragment.dismiss();
+				EnumDialog.BOTTOMDIAL.Cancel();
 				break;
 			case R.id.btTimetable:
 				changeFragment(TimetableFragment.class, "시간표", R.color.maincolor);
@@ -222,10 +224,7 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btPlus:
-				/*llBottom.setVisibility(View.VISIBLE);
-				changeBottomFragment(NormalFragment.class);*/
-				//EnumDialog.BOTTOMDIAL.Show();
-				bottomDialFragment.show(fm, "BottomDialFragment");
+				EnumDialog.BOTTOMDIAL.Show();
 				break;
 		}
 	}
@@ -235,4 +234,13 @@ public class SubMainActivity extends FragmentActivity {
 		backPressCloseHandler.onBackPressed(BackKeyName);
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		//appcontroller에서 앱 실행시 초기에 불러오게될 정보를 저장함
+		SharedPreferences.Editor editor = MyPreferences.USERINFO.getEditor();
+		editor.putBoolean("GroupListDownloadState",User.USER.isGroupListDownloadState());
+		editor.putBoolean("SubjectDownloadState",User.USER.isSubjectDownloadState());
+		editor.commit();
+	}
 }

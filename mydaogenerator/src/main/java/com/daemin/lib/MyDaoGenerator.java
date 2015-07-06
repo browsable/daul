@@ -12,6 +12,7 @@ public class MyDaoGenerator {
         groupList.addIdProperty();
         groupList.addStringProperty("korname");
         groupList.addStringProperty("engname");
+        groupList.addStringProperty("when");
         new DaoGenerator().generateAll(schema, args[0]);
     }
 }

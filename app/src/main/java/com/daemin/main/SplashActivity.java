@@ -6,22 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.Toast;
 
+import com.daemin.common.Common;
 import com.daemin.common.MyRequest;
-import com.daemin.repository.GroupListFromServerRepository;
+import com.daemin.enumclass.User;
 import com.daemin.timetable.R;
-
-import java.util.ArrayList;
-
-import timedao_group.GroupListFromServer;
 
 public class SplashActivity extends Activity {
 	static SplashActivity singleton;
-	public ArrayList<String> groupListFomServer = new ArrayList<>();
 
-	public ArrayList<String> getGroupListFomServer() {
-		return groupListFomServer;
-	}
 	public static SplashActivity getInstance() {
 		return singleton;
 	}
@@ -29,13 +23,13 @@ public class SplashActivity extends Activity {
 			super.onCreate(savedInstanceState);
 			singleton = this;
 			setContentView(R.layout.activity_splash);
-
-			MyRequest.getGroupList();
-			// 로컬 sqlite 상에 저장된 그룹리스트 가져와 보여줌
-			for( GroupListFromServer GLFS : GroupListFromServerRepository.getAllGroupListFromServer(this)){
-				groupListFomServer.add(GLFS.getName());
+			if(Common.isOnline()) {
+				Toast.makeText(this, "첫 그룹리스트 다운로드", Toast.LENGTH_SHORT).show();
+				if (!User.USER.isGroupListDownloadState()) MyRequest.getGroupList();
 			}
-			//EnumDialog.BOTTOMDIAL.setUnivName(groupListFomServer);
+			else{
+				Toast.makeText(this, this.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+			}
 			initialize();
 		}
 

@@ -67,11 +67,11 @@ public class SettingUnivFragment extends BasicFragment {
         actvSelectUniv = makeACTV(root, getActivity(),
                 R.layout.dropdown_search,
                 R.id.actvSelectUniv,
-                getActivity().getResources().getStringArray(R.array.array_univname));
+                arrayDep);
         actvSelectDep = makeACTV(root, getActivity(),
                 R.layout.dropdown_search,
                 R.id.actvSelectDep,
-                getActivity().getResources().getStringArray(R.array.array_koreatech_depname));
+                arrayDep);
 
 
         actvSelectUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

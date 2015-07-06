@@ -11,23 +11,18 @@ public class SubjectData {
     private String credit;
     private String classnum; //분반
     private String limitnum; //제한수
+    private String dep;//학부명
     private String dep_detail; //이수형태
     private String dep_grade; //대상학년
+    private String time;
 
-    public SubjectData(){
+    public String getTime() {
+        return time;
     }
-    public SubjectData(int _id,String subnum, String subtitle, String prof, int credit,int classnum, int limitnum ,String dep_detail, String dep_grade) {
-        this._id = String.valueOf(_id);
-        this.subnum = subnum;
-        this.subtitle = subtitle;
+    public void setTime(String time) {
+        this.time = time;
+    }
 
-        this.prof = prof;
-        this.dep_grade = dep_grade+"학년";
-        this.dep_detail = dep_detail;
-        this.limitnum = String.valueOf(limitnum);
-        this.classnum = String.valueOf(classnum);
-        this.credit = String.valueOf(credit);
-    }
     public String get_id() {
         return _id;
     }
@@ -62,24 +57,24 @@ public class SubjectData {
         return credit;
     }
 
-    public void setCredit(int credit) {
-        this.credit =  String.valueOf(credit);
+    public void setCredit(String credit) {
+        this.credit =  credit;
     }
 
     public String getClassnum() {
         return classnum;
     }
 
-    public void setClassnum(int classnum) {
-        this.classnum =  String.valueOf(classnum);
+    public void setClassnum(String classnum) {
+        this.classnum =  classnum;
     }
 
     public String getLimitnum() {
         return limitnum;
     }
 
-    public void setLimitnum(int limitnum) {
-        this.limitnum =  String.valueOf(limitnum);
+    public void setLimitnum(String limitnum) {
+        this.limitnum =  limitnum;
     }
 
     public String getDep_detail() {
@@ -97,4 +92,12 @@ public class SubjectData {
     public void setDep_grade(String dep_grade) {
         this.dep_grade = dep_grade;
     }
+    public String getDep() {
+        return dep;
+    }
+
+    public void setDep(String dep) {
+        this.dep = dep;
+    }
+
 }

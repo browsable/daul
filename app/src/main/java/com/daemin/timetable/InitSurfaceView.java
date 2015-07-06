@@ -86,7 +86,7 @@ public class InitSurfaceView extends SurfaceView implements
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 				calXthYth(event);
-				if (xth > 0 && yth > 0 && yth < 30) { 
+				if (xth > 0 && yth > 0 && yth < 30) {
 					i_Thread.getDownXY(xth, yth);
 					outOfTouchArea = false;
 				}else{
@@ -96,7 +96,7 @@ public class InitSurfaceView extends SurfaceView implements
 		case MotionEvent.ACTION_MOVE:
 			if(!outOfTouchArea){
 				calXthYth(event);
-				if (xth > 0 && yth > 0 && yth < 30) { 
+				if (xth > 0 && yth > 0 && yth < 30) {
 					i_Thread.getMoveXY(xth, yth);
 				}
 			}

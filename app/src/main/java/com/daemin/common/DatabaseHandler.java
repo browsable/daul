@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.daemin.data.SubjectData;
+import com.daemin.enumclass.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 
 	// Database Name
-	private static final String DATABASE_NAME = "/sdcard/.TimeDAO/subject.sqlite";
+	private static final String DATABASE_NAME = "/sdcard/.TimeDAO/";
 
 	// SubjectDatas table name
 	private static final String TABLE_SCHEDULE = "schedule";
@@ -30,11 +31,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private String KEY_CREDIT = "credit";
 	private String KEY_CLASSNUM ="classnum";
 	private String KEY_LIMITNUM = "limitnum"; //제한수
+	private String KEY_DEP = "";
 	private String KEY_DEP_DETAIL = ""; //이수형태
 	private String KEY_DEP_GRADE = "dep_grade"; //대상학년
 	
 	public DatabaseHandler(Context context) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		super(context, DATABASE_NAME+ User.USER.getEngUnivName()+".sqlite", null, DATABASE_VERSION);
 	}
 	
 
@@ -61,12 +63,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SubjectData.set_id(cursor.getInt(0));
 				SubjectData.setSubnum(cursor.getString(1));
 				SubjectData.setSubtitle(cursor.getString(2));
-				SubjectData.setCredit(cursor.getInt(3));
-				SubjectData.setClassnum(cursor.getInt(4));
-				SubjectData.setLimitnum(cursor.getInt(5));
+				SubjectData.setCredit(cursor.getString(3));
+				SubjectData.setClassnum(cursor.getString(4));
+				SubjectData.setLimitnum(cursor.getString(5));
 				SubjectData.setDep_grade(cursor.getString(7));
 				SubjectData.setDep_detail(cursor.getString(8));
-				SubjectData.setProf(cursor.getString(46));
+				SubjectData.setTime(cursor.getString(30));
+				SubjectData.setProf(cursor.getString(31));
 				SubjectDataList.add(SubjectData);
 			} while (cursor.moveToNext());
 		}

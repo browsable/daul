@@ -1,11 +1,10 @@
 package com.daemin.common;
 
 import android.app.Application;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.telephony.PhoneNumberUtils;
-import android.telephony.TelephonyManager;
-import android.util.Log;
+
+import com.daemin.enumclass.MyPreferences;
+import com.daemin.enumclass.User;
 
 import timedao_group.DaoMaster;
 import timedao_group.DaoSession;
@@ -25,17 +24,19 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         singleton = this;
+        User.USER.setGroupListDownloadState(MyPreferences.USERINFO.getPref().getBoolean("GroupListDownloadState", false));
+        User.USER.setSubjectDownloadState(MyPreferences.USERINFO.getPref().getBoolean("SubjectDownloadState", false));
         MyVolley.init(this);
         setupDatabase();
-        TelephonyManager systemService = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        /*TelephonyManager systemService = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         String phonenum = systemService.getLine1Number();
         if(phonenum!=null) {
             phonenum = phonenum.substring(phonenum.length() - 10, phonenum.length());
             phonenum = "0" + phonenum;
             phonenum = PhoneNumberUtils.formatNumber(phonenum);
             Log.i("phonenum", phonenum);
-            //User.USER.setPhoneNum(phonenum);
-        }
+            User.USER.setPhoneNum(phonenum);
+        }*/
 
     }
 

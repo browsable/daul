@@ -80,7 +80,10 @@ public class InitThread extends Thread {
 
 					// 사각형 그리기
 					for (TimePos ETP : TimePos.values()) {
-						ETP.drawTimePos(canvas, width, height);
+						if(ETP.getPosState()==PosState.SUBJECT)
+							ETP.drawTimePosForSubject(canvas, width, height);
+						else
+							ETP.drawTimePos(canvas, width, height);
 					}
 				}
 			} catch (Exception e) {
@@ -126,7 +129,7 @@ public class InitThread extends Thread {
 				ETP.setPosState(PosState.INTERMEDIATE);
 			}
 
-			ETP.setGroupNumber(SerialNumberGenerator.COUNT.getCount());
+			//ETP.setGroupNumber(SerialNumberGenerator.COUNT.getCount());
 		} else {
 			ETP.setPosState(PosState.NO_PAINT);
 		}

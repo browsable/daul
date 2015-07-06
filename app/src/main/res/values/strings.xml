@@ -9,8 +9,9 @@
     <string name="Initialization">초기화 하시겠습니까?</string>
     <string name="Overlap">중복되는 시간을 확인하세요</string>
     <string name="Dbwarning">해당되는 학교의 DB가 존재하지 않습니다 hernia@koreatech.ac.kr로 문의 바랍니다.</string>
-    <string name="dataloading_error">데이터 로딩에 실패했습니다.</string>
-    
+    <string name="network_error">네트워크 상태를 확인하세요</string>
+    <string name="dataloading_error">데이터로딩에 실패하였습니다. 네트워크상태를 확인하세요.</string>
+    <string name="e_learning">이러닝 혹은 시간정보가 없습니다</string>
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
         <item >시간표</item>

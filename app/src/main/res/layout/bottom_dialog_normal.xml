@@ -7,22 +7,173 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:text="Medium Text"
-        android:id="@+id/textView" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:text="Medium Text" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:text="Medium Text" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:text="Medium Text" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@color/white"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="제목"
+                android:textStyle="bold"
+                android:textColor="@color/maincolor"
+                android:textSize="@dimen/textsize_l" />
+
+            <EditText
+                android:id="@+id/etTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/transparency"
+                android:padding="@dimen/margin_xxs"
+                android:singleLine="true"
+                android:textSize="@dimen/textsize_l" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@color/white"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="날짜"
+                android:textStyle="bold"
+                android:textColor="@color/maincolor"
+                android:textSize="@dimen/textsize_l" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/btChangeYMD"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@color/transparency"
+                    android:textSize="@dimen/textsize_l"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.6"
+                    android:background="@color/white"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:text="시간"
+                    android:textStyle="bold"
+                    android:textColor="@color/maincolor"
+                    android:textSize="@dimen/textsize_l" />
+
+                <Button
+                    android:id="@+id/btTimeStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.6"
+                    android:background="@color/transparency"
+                    android:textSize="@dimen/textsize_l"
+                    android:textStyle="bold" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparency"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:text="-"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textsize_l" />
+                <Button
+                    android:id="@+id/btTimeEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.6"
+                    android:background="@color/transparency"
+                    android:textSize="@dimen/textsize_l"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/whitesmoke" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@color/white"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="장소"
+                android:textStyle="bold"
+                android:textColor="@color/maincolor"
+                android:textSize="@dimen/textsize_l" />
+
+            <EditText
+                android:id="@+id/etPlace"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/transparency"
+                android:padding="@dimen/margin_xxs"
+                android:singleLine="true"
+                android:textSize="@dimen/textsize_l" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/whitesmoke" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@color/white"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="메모"
+                android:textStyle="bold"
+                android:textColor="@color/maincolor"
+                android:textSize="@dimen/textsize_l" />
+
+            <EditText
+                android:id="@+id/etMemo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/transparency"
+                android:padding="@dimen/margin_xxs"
+                android:singleLine="true"
+                android:textSize="@dimen/textsize_l" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

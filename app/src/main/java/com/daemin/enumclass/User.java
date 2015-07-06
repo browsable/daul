@@ -8,16 +8,32 @@ public enum User {
 
     User() {}
 
-    private String univName;
-
-    public String getUnivName() {
-        return univName;
+    private String korUnivName;
+    private String engUnivName;
+    private boolean groupListDownloadState = false;
+    private boolean subjectDownloadStat = false;
+    public boolean isGroupListDownloadState() {
+        return groupListDownloadState;
     }
-
-    public void setUnivName(String univName) {
-        this.univName = univName;
+    public void setGroupListDownloadState(boolean groupListDownload) {
+        this.groupListDownloadState = groupListDownload;
     }
-
-
-
+    public boolean isSubjectDownloadState() {
+        return subjectDownloadStat;
+    }
+    public void setSubjectDownloadState(boolean subjectDownload) {
+        this.subjectDownloadStat = subjectDownload;
+    }
+    public String getKorUnivName() {
+        return korUnivName;
+    }
+    public void setKorUnivName(String korUnivName) {
+        this.korUnivName = korUnivName;
+    }
+    public String getEngUnivName() {
+        return engUnivName;
+    }
+    public void setEngUnivName(String engUnivName) {
+        this.engUnivName = engUnivName;
+    }
 }

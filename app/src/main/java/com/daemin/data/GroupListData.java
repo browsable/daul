@@ -15,14 +15,35 @@ public class GroupListData {
     private List<Data> data;
 
     public static class Data {
-        @JsonProperty("name")
-        private String name;
-        public String getName() {
-            return name;
+        @JsonProperty("korname")
+        private String korname;
+        @JsonProperty("engname")
+        private String engname;
+        @JsonProperty("when")
+        private String when;
+
+        public String getWhen() {
+            return when;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setWhen(String when) {
+            this.when = when;
+        }
+
+        public String getEngname() {
+            return engname;
+        }
+
+        public void setEngname(String engname) {
+            this.engname = engname;
+        }
+
+        public String getKorname() {
+            return korname;
+        }
+
+        public void setKorname(String korname) {
+            this.korname = korname;
         }
     }
 
