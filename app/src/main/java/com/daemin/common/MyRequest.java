@@ -25,11 +25,14 @@ import timedao_group.GroupListFromServer;
  */
 public class MyRequest {
     public static RequestQueue requestQueue = MyVolley.getRequestQueue();
-    public static ArrayList<String> groupListFomServer = new ArrayList<>();
 
     public static Context context = AppController.getInstance();
     public static final String GET_GROUPLIST_URL = "http://timedao.heeguchi.me/app/getGroupList";
     public static ArrayList<String> getGroupListFomServer() {
+        ArrayList<String> groupListFomServer = new ArrayList<>();
+        for( GroupListFromServer GLFS : GroupListFromServerRepository.getAllGroupListFromServer(context)){
+            groupListFomServer.add(GLFS.getKorname());
+        }
         return groupListFomServer;
     }
     //public static GroupListFromServer groupListFromServer = new GroupListFromServer();
@@ -49,9 +52,6 @@ public class MyRequest {
                             groupListFromServer.setEngname(d.getEngname());
                             groupListFromServer.setWhen(d.getWhen());
                             GroupListFromServerRepository.insertOrUpdate(context, groupListFromServer);
-                        }
-                        for( GroupListFromServer GLFS : GroupListFromServerRepository.getAllGroupListFromServer(context)){
-                            groupListFomServer.add(GLFS.getKorname());
                         }
                         User.USER.setGroupListDownloadState(true);
                     }
