@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GithubActivity extends Activity {
-    private static final String GET_PERSON_URL = "http://heeguchi.cafe24.com/app/getArticleList";
+    private static final String GET_PERSON_URL = "http://timedao.heeguchi.me/app/getArticleList";
     private RequestQueue requestQueue;
     private TextView personInfoTextForJackson2;
     private TextView personInfoTextForJackson;

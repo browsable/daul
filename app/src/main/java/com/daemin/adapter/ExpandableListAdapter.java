@@ -3,6 +3,7 @@ package com.daemin.adapter;
 /**
  * Created by Jun-yeong on 2015-06-24.
  */
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.daemin.community.Comment;
+import com.daemin.community.github.FreeBoard;
 import com.daemin.timetable.R;
 
 import java.util.HashMap;
@@ -18,12 +21,12 @@ import java.util.List;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<String> _listDataHeader; // header titles
+    private List<FreeBoard.Data> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<List<String>>> _listDataChild;
+    private HashMap<FreeBoard.Data, List<Comment>> _listDataChild;
 
-    public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<List<String>>> listChildData) {
+    public ExpandableListAdapter(Context context, List<FreeBoard.Data> listDataHeader,
+                                 HashMap<FreeBoard.Data, List<Comment>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -43,7 +46,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final List<String> childText = (List<String>) getChild(groupPosition, childPosition);
+        Comment childText = (Comment) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -52,13 +55,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtCommentID = (TextView) convertView.findViewById(R.id.tvCommentID);
-        txtCommentID.setText(childText.get(0));
+        txtCommentID.setText(childText.getUserId());
 
         TextView txtCommentDate = (TextView) convertView.findViewById(R.id.tvCommentDate);
-        txtCommentDate.setText(childText.get(1));
+        txtCommentDate.setText(childText.getDate());
 
         TextView txtCommentContent = (TextView) convertView.findViewById(R.id.tvCommentContent);
-        txtCommentContent.setText(childText.get(2));
+        txtCommentContent.setText(childText.getBody());
 
         return convertView;
     }
@@ -85,18 +88,25 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
+    public View getGroupView(final int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+        FreeBoard.Data headerTitle = (FreeBoard.Data) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
-        lblListHeader.setText(headerTitle);
-        lblListHeader.setTextSize(15);
+        TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+        TextView tvTime = (TextView) convertView.findViewById(R.id.tvTime);
+        TextView tvId = (TextView) convertView.findViewById(R.id.tvId);
+        TextView tvContent = (TextView) convertView.findViewById(R.id.tvContent);
+
+        tvTitle.setText(headerTitle.getTitle());
+        tvTime.setText(headerTitle.getWhen());
+        tvId.setText(String.valueOf(headerTitle.getAccount_no()));
+        tvContent.setText(headerTitle.getBody());
+
 
         return convertView;
     }
