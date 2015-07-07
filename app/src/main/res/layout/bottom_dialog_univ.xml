@@ -32,7 +32,7 @@
 
         <requestFocus />
         <Button
-            android:id="@+id/btShowDropDown"
+            android:id="@+id/btShowUniv"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/ic_action_expand"

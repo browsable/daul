@@ -2,6 +2,7 @@
 package com.daemin.enumclass;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -261,15 +263,15 @@ public enum EnumDialog implements View.OnClickListener {
 
     String dialFlag = "",colorName,korName,engName;
     Button btNormal, btUniv, btCancel, btAddTime, btSetting, btColor, btDialCancel,btRecommend;
-    LinearLayout llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend,llIncludeDummy;
+    LinearLayout llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend;
     Dialog dialog;
     CalendarView cal;
     GradientDrawable gd;
     Boolean colorFlag = false;
     Context context;
-    AutoCompleteTextView actvSelectUniv;
-    Button btShowDropDown, btForward;
-    Boolean clickFlag=false;
+    AutoCompleteTextView actvSelectUniv,actvSelectDep, actvSelectGrade;
+    Button btShowUniv,btShowDep,btShowGrade, btForward;
+    Boolean clickFlag1=false,clickFlag2=false,clickFlag3=false;
 
 
     EnumDialog(String dialFlag) {
@@ -316,7 +318,6 @@ public enum EnumDialog implements View.OnClickListener {
         btColor = (Button) dialog.findViewById(R.id.btColor);
         btRecommend = (Button) dialog.findViewById(R.id.btRecommend);
         llColor = (LinearLayout) dialog.findViewById(R.id.llColor);
-        llIncludeDummy = (LinearLayout) dialog.findViewById(R.id.llIncludeDummy);
         llNormal = (LinearLayout) dialog.findViewById(R.id.llNormal);
         llUniv = (LinearLayout) dialog.findViewById(R.id.llUniv);
         llRecommend = (LinearLayout) dialog.findViewById(R.id.llRecommend);
@@ -363,6 +364,19 @@ public enum EnumDialog implements View.OnClickListener {
         dialog.show();
     }
     public void Cancel(){
+        Common.stateFilter(Common.getTempTimePos());
+        switch(DrawMode.CURRENT.getMode()){
+            case 0:
+                DrawMode.CURRENT.setMode(0);
+                break;
+            case 1:
+                DrawMode.CURRENT.setMode(0);
+                break;
+            case 2:
+                DrawMode.CURRENT.setMode(2);
+                break;
+        }
+
         dialog.cancel();
     }
 
@@ -374,7 +388,7 @@ public enum EnumDialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btCancel:
-                dialog.cancel();
+                Cancel();
                 break;
             case R.id.btNormal:
                 DrawMode.CURRENT.setMode(0);
@@ -412,7 +426,7 @@ public enum EnumDialog implements View.OnClickListener {
                 actvSelectUniv.setTextSize(16);
                 actvSelectUniv.setDropDownVerticalOffset(10);
                 btForward = (Button) dialog.findViewById(R.id.btForward);
-                btShowDropDown = (Button) dialog.findViewById(R.id.btShowDropDown);
+                btShowUniv = (Button) dialog.findViewById(R.id.btShowUniv);
                 actvSelectUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                     public void onItemClick(AdapterView<?> parent, View v,
@@ -428,7 +442,7 @@ public enum EnumDialog implements View.OnClickListener {
                         InputMethodManager imm = (InputMethodManager) context
                                 .getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(actvSelectUniv.getWindowToken(), 0);
-                        btShowDropDown.setVisibility(View.GONE);
+                        btShowUniv.setVisibility(View.GONE);
                         btForward.setVisibility(View.VISIBLE);
 
                         btForward.setOnClickListener(new View.OnClickListener() {
@@ -442,7 +456,6 @@ public enum EnumDialog implements View.OnClickListener {
                                     else {
                                         Toast.makeText(context, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
                                         DownloadSqlite(engName);
-
                                     }
                                 }else{
                                     if(User.USER.isSubjectDownloadState()){
@@ -457,20 +470,20 @@ public enum EnumDialog implements View.OnClickListener {
                         });
                     }
                 });
-                btShowDropDown.setOnClickListener(new View.OnClickListener() {
+                btShowUniv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (clickFlag) {
+                        if (clickFlag1) {
                             actvSelectUniv.dismissDropDown();
-                            btShowDropDown.setBackgroundResource(R.drawable.ic_action_expand);
-                            clickFlag = false;
+                            btShowUniv.setBackgroundResource(R.drawable.ic_action_expand);
+                            clickFlag1 = false;
                             if(!User.USER.isGroupListDownloadState()) {
                                 MyRequest.getGroupList();
                             }
                         } else {
                             actvSelectUniv.showDropDown();
-                            btShowDropDown.setBackgroundResource(R.drawable.ic_action_collapse);
-                            clickFlag = true;
+                            btShowUniv.setBackgroundResource(R.drawable.ic_action_collapse);
+                            clickFlag1 = true;
                         }
                     }
                 });
@@ -478,7 +491,7 @@ public enum EnumDialog implements View.OnClickListener {
                 actvSelectUniv.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
                     @Override
                     public void onDismiss() {
-                        btShowDropDown.setBackgroundResource(R.drawable.ic_action_expand);
+                        btShowUniv.setBackgroundResource(R.drawable.ic_action_expand);
                     }
                 });
                 break;
@@ -508,6 +521,7 @@ public enum EnumDialog implements View.OnClickListener {
         }
     }
 
+     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
      private void setupSubjectDatas() {
             llIncludeDep.setVisibility(View.VISIBLE);
             DatabaseHandler db = new DatabaseHandler(context);
@@ -516,18 +530,96 @@ public enum EnumDialog implements View.OnClickListener {
             User.USER.setSubjectDownloadState(true);
             hlv.setAdapter(adapter);
             hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                 @Override
-                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                     ArrayList<String> tempTimePos = new ArrayList<>();
-                     Common.stateFilter(Common.getTempTimePos());
-                     for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
-                             .toString())) {
-                         tempTimePos.add(timePos);
-                         TimePos.valueOf(timePos).setPosState(PosState.TEMPORARY);
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    ArrayList<String> tempTimePos = new ArrayList<>();
+                    Common.stateFilter(Common.getTempTimePos());
+                    for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
+                            .toString())) {
+                        tempTimePos.add(timePos);
+                        TimePos.valueOf(timePos).setPosState(PosState.TEMPORARY);
+                    }
+                    Common.setTempTimePos(tempTimePos);
+                }
+            });
+         btShowDep = (Button) dialog.findViewById(R.id.btShowDep);
+         btShowGrade = (Button) dialog.findViewById(R.id.btShowGrade);
+         ArrayAdapter<String> adapter2 = new ArrayAdapter<>(context,
+                 R.layout.dropdown_search, MyRequest.getGroupListFomServer());
+         actvSelectDep = (AutoCompleteTextView) dialog.findViewById(R.id.actvSelectDep);
+         actvSelectDep.requestFocus();
+         actvSelectDep.setThreshold(1);// will start working from first character
+         actvSelectDep.setAdapter(adapter2);// setting the adapter data into the
+         actvSelectDep.setTextColor(Color.DKGRAY);
+         actvSelectDep.setDropDownVerticalOffset(10);
+         actvSelectDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+             public void onItemClick(AdapterView<?> parent, View v,
+                                     int position, long id) {
+
+             }
+         });
+         btShowDep.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 if (clickFlag2) {
+                     actvSelectDep.dismissDropDown();
+                     btShowDep.setBackgroundResource(R.drawable.ic_action_expand);
+                     clickFlag2 = false;
+                     if (!User.USER.isGroupListDownloadState()) {
+                         MyRequest.getGroupList();
                      }
-                     Common.setTempTimePos(tempTimePos);
+                 } else {
+                     actvSelectDep.showDropDown();
+                     btShowDep.setBackgroundResource(R.drawable.ic_action_collapse);
+                     clickFlag2 = true;
                  }
-             });
+             }
+         });
+         actvSelectDep.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+             @Override
+             public void onDismiss() {
+                 btShowDep.setBackgroundResource(R.drawable.ic_action_expand);
+             }
+         });
+         ArrayAdapter<String> adapter3 = new ArrayAdapter<>(context,
+                 R.layout.dropdown_search, MyRequest.getGroupListFomServer());
+         actvSelectGrade = (AutoCompleteTextView) dialog.findViewById(R.id.actvSelectGrade);
+         actvSelectGrade.requestFocus();
+         actvSelectGrade.setThreshold(1);// will start working from first character
+         actvSelectGrade.setAdapter(adapter3);// setting the adapter data into the
+         actvSelectGrade.setTextColor(Color.DKGRAY);
+         actvSelectGrade.setDropDownVerticalOffset(10);
+         actvSelectGrade.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+             public void onItemClick(AdapterView<?> parent, View v,
+                                     int position, long id) {
+
+             }
+         });
+         btShowGrade.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 if (clickFlag3) {
+                     actvSelectGrade.dismissDropDown();
+                     btShowGrade.setBackgroundResource(R.drawable.ic_action_expand);
+                     clickFlag3 = false;
+                     if (!User.USER.isGroupListDownloadState()) {
+                         MyRequest.getGroupList();
+                     }
+                 } else {
+                     actvSelectGrade.showDropDown();
+                     btShowGrade.setBackgroundResource(R.drawable.ic_action_collapse);
+                     clickFlag3 = true;
+                 }
+             }
+         });
+         actvSelectGrade.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+             @Override
+             public void onDismiss() {
+                 btShowGrade.setBackgroundResource(R.drawable.ic_action_expand);
+             }
+         });
      }
     private String[] getTimeList(String time){
             String[] timeList=null;

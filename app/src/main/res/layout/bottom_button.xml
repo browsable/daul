@@ -7,7 +7,7 @@
         android:id="@+id/btPlus"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@drawable/bt_plus"
+        android:background="@drawable/bt_check"
         android:layout_marginRight="@dimen/margin_default"
         android:layout_marginBottom="@dimen/margin_l"
         android:scaleType="fitXY"
