@@ -17,7 +17,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.daemin.adapter.BaseExpandableAdapter;
 import com.daemin.common.BasicFragment;
 import com.daemin.common.MyVolley;
 import com.daemin.community.github.FreeBoard;
@@ -122,7 +121,7 @@ public class CommunityFragment extends BasicFragment {
 
                         prepareListData();
 
-                        listAdapter = new BaseExpandableAdapter(getActivity(), listDataHeader, listDataChild);
+                        listAdapter = new com.daemin.adapter.ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
 
                         expListView.setAdapter(listAdapter);
 
