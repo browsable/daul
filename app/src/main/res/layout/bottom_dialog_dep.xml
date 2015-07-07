@@ -24,13 +24,13 @@
             android:background="@drawable/bg_dimgray_border"
             >
             <AutoCompleteTextView
-                android:id="@+id/actvSelectUniv"
+                android:id="@+id/actvSelectDep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="학과 선택"
                 android:layout_weight="1"
-                android:textSize="@dimen/textsize_l"
+                android:textSize="@dimen/textsize_default"
                 android:singleLine="true"
                 android:layout_margin="@dimen/margin_xs"
                 android:background="@color/white"
@@ -38,7 +38,7 @@
 
             <requestFocus />
             <Button
-                android:id="@+id/btShowDropDown1"
+                android:id="@+id/btShowDep"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:background="@drawable/ic_action_expand"
@@ -51,15 +51,15 @@
             android:layout_weight="1"
             android:gravity="center"
             android:singleLine="true"
-            android:hint="강의/교수/코드명 검색"
-            android:textSize="@dimen/textsize_l"
+            android:hint="강의/교수명 검색"
+            android:textSize="@dimen/textsize_default"
             android:background="@drawable/bg_dimgray_border"
             />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.2"
+            android:layout_weight="1.1"
             android:gravity="center"
             android:background="@drawable/bg_dimgray_border"
             >
@@ -70,15 +70,15 @@
                 android:ems="10"
                 android:hint="1~4학년"
                 android:layout_weight="1"
-                android:textSize="@dimen/textsize_l"
+                android:textSize="@dimen/textsize_default"
                 android:singleLine="true"
-                android:layout_margin="@dimen/margin_xs"
+                android:layout_margin="@dimen/margin_xxs"
                 android:background="@color/white"
                 />
 
             <requestFocus />
             <Button
-                android:id="@+id/btShowDropDown2"
+                android:id="@+id/btShowGrade"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:background="@drawable/ic_action_expand"

@@ -133,7 +133,7 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginRight="@dimen/margin_l"
-            android:background="@drawable/bt_plus" />
+            android:background="@drawable/bt_check" />
 
         <Button
             android:id="@+id/btCancel"
@@ -159,7 +159,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.8"
-        android:background="@color/white"
         android:orientation="vertical"
         android:visibility="gone" >
         <include
@@ -167,8 +166,6 @@
             />
         <include
             layout="@layout/bottom_dialog_dep" />
-        <include
-            layout="@layout/bottom_dialog_dummy" />
 
     </LinearLayout>
     <LinearLayout
