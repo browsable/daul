@@ -73,7 +73,7 @@ public class GithubActivity extends Activity {
           requestQueue.add(jackson2Request);
 
             //loadPersonInfo();
-        }
+    }
 
     private void loadPersonInfo() {
         JacksonRequest<Person> jacksonRequest = new JacksonRequest<Person>(

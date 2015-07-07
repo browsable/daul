@@ -143,6 +143,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+        <ListView
+            android:id="@+id/lvComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
+        <!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="30dp"
@@ -209,5 +215,6 @@
                 android:layout_marginRight="@dimen/margin_xs"
                 android:text="삭제" />
         </LinearLayout>
+        -->
     </LinearLayout>
 </LinearLayout>

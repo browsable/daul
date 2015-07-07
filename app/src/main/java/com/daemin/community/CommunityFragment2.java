@@ -1,25 +1,41 @@
 package com.daemin.community;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.daemin.adapter.ActionSlideExpandableListAdapter;
 import com.daemin.common.BasicFragment;
+import com.daemin.common.MyVolley;
+import com.daemin.community.github.FreeBoard;
+import com.daemin.community.github.GithubActivity;
 import com.daemin.community.lib.ActionSlideExpandableListView;
 import com.daemin.timetable.R;
+import com.navercorp.volleyextensions.request.Jackson2Request;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hernia on 2015-07-07.
  */
 public class CommunityFragment2 extends BasicFragment {
-
+    private List<FreeBoard.Data> data;
     View root;
 
-    public CommunityFragment2() {
+    public CommunityFragment2()
+    {
         super(R.layout.fragment_community2, "CommunityFragment");
     }
 
@@ -30,57 +46,86 @@ public class CommunityFragment2 extends BasicFragment {
         root = super.onCreateView(inflater, container, savedInstanceState);
         if (layoutId > 0) {
 
-            ActionSlideExpandableListView list = (ActionSlideExpandableListView) root.findViewById(R.id.list);
+            final String GET_PERSON_URL = "http://timedao.heeguchi.me/app/getArticleList";
+            RequestQueue requestQueue = MyVolley.getRequestQueue();
 
-            // fill the list with data
-            list.setAdapter(buildDummyData());
+            Jackson2Request<FreeBoard> jackson2Request = new Jackson2Request<FreeBoard>(
+                    Request.Method.POST,GET_PERSON_URL,  FreeBoard.class,
+                    new Response.Listener<FreeBoard>() {
+                        @Override
+                        public void onResponse(FreeBoard response) {
+                            data = response.getData();
 
-            // listen for events in the two buttons for every list item.
-            // the 'position' var will tell which list item is clicked
-            list.setItemActionListener(new ActionSlideExpandableListView.OnActionClickListener() {
+                            ActionSlideExpandableListView list = (ActionSlideExpandableListView) root.findViewById(R.id.list);
 
+                            // fill the list with data
+                            list.setAdapter(buildDummyData());
+
+                            // listen for events in the two buttons for every list item.
+                            // the 'position' var will tell which list item is clicked
+                            list.setItemActionListener(new ActionSlideExpandableListView.OnActionClickListener() {
+
+                                @Override
+                                public void onClick(View listView, View buttonview, int position) {
+                                    /**
+                                     * Normally you would put a switch
+                                     * statement here, and depending on
+                                     * view.getId() you would perform a
+                                     * different action.
+                                     */
+                                    String actionName = "";
+                                    if (buttonview.getId() == R.id.btChildEdit) {
+                                        actionName = "btChildEdit";
+                                    } else {
+                                        actionName = "btChildRemove";
+                                    }
+                                    /**
+                                     * For testing sake we just show a toast
+                                     */
+                                    Toast.makeText(
+                                            getActivity(),
+                                            "버튼이름: " + actionName + ", position: " + String.valueOf(position),
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+                                }
+
+                                // note that we also add 1 or more ids to the setItemActionListener
+                                // this is needed in order for the listview to discover the buttons
+                            }, R.id.btChildEdit, R.id.btChildRemove);
+
+                        }
+                    }, new Response.ErrorListener() {
                 @Override
-                public void onClick(View listView, View buttonview, int position) {
-                    /**
-                     * Normally you would put a switch
-                     * statement here, and depending on
-                     * view.getId() you would perform a
-                     * different action.
-                     */
-                    String actionName = "";
-                    if (buttonview.getId() == R.id.btChildEdit) {
-                        actionName = "btChildEdit";
-                    } else {
-                        actionName = "btChildRemove";
-                    }
-                    /**
-                     * For testing sake we just show a toast
-                     */
-                    Toast.makeText(
-                            getActivity(),
-                            "버튼이름: " + actionName,
-                            Toast.LENGTH_SHORT
-                    ).show();
+                public void onErrorResponse(VolleyError error) {
+                    Log.d(GithubActivity.class.getSimpleName(), ""
+                            + error.getMessage());
                 }
 
-                // note that we also add 1 or more ids to the setItemActionListener
-                // this is needed in order for the listview to discover the buttons
-            }, R.id.btChildEdit, R.id.btChildRemove);
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("table","freeboard");
+                    map.put("page","1");
+                    return map;
+                }
+
+            /*@Override
+            public byte[] getBody() throws AuthFailureError {
+                return "{\"table\":\"freeboard\", \"page\": \"1\"}".getBytes();
+                //return postFreeboard.getBytes();
+            }*/
+            };
+            requestQueue.add(jackson2Request);
+
+            //loadPersonInfo();
+
+
         }
         return root;
     }
     public ListAdapter buildDummyData() {
-        final int SIZE = 20;
-        String[] values = new String[SIZE];
-        for(int i=0;i<SIZE;i++) {
-            values[i] = "Item "+i;
-        }
-        return new ArrayAdapter<String>(
-                getActivity(),
-                R.layout.listitem_expandable,
-                R.id.tvGroupTitle,
-                values
-        );
+        return new ActionSlideExpandableListAdapter(data);
     }
 
 }
