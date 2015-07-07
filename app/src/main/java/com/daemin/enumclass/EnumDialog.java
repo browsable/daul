@@ -271,6 +271,7 @@ public enum EnumDialog implements View.OnClickListener {
     Button btShowDropDown, btForward;
     Boolean clickFlag=false;
 
+
     EnumDialog(String dialFlag) {
         this.dialFlag = dialFlag;
     }
@@ -434,17 +435,24 @@ public enum EnumDialog implements View.OnClickListener {
                             @Override
                             public void onClick(View v) {
                                 if(Common.isOnline()){
-                                    if(!User.USER.isSubjectDownloadState()){
-                                        Toast.makeText(context, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
-                                        DownloadSqlite(engName);
-                                    }
-                                    else {
+                                    if(User.USER.isSubjectDownloadState()){
                                         Toast.makeText(context, "이미 다운로드된 상태이므로 과목셋팅만", Toast.LENGTH_SHORT).show();
                                         setupSubjectDatas();
                                     }
+                                    else {
+                                        Toast.makeText(context, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
+                                        DownloadSqlite(engName);
+
+                                    }
                                 }else{
-                                    Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-                            }
+                                    if(User.USER.isSubjectDownloadState()){
+                                        Toast.makeText(context, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
+                                        setupSubjectDatas();
+                                    }
+                                    else {
+                                        Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
                             }
                         });
                     }

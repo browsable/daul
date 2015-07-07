@@ -137,6 +137,7 @@ public class InitThread extends Thread {
 				break;
 			case 2: //추천
 				if (ETP.getPosState() == PosState.NO_PAINT) {
+					Common.stateFilter(Common.getTempTimePos());
 					ETP.setPosState(PosState.RECOMMEND);
 					Common.getTempTimePos().add(ETP.name());
 				}else{
