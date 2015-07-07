@@ -1,14 +1,19 @@
+
 package com.daemin.adapter;
+
 
 /**
  * Created by Jun-yeong on 2015-06-24.
  */
+
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daemin.community.Comment;
@@ -18,106 +23,134 @@ import com.daemin.timetable.R;
 import java.util.HashMap;
 import java.util.List;
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
-    private Context _context;
-    private List<FreeBoard.Data> _listDataHeader; // header titles
-    // child data in format of header title, child title
-    private HashMap<FreeBoard.Data, List<Comment>> _listDataChild;
+	private List<FreeBoard.Data> listDataHeader;
+	private HashMap<FreeBoard.Data, List<Comment>> listDataChild;
+	private LayoutInflater inflater = null;
+	private ViewHolder viewHolder = null;
 
-    public ExpandableListAdapter(Context context, List<FreeBoard.Data> listDataHeader,
-                                 HashMap<FreeBoard.Data, List<Comment>> listChildData) {
-        this._context = context;
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
-    }
+	public ExpandableListAdapter(Context c, List<FreeBoard.Data> listDataHeader,
+								 HashMap<FreeBoard.Data, List<Comment>> listDataChild){
+		super();
+		this.inflater = LayoutInflater.from(c);
+		this.listDataHeader = listDataHeader;
+		this.listDataChild = listDataChild;
+	}
 
-    @Override
-    public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon);
-    }
+	// 그룹 포지션을 반환한다.
+	@Override
+	public FreeBoard.Data getGroup(int groupPosition) {
+		return listDataHeader.get(groupPosition);
+	}
 
-    @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return childPosition;
-    }
+	// 그룹 사이즈를 반환한다.
+	@Override
+	public int getGroupCount() {
+		return listDataHeader.size();
+	}
 
-    @Override
-    public View getChildView(int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+	// 그룹 ID를 반환한다.
+	@Override
+	public long getGroupId(int groupPosition) {
+		return groupPosition;
+	}
 
-        Comment childText = (Comment) getChild(groupPosition, childPosition);
+	// 그룹뷰 각각의 ROW
+	@Override
+	public View getGroupView(int groupPosition, boolean isExpanded,
+			View convertView, ViewGroup parent) {
 
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.listitem_comment, null);
-        }
+		View v = convertView;
+		FreeBoard.Data headerTitle = getGroup(groupPosition);
+		if(v == null){
+			viewHolder = new ViewHolder();
+			v = inflater.inflate(R.layout.listitem_group, parent, false);
+			viewHolder.tvGroupTitle = (TextView) v.findViewById(R.id.tvGroupTitle);
+			viewHolder.tvGroupTime = (TextView) v.findViewById(R.id.tvGroupTime);
+			viewHolder.tvGroupId = (TextView) v.findViewById(R.id.tvGroupId);
+			viewHolder.tvGroupContent = (TextView) v.findViewById(R.id.tvGroupContent);
+			viewHolder.commentIndicator = (ImageView) v.findViewById(R.id.commentIndicator);
+			viewHolder.llComment = (LinearLayout) v.findViewById(R.id.llComment);
+			v.setTag(viewHolder);
+		}else{
+			viewHolder = (ViewHolder)v.getTag();
+		}
 
-        TextView txtCommentID = (TextView) convertView.findViewById(R.id.tvCommentID);
-        txtCommentID.setText(childText.getUserId());
+		// 그룹을 펼칠때와 닫을때 아이콘을 변경해 준다.
+		if(isExpanded){
+			viewHolder.commentIndicator.setBackgroundResource(R.drawable.ic_action_expand);
+		}else{
+			viewHolder.commentIndicator.setBackgroundResource(R.drawable.ic_action_collapse);
+		}
 
-        TextView txtCommentDate = (TextView) convertView.findViewById(R.id.tvCommentDate);
-        txtCommentDate.setText(childText.getDate());
+		viewHolder.tvGroupTitle.setText(headerTitle.getTitle());
+		viewHolder.tvGroupTime.setText(headerTitle.getWhen());
+		viewHolder.tvGroupId.setText(String.valueOf(headerTitle.getAccount_no()));
+		viewHolder.tvGroupContent.setText(headerTitle.getBody());
 
-        TextView txtCommentContent = (TextView) convertView.findViewById(R.id.tvCommentContent);
-        txtCommentContent.setText(childText.getBody());
+		return v;
+	}
 
-        return convertView;
-    }
+	// 차일드뷰를 반환한다.
+	@Override
+	public Comment getChild(int groupPosition, int childPosition) {
+		return listDataChild.get(groupPosition).get(childPosition);
+	}
 
-    @Override
-    public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .size();
-    }
+	// 차일드뷰 사이즈를 반환한다.
+	@Override
+	public int getChildrenCount(int groupPosition) {
+		return listDataChild.get(groupPosition).size();
+	}
 
-    @Override
-    public Object getGroup(int groupPosition) {
-        return this._listDataHeader.get(groupPosition);
-    }
+	// 차일드뷰 ID를 반환한다.
+	@Override
+	public long getChildId(int groupPosition, int childPosition) {
+		return childPosition;
+	}
 
-    @Override
-    public int getGroupCount() {
-        return this._listDataHeader.size();
-    }
+	// 차일드뷰 각각의 ROW
+	@Override
+	public View getChildView(int groupPosition, int childPosition,
+			boolean isLastChild, View convertView, ViewGroup parent) {
 
-    @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
-    }
+		View v = convertView;
+		Comment childText = getChild(groupPosition, childPosition);
+		if(v == null){
+			viewHolder = new ViewHolder();
+			v = inflater.inflate(R.layout.listitem_child, null);
+			viewHolder.tvChildDate = (TextView) v.findViewById(R.id.tvChildDate);
+			viewHolder.tvChildId = (TextView) v.findViewById(R.id.tvChildId);
+			viewHolder.tvChildContent = (TextView) v.findViewById(R.id.tvChildContent);
+			v.setTag(viewHolder);
+		}else{
+			viewHolder = (ViewHolder)v.getTag();
+		}
+		viewHolder.tvChildId.setText(childText.getUserId());
+		viewHolder.tvChildDate.setText(childText.getDate());
+		viewHolder.tvChildContent.setText(childText.getBody());
 
-    @Override
-    public View getGroupView(final int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
-        FreeBoard.Data headerTitle = (FreeBoard.Data) getGroup(groupPosition);
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
-        }
+		return v;
+	}
 
-        TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-        TextView tvTime = (TextView) convertView.findViewById(R.id.tvTime);
-        TextView tvId = (TextView) convertView.findViewById(R.id.tvId);
-        TextView tvContent = (TextView) convertView.findViewById(R.id.tvContent);
+	@Override
+	public boolean hasStableIds() {	return true; }
 
-        tvTitle.setText(headerTitle.getTitle());
-        tvTime.setText(headerTitle.getWhen());
-        tvId.setText(String.valueOf(headerTitle.getAccount_no()));
-        tvContent.setText(headerTitle.getBody());
+	@Override
+	public boolean isChildSelectable(int groupPosition, int childPosition) { return true; }
 
+	class ViewHolder {
+		public TextView tvGroupTitle;
+		public TextView tvGroupTime;
+		public TextView tvGroupId;
+		public TextView tvGroupContent;
+		public ImageView commentIndicator;
+		public LinearLayout llComment;
+		public TextView tvChildId;
+		public TextView tvChildDate;
+		public TextView tvChildContent;
 
-        return convertView;
-    }
+	}
 
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
-    }
 }

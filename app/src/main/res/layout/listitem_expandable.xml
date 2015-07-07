@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/item">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:background="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_l"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_l"
+                android:background="@drawable/bg_circle"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvGroupTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="수강신청 요령좀"
+                        android:layout_weight="1"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:text="수정"
+                        android:layout_marginRight="@dimen/margin_xs"
+                        android:background="@drawable/bg_maincolor_round_border"
+                        />
+
+                    <Button
+                        android:id="@+id/btRemove"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@drawable/bg_maincolor_round_border"
+                        android:layout_marginRight="@dimen/margin_xs"
+                        android:text="삭제" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvGroupTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="2015.02.02 13:00"
+                    android:textSize="@dimen/textsize_default"
+                    android:gravity="center_vertical"
+                    />
+
+                <TextView
+                    android:id="@+id/tvGroupId"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="choz@"
+                    android:textSize="@dimen/textsize_default"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvGroupContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="수강신청 어떻게 해요?"
+            android:textSize="@dimen/textsize_l"
+            android:padding="@dimen/margin_xxl"
+            />
+
+        <ImageView
+            android:id="@+id/ivContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_launcher"
+            android:padding="@dimen/margin_xxl"
+            />
+        <LinearLayout
+            android:id="@+id/expandable_toggle_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_xxl">
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="댓글"
+                android:textAlignment="center"
+                android:layout_gravity="center_vertical" />
+            <ImageView
+                android:id="@+id/expandable_arrow"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_action_expand"/>
+        </LinearLayout>
+    </LinearLayout>
+       <!-- <Button
+            android:id="@+id/expandable_toggle_button"
+            android:text="More"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/text"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/text" android:textSize="30dp"/>
+-->
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/expandable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+            <TextView
+                android:id="@+id/tvChildId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:textSize="10dip"
+                android:text="joyyir"
+                android:textColor="@color/gray"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+            <TextView
+                android:id="@+id/tvChildDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textSize="10dip"
+                android:text="02.02 18:00"
+                android:textColor="@color/gray"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+                android:paddingRight="30dp"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tvChildContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textSize="13dip"
+            android:text="댓글 내용입니다. 랄라랄라랄"
+            android:textColor="@color/black"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/btChildEdit"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:text="수정"
+                android:layout_marginRight="@dimen/margin_xs"
+                android:background="@drawable/bg_maincolor_round_border"
+                />
+            <Button
+                android:id="@+id/btChildRemove"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_maincolor_round_border"
+                android:layout_marginRight="@dimen/margin_xs"
+                android:text="삭제" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

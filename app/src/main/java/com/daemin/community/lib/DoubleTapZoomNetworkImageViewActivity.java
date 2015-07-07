@@ -1,8 +1,4 @@
-package com.daemin.community.view;
-
-/**
- * Created by hernia on 2015-06-20.
- */
+package com.daemin.community.lib;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,7 +12,10 @@ import com.daemin.timetable.R;
 import com.navercorp.volleyextensions.view.ZoomableNetworkImageView;
 import com.navercorp.volleyextensions.view.ZoomableNetworkImageView.OnImageChangedListener;
 
-public class SingleTapZoomNetworkImageViewActivity extends Activity {
+/**
+ * Created by hernia on 2015-06-20.
+ */
+public class DoubleTapZoomNetworkImageViewActivity extends Activity {
     private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/image/test2.png";
     private ZoomableNetworkImageView zoomableImageView;
     private ImageLoader imageLoader;
@@ -25,7 +24,7 @@ public class SingleTapZoomNetworkImageViewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_tap_zoom_network_image_view);
+        setContentView(R.layout.activity_double_tap_zoom_network_image_view);
         imageLoader = MyVolley.getImageLoader();
         initializeZoomableImageView();
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="8dp"
     android:background="#FFFFFF">
@@ -44,7 +44,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tvTitle"
+                    android:id="@+id/tvGroupTitle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="수강신청 요령좀"
@@ -72,7 +72,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tvTime"
+                android:id="@+id/tvGroupTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -82,7 +82,7 @@
                 />
 
             <TextView
-                android:id="@+id/tvId"
+                android:id="@+id/tvGroupId"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -93,7 +93,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tvContent"
+        android:id="@+id/tvGroupContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="수강신청 어떻게 해요?"

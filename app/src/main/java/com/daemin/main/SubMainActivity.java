@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.daemin.area.AreaFragment;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.CurrentTime;
-import com.daemin.community.CommunityFragment;
+import com.daemin.community.CommunityFragment2;
 import com.daemin.enumclass.EnumDialog;
 import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.User;
@@ -206,7 +206,7 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btCommunity:
-				changeFragment(CommunityFragment.class, "커뮤니티", R.color.orange);
+				changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
 				flSurface.setVisibility(View.GONE);
 				btPlus.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);

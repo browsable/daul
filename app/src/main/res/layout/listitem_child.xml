@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="55dip"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:baselineAligned="false">
         <TextView
-            android:id="@+id/tvCommentID"
+            android:id="@+id/tvChildId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -22,7 +22,7 @@
             android:paddingBottom="5dp"
             android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
         <TextView
-            android:id="@+id/tvCommentDate"
+            android:id="@+id/tvChildDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -36,7 +36,7 @@
             android:paddingRight="30dp"/>
     </LinearLayout>
     <TextView
-        android:id="@+id/tvCommentContent"
+        android:id="@+id/tvChildContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
@@ -55,7 +55,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"/>
         <Button
-            android:id="@+id/btCommentEdit"
+            android:id="@+id/btChildEdit"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:text="수정"
@@ -63,7 +63,7 @@
             android:background="@drawable/bg_maincolor_round_border"
             />
         <Button
-            android:id="@+id/btCommentRemove"
+            android:id="@+id/btChildRemove"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:background="@drawable/bg_maincolor_round_border"
