@@ -50,6 +50,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -270,7 +271,6 @@ public enum EnumDialog implements View.OnClickListener {
     Button btShowDropDown, btForward;
     Boolean clickFlag=false;
 
-
     EnumDialog(String dialFlag) {
         this.dialFlag = dialFlag;
     }
@@ -376,6 +376,8 @@ public enum EnumDialog implements View.OnClickListener {
                 dialog.cancel();
                 break;
             case R.id.btNormal:
+                DrawMode.CURRENT.setMode(0);
+                Common.stateFilter(Common.getTempTimePos());
                 llNormal.setVisibility(View.VISIBLE);
                 llUniv.setVisibility(View.GONE);
                 llRecommend.setVisibility(View.GONE);
@@ -388,7 +390,8 @@ public enum EnumDialog implements View.OnClickListener {
                         R.color.gray));
                 break;
             case R.id.btUniv:
-
+                DrawMode.CURRENT.setMode(1);
+                Common.stateFilter(Common.getTempTimePos());
                 llNormal.setVisibility(View.GONE);
                 llUniv.setVisibility(View.VISIBLE);
                 llRecommend.setVisibility(View.GONE);
@@ -470,11 +473,11 @@ public enum EnumDialog implements View.OnClickListener {
                         btShowDropDown.setBackgroundResource(R.drawable.ic_action_expand);
                     }
                 });
-
-
                 break;
 
             case R.id.btRecommend:
+                DrawMode.CURRENT.setMode(2);
+                Common.stateFilter(Common.getTempTimePos());
                 llNormal.setVisibility(View.GONE);
                 llUniv.setVisibility(View.GONE);
                 llRecommend.setVisibility(View.VISIBLE);
@@ -507,10 +510,14 @@ public enum EnumDialog implements View.OnClickListener {
             hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                  @Override
                  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                     ArrayList<String> tempTimePos = new ArrayList<>();
+                     Common.stateFilter(Common.getTempTimePos());
                      for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
                              .toString())) {
-                         TimePos.valueOf(timePos).setPosState(PosState.SUBJECT);
+                         tempTimePos.add(timePos);
+                         TimePos.valueOf(timePos).setPosState(PosState.TEMPORARY);
                      }
+                     Common.setTempTimePos(tempTimePos);
                  }
              });
      }

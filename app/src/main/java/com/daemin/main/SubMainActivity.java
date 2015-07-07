@@ -36,7 +36,6 @@ public class SubMainActivity extends FragmentActivity {
 
 	static final String TAG = "MainActivity";
 	InitSurfaceView InitSurfaceView;
-	static SubMainActivity singleton;
 	DrawerLayout mDrawerLayout;
 	LinearLayout mLeftDrawer;
 	ImageButton ibMenu, ibBack;
@@ -51,6 +50,7 @@ public class SubMainActivity extends FragmentActivity {
 	BackPressCloseHandler backPressCloseHandler;
 	String BackKeyName="";
 	FragmentManager fm = getSupportFragmentManager();
+	static SubMainActivity singleton;
 	public static SubMainActivity getInstance() {
 		return singleton;
 	}

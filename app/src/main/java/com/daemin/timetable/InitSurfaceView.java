@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.SerialNumberGenerator;
 import com.daemin.enumclass.TimePos;
@@ -20,6 +21,7 @@ public class InitSurfaceView extends SurfaceView implements
 	Context context;
 	private int xth, yth;
 	private boolean outOfTouchArea;
+
 	public InitSurfaceView(Context context) {
 		super(context);
 		this.context = context;
@@ -32,21 +34,6 @@ public class InitSurfaceView extends SurfaceView implements
 	}
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-
-		/*DatabaseHandler db = new DatabaseHandler(context);
-		 Log.d("Insert: ", "Inserting ..");
-	     db.addTimeEntity(new TimeEntity(1,2,"Ravi","Ravi","Ravi","Ravi","Ravi","Ravi"));
-		
-	     // Reading all contacts
-	        Log.d("Reading: ", "Reading all contacts..");
-	        List<TimeEntity> contacts = db.getAllTimeEntitys();       
-	 
-	        for (TimeEntity cn : contacts) {
-	            String log = "Id: "+cn.getid()+" ,Name: " + cn.getContent() + " ,Phone: " + cn.getDaycode();
-	                // Writing Contacts to log
-	        Log.d("Name: ", log);
-	        
-	        }*/
 		if (!i_Thread.isAlive()) {
 			i_Thread = new InitThread(holder, context);
 		}
@@ -108,7 +95,7 @@ public class InitSurfaceView extends SurfaceView implements
 
 		return true;
 	}
-	public void calXthYth(MotionEvent event){
+	public void calXthYth(MotionEvent event) {
 		//화면에 x축으로 15등분 중 몇번째에 위치하는지
 		xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 15 / i_Thread.getWidth();
 		if (xth % 2 == 0) {
@@ -116,7 +103,7 @@ public class InitSurfaceView extends SurfaceView implements
 		}
 		//화면에 y축으로 32등분 중 몇번째에 위치하는지
 		yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * 32 / i_Thread.getHeight();
-		if (yth % 2 == 0) {
+		if (yth % 2 == 0 && DrawMode.CURRENT.getMode()==0) {
 			yth -= 1;
 		}
 		return;

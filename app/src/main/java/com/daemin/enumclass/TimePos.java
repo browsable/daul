@@ -61,7 +61,4 @@ public enum TimePos {
     public void drawTimePos(Canvas canvas, int width, int height) {
         posState.drawTimePos(canvas, width, height, xth, yth);
     }
-    public void drawTimePosForSubject(Canvas canvas, int width, int height) {
-        posState.drawTimePosForSubject(canvas, width, height, xth, yth);
-    }
 }

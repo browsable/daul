@@ -10,8 +10,8 @@ import android.view.SurfaceHolder;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
+import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
-import com.daemin.enumclass.SerialNumberGenerator;
 import com.daemin.enumclass.TimePos;
 
 @SuppressLint("DefaultLocale")
@@ -28,7 +28,6 @@ public class InitThread extends Thread {
 	static int tempxth;
 	static int tempyth;
 	Canvas canvas;
-
 	CurrentTime ct;
 
 	public InitThread(SurfaceHolder holder, Context context) {
@@ -80,10 +79,7 @@ public class InitThread extends Thread {
 
 					// 사각형 그리기
 					for (TimePos ETP : TimePos.values()) {
-						if(ETP.getPosState()==PosState.SUBJECT)
-							ETP.drawTimePosForSubject(canvas, width, height);
-						else
-							ETP.drawTimePos(canvas, width, height);
+						ETP.drawTimePos(canvas, width, height);
 					}
 				}
 			} catch (Exception e) {
@@ -121,17 +117,32 @@ public class InitThread extends Thread {
 
 	public void makeTimePos(int xth, int yth, String touchType) {
 		TimePos ETP = TimePos.valueOf(Convert.getxyMerge(xth, yth));
-		if (ETP.getPosState() == PosState.NO_PAINT) {
-			if (touchType.equals("down")) {
-				ETP.setPosState(PosState.START);
-				SerialNumberGenerator.COUNT.next();
-			} else {
-				ETP.setPosState(PosState.INTERMEDIATE);
-			}
-
-			//ETP.setGroupNumber(SerialNumberGenerator.COUNT.getCount());
-		} else {
-			ETP.setPosState(PosState.NO_PAINT);
+		switch(DrawMode.CURRENT.getMode()) {
+			case 0: //일반
+				if (ETP.getPosState() == PosState.NO_PAINT) {
+					if (touchType.equals("down")) {
+						ETP.setPosState(PosState.START);
+						Common.getTempTimePos().add(ETP.name());
+					} else {
+						ETP.setPosState(PosState.INTERMEDIATE);
+						Common.getTempTimePos().add(ETP.name());
+					}
+				} else {
+					ETP.setPosState(PosState.NO_PAINT);
+				}
+				break;
+			case 1: //대학
+				//대학선택시에 그리는 것은 막고 선택한 과목은 함께 지워져야함
+					Common.stateFilter(Common.getTempTimePos());
+				break;
+			case 2: //추천
+				if (ETP.getPosState() == PosState.NO_PAINT) {
+					ETP.setPosState(PosState.RECOMMEND);
+					Common.getTempTimePos().add(ETP.name());
+				}else{
+					ETP.setPosState(PosState.NO_PAINT);
+				}
+				break;
 		}
 		return;
 	}
