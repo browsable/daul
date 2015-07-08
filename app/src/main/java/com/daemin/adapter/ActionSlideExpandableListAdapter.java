@@ -68,12 +68,12 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         CommentListAdapter commentListAdapter = new CommentListAdapter(comment);
         lvComment.setAdapter(commentListAdapter);
 
-        LinearLayout expandable = (LinearLayout) convertView.findViewById(R.id.expandable);
+        LinearLayout llExpandable = (LinearLayout) convertView.findViewById(R.id.llExpandable);
 
         //LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //View view = inflater.inflate(R.layout.listitem_child, parent, false);
 
-        expandable.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 250 * comment.size()));
+        llExpandable.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 250 * comment.size()));
 
         return convertView;
     }
