@@ -39,6 +39,7 @@ public class SettingFragment extends BasicFragment {
 
     private ImageView ivProfile;
     private LinearLayout btSettingUnivActivity;
+    private LinearLayout btSettingMailActivity;
 
     public SettingFragment() {
         super(R.layout.fragment_setting, "SettingFragment");
@@ -58,6 +59,8 @@ public class SettingFragment extends BasicFragment {
             mCurrentPhotoPath = null;
             ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
             btSettingUnivActivity = (LinearLayout)root.findViewById(R.id.btSettingUnivActivity);
+            btSettingMailActivity = (LinearLayout)root.findViewById(R.id.btSettingMailActivity);
+
             File path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES);
 
@@ -74,6 +77,16 @@ public class SettingFragment extends BasicFragment {
                 SubMainActivity.getInstance().changeFragment(SettingUnivFragment.class,"학교/학과 변경",R.color.maincolor);
             }
         });
+
+        btSettingMailActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
+                SubMainActivity.getInstance().changeFragment(SettingMailFragment.class,"메일주소 변경",R.color.maincolor);
+            }
+        });
+
         ivProfile.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
