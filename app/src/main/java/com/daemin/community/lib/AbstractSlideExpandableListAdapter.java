@@ -330,7 +330,7 @@ public abstract class AbstractSlideExpandableListAdapter extends WrapperListAdap
                             listView.smoothScrollBy(movement, getAnimationDuration());
                         } else {
                             if (r2.bottom == r.bottom) {
-                                listView.smoothScrollBy(movement, getAnimationDuration());
+                                //listView.smoothScrollBy(movement, getAnimationDuration());
                             }
                         }
                     }
