@@ -58,11 +58,13 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         TextView tvGroupTime = (TextView) convertView.findViewById(R.id.tvGroupTime);
         TextView tvGroupId = (TextView) convertView.findViewById(R.id.tvGroupId);
         TextView tvGroupContent = (TextView) convertView.findViewById(R.id.tvGroupContent);
+        TextView tvCountComment = (TextView) convertView.findViewById(R.id.tvCountComment);
 
         tvGroupTitle.setText(((FreeBoard.Data)getItem(position)).getTitle());
         tvGroupTime.setText(((FreeBoard.Data) getItem(position)).getWhen());
         tvGroupId.setText(String.valueOf(((FreeBoard.Data) getItem(position)).getAccount_no()));
         tvGroupContent.setText(((FreeBoard.Data) getItem(position)).getBody());
+        tvCountComment.setText(String.valueOf(comment.size()));
 
         ListView lvComment = (ListView) convertView.findViewById(R.id.lvComment);
         CommentListAdapter commentListAdapter = new CommentListAdapter(comment);
