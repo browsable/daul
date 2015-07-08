@@ -22,6 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// SubjectDatas table name
 	private static final String TABLE_SCHEDULE = "schedule";
+	//private static final String TABLE_FTS = "fts_time";
 
 	// SubjectDatas Table Columns names
 	private static final String KEY_ID = "_id";
@@ -51,8 +52,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public List<SubjectData> getAllSubjectDatas() {
 		List<SubjectData> SubjectDataList = new ArrayList<>();
 		// Select All Query
-		String selectQuery = "SELECT  * FROM " + TABLE_SCHEDULE;
+		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE;
 
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				SubjectData SubjectData = new SubjectData();
+				SubjectData.set_id(cursor.getInt(0));
+				SubjectData.setSubnum(cursor.getString(1));
+				SubjectData.setSubtitle(cursor.getString(2));
+				SubjectData.setCredit(cursor.getString(3));
+				SubjectData.setClassnum(cursor.getString(4));
+				SubjectData.setLimitnum(cursor.getString(5));
+				SubjectData.setDep_grade(cursor.getString(7));
+				SubjectData.setDep_detail(cursor.getString(8));
+				SubjectData.setTime(cursor.getString(30));
+				SubjectData.setProf(cursor.getString(31));
+				SubjectDataList.add(SubjectData);
+			} while (cursor.moveToNext());
+		}
+
+		// return SubjectData list
+		return SubjectDataList;
+	}
+
+
+	public List<SubjectData> getRecommendSubjectDatas(String time) {
+		List<SubjectData> SubjectDataList = new ArrayList<>();
+		// Select All Query
+		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE time LIKE '%"+time+"%'";
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 

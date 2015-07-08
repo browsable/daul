@@ -6,13 +6,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
+import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.enumclass.DrawMode;
+import com.daemin.enumclass.EnumDialog;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
+import com.daemin.enumclass.User;
 
 @SuppressLint("DefaultLocale")
 public class InitThread extends Thread {
@@ -133,15 +136,20 @@ public class InitThread extends Thread {
 				break;
 			case 1: //대학
 				//대학선택시에 그리는 것은 막고 선택한 과목은 함께 지워져야함
+				if (Common.checkTableStateIsNothing	&& User.USER.isSubjectDownloadState()) {
+					Toast.makeText(context,"과목을 선택하세요",Toast.LENGTH_SHORT).show();
+				}else {
 					Common.stateFilter(Common.getTempTimePos());
+				}
 				break;
 			case 2: //추천
 				if (ETP.getPosState() == PosState.NO_PAINT) {
 					Common.stateFilter(Common.getTempTimePos());
 					ETP.setPosState(PosState.RECOMMEND);
 					Common.getTempTimePos().add(ETP.name());
+					EnumDialog.BOTTOMDIAL.setupRecommendDatas(ETP.name());
 				}else{
-					ETP.setPosState(PosState.NO_PAINT);
+					Common.stateFilter(Common.getTempTimePos());
 				}
 				break;
 		}

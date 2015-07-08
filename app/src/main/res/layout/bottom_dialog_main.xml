@@ -10,7 +10,7 @@
         android:id="@+id/llColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2.3"
+        android:layout_weight="2.2"
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
@@ -121,6 +121,7 @@
             android:layout_weight="1"
             android:background="@color/transparency" />
 
+
         <Button
             android:id="@+id/btColor"
             android:layout_width="26dp"
@@ -141,6 +142,11 @@
             android:layout_height="26dp"
             android:layout_marginRight="@dimen/margin_l"
             android:background="@drawable/bt_cancel" />
+        <Button
+            android:id="@+id/btUpDown"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:background="@drawable/ic_action_collapse" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/llNormal"

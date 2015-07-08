@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:background="@drawable/bg_dimgray_border"
+            android:background="@drawable/bg_dimgray_border_right"
             >
             <AutoCompleteTextView
                 android:id="@+id/actvSelectDep"
@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:textSize="@dimen/textsize_default"
                 android:singleLine="true"
-                android:layout_margin="@dimen/margin_xs"
+                android:layout_margin="@dimen/margin_xxs"
                 android:background="@color/white"
                 />
 
@@ -49,11 +49,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
             android:singleLine="true"
             android:hint="강의/교수명 검색"
+            android:padding="@dimen/margin_xxs"
             android:textSize="@dimen/textsize_default"
-            android:background="@drawable/bg_dimgray_border"
+            android:background="@drawable/bg_dimgray_border_right"
             />
         <LinearLayout
             android:orientation="horizontal"
@@ -61,7 +61,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1.1"
             android:gravity="center"
-            android:background="@drawable/bg_dimgray_border"
+            android:background="@drawable/bg_dimgray_border_right"
             >
             <AutoCompleteTextView
                 android:id="@+id/actvSelectGrade"

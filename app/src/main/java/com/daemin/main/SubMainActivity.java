@@ -22,6 +22,7 @@ import com.daemin.area.AreaFragment;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.CurrentTime;
 import com.daemin.community.CommunityFragment2;
+import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.EnumDialog;
 import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.User;
@@ -72,6 +73,7 @@ public class SubMainActivity extends FragmentActivity {
 		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN );
 		setContentView(R.layout.activity_main2);
 		EnumDialog.BOTTOMDIAL.setContext(this);
+		DrawMode.CURRENT.setMode(0);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,

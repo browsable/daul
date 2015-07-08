@@ -30,6 +30,7 @@ public class HorizontalListAdapter extends ArrayAdapter<SubjectData> {
         if (convertView == null) {
             holder = new Holder();
             convertView = mInflater.inflate(R.layout.listitem_subject, parent, false);
+            //if(position == this.getCount()-1) convertView.setBackgroundResource(R.drawable.bg_dimgray_border_left);
             holder.time = (TextView) convertView.findViewById(R.id.time);
             holder.subtitle = (TextView) convertView.findViewById(R.id.subtitle);
             holder.prof = (TextView) convertView.findViewById(R.id.prof);

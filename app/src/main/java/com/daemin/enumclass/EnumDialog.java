@@ -16,7 +16,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -262,7 +261,7 @@ public enum EnumDialog implements View.OnClickListener {
     };
 
     String dialFlag = "",colorName,korName,engName;
-    Button btNormal, btUniv, btCancel, btAddTime, btSetting, btColor, btDialCancel,btRecommend;
+    Button btNormal, btUniv, btCancel, btAddTime, btSetting, btColor, btDialCancel,btRecommend,btUpDown;
     LinearLayout llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend;
     Dialog dialog;
     CalendarView cal;
@@ -271,21 +270,26 @@ public enum EnumDialog implements View.OnClickListener {
     Context context;
     AutoCompleteTextView actvSelectUniv,actvSelectDep, actvSelectGrade;
     Button btShowUniv,btShowDep,btShowGrade, btForward;
-    Boolean clickFlag1=false,clickFlag2=false,clickFlag3=false;
-
-
+    Boolean clickFlag1=false,clickFlag2=false,clickFlag3=false,clickFlag4=false;
+    Window window;
+    WindowManager.LayoutParams layoutParams;
+    DatabaseHandler db;
+    public void setDb(DatabaseHandler db) {
+        this.db = db;
+    }
+    private HorizontalListView hlv, hlvRecommend;
     EnumDialog(String dialFlag) {
         this.dialFlag = dialFlag;
     }
     public void DialogInit(Dialog dialog, String dialFlag) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
-        Window window = dialog.getWindow();
+        window = dialog.getWindow();
         switch (dialFlag) {
             case "BottomDialogUpByBtn":
                 dialog.setContentView(R.layout.bottom_dialog_main);
                 dialog.setCanceledOnTouchOutside(false);
-                dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
                 window.setGravity(Gravity.BOTTOM);
                 break;
@@ -304,12 +308,11 @@ public enum EnumDialog implements View.OnClickListener {
         window.setBackgroundDrawable(new ColorDrawable(
                 android.graphics.Color.TRANSPARENT));
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-
-        ViewGroup.LayoutParams params = window.getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        layoutParams = window.getAttributes();
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        params.height = dm.heightPixels/3;
-        window.setAttributes((WindowManager.LayoutParams) params);
+        layoutParams.height = dm.heightPixels/3;
+        window.setAttributes(layoutParams);
 
     }
     public void DialogSetting() {
@@ -317,6 +320,7 @@ public enum EnumDialog implements View.OnClickListener {
         btAddTime = (Button) dialog.findViewById(R.id.btAddTime);
         btColor = (Button) dialog.findViewById(R.id.btColor);
         btRecommend = (Button) dialog.findViewById(R.id.btRecommend);
+        btUpDown = (Button) dialog.findViewById(R.id.btUpDown);
         llColor = (LinearLayout) dialog.findViewById(R.id.llColor);
         llNormal = (LinearLayout) dialog.findViewById(R.id.llNormal);
         llUniv = (LinearLayout) dialog.findViewById(R.id.llUniv);
@@ -326,6 +330,7 @@ public enum EnumDialog implements View.OnClickListener {
         btNormal = (Button) dialog.findViewById(R.id.btNormal);
         btUniv = (Button) dialog.findViewById(R.id.btUniv);
         hlv = (HorizontalListView) dialog.findViewById(R.id.hlv);
+        hlvRecommend = (HorizontalListView) dialog.findViewById(R.id.hlvRecommend);
         colorName = Common.MAIN_COLOR;
     }
     public void EnrollEvent() {
@@ -333,6 +338,7 @@ public enum EnumDialog implements View.OnClickListener {
         btNormal.setOnClickListener(this);
         btUniv.setOnClickListener(this);
         btRecommend.setOnClickListener(this);
+        btUpDown.setOnClickListener(this);
         gd = (GradientDrawable) btColor.getBackground().mutate();
         btColor.setOnClickListener(this);
 
@@ -364,12 +370,17 @@ public enum EnumDialog implements View.OnClickListener {
         dialog.show();
     }
     public void Cancel(){
-        Common.stateFilter(Common.getTempTimePos());
+        window.setGravity(Gravity.BOTTOM);
+        layoutParams.y = 0;
+        window.setAttributes(layoutParams);
+        btUpDown.setBackgroundResource(R.drawable.ic_action_collapse);
+        clickFlag4 = false;
         switch(DrawMode.CURRENT.getMode()){
             case 0:
                 DrawMode.CURRENT.setMode(0);
                 break;
             case 1:
+                Common.stateFilter(Common.getTempTimePos());
                 DrawMode.CURRENT.setMode(0);
                 break;
             case 2:
@@ -381,7 +392,7 @@ public enum EnumDialog implements View.OnClickListener {
     }
 
 
-    private HorizontalListView hlv;
+
 
     @SuppressLint("NewApi")
     @Override
@@ -518,16 +529,31 @@ public enum EnumDialog implements View.OnClickListener {
                     colorFlag = false;
                 }
                 break;
+            case R.id.btUpDown:
+                if (clickFlag4) {
+                    window.setGravity(Gravity.BOTTOM);
+                    layoutParams.y = 0;
+                    window.setAttributes(layoutParams);
+                    btUpDown.setBackgroundResource(R.drawable.ic_action_collapse);
+                    clickFlag4 = false;
+                } else {
+                    window.setGravity(Gravity.TOP);
+                    layoutParams.y = 100;
+                    window.setAttributes(layoutParams);
+                    btUpDown.setBackgroundResource(R.drawable.ic_action_expand);
+                    clickFlag4 = true;
+                }
+
+                break;
         }
     }
 
      @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
      private void setupSubjectDatas() {
             llIncludeDep.setVisibility(View.VISIBLE);
-            DatabaseHandler db = new DatabaseHandler(context);
-            List<SubjectData> contacts = db.getAllSubjectDatas();
-            HorizontalListAdapter adapter = new HorizontalListAdapter(context, contacts);
-            User.USER.setSubjectDownloadState(true);
+            db = new DatabaseHandler(context);
+            List<SubjectData> subjects = db.getAllSubjectDatas();
+            HorizontalListAdapter adapter = new HorizontalListAdapter(context, subjects);
             hlv.setAdapter(adapter);
             hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -621,6 +647,31 @@ public enum EnumDialog implements View.OnClickListener {
              }
          });
      }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public void setupRecommendDatas(String time) {
+        if(User.USER.isSubjectDownloadState()) {
+            List<SubjectData> recommends = db.getRecommendSubjectDatas(time);
+            HorizontalListAdapter adapter = new HorizontalListAdapter(context, recommends);
+            hlvRecommend.setAdapter(adapter);
+            hlvRecommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<String> tempTimePos = new ArrayList<>();
+                Common.stateFilter(Common.getTempTimePos());
+                for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
+                        .toString())) {
+                    tempTimePos.add(timePos);
+                    TimePos.valueOf(timePos).setPosState(PosState.TEMPORARY);
+                }
+                Common.setTempTimePos(tempTimePos);
+                }
+            });
+        }else{
+            Toast.makeText(context,"먼저 대학 메뉴에서 대학을 선택하세요", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private String[] getTimeList(String time){
             String[] timeList=null;
             try {
