@@ -2,7 +2,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:widget="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/llIncludeDep"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,6 +14,75 @@
         android:layout_width="match_parent"
         android:layout_height="36dp"
         >
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/bg_dimgray_border_right"
+            >
+            <AutoCompleteTextView
+                android:id="@+id/actvSelectDep"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="학과 선택"
+                android:layout_weight="1"
+                android:textSize="@dimen/textsize_default"
+                android:singleLine="true"
+                android:layout_margin="@dimen/margin_xxs"
+                android:background="@color/white"
+                />
+
+            <requestFocus />
+            <Button
+                android:id="@+id/btShowDep"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="@drawable/ic_action_expand"
+                />
+        </LinearLayout>
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:hint=""
+            android:padding="@dimen/margin_xxs"
+            android:textSize="@dimen/textsize_default"
+            android:background="@drawable/bg_dimgray_border_right"
+            />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:background="@drawable/bg_dimgray_border_right"
+            >
+            <AutoCompleteTextView
+                android:id="@+id/actvSelectGrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="과목추천"
+                android:layout_weight="1"
+                android:textSize="@dimen/textsize_default"
+                android:singleLine="true"
+                android:layout_margin="@dimen/margin_xxs"
+                android:background="@color/white"
+                />
+
+            <requestFocus />
+            <Button
+                android:id="@+id/btShowGrade"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="@drawable/ic_action_expand"
+                />
+        </LinearLayout>
     </LinearLayout>
     <com.daemin.common.HorizontalListView
         android:id="@+id/hlvRecommend"

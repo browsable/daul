@@ -15,7 +15,6 @@ import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.EnumDialog;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
-import com.daemin.enumclass.User;
 
 @SuppressLint("DefaultLocale")
 public class InitThread extends Thread {
@@ -136,7 +135,7 @@ public class InitThread extends Thread {
 				break;
 			case 1: //대학
 				//대학선택시에 그리는 것은 막고 선택한 과목은 함께 지워져야함
-				if (Common.checkTableStateIsNothing	&& User.USER.isSubjectDownloadState()) {
+				if (Common.checkTableStateIsNothing&& Common.isLlIncludeDepIn()) {
 					Toast.makeText(context,"과목을 선택하세요",Toast.LENGTH_SHORT).show();
 				}else {
 					Common.stateFilter(Common.getTempTimePos());

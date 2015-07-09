@@ -35,9 +35,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private String KEY_DEP = "";
 	private String KEY_DEP_DETAIL = ""; //이수형태
 	private String KEY_DEP_GRADE = "dep_grade"; //대상학년
-	
+	SQLiteDatabase db;
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME+ User.USER.getEngUnivName()+".sqlite", null, DATABASE_VERSION);
+
 	}
 	
 
@@ -50,11 +51,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 	// Getting All SubjectDatas
 	public List<SubjectData> getAllSubjectDatas() {
+		SQLiteDatabase db = this.getWritableDatabase();
 		List<SubjectData> SubjectDataList = new ArrayList<>();
 		// Select All Query
 		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE;
 
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 
 		// looping through all rows and adding to list
@@ -78,13 +80,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// return SubjectData list
 		return SubjectDataList;
 	}
-
-
+	List<SubjectData> SubjectDataList = new ArrayList<>();
 	public List<SubjectData> getRecommendSubjectDatas(String time) {
-		List<SubjectData> SubjectDataList = new ArrayList<>();
+		SQLiteDatabase db = this.getWritableDatabase();
+		SubjectDataList.clear();
 		// Select All Query
 		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE time LIKE '%"+time+"%'";
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 
 		// looping through all rows and adding to list
@@ -108,6 +110,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// return SubjectData list
 		return SubjectDataList;
 	}
+
 /*
 	// Adding new SubjectData
 	public void addSubjectData(SubjectData SubjectData) {

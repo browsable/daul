@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -270,14 +271,19 @@ public enum EnumDialog implements View.OnClickListener {
     Context context;
     AutoCompleteTextView actvSelectUniv,actvSelectDep, actvSelectGrade;
     Button btShowUniv,btShowDep,btShowGrade, btForward;
-    Boolean clickFlag1=false,clickFlag2=false,clickFlag3=false,clickFlag4=false;
-    Window window;
-    WindowManager.LayoutParams layoutParams;
-    DatabaseHandler db;
-    public void setDb(DatabaseHandler db) {
-        this.db = db;
+    Boolean clickFlag1=false;
+    Boolean clickFlag2=false;
+    Boolean clickFlag3=false;
+    Boolean clickFlag4=false;
+    public void setAdapterFlag(Boolean adapterFlag) {
+        this.adapterFlag = adapterFlag;
     }
+    Boolean adapterFlag=false;
+    WindowManager.LayoutParams layoutParams;
+    HorizontalListAdapter adapter;
+    DatabaseHandler db;
     private HorizontalListView hlv, hlvRecommend;
+    Window window;
     EnumDialog(String dialFlag) {
         this.dialFlag = dialFlag;
     }
@@ -289,6 +295,28 @@ public enum EnumDialog implements View.OnClickListener {
             case "BottomDialogUpByBtn":
                 dialog.setContentView(R.layout.bottom_dialog_main);
                 dialog.setCanceledOnTouchOutside(false);
+                dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        clickFlag4 = false;
+                        window.setGravity(Gravity.BOTTOM);
+                        layoutParams.y = 0;
+                        window.setAttributes(layoutParams);
+                        btUpDown.setBackgroundResource(R.drawable.ic_action_collapse);
+                        switch (DrawMode.CURRENT.getMode()) {
+                            case 0:
+                                DrawMode.CURRENT.setMode(0);
+                                break;
+                            case 1:
+                                Common.stateFilter(Common.getTempTimePos());
+                                DrawMode.CURRENT.setMode(0);
+                                break;
+                            case 2:
+                                DrawMode.CURRENT.setMode(2);
+                                break;
+                        }
+                    }
+                });
                 window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
                 window.setGravity(Gravity.BOTTOM);
@@ -370,24 +398,6 @@ public enum EnumDialog implements View.OnClickListener {
         dialog.show();
     }
     public void Cancel(){
-        window.setGravity(Gravity.BOTTOM);
-        layoutParams.y = 0;
-        window.setAttributes(layoutParams);
-        btUpDown.setBackgroundResource(R.drawable.ic_action_collapse);
-        clickFlag4 = false;
-        switch(DrawMode.CURRENT.getMode()){
-            case 0:
-                DrawMode.CURRENT.setMode(0);
-                break;
-            case 1:
-                Common.stateFilter(Common.getTempTimePos());
-                DrawMode.CURRENT.setMode(0);
-                break;
-            case 2:
-                DrawMode.CURRENT.setMode(2);
-                break;
-        }
-
         dialog.cancel();
     }
 
@@ -488,13 +498,15 @@ public enum EnumDialog implements View.OnClickListener {
                             actvSelectUniv.dismissDropDown();
                             btShowUniv.setBackgroundResource(R.drawable.ic_action_expand);
                             clickFlag1 = false;
+
+                        } else {
                             if(!User.USER.isGroupListDownloadState()) {
                                 MyRequest.getGroupList();
                             }
-                        } else {
                             actvSelectUniv.showDropDown();
                             btShowUniv.setBackgroundResource(R.drawable.ic_action_collapse);
                             clickFlag1 = true;
+
                         }
                     }
                 });
@@ -530,6 +542,7 @@ public enum EnumDialog implements View.OnClickListener {
                 }
                 break;
             case R.id.btUpDown:
+                    Window window = dialog.getWindow();
                 if (clickFlag4) {
                     window.setGravity(Gravity.BOTTOM);
                     layoutParams.y = 0;
@@ -551,6 +564,7 @@ public enum EnumDialog implements View.OnClickListener {
      @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
      private void setupSubjectDatas() {
             llIncludeDep.setVisibility(View.VISIBLE);
+            Common.setLlIncludeDepIn(true);
             db = new DatabaseHandler(context);
             List<SubjectData> subjects = db.getAllSubjectDatas();
             HorizontalListAdapter adapter = new HorizontalListAdapter(context, subjects);
@@ -558,6 +572,7 @@ public enum EnumDialog implements View.OnClickListener {
             hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                     ArrayList<String> tempTimePos = new ArrayList<>();
                     Common.stateFilter(Common.getTempTimePos());
                     for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
@@ -652,23 +667,28 @@ public enum EnumDialog implements View.OnClickListener {
     public void setupRecommendDatas(String time) {
         if(User.USER.isSubjectDownloadState()) {
             List<SubjectData> recommends = db.getRecommendSubjectDatas(time);
-            HorizontalListAdapter adapter = new HorizontalListAdapter(context, recommends);
-            hlvRecommend.setAdapter(adapter);
-            hlvRecommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<String> tempTimePos = new ArrayList<>();
-                Common.stateFilter(Common.getTempTimePos());
-                for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
-                        .toString())) {
-                    tempTimePos.add(timePos);
-                    TimePos.valueOf(timePos).setPosState(PosState.TEMPORARY);
-                }
-                Common.setTempTimePos(tempTimePos);
-                }
-            });
+            if(!adapterFlag) {
+                adapter = new HorizontalListAdapter(context, recommends);
+                hlvRecommend.setAdapter(adapter);
+                hlvRecommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        ArrayList<String> tempTimePos = new ArrayList<>();
+                        Common.stateFilter(Common.getTempTimePos());
+                        for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
+                                .toString())) {
+                            tempTimePos.add(timePos);
+                            TimePos.valueOf(timePos).setPosState(PosState.TEMPORARY);
+                        }
+                        Common.setTempTimePos(tempTimePos);
+                    }
+                });
+                adapterFlag=true;
+            }else{
+                adapter.notifyDataSetChanged();
+            }
         }else{
-            Toast.makeText(context,"먼저 대학 메뉴에서 대학을 선택하세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"먼저 대학을 선택하세요", Toast.LENGTH_SHORT).show();
         }
     }
 

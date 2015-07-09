@@ -9,9 +9,7 @@ import android.os.Message;
 import android.widget.Toast;
 
 import com.daemin.common.Common;
-import com.daemin.common.DatabaseHandler;
 import com.daemin.common.MyRequest;
-import com.daemin.enumclass.EnumDialog;
 import com.daemin.enumclass.User;
 import com.daemin.timetable.R;
 
@@ -29,12 +27,7 @@ public class SplashActivity extends Activity {
 				if (User.USER.isGroupListDownloadState()) {
 					Toast.makeText(this, "그룹리스트다운로드되있는상태", Toast.LENGTH_SHORT).show();
 				}else{
-					Toast.makeText(this, "첫 그룹리스트 다운로드", Toast.LENGTH_SHORT).show();
 					MyRequest.getGroupList();
-				}
-				if(User.USER.isSubjectDownloadState()){
-					EnumDialog.BOTTOMDIAL.setDb(new DatabaseHandler(this));
-					Toast.makeText(this, "db셋팅", Toast.LENGTH_SHORT).show();
 				}
 			}
 			else{

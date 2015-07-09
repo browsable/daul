@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.daemin.area.AreaFragment;
 import com.daemin.common.BackPressCloseHandler;
+import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
 import com.daemin.community.CommunityFragment2;
 import com.daemin.enumclass.DrawMode;
@@ -50,12 +51,10 @@ public class SubMainActivity extends FragmentActivity {
 	Boolean surfaceFlag = false, colorFlag = false;;
 	BackPressCloseHandler backPressCloseHandler;
 	String BackKeyName="";
-	FragmentManager fm = getSupportFragmentManager();
 	static SubMainActivity singleton;
 	public static SubMainActivity getInstance() {
 		return singleton;
 	}
-
 	public ImageButton getIbBack() {
 		return ibBack;
 	}
@@ -244,5 +243,7 @@ public class SubMainActivity extends FragmentActivity {
 		editor.putBoolean("GroupListDownloadState",User.USER.isGroupListDownloadState());
 		editor.putBoolean("SubjectDownloadState",User.USER.isSubjectDownloadState());
 		editor.commit();
+		Common.setLlIncludeDepIn(false);
+		EnumDialog.BOTTOMDIAL.setAdapterFlag(false);
 	}
 }

@@ -54,6 +54,7 @@ public class MyRequest {
                             GroupListFromServerRepository.insertOrUpdate(context, groupListFromServer);
                         }
                         User.USER.setGroupListDownloadState(true);
+                        Toast.makeText(context, "첫 그룹리스트 다운로드", Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
             @Override

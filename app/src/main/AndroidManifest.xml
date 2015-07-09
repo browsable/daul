@@ -38,8 +38,8 @@
         </activity>
         <activity android:name="com.daemin.community.github.GithubActivity"></activity>
         <activity android:name="com.daemin.community.amazon.AmazonActivity"></activity>
-        <activity android:name="com.daemin.community.view.DoubleTapZoomNetworkImageViewActivity"></activity>
-        <activity android:name="com.daemin.community.view.SingleTapZoomNetworkImageViewActivity"></activity>
+        <activity android:name="com.daemin.community.lib.DoubleTapZoomNetworkImageViewActivity"></activity>
+        <activity android:name="com.daemin.community.lib.SingleTapZoomNetworkImageViewActivity"></activity>
         <receiver android:name="com.daemin.widget.MyCustomWidget">
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_configuration4_4"/>
             <intent-filter>
@@ -57,8 +57,8 @@
                 <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY"/>
             </intent-filter>
         </receiver>
-      
-          <service 
+
+        <service
         	android:enabled="true"
        		android:name="com.daemin.widget.MyCustomWidget$UpdateService">
 		  </service>

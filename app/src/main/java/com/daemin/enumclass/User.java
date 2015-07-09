@@ -11,7 +11,9 @@ public enum User {
     private String korUnivName;
     private String engUnivName;
     private boolean groupListDownloadState = false;
-    private boolean subjectDownloadStat = false;
+    private boolean subjectDownloadState = false;
+
+
     public boolean isGroupListDownloadState() {
         return groupListDownloadState;
     }
@@ -19,10 +21,10 @@ public enum User {
         this.groupListDownloadState = groupListDownload;
     }
     public boolean isSubjectDownloadState() {
-        return subjectDownloadStat;
+        return subjectDownloadState;
     }
     public void setSubjectDownloadState(boolean subjectDownload) {
-        this.subjectDownloadStat = subjectDownload;
+        this.subjectDownloadState = subjectDownload;
     }
     public String getKorUnivName() {
         return korUnivName;
