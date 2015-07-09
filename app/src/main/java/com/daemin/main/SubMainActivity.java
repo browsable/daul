@@ -1,7 +1,6 @@
 package com.daemin.main;
 
 import android.content.SharedPreferences;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -46,9 +45,8 @@ public class SubMainActivity extends FragmentActivity {
 	FrameLayout flSurface, frame_container;
 	RelativeLayout rlBar;
 	Fragment mContent = null;
-	GradientDrawable gd;
 	CurrentTime ct;
-	Boolean surfaceFlag = false, colorFlag = false;;
+	Boolean surfaceFlag = false, colorFlag = false;
 	BackPressCloseHandler backPressCloseHandler;
 	String BackKeyName="";
 	static SubMainActivity singleton;
@@ -155,6 +153,7 @@ public class SubMainActivity extends FragmentActivity {
 		}
 	}
 	private void onChangedFragment(String title, int barcolor) {
+		EnumDialog.BOTTOMDIAL.Cancel();
 		if(!title.equals("")) tvTitle.setText(title);
 		switch (barcolor) {
 		case R.color.maincolor:
@@ -225,9 +224,11 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btPlus:
+				if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);
 				EnumDialog.BOTTOMDIAL.Show();
 				break;
 		}
+
 	}
 
 	public void onBackPressed() {
@@ -242,6 +243,7 @@ public class SubMainActivity extends FragmentActivity {
 		SharedPreferences.Editor editor = MyPreferences.USERINFO.getEditor();
 		editor.putBoolean("GroupListDownloadState",User.USER.isGroupListDownloadState());
 		editor.putBoolean("SubjectDownloadState",User.USER.isSubjectDownloadState());
+		editor.putString("EngUnivName",User.USER.getEngUnivName());
 		editor.commit();
 		Common.setLlIncludeDepIn(false);
 		EnumDialog.BOTTOMDIAL.setAdapterFlag(false);

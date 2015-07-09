@@ -120,7 +120,7 @@ public class InitThread extends Thread {
 	public void makeTimePos(int xth, int yth, String touchType) {
 		TimePos ETP = TimePos.valueOf(Convert.getxyMerge(xth, yth));
 		switch(DrawMode.CURRENT.getMode()) {
-			case 0: //일반
+			case 0: case 3://일반
 				if (ETP.getPosState() == PosState.NO_PAINT) {
 					if (touchType.equals("down")) {
 						ETP.setPosState(PosState.START);

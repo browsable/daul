@@ -22,7 +22,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// SubjectDatas table name
 	private static final String TABLE_SCHEDULE = "schedule";
-	//private static final String TABLE_FTS = "fts_time";
 
 	// SubjectDatas Table Columns names
 	private static final String KEY_ID = "_id";
@@ -36,8 +35,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private String KEY_DEP_DETAIL = ""; //이수형태
 	private String KEY_DEP_GRADE = "dep_grade"; //대상학년
 	SQLiteDatabase db;
+	private String filePath;
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME+ User.USER.getEngUnivName()+".sqlite", null, DATABASE_VERSION);
+
 
 	}
 	

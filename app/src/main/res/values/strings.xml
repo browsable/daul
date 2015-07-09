@@ -12,6 +12,8 @@
     <string name="network_error">네트워크 상태를 확인하세요</string>
     <string name="dataloading_error">데이터로딩에 실패하였습니다. 네트워크상태를 확인하세요.</string>
     <string name="e_learning">이러닝 혹은 시간정보가 없습니다</string>
+    <string name="select_time">시간대를 선택하세요</string>
+    <string name="nothing_schedule">해당 시간에 등록된 일정이 없습니다</string>
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
         <item >시간표</item>

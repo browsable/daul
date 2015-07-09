@@ -264,6 +264,7 @@ public enum EnumDialog implements View.OnClickListener {
     String dialFlag = "",colorName,korName,engName;
     Button btNormal, btUniv, btCancel, btAddTime, btSetting, btColor, btDialCancel,btRecommend,btUpDown;
     LinearLayout llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend;
+    TextView tvRecommendDummy;
     Dialog dialog;
     CalendarView cal;
     GradientDrawable gd;
@@ -282,6 +283,9 @@ public enum EnumDialog implements View.OnClickListener {
     WindowManager.LayoutParams layoutParams;
     HorizontalListAdapter adapter;
     DatabaseHandler db;
+    public void setDb(DatabaseHandler db) {
+        this.db = db;
+    }
     private HorizontalListView hlv, hlvRecommend;
     Window window;
     EnumDialog(String dialFlag) {
@@ -309,7 +313,7 @@ public enum EnumDialog implements View.OnClickListener {
                                 break;
                             case 1:
                                 Common.stateFilter(Common.getTempTimePos());
-                                DrawMode.CURRENT.setMode(0);
+                                DrawMode.CURRENT.setMode(3);
                                 adapterFlag=false;
                                 break;
                             case 2:
@@ -356,6 +360,7 @@ public enum EnumDialog implements View.OnClickListener {
         llRecommend = (LinearLayout) dialog.findViewById(R.id.llRecommend);
         llIncludeUniv = (LinearLayout) dialog.findViewById(R.id.llIncludeUniv);
         llIncludeDep = (LinearLayout) dialog.findViewById(R.id.llIncludeDep);
+        tvRecommendDummy = (TextView) dialog.findViewById(R.id.tvRecommendDummy);
         btNormal = (Button) dialog.findViewById(R.id.btNormal);
         btUniv = (Button) dialog.findViewById(R.id.btUniv);
         hlv = (HorizontalListView) dialog.findViewById(R.id.hlv);
@@ -418,7 +423,6 @@ public enum EnumDialog implements View.OnClickListener {
                 llNormal.setVisibility(View.VISIBLE);
                 llUniv.setVisibility(View.GONE);
                 llRecommend.setVisibility(View.GONE);
-                btAddTime.setVisibility(View.VISIBLE);
                 btNormal.setTextColor(context.getResources().getColor(
                         R.color.white));
                 btUniv.setTextColor(context.getResources().getColor(
@@ -522,6 +526,9 @@ public enum EnumDialog implements View.OnClickListener {
 
             case R.id.btRecommend:
                 DrawMode.CURRENT.setMode(2);
+                hlvRecommend.setVisibility(View.GONE);
+                tvRecommendDummy.setVisibility(View.VISIBLE);
+                tvRecommendDummy.setText(context.getResources().getString(R.string.select_time));
                 Common.stateFilter(Common.getTempTimePos());
                 llNormal.setVisibility(View.GONE);
                 llUniv.setVisibility(View.GONE);
@@ -667,7 +674,16 @@ public enum EnumDialog implements View.OnClickListener {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void setupRecommendDatas(String time) {
         if(User.USER.isSubjectDownloadState()) {
+            //if(db.equals(null)) db = new DatabaseHandler(context);
             List<SubjectData> recommends = db.getRecommendSubjectDatas(time);
+            if(recommends.size()==0){
+                hlvRecommend.setVisibility(View.GONE);
+                tvRecommendDummy.setVisibility(View.VISIBLE);
+                tvRecommendDummy.setText(context.getResources().getString(R.string.nothing_schedule));
+            }else{
+                hlvRecommend.setVisibility(View.VISIBLE);
+                tvRecommendDummy.setVisibility(View.GONE);
+            }
             if(!adapterFlag) {
                 adapter = new HorizontalListAdapter(context, recommends);
                 hlvRecommend.setAdapter(adapter);

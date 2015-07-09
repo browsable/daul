@@ -3,6 +3,7 @@ package com.daemin.common;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.daemin.enumclass.EnumDialog;
 import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.User;
 
@@ -26,6 +27,7 @@ public class AppController extends Application {
         singleton = this;
         User.USER.setGroupListDownloadState(MyPreferences.USERINFO.getPref().getBoolean("GroupListDownloadState", false));
         User.USER.setSubjectDownloadState(MyPreferences.USERINFO.getPref().getBoolean("SubjectDownloadState", false));
+        User.USER.setEngUnivName(MyPreferences.USERINFO.getPref().getString("EngUnivName",""));
         MyVolley.init(this);
         setupDatabase();
         /*TelephonyManager systemService = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -34,10 +36,10 @@ public class AppController extends Application {
             phonenum = phonenum.substring(phonenum.length() - 10, phonenum.length());
             phonenum = "0" + phonenum;
             phonenum = PhoneNumberUtils.formatNumber(phonenum);
-            Log.i("phonenum", phonenum);
+            Log.i("phonenum", phonenum);ㅊ
             User.USER.setPhoneNum(phonenum);
         }*/
-
+        if(User.USER.isSubjectDownloadState()) EnumDialog.BOTTOMDIAL.setDb(new DatabaseHandler(this));
     }
 
     private void setupDatabase() {

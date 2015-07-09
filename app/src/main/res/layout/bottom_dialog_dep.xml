@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:background="@drawable/bg_dimgray_border_right"
+            android:background="@drawable/bg_dimgray_border_right_bottom"
             >
             <AutoCompleteTextView
                 android:id="@+id/actvSelectDep"
@@ -53,7 +53,7 @@
             android:hint="강의/교수명 검색"
             android:padding="@dimen/margin_xxs"
             android:textSize="@dimen/textsize_default"
-            android:background="@drawable/bg_dimgray_border_right"
+            android:background="@drawable/bg_dimgray_border_right_bottom"
             />
         <LinearLayout
             android:orientation="horizontal"
@@ -61,7 +61,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1.1"
             android:gravity="center"
-            android:background="@drawable/bg_dimgray_border_right"
+            android:background="@drawable/bg_dimgray_border_right_bottom"
             >
             <AutoCompleteTextView
                 android:id="@+id/actvSelectGrade"
@@ -89,9 +89,8 @@
         android:id="@+id/hlv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/dimgray"
+        android:divider="@color/transparency"
         android:fadingEdgeLength="1dp"
         android:requiresFadingEdge="horizontal"
-        widget:dividerWidth="0.5dp"  />
-
+        widget:dividerWidth="1dp"  />
 </LinearLayout>
