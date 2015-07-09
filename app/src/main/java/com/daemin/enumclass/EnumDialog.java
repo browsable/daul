@@ -310,6 +310,7 @@ public enum EnumDialog implements View.OnClickListener {
                             case 1:
                                 Common.stateFilter(Common.getTempTimePos());
                                 DrawMode.CURRENT.setMode(0);
+                                adapterFlag=false;
                                 break;
                             case 2:
                                 DrawMode.CURRENT.setMode(2);
