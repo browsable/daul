@@ -38,8 +38,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private String filePath;
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME+ User.USER.getEngUnivName()+".sqlite", null, DATABASE_VERSION);
-
-
 	}
 	
 
