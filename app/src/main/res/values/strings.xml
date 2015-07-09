@@ -64,6 +64,9 @@
     <string name="setting_timeinfo">시간표 표시정보</string>
     <string name="setting_backup">백업</string>
     <string name="setting_devinfo">개발자 정보</string>
+    <string name="setting_password">암호잠금</string>
+    <string name="setting_customercenter">고객센터</string>
+    <string name="setting_withdrawl">TimeDAO 탈퇴</string>
 
 
 
