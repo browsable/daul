@@ -260,7 +260,7 @@ public abstract class AbstractSlideExpandableListAdapter extends WrapperListAdap
                         openItems.set(position, false);
                     }
                     // check if we need to collapse a different view
-                    if (type == ExpandCollapseAnimation.EXPAND) {
+                   /* if (type == ExpandCollapseAnimation.EXPAND) {
                         if (lastOpenPosition != -1 && lastOpenPosition != position) {
                             if (lastOpen != null) {
                                 animateView(lastOpen, ExpandCollapseAnimation.COLLAPSE);
@@ -274,7 +274,7 @@ public abstract class AbstractSlideExpandableListAdapter extends WrapperListAdap
                         lastOpenPosition = position;
                     } else if (lastOpenPosition == position) {
                         lastOpenPosition = -1;
-                    }
+                    }*/
                     animateView(target, type);
                     notifiyExpandCollapseListener(type, target, position);
                 }

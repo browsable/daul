@@ -3,9 +3,7 @@ package com.daemin.enumclass;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -25,11 +23,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.daemin.adapter.HorizontalListAdapter;
@@ -64,11 +60,11 @@ import java.util.concurrent.Callable;
 
 public enum EnumDialog implements View.OnClickListener {
     BOTTOMDIAL("BottomDialogUpByBtn") {
-        String sYear, sMonthOfYear, sDayOfMonth, startHour, startMinute, endHour, endMinute, sDayOfWeek;
-        Button btChangeYMD, btTimeStart, btTimeEnd;
+        String sYear,sMonthOfYear,sDayOfMonth,startHour,startMinute,endHour,endMinute,sDayOfWeek;
+        Button btChangeYMD,btTimeStart,btTimeEnd;
         CurrentTime ct;
         int sDayOfWeekIndex;
-        String timeDialSetFlag="";
+        String timeDialSetFlag = "";
 
         @Override
         public void DialogSetting() {
@@ -83,13 +79,15 @@ public enum EnumDialog implements View.OnClickListener {
             sDayOfWeekIndex = ct.getDayOfWeekIndex();
             sDayOfWeek = Convert.IndexToDayOfWeek(sDayOfWeekIndex);
             super.DialogSetting();
-            btChangeYMD = (Button) dialog.findViewById(R.id.btChangeYMD);
+            /*btChangeYMD = (Button) dialog.findViewById(R.id.btChangeYMD);
             btTimeStart = (Button) dialog.findViewById(R.id.btTimeStart);
-            btTimeEnd = (Button) dialog.findViewById(R.id.btTimeEnd);
+            btTimeEnd = (Button) dialog.findViewById(R.id.btTimeEnd);*/
 
-        }
+           }
+    };
 
-        @Override
+
+    /*    @Override
         public void EnrollEvent() {
             super.EnrollEvent();
             btAddTime.setOnClickListener(new View.OnClickListener() {
@@ -259,7 +257,7 @@ public enum EnumDialog implements View.OnClickListener {
                 }
             }
         };
-    };
+    };*/
 
     String dialFlag = "",colorName,korName,engName;
     Button btNormal, btUniv, btCancel, btAddTime, btSetting, btColor, btDialCancel,btRecommend,btUpDown;
