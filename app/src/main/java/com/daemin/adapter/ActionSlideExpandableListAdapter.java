@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -69,17 +69,32 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         ListView lvComment = (ListView) convertView.findViewById(R.id.lvComment);
         CommentListAdapter commentListAdapter = new CommentListAdapter(comment);
         lvComment.setAdapter(commentListAdapter);
-
-        LinearLayout llExpandable = (LinearLayout) convertView.findViewById(R.id.llExpandable);
-
-        //LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //View view = inflater.inflate(R.layout.listitem_child, parent, false);
-
-        llExpandable.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 250 * comment.size()));
-
+        setListViewHeightBasedOnChildren(lvComment);
         return convertView;
     }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            listView.setVisibility(View.GONE);
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
 }
+
+
 
 class CommentListAdapter extends BaseAdapter{
     private List<Comment> comment;
