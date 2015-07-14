@@ -1,14 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical">
-        <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_xs"
+    >
+        <LinearLayout
+            android:id="@+id/llStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/iv_normal_time"
-            android:background="@color/transparency"
-            android:padding="@dimen/margin_s"
-            android:gravity="center" />
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                >
+
+                <TextView
+                    android:id="@+id/tvStartYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="hi"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="@string/year"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:id="@+id/tvStartMonthOfYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="hi"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="@string/month"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:id="@+id/tvStartDayOfMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="hi"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="@string/day"
+                    android:textSize="@dimen/textsize_default" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                >
+
+                <TextView
+                    android:id="@+id/tvStartAMPM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:id="@+id/tvStartHour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="hi"
+                    android:textSize="@dimen/textsize_default" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text=":"
+                    android:textSize="@dimen/textsize_default" />
+                <TextView
+                    android:id="@+id/tvStartMinute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="hi"
+                    android:textSize="@dimen/textsize_default" />
+            </LinearLayout>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparency"
+            android:text="    ~    "
+            android:textSize="@dimen/textsize_default" />
+    </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/llEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tvEndYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="hi"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="@string/year"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:id="@+id/tvEndMonthOfYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="hi"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="@string/month"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:id="@+id/tvEndDayOfMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="hi"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="@string/day"
+                    android:textSize="@dimen/textsize_default" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tvEndAMPM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:id="@+id/tvEndHour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="hi"
+                    android:textSize="@dimen/textsize_default" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text=":"
+                    android:textSize="@dimen/textsize_default" />
+
+                <TextView
+                    android:id="@+id/tvEndMinute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparency"
+                    android:text="hi"
+                    android:textSize="@dimen/textsize_default" />
+            </LinearLayout>
+        </LinearLayout>
 </LinearLayout>

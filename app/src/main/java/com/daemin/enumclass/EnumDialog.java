@@ -23,11 +23,14 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daemin.adapter.DialogNormalListAdapter;
 import com.daemin.adapter.HorizontalListAdapter;
 import com.daemin.common.AsyncCallback;
 import com.daemin.common.AsyncExecutor;
@@ -37,6 +40,7 @@ import com.daemin.common.CurrentTime;
 import com.daemin.common.DatabaseHandler;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
+import com.daemin.data.DialogNormalData;
 import com.daemin.data.SubjectData;
 import com.daemin.repository.GroupListFromServerRepository;
 import com.daemin.timetable.R;
@@ -60,31 +64,41 @@ import java.util.concurrent.Callable;
 
 public enum EnumDialog implements View.OnClickListener {
     BOTTOMDIAL("BottomDialogUpByBtn") {
-        String sYear,sMonthOfYear,sDayOfMonth,startHour,startMinute,endHour,endMinute,sDayOfWeek;
-        Button btChangeYMD,btTimeStart,btTimeEnd;
-        CurrentTime ct;
-        int sDayOfWeekIndex;
+
         String timeDialSetFlag = "";
+        EditText etName,etPlace,etMemo;
 
         @Override
         public void DialogSetting() {
-            ct = new CurrentTime();
-            sYear = ct.getCurYear();
-            sMonthOfYear = ct.getCurMonth();
-            sDayOfMonth = ct.getCurDay();
-            startHour = ct.getCurHour();
-            startMinute = "00";
-            endHour = Convert.IntAddO(Integer.parseInt(startHour) + 1);
-            endMinute = "00";
-            sDayOfWeekIndex = ct.getDayOfWeekIndex();
-            sDayOfWeek = Convert.IndexToDayOfWeek(sDayOfWeekIndex);
             super.DialogSetting();
-            /*btChangeYMD = (Button) dialog.findViewById(R.id.btChangeYMD);
-            btTimeStart = (Button) dialog.findViewById(R.id.btTimeStart);
-            btTimeEnd = (Button) dialog.findViewById(R.id.btTimeEnd);*/
-
+            CurrentTime ct = new CurrentTime();
+            String startYear = ct.getCurYear();
+            String startMonthOfYear = ct.getCurMonth();
+            String startDayOfMonth = ct.getCurDay();
+            String endYear = startYear;
+            String endMonthOfYear = startMonthOfYear;
+            String endDayOfMonth = startDayOfMonth;
+            String startHour = ct.getCurHour();
+            String startMinute = "00";
+            String endHour = Convert.IntAddO(Integer.parseInt(startHour) + 1);
+            String endMinute = "00";
+            int AMPM = ct.getCurAMPM();
+            int sDayOfWeekIndex = ct.getDayOfWeekIndex();
+            String sDayOfWeek = Convert.IndexToDayOfWeek(sDayOfWeekIndex);
+            ArrayList<DialogNormalData> normalList = new ArrayList<>();
+            normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
+                    endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
+            normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
+                    endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
+            normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
+                    endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
+            ListView lvTime = (ListView) dialog.findViewById(R.id.lvTime);
+            ArrayAdapter adapter = new DialogNormalListAdapter(context, normalList);
+            lvTime.setAdapter(adapter);
+            Common.setListViewHeightBasedOnChildren(lvTime);
            }
     };
+
 
 
     /*    @Override
@@ -260,7 +274,7 @@ public enum EnumDialog implements View.OnClickListener {
     };*/
 
     String dialFlag = "",colorName,korName,engName;
-    Button btNormal, btUniv, btCancel, btAddTime, btSetting, btColor, btDialCancel,btRecommend,btUpDown;
+    Button btNormal, btUniv, btCancel, btAddTime, btSetting, btColor, btDialCancel,btRecommend;
     LinearLayout llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend;
     TextView tvRecommendDummy;
     Dialog dialog;
@@ -304,7 +318,6 @@ public enum EnumDialog implements View.OnClickListener {
                         window.setGravity(Gravity.BOTTOM);
                         layoutParams.y = 0;
                         window.setAttributes(layoutParams);
-                        btUpDown.setBackgroundResource(R.drawable.ic_action_collapse);
                         switch (DrawMode.CURRENT.getMode()) {
                             case 0:
                                 DrawMode.CURRENT.setMode(0);
@@ -351,7 +364,6 @@ public enum EnumDialog implements View.OnClickListener {
         btAddTime = (Button) dialog.findViewById(R.id.btAddTime);
         btColor = (Button) dialog.findViewById(R.id.btColor);
         btRecommend = (Button) dialog.findViewById(R.id.btRecommend);
-        btUpDown = (Button) dialog.findViewById(R.id.btUpDown);
         llColor = (LinearLayout) dialog.findViewById(R.id.llColor);
         llNormal = (LinearLayout) dialog.findViewById(R.id.llNormal);
         llUniv = (LinearLayout) dialog.findViewById(R.id.llUniv);
@@ -370,7 +382,6 @@ public enum EnumDialog implements View.OnClickListener {
         btNormal.setOnClickListener(this);
         btUniv.setOnClickListener(this);
         btRecommend.setOnClickListener(this);
-        btUpDown.setOnClickListener(this);
         gd = (GradientDrawable) btColor.getBackground().mutate();
         btColor.setOnClickListener(this);
 
@@ -547,7 +558,7 @@ public enum EnumDialog implements View.OnClickListener {
                     colorFlag = false;
                 }
                 break;
-            case R.id.btUpDown:
+            /*case R.id.btUpDown:
                     Window window = dialog.getWindow();
                 if (clickFlag4) {
                     window.setGravity(Gravity.BOTTOM);
@@ -563,7 +574,7 @@ public enum EnumDialog implements View.OnClickListener {
                     clickFlag4 = true;
                 }
 
-                break;
+                break;*/
         }
     }
 

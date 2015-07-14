@@ -1,7 +1,8 @@
 package com.daemin.common;
 
-import java.text.*;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CurrentTime{
 	// 현재 시간을 msec으로 구한다.
@@ -23,8 +24,10 @@ public class CurrentTime{
 			private String CurMin =  CurMinFormat.format(date);
 			private Calendar oCalendar = Calendar.getInstance();
 			private int DayOfWeekIndex = oCalendar.get(Calendar.DAY_OF_WEEK);
+			private int CurAMPM = oCalendar.get(Calendar.AM_PM);
 			private String DayOfWeek = "";//요일
-			
+
+			public int getCurAMPM() {return CurAMPM;}
 			public SimpleDateFormat getCurYearFormat() {
 				return CurYearFormat;
 			}

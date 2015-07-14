@@ -5,10 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.daemin.common.Common;
 import com.daemin.community.Comment;
 import com.daemin.community.github.FreeBoard;
 import com.daemin.timetable.R;
@@ -69,28 +69,8 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         ListView lvComment = (ListView) convertView.findViewById(R.id.lvComment);
         CommentListAdapter commentListAdapter = new CommentListAdapter(comment);
         lvComment.setAdapter(commentListAdapter);
-        setListViewHeightBasedOnChildren(lvComment);
+        Common.setListViewHeightBasedOnChildren(lvComment);
         return convertView;
-    }
-
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            listView.setVisibility(View.GONE);
-            return;
-        }
-
-        int totalHeight = 0;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight
-                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
     }
 }
 

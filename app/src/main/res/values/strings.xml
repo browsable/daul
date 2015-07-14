@@ -15,11 +15,18 @@
     <string name="select_time">시간대를 선택하세요</string>
     <string name="nothing_schedule">해당 시간에 등록된 일정이 없습니다</string>
 
-    <string name="normal_name"> 이름</string>
-    <string name="normal_place"> 장소</string>
-    <string name="normal_alarm"> 알람</string>
-    <string name="normal_repeat"> 반복</string>
-    <string name="normal_memo"> 메모</string>
+    <string name="normal_name">이름</string>
+    <string name="normal_place">장소</string>
+    <string name="normal_alarm">알람</string>
+    <string name="normal_repeat">반복</string>
+    <string name="normal_memo">메모</string>
+
+    <string name="year">년</string>
+    <string name="month">월</string>
+    <string name="day">일</string>
+    <string name="am">오전</string>
+    <string name="pm">오후</string>
+
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
         <item >시간표</item>
