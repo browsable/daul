@@ -3,7 +3,6 @@ package com.daemin.common;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.daemin.enumclass.EnumDialog;
 import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.User;
 
@@ -39,7 +38,6 @@ public class AppController extends Application {
             Log.i("phonenum", phonenum);ㅊ
             User.USER.setPhoneNum(phonenum);
         }*/
-        if(User.USER.isSubjectDownloadState()) EnumDialog.BOTTOMDIAL.setDb(new DatabaseHandler(this));
     }
 
     private void setupDatabase() {

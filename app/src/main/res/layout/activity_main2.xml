@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlBar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="50dp"
         android:background="@color/maincolor" >
 
         <TextView
@@ -51,17 +51,48 @@
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <FrameLayout
-            android:id="@+id/flSurface"
+        android:layout_height="match_parent"
+        >
+        <com.sothree.slidinguppanel.SlidingUpPanelLayout
+            xmlns:sothree="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/sliding_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="14dp"
-            android:gravity="center"
-            android:orientation="vertical" />
-        <requestFocus />
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            sothree:umanoDragView="@+id/dragView"
+            sothree:umanoOverlay="true"
+            sothree:umanoPanelHeight="28dp"
+            sothree:umanoFadeColor="@color/transparency"
+            sothree:umanoShadowHeight="0dp">
+                <FrameLayout
+                    android:id="@+id/flSurface"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="14dp"
+                    android:orientation="vertical" />
+                <requestFocus />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparency"
+                android:orientation="vertical"
+                android:clickable="false"
+                >
+                    <TextView
+                        android:id="@+id/tvPlus"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:background="@drawable/bt_plus"
+                        android:layout_gravity="right|top"
+                        android:layout_marginRight="@dimen/margin_default"
+                        android:scaleType="fitXY"
+                        />
+                <include
+                    layout="@layout/bottom_dialog_main" />
+            </LinearLayout>
+        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
         <FrameLayout
             android:id="@+id/frame_container"
             android:layout_width="match_parent"
@@ -69,17 +100,6 @@
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right|bottom" >
-
-            <include layout="@layout/bottom_button"
-                android:id="@+id/include" />
-
-        </RelativeLayout>
-
         <!-- DrawerLayout segment -->
 
         <LinearLayout

@@ -12,9 +12,9 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.enumclass.DrawMode;
-import com.daemin.enumclass.EnumDialog;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
+import com.daemin.main.SubMainActivity;
 
 @SuppressLint("DefaultLocale")
 public class InitThread extends Thread {
@@ -146,7 +146,7 @@ public class InitThread extends Thread {
 					Common.stateFilter(Common.getTempTimePos());
 					ETP.setPosState(PosState.RECOMMEND);
 					Common.getTempTimePos().add(ETP.name());
-					EnumDialog.BOTTOMDIAL.setupRecommendDatas(ETP.name());
+					SubMainActivity.getInstance().setupRecommendDatas(ETP.name());
 				}else{
 					Common.stateFilter(Common.getTempTimePos());
 				}

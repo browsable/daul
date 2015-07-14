@@ -156,7 +156,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:padding="@dimen/margin_xxs"
+                android:layout_marginRight="@dimen/margin_xxs"
                 android:scaleType="fitXY"
                 android:background="@drawable/iv_normal_memo" />
             <EditText

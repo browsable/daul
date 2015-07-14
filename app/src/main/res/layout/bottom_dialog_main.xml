@@ -14,6 +14,7 @@
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
+        android:clickable="true"
         android:visibility="invisible" >
 
         <ImageButton
@@ -95,7 +96,9 @@
             android:text="일반"
             android:textSize="@dimen/textsize_l"
             android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="mOnClick"
+            />
 
         <Button
             android:id="@+id/btUniv"
@@ -106,7 +109,9 @@
             android:text="대학"
             android:textColor="@color/gray"
             android:textSize="@dimen/textsize_l"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="mOnClick"
+            />
 
         <Button
             android:id="@+id/btRecommend"
@@ -117,7 +122,9 @@
             android:text="추천"
             android:textColor="@color/gray"
             android:textSize="@dimen/textsize_l"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="mOnClick"
+            />
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -133,20 +140,25 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginRight="@dimen/margin_l"
-            android:background="@drawable/bg_circle" />
+            android:background="@drawable/bg_circle"
+            android:onClick="mOnClick"
+            />
 
         <Button
             android:id="@+id/btAddTime"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginRight="@dimen/margin_l"
-            android:background="@drawable/bt_check" />
+            android:background="@drawable/bt_check"
+            android:onClick="mOnClick"
+            />
 
         <Button
             android:id="@+id/btCancel"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginRight="@dimen/margin_l"
+            android:onClick="mOnClick"
             android:background="@drawable/bt_cancel" />
     </LinearLayout>
     <LinearLayout

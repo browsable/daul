@@ -102,6 +102,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/select_time"
+            android:textColor="@color/gray"
             />
 
 </LinearLayout>

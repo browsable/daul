@@ -1,3 +1,4 @@
+/*
 
 package com.daemin.enumclass;
 
@@ -57,9 +58,11 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 
+*/
 /**
  * Created by hernia on 2015-06-27.
- */
+ *//*
+
 
 
 public enum EnumDialog implements View.OnClickListener {
@@ -101,7 +104,8 @@ public enum EnumDialog implements View.OnClickListener {
 
 
 
-    /*    @Override
+    */
+/*    @Override
         public void EnrollEvent() {
             super.EnrollEvent();
             btAddTime.setOnClickListener(new View.OnClickListener() {
@@ -271,7 +275,8 @@ public enum EnumDialog implements View.OnClickListener {
                 }
             }
         };
-    };*/
+    };*//*
+
 
     String dialFlag = "",colorName,korName,engName;
     Button btNormal, btUniv, btCancel, btAddTime, btSetting, btColor, btDialCancel,btRecommend;
@@ -382,9 +387,8 @@ public enum EnumDialog implements View.OnClickListener {
         btNormal.setOnClickListener(this);
         btUniv.setOnClickListener(this);
         btRecommend.setOnClickListener(this);
-        gd = (GradientDrawable) btColor.getBackground().mutate();
         btColor.setOnClickListener(this);
-
+        gd = (GradientDrawable) btColor.getBackground().mutate();
         String[] dialogColorBtn = context.getResources().getStringArray(R.array.dialogColorBtn);
         for (int i = 0; i < dialogColorBtn.length; i++) {
             int resID = context.getResources().getIdentifier(dialogColorBtn[i], "id", context.getPackageName());
@@ -558,7 +562,8 @@ public enum EnumDialog implements View.OnClickListener {
                     colorFlag = false;
                 }
                 break;
-            /*case R.id.btUpDown:
+            */
+/*case R.id.btUpDown:
                     Window window = dialog.getWindow();
                 if (clickFlag4) {
                     window.setGravity(Gravity.BOTTOM);
@@ -574,7 +579,8 @@ public enum EnumDialog implements View.OnClickListener {
                     clickFlag4 = true;
                 }
 
-                break;*/
+                break;*//*
+
         }
     }
 
@@ -813,3 +819,4 @@ public enum EnumDialog implements View.OnClickListener {
     }
 }
 
+*/
