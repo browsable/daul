@@ -88,8 +88,9 @@
 
         <Button
             android:id="@+id/btNormal"
-            android:layout_width="60dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@color/transparency"
             android:text="일반"
             android:textSize="@dimen/textsize_l"
@@ -98,8 +99,9 @@
 
         <Button
             android:id="@+id/btUniv"
-            android:layout_width="50dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@color/transparency"
             android:text="대학"
             android:textColor="@color/gray"
@@ -108,8 +110,9 @@
 
         <Button
             android:id="@+id/btRecommend"
-            android:layout_width="50dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@color/transparency"
             android:text="추천"
             android:textColor="@color/gray"
@@ -118,8 +121,11 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/transparency" />
+            android:layout_weight="0.8"
+            android:background="@color/transparency"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold" />
 
 
         <Button

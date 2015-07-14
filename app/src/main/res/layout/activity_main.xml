@@ -44,7 +44,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/sys_plus" />
+                    android:src="@drawable/bt_plus" />
             </RelativeLayout>
 
            <!--  <include 

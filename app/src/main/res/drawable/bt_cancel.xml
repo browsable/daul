@@ -4,5 +4,5 @@
 	      android:drawable="@drawable/bt_cancel_off" /> <!-- pressed -->
 	<item android:state_focused="true"
 	      android:drawable="@drawable/bt_cancel_off" /> <!-- focused -->
-	<item android:drawable="@drawable/bt_cancel_off" /> <!-- default -->
+	<item android:drawable="@drawable/bt_cancel_on" /> <!-- default -->
 </selector>
