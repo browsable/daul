@@ -39,7 +39,7 @@ public class SettingFragment extends BasicFragment {
 
     private ImageView ivProfile;
     private LinearLayout btSettingUnivActivity;
-    private LinearLayout btSettingMailActivity;
+    private LinearLayout btSettingIdActivity;
 
     public SettingFragment() {
         super(R.layout.fragment_setting, "SettingFragment");
@@ -59,7 +59,7 @@ public class SettingFragment extends BasicFragment {
             mCurrentPhotoPath = null;
             ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
             btSettingUnivActivity = (LinearLayout)root.findViewById(R.id.btSettingUnivActivity);
-            btSettingMailActivity = (LinearLayout)root.findViewById(R.id.btSettingMailActivity);
+            btSettingIdActivity = (LinearLayout)root.findViewById(R.id.btSettingIdActivity);
 
             File path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES);
@@ -78,12 +78,12 @@ public class SettingFragment extends BasicFragment {
             }
         });
 
-        btSettingMailActivity.setOnClickListener(new View.OnClickListener() {
+        btSettingIdActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
-                SubMainActivity.getInstance().changeFragment(SettingMailFragment.class,"메일주소 변경",R.color.maincolor);
+                SubMainActivity.getInstance().changeFragment(SettingIdFragment.class,"메일주소 변경",R.color.maincolor);
             }
         });
 

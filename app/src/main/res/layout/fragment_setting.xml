@@ -45,7 +45,7 @@
             android:background="@color/lightgray" />
 
         <LinearLayout
-            android:id="@+id/btSettingMailActivity"
+            android:id="@+id/btSettingIdActivity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_l"
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="@dimen/margin_xxs"
-                android:text="@string/setting_mail"
+                android:text="@string/setting_id"
                 android:textSize="@dimen/textsize_xxl" />
 
             <TextView

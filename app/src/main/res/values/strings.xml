@@ -72,7 +72,9 @@
 
 
     <!--setting menu-->
+    <string name="setting_id">TimeDAO 계정</string>
     <string name="setting_mail">메일주소 변경</string>
+    <string name="setting_mailpassword">비밀번호 변경</string>
     <string name="setting_univ">학교/학과 변경</string>
     <string name="setting_timeinfo">시간표 표시정보</string>
     <string name="setting_backup">백업</string>
