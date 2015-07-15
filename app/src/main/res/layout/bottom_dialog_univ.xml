@@ -38,7 +38,7 @@
             android:background="@drawable/ic_action_expand"
             />
         <Button
-            android:id="@+id/btForward"
+            android:id="@+id/btEnter"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/ic_action_forward"

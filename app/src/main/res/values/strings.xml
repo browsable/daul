@@ -26,6 +26,7 @@
     <string name="day">일</string>
     <string name="am">오전</string>
     <string name="pm">오후</string>
+    <string name="weekofmonth">째주</string>
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
@@ -41,27 +42,11 @@
     <string name="dbupdate">DB 업데이트 버전이 있습니다. 업데이트 하시겠습니까?</string>
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons">
-        <!--<item>@drawable/ic_timetable</item>  -->
-        <item>@drawable/ic_schooltimetable_off</item>
-        <item>@drawable/ic_friend</item>
-        <item>@drawable/ic_community</item>
-        <item>@drawable/ic_used</item>
-        <item>@drawable/ic_lostandfound</item>
-        <item>@drawable/ic_phone</item>
-        <item>@drawable/ic_profile</item>
-    </array>
+
     
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
-    
-    
-    
-       <string-array name="univ_name">
-        <item>koreatech</item>
-        <item>한국기술교육대학교</item>
-    </string-array>
-    
+
        <string-array name="depgrade">
         <item>전체</item>
         <item>1학년</item>

@@ -22,7 +22,7 @@ public class AmazonListAdapter extends BaseAdapter {
     private ImageLoader loader;
     private LayoutInflater inflater;
 
-    private int LAYOUT_LISTVIEW_ITEM_SHOPPING = R.layout.list_item;
+    private int LAYOUT_LISTVIEW_ITEM_SHOPPING = R.layout.listitem;
 
     public AmazonListAdapter(Context context, List<ShoppingItem> items) {
         super();

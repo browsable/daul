@@ -27,6 +27,8 @@ public class CurrentTime{
 			private int CurAMPM = oCalendar.get(Calendar.AM_PM);
 			private String DayOfWeek = "";//요일
 
+	private String WeekOfMonth = String.valueOf(oCalendar.get(Calendar.WEEK_OF_MONTH));
+
 			public int getCurAMPM() {return CurAMPM;}
 			public SimpleDateFormat getCurYearFormat() {
 				return CurYearFormat;
@@ -55,4 +57,7 @@ public class CurrentTime{
 			public String getCurMin() {
 				return CurMin;
 			}
+			public String getWeekOfMonth() {return WeekOfMonth;}
+
+			public String getDayOfWeek() {return DayOfWeek;}
 }

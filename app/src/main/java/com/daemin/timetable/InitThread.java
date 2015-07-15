@@ -203,6 +203,13 @@ public class InitThread extends Thread {
 			canvas.drawText(String.valueOf(i + 8), 2,
 					((2 * i + 1) * height / 32) + 7, tp);
 		}
+		/*canvas.drawText("7.13", width * 2 / 15 - 21, height / 62 + 2, tp);
+		canvas.drawText("7.14", width * 4 / 15 - 16, height / 62 + 2, tp);
+		canvas.drawText("7.15", width * 6 / 15 - 20, height / 62 + 2, tp);
+		canvas.drawText("7.16", width * 8 / 15 - 17, height / 62 + 2, tp);
+		canvas.drawText("7.17", width * 10 / 15 - 15, height / 62 + 2, tp);
+		canvas.drawText("7.18", width * 12 / 15 - 17, height / 62 + 2, tp);
+		canvas.drawText("7.19", width * 14 / 15 - 17, height / 62 + 2, tp);*/
 		canvas.drawText("MON", width * 2 / 15 - 21, height / 62 + 4, tp);
 		canvas.drawText("TUE", width * 4 / 15 - 16, height / 62 + 4, tp);
 		canvas.drawText("WED", width * 6 / 15 - 20, height / 62 + 4, tp);

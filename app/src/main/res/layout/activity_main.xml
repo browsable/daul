@@ -1,72 +1,183 @@
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-     >
+    android:background="@android:color/white"
+    android:orientation="vertical" >
 
-    <!-- Framelayout to display Fragments -->
-    <FrameLayout
-        android:id="@+id/frame_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        />
-     <FrameLayout
-        android:id="@+id/f1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical" />
     <RelativeLayout
+        android:id="@+id/rlBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="true"
-        android:orientation="vertical" >
-
-        <SlidingDrawer
-            android:id="@+id/drawer"
-            android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/maincolor" >
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:content="@+id/content"
-            android:handle="@+id/handle"
-            android:topOffset="200dp" >
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_xl"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
 
-            <RelativeLayout
-                android:id="@+id/handle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+        <LinearLayout
+            android:id="@+id/llTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="visible"
+            >
 
-                <ImageView
-                    android:id="@+id/handleImage"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/bt_plus" />
-            </RelativeLayout>
+            <Button
+                android:id="@+id/btBack"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="@drawable/bt_back"
+                android:onClick="mOnclick"
+                android:layout_marginRight="@dimen/margin_default"
+                />
+            <TextView
+                android:id="@+id/tvTitleYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_gravity="bottom"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_s"
+                android:textStyle="bold" />
+        <TextSwitcher
+            android:id="@+id/switcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_xxxl"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/margin_s"/>
+            <Button
+                android:id="@+id/btForward"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="@drawable/bt_forward"
+                android:onClick="mOnclick"
+                android:layout_marginLeft="@dimen/margin_default"
+                />
 
-           <!--  <include 
-                android:id="@id/content"
-                layout="@layout/drawer_top_menu"
-                /> -->
-          
-        </SlidingDrawer>
+        </LinearLayout>
+
+
+        <ImageButton
+            android:id="@+id/ibMenu"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/transparency"
+            android:padding="@dimen/margin_l"
+            android:scaleType="fitXY"
+            android:src="@drawable/bt_menu"
+            android:onClick="mOnClick"
+            />
+        <ImageButton
+            android:id="@+id/ibBack"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/transparency"
+            android:padding="@dimen/margin_l"
+            android:scaleType="fitXY"
+            android:src="@drawable/bt_cancel"
+            android:visibility="gone"/>
     </RelativeLayout>
 
-
-    <!-- Listview to display slider menu -->
-
-    <ListView
-        android:id="@+id/list_slidermenu"
-        android:layout_width="240dp"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/list_background"
-        android:choiceMode="singleChoice"
-        android:divider="@color/list_divider"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/list_selector" />
+        >
+        <com.sothree.slidinguppanel.SlidingUpPanelLayout
+            xmlns:sothree="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/sliding_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            sothree:umanoDragView="@+id/dragView"
+            sothree:umanoOverlay="true"
+            sothree:umanoPanelHeight="20dp"
+            sothree:umanoFadeColor="@color/transparency"
+            sothree:umanoShadowHeight="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            <FrameLayout
+                android:id="@+id/flSurface"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
+            <requestFocus />
+            <FrameLayout
+                android:id="@+id/frame_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparency"
+                android:orientation="vertical"
+                android:clickable="false"
+                android:visibility="gone"
+                >
+                <include
+                    layout="@layout/bottom_dialog_main" />
+            </LinearLayout>
+        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right|bottom">
+            <Button
+                android:id="@+id/btPlus"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:background="@drawable/bt_plus"
+                android:layout_marginRight="@dimen/margin_default"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:scaleType="fitXY"
+                android:onClick="mOnClick"
+                />
 
-</android.support.v4.widget.DrawerLayout>
+        </RelativeLayout>
+
+        <!-- DrawerLayout segment : 항상 맨 아래에 위치해야할 부분-->
+        <LinearLayout
+            android:id="@+id/left_drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="@color/black"
+            android:orientation="vertical" >
+
+            <include
+                android:id="@+id/home_menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layout="@layout/drawer_main_menu" />
+        </LinearLayout>
+
+    </android.support.v4.widget.DrawerLayout>
+
+
+</LinearLayout>

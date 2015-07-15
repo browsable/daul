@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.daemin.data.DialogNormalData;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.timetable.R;
@@ -72,6 +73,7 @@ public class Common {
 		Common.getTempTimePos().clear();
 		return;
 	}
+
 
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
 		ListAdapter listAdapter = listView.getAdapter();

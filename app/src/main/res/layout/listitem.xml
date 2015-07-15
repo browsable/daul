@@ -1,125 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/listItem"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" 
-    android:background="#30F8F8FF"
-    android:padding="6dp"
-    >
-   <TextView
-        android:id="@+id/_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-		android:visibility="gone"
-        />
-	<TextView
-	    android:paddingTop="2dp"
-        android:id="@+id/subtitle_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14dp" 
-        android:textStyle="bold"
-        />
-	
-      <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingTop="4dp"
-    android:layout_marginLeft="4dp"
-    >
-	<TextView 
-	    android:id="@+id/prof_entry"
-	    android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp" 
-        android:textStyle="bold"
-	    />
-     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp" 
-        android:text=" 교수님"
-        android:textStyle="bold"
-        
-        />
-	</LinearLayout>
-   <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingTop="6dp"
-    android:layout_marginLeft="4dp"
-    
-     >
-    
-     <TextView
-        android:id="@+id/credit_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp" 
-        />
-     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp" 
-        android:text="학점	"
-        />
-    
-    <TextView
-        android:id="@+id/classnum_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp" 
-        />
-     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp" 
-        android:text="분반	"
-        />	
-     
-      <TextView 
-       android:id="@+id/limitnum_entry"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:textSize="12dp" 
-       />
-   <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp" 
-         android:text="명	"
-        />	
-   <TextView
-        android:id="@+id/depname_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp" 
-        />
-   
-    </LinearLayout>
+    android:layout_height="match_parent"
+    android:layout_margin="10dip"
+    android:orientation="vertical" >
+
+    <!-- android:background="@drawable/border" -->
+
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingTop="6dp"
-    android:paddingBottom="2dp"
-    android:layout_marginLeft="4dp"
-     >
-    
-   <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="12dp" 
-        android:text="학년 :	"
-        />
-   <TextView
-        android:id="@+id/dep_grade_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp" 
-        />
-  </LinearLayout>
-	
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/itemImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:id="@+id/itemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" >
+        </TextView>
+    </LinearLayout>
+
 </LinearLayout>

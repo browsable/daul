@@ -16,9 +16,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,8 +33,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.daemin.adapter.DialogNormalListAdapter;
 import com.daemin.adapter.HorizontalListAdapter;
@@ -78,14 +83,13 @@ public class SubMainActivity extends FragmentActivity {
 	static final String TAG = "MainActivity";
 	InitSurfaceView InitSurfaceView;
 	DrawerLayout mDrawerLayout;
-	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend;
+	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend,llTitle;
 	ImageButton ibMenu, ibBack;
-	TextView tvPlus,tvTitle,tvRecommendDummy;
-	Button btNormal, btUniv, btRecommend, btColor, btDialCancel,btShowUniv,btShowDep,btShowGrade, btForward;
+	TextView tvTitle,tvTitleYear,tvRecommendDummy;
+	Button btPlus,btNormal, btUniv, btRecommend, btColor, btDialCancel,btShowUniv,btShowDep,btShowGrade,btEnter;
 	FrameLayout flSurface, frame_container;
 	RelativeLayout rlBar;
 	Fragment mContent = null;
-	CurrentTime ct;
 	Boolean surfaceFlag = false, colorFlag = false;
 	BackPressCloseHandler backPressCloseHandler;
 	String BackKeyName="",colorName,korName,engName;
@@ -113,19 +117,17 @@ public class SubMainActivity extends FragmentActivity {
 	public void setBackKeyName(String backKeyName) {
 		BackKeyName = backKeyName;
 	}
-
+	TextSwitcher switcher;
 	//bottom drawer
 	private SlidingUpPanelLayout mLayout;
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		singleton = this;
-		//getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
-		setContentView(R.layout.activity_main2);
-		//EnumDialog.BOTTOMDIAL.setContext(this);
-		if(User.USER.isSubjectDownloadState()) db = new DatabaseHandler(this);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+		setContentView(R.layout.activity_main);
+		if (User.USER.isSubjectDownloadState()) db = new DatabaseHandler(this);
 		DrawMode.CURRENT.setMode(0);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		ibMenu = (ImageButton) findViewById(R.id.ibMenu);
@@ -138,9 +140,11 @@ public class SubMainActivity extends FragmentActivity {
 		llRecommend = (LinearLayout) findViewById(R.id.llRecommend);
 		llIncludeUniv = (LinearLayout) findViewById(R.id.llIncludeUniv);
 		llIncludeDep = (LinearLayout) findViewById(R.id.llIncludeDep);
-		tvPlus = (TextView) findViewById(R.id.tvPlus);
+		llTitle = (LinearLayout) findViewById(R.id.llTitle);
 		tvTitle = (TextView) findViewById(R.id.tvTitle);
+		tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
 		tvRecommendDummy = (TextView) findViewById(R.id.tvRecommendDummy);
+		btPlus = (Button) findViewById(R.id.btPlus);
 		btNormal = (Button) findViewById(R.id.btNormal);
 		btUniv = (Button) findViewById(R.id.btUniv);
 		btRecommend = (Button) findViewById(R.id.btRecommend);
@@ -149,59 +153,121 @@ public class SubMainActivity extends FragmentActivity {
 		hlvRecommend = (HorizontalListView) findViewById(R.id.hlvRecommend);
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 		rlBar = (RelativeLayout) findViewById(R.id.rlBar);
-		frame_container = (FrameLayout) findViewById(R.id.frame_container);
+		switcher = (TextSwitcher) findViewById(R.id.switcher);
 		ViewGroup.LayoutParams params = llDialog.getLayoutParams();
 		DisplayMetrics dm = getResources().getDisplayMetrics();
-		params.height = dm.heightPixels/3-ibMenu.getHeight();
+		params.height = dm.heightPixels/3 - 10;
 		llDialog.setLayoutParams(params);
 		flSurface = (FrameLayout) findViewById(R.id.flSurface);
-		params = flSurface.getLayoutParams();
-		params.height = dm.heightPixels*7/8;
-		flSurface.setLayoutParams(params);
+		frame_container = (FrameLayout) findViewById(R.id.frame_container);
+		/*params = flSurface.getLayoutParams();
+		params.height = dm.heightPixels * 7 / 8;
+		flSurface.setLayoutParams(params);*/
 		InitSurfaceView = new InitSurfaceView(this);
 		flSurface.addView(InitSurfaceView);
-
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
 		colorName = Common.MAIN_COLOR;
-		tvTitle.setText(getString(R.string.app_name));
+		CurrentTime ct = new CurrentTime();
+		String startYear = ct.getCurYear();
+		String startMonthOfYear = ct.getCurMonth();
+		String startDayOfMonth = ct.getCurDay();
+		String endYear = startYear;
+		String endMonthOfYear = startMonthOfYear;
+		String endDayOfMonth = startDayOfMonth;
+		String startHour = ct.getCurHour();
+		String startMinute = "00";
+		String endHour = Convert.IntAddO(Integer.parseInt(startHour) + 1);
+		String endMinute = "00";
+		String weekOfMonth = ct.getWeekOfMonth();
+		int AMPM = ct.getCurAMPM();
+		int sDayOfWeekIndex = ct.getDayOfWeekIndex();
+		String sDayOfWeek = Convert.IndexToDayOfWeek(sDayOfWeekIndex);
+		tvTitleYear.setText(startYear + getString(R.string.year));
+		switcher.setFactory(new ViewSwitcher.ViewFactory(){
+
+			@Override
+			public View makeView() {
+				TextView myText = new TextView(SubMainActivity.this);
+				myText.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+				myText.setTextSize(18);
+				myText.setTextColor(Color.WHITE);
+				return myText;
+			}
+		});
+		Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
+		Animation out = AnimationUtils.loadAnimation(this,android.R.anim.slide_out_right);
+		switcher.setInAnimation(in);
+		switcher.setOutAnimation(out);
+		switcher.setText(startMonthOfYear+getString(R.string.month)+" "+weekOfMonth+getString(R.string.weekofmonth));
+
+
+		ArrayList<DialogNormalData> normalList = new ArrayList<>();
+		normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
+				endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
+
+		ListView lvTime = (ListView) findViewById(R.id.lvTime);
+		ArrayAdapter adapter = new DialogNormalListAdapter(this, normalList);
+		lvTime.setAdapter(adapter);
+		Common.setListViewHeightBasedOnChildren(lvTime);
 		colorButtonSetting();
-		DialogSetting();
+
 		if (savedInstanceState != null)
 			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
-
-
-
 		mLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 			@Override
 			public void onPanelSlide(View panel, float slideOffset) {
-				//Log.i(TAG, "onPanelSlide, offset " + slideOffset);
-				tvPlus.setVisibility(View.INVISIBLE);
-				if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);
+				btPlus.setVisibility(View.GONE);
 			}
 			@Override
-			public void onPanelExpanded(View panel) {
-				//Log.i(TAG, "onPanelExpanded");
+				public void onPanelExpanded(View panel) {
 			}
 			@Override
 			public void onPanelCollapsed(View panel) {
-				//Log.i(TAG, "onPanelCollapsed");
-				tvPlus.setVisibility(View.VISIBLE);
+				btPlus.setVisibility(View.VISIBLE);
 			}
 			@Override
 			public void onPanelAnchored(View panel) {
-				//Log.i(TAG, "onPanelAnchored");
 			}
 			@Override
 			public void onPanelHidden(View panel) {
-				//Log.i(TAG, "onPanelHidden");
+
 			}
 		});
 		//Log.i("phone", User.USER.getPhoneNum());
 		backPressCloseHandler = new BackPressCloseHandler(this);
 	}
 
+	/*public static ArrayList<DialogNormalData> makeNormalList(){
 
+		new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
+				endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM)
+		if(tempTimePos!=null) {
+			for(String t : tempTimePos){
+				TimePos.valueOf(t).setPosState(PosState.NO_PAINT);
+			}
+		}
+		return;
+	}*/
+	private void colorButtonSetting(){
+		gd = (GradientDrawable) btColor.getBackground().mutate();
+		String[] dialogColorBtn = getResources().getStringArray(R.array.dialogColorBtn);
+		for (int i = 0; i < dialogColorBtn.length; i++) {
+			int resID = getResources().getIdentifier(dialogColorBtn[i], "id", getPackageName());
+			final int resColor = getResources().getIdentifier(dialogColorBtn[i], "color", getPackageName());
+			ImageButton B = (ImageButton) findViewById(resID);
+			B.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					llColor.setVisibility(View.INVISIBLE);
+					colorFlag = false;
+					colorName = getResources().getString(resColor);
+					gd.setColor(getResources().getColor(resColor));
+					gd.invalidateSelf();
+				}
+			});
+		}
+	}
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -259,7 +325,6 @@ public class SubMainActivity extends FragmentActivity {
 		}
 	}
 	private void onChangedFragment(String title, int barcolor) {
-		//EnumDialog.BOTTOMDIAL.Cancel();
 		if(!title.equals("")) tvTitle.setText(title);
 		switch (barcolor) {
 		case R.color.maincolor:
@@ -281,10 +346,12 @@ public class SubMainActivity extends FragmentActivity {
 					mDrawerLayout.closeDrawer(mLeftDrawer);
 				else
 					mDrawerLayout.openDrawer(mLeftDrawer);
-				//EnumDialog.BOTTOMDIAL.Cancel();
+				mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				break;
 			case R.id.btTimetable:
-				changeFragment(TimetableFragment.class, "시간표", R.color.maincolor);
+				llTitle.setVisibility(View.VISIBLE);
+				tvTitle.setVisibility(View.GONE);
+				changeFragment(TimetableFragment.class, "", R.color.maincolor);
 				flSurface.setVisibility(View.VISIBLE);
 				frame_container.setVisibility(View.GONE);
 				if (surfaceFlag) {
@@ -294,6 +361,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btFriend:
+				llTitle.setVisibility(View.GONE);
+				tvTitle.setVisibility(View.VISIBLE);
 				changeFragment(FriendFragment.class, "친구시간표", R.color.orange);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
@@ -302,6 +371,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btArea:
+				llTitle.setVisibility(View.GONE);
+				tvTitle.setVisibility(View.VISIBLE);
 				changeFragment(AreaFragment.class, "주변시간표", R.color.maincolor);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
@@ -310,6 +381,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btCommunity:
+				llTitle.setVisibility(View.GONE);
+				tvTitle.setVisibility(View.VISIBLE);
 				changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
@@ -318,6 +391,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btSetting:
+				llTitle.setVisibility(View.GONE);
+				tvTitle.setVisibility(View.VISIBLE);
 				changeFragment(SettingFragment.class, "설정", R.color.maincolor);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
@@ -325,9 +400,6 @@ public class SubMainActivity extends FragmentActivity {
 				surfaceFlag = true;
 				BackKeyName = "";
 				break;
-			/*case R.id.btPlus:
-				if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);
-				break;*/
 			case R.id.btNormal:
 				DrawMode.CURRENT.setMode(0);
 				Common.stateFilter(Common.getTempTimePos());
@@ -362,7 +434,7 @@ public class SubMainActivity extends FragmentActivity {
 				actvSelectUniv.setTextColor(Color.DKGRAY);
 				actvSelectUniv.setTextSize(16);
 				actvSelectUniv.setDropDownVerticalOffset(10);
-				btForward = (Button) findViewById(R.id.btForward);
+				btEnter = (Button) findViewById(R.id.btEnter);
 				btShowUniv = (Button) findViewById(R.id.btShowUniv);
 				actvSelectUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -379,9 +451,9 @@ public class SubMainActivity extends FragmentActivity {
 						InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 						imm.hideSoftInputFromWindow(actvSelectUniv.getWindowToken(), 0);
 						btShowUniv.setVisibility(View.GONE);
-						btForward.setVisibility(View.VISIBLE);
+						btEnter.setVisibility(View.VISIBLE);
 
-						btForward.setOnClickListener(new View.OnClickListener() {
+						btEnter.setOnClickListener(new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
 								if(Common.isOnline()){
@@ -460,6 +532,10 @@ public class SubMainActivity extends FragmentActivity {
 				break;
 			case R.id.btAddTime:
 				break;
+			case R.id.btPlus:
+					mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+					if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);
+				break;
 			case R.id.btCancel:
 				mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				switch (DrawMode.CURRENT.getMode()) {
@@ -476,6 +552,10 @@ public class SubMainActivity extends FragmentActivity {
 						break;
 				}
 				break;
+			case R.id.btBack:
+				break;
+			case R.id.btForward:
+				break;
 		}
 
 	}
@@ -489,53 +569,7 @@ public class SubMainActivity extends FragmentActivity {
 			backPressCloseHandler.onBackPressed(BackKeyName);
 		}
 	}
-	public void DialogSetting() {
-		CurrentTime ct = new CurrentTime();
-		String startYear = ct.getCurYear();
-		String startMonthOfYear = ct.getCurMonth();
-		String startDayOfMonth = ct.getCurDay();
-		String endYear = startYear;
-		String endMonthOfYear = startMonthOfYear;
-		String endDayOfMonth = startDayOfMonth;
-		String startHour = ct.getCurHour();
-		String startMinute = "00";
-		String endHour = Convert.IntAddO(Integer.parseInt(startHour) + 1);
-		String endMinute = "00";
-		int AMPM = ct.getCurAMPM();
-		int sDayOfWeekIndex = ct.getDayOfWeekIndex();
-		String sDayOfWeek = Convert.IndexToDayOfWeek(sDayOfWeekIndex);
-		ArrayList<DialogNormalData> normalList = new ArrayList<>();
-		normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
-				endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
-		normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
-				endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
-		normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
-				endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
-		ListView lvTime = (ListView) findViewById(R.id.lvTime);
-		ArrayAdapter adapter = new DialogNormalListAdapter(this, normalList);
-		lvTime.setAdapter(adapter);
-		Common.setListViewHeightBasedOnChildren(lvTime);
-	}
 
-	private void colorButtonSetting(){
-		gd = (GradientDrawable) btColor.getBackground().mutate();
-		String[] dialogColorBtn = getResources().getStringArray(R.array.dialogColorBtn);
-		for (int i = 0; i < dialogColorBtn.length; i++) {
-			int resID = getResources().getIdentifier(dialogColorBtn[i], "id", getPackageName());
-			final int resColor = getResources().getIdentifier(dialogColorBtn[i], "color", getPackageName());
-			ImageButton B = (ImageButton) findViewById(resID);
-			B.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					llColor.setVisibility(View.INVISIBLE);
-					colorFlag = false;
-					colorName = getResources().getString(resColor);
-					gd.setColor(getResources().getColor(resColor));
-					gd.invalidateSelf();
-				}
-			});
-		}
-	}
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private void setupSubjectDatas() {
 		llIncludeDep.setVisibility(View.VISIBLE);
