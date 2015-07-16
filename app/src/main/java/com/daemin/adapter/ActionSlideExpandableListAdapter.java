@@ -77,7 +77,7 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         tvCountComment.setText(String.valueOf(comment.size()));
 
         final ListView lvComment = (ListView) convertView.findViewById(R.id.lvComment);
-        final CommentListAdapter commentListAdapter = new CommentListAdapter(comment, userId,lvComment);
+        final CommentListAdapter commentListAdapter = new CommentListAdapter(comment, userId, lvComment);
         lvComment.setAdapter(commentListAdapter);
         Common.setListViewHeightBasedOnChildren(lvComment);
 
@@ -159,6 +159,7 @@ class CommentListAdapter extends BaseAdapter{
                 public void onClick(View v) {
                     comment.remove(getItem(pos));
                     notifyDataSetChanged();
+                    ((CommentListAdapter)listView.getAdapter()).notifyDataSetChanged();
                     Common.setListViewHeightBasedOnChildren(listView);
                 }
             });

@@ -4,12 +4,12 @@ package com.daemin.common;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.daemin.data.DialogNormalData;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.timetable.R;
@@ -86,12 +86,15 @@ public class Common {
 		for (int i = 0; i < listAdapter.getCount(); i++) {
 			View listItem = listAdapter.getView(i, null, listView);
 			listItem.measure(0, 0);
+			if(i == listAdapter.getCount()-1)
+				Log.d("junyeong", "last : " + String.valueOf(listItem.getMeasuredHeight()));
 			totalHeight += listItem.getMeasuredHeight();
 		}
 
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
 		params.height = totalHeight
 				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		Log.d("junyeong", String.valueOf(params.height));
 		listView.setLayoutParams(params);
 	}
 }
