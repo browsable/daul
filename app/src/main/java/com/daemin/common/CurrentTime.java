@@ -12,7 +12,7 @@ public class CurrentTime{
 
 			// 시간 포맷 지정
 			private SimpleDateFormat CurYearFormat = new SimpleDateFormat("yyyy");
-			private SimpleDateFormat CurMonthFormat = new SimpleDateFormat("MM");
+			private SimpleDateFormat CurMonthFormat = new SimpleDateFormat("M");
 			private SimpleDateFormat CurDayFormat = new SimpleDateFormat("dd");
 			private SimpleDateFormat CurHourFormat = new SimpleDateFormat("HH");
 			private SimpleDateFormat CurMinFormat = new SimpleDateFormat("mm");
@@ -27,8 +27,7 @@ public class CurrentTime{
 			private int CurAMPM = oCalendar.get(Calendar.AM_PM);
 			private String DayOfWeek = "";//요일
 
-	private String WeekOfMonth = String.valueOf(oCalendar.get(Calendar.WEEK_OF_MONTH));
-
+			private String WeekOfMonth = String.valueOf(oCalendar.get(Calendar.WEEK_OF_MONTH));
 			public int getCurAMPM() {return CurAMPM;}
 			public SimpleDateFormat getCurYearFormat() {
 				return CurYearFormat;

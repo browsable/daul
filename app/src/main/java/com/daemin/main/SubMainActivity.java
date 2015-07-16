@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -184,13 +186,14 @@ public class SubMainActivity extends FragmentActivity {
 		int sDayOfWeekIndex = ct.getDayOfWeekIndex();
 		String sDayOfWeek = Convert.IndexToDayOfWeek(sDayOfWeekIndex);
 		tvTitleYear.setText(startYear + getString(R.string.year));
-		switcher.setFactory(new ViewSwitcher.ViewFactory(){
+		switcher.setFactory(new ViewSwitcher.ViewFactory() {
 
 			@Override
 			public View makeView() {
 				TextView myText = new TextView(SubMainActivity.this);
-				myText.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-				myText.setTextSize(18);
+				myText.setGravity(Gravity.BOTTOM);
+				myText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+				myText.setTypeface(Typeface.DEFAULT_BOLD);
 				myText.setTextColor(Color.WHITE);
 				return myText;
 			}
@@ -199,7 +202,7 @@ public class SubMainActivity extends FragmentActivity {
 		Animation out = AnimationUtils.loadAnimation(this,android.R.anim.slide_out_right);
 		switcher.setInAnimation(in);
 		switcher.setOutAnimation(out);
-		switcher.setText(startMonthOfYear+getString(R.string.month)+" "+weekOfMonth+getString(R.string.weekofmonth));
+		switcher.setText(" "+startMonthOfYear+getString(R.string.month)+" "+weekOfMonth+getString(R.string.weekofmonth));
 
 
 		ArrayList<DialogNormalData> normalList = new ArrayList<>();
@@ -342,15 +345,20 @@ public class SubMainActivity extends FragmentActivity {
 		switch (v.getId()) {
 			case R.id.ibMenu:
 				boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLeftDrawer);
-				if (drawerOpen)
+				if (drawerOpen) {
 					mDrawerLayout.closeDrawer(mLeftDrawer);
-				else
+				}
+				else {
 					mDrawerLayout.openDrawer(mLeftDrawer);
+				}
 				mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				break;
 			case R.id.btTimetable:
 				llTitle.setVisibility(View.VISIBLE);
 				tvTitle.setVisibility(View.GONE);
+				btPlus.setVisibility(View.VISIBLE);
+				mLayout.setVisibility(View.VISIBLE);
+				mLayout.setTouchEnabled(true);
 				changeFragment(TimetableFragment.class, "", R.color.maincolor);
 				flSurface.setVisibility(View.VISIBLE);
 				frame_container.setVisibility(View.GONE);
@@ -363,6 +371,8 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btFriend:
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
+				btPlus.setVisibility(View.GONE);
+				mLayout.setTouchEnabled(false);
 				changeFragment(FriendFragment.class, "친구시간표", R.color.orange);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
@@ -373,6 +383,8 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btArea:
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
+				btPlus.setVisibility(View.GONE);
+				mLayout.setTouchEnabled(false);
 				changeFragment(AreaFragment.class, "주변시간표", R.color.maincolor);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
@@ -383,6 +395,8 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btCommunity:
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
+				btPlus.setVisibility(View.GONE);
+				mLayout.setTouchEnabled(false);
 				changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
@@ -393,6 +407,8 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btSetting:
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
+				btPlus.setVisibility(View.GONE);
+				mLayout.setTouchEnabled(false);
 				changeFragment(SettingFragment.class, "설정", R.color.maincolor);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);

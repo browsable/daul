@@ -59,7 +59,6 @@ public class CommunityFragment2 extends BasicFragment {
 
                             // fill the list with data
                             list.setAdapter(new ActionSlideExpandableListAdapter(data, userId));
-
                             // listen for events in the two buttons for every list item.
                             // the 'position' var will tell which list item is clicked
                             list.setItemActionListener(new ActionSlideExpandableListView.OnActionClickListener() {
