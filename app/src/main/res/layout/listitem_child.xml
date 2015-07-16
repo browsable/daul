@@ -49,6 +49,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_xs"
         android:orientation="horizontal">
         <TextView
             android:layout_width="match_parent"
@@ -56,7 +57,7 @@
             android:layout_weight="1"/>
         <Button
             android:id="@+id/btChildEdit"
-            android:layout_width="80dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:text="수정"
             android:layout_marginRight="@dimen/margin_xs"
@@ -64,7 +65,7 @@
             />
         <Button
             android:id="@+id/btChildRemove"
-            android:layout_width="80dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:background="@drawable/bg_maincolor_round_border"
             android:layout_marginRight="@dimen/margin_xs"

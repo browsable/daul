@@ -48,25 +48,6 @@
                         android:text="수강신청 요령좀"
                         android:layout_weight="1"
                         android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btEdit"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:text="수정"
-                        android:layout_marginRight="@dimen/margin_xs"
-                        android:background="@drawable/bg_maincolor_round_border"
-                        />
-
-                    <Button
-                        android:id="@+id/btRemove"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:background="@drawable/bg_maincolor_round_border"
-                        android:layout_marginRight="@dimen/margin_xs"
-                        android:text="삭제" />
                 </LinearLayout>
 
                 <TextView
@@ -108,31 +89,61 @@
             android:padding="@dimen/margin_xxl"
             />
         <LinearLayout
-            android:id="@+id/expandable_toggle_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_xxl">
-            <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/expandable_toggle_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="댓글"
-                android:textAlignment="center"
-                android:layout_gravity="center_vertical" />
-            <TextView
-                android:id="@+id/tvCountComment"
+                android:layout_marginLeft="@dimen/margin_xxl">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="댓글"
+                    android:textAlignment="center"
+                    android:layout_gravity="center_vertical" />
+                <TextView
+                    android:id="@+id/tvCountComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
+                    android:textAlignment="center"
+                    android:layout_marginRight="@dimen/margin_s"
+                    android:layout_marginLeft="@dimen/margin_s"
+                    android:layout_gravity="center_vertical" />
+                <ImageView
+                    android:id="@+id/expandable_arrow"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_action_expand"/>
+            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/gray"
-                android:textAlignment="center"
-                android:layout_marginRight="@dimen/margin_s"
-                android:layout_marginLeft="@dimen/margin_s"
-                android:layout_gravity="center_vertical" />
-            <ImageView
-                android:id="@+id/expandable_arrow"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/ic_action_expand"/>
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/btEdit"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:text="수정"
+                    android:layout_marginRight="@dimen/margin_xs"
+                    android:background="@drawable/bg_maincolor_round_border"
+                    />
+
+                <Button
+                    android:id="@+id/btRemove"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_maincolor_round_border"
+                    android:layout_marginRight="@dimen/margin_xs"
+                    android:text="삭제" />
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
        <!-- <Button
             android:id="@+id/expandable_toggle_button"
@@ -155,12 +166,37 @@
         <LinearLayout
             android:id="@+id/llExpandable"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <ListView
                 android:id="@+id/lvComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </ListView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_xs"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/etComment"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_xs"
+                    android:textSize="13dip"
+                    android:hint="댓글을 남겨보세요." />
+                <Button
+                    android:id="@+id/btEditComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:text="확인"
+                    android:layout_marginLeft="@dimen/margin_xs"
+                    android:layout_marginRight="@dimen/margin_xs"
+                    android:background="@drawable/bg_maincolor_round_border"
+                    />
+            </LinearLayout>
         </LinearLayout>
         <!--
         <LinearLayout

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -32,6 +31,7 @@ import java.util.Map;
  */
 public class CommunityFragment2 extends BasicFragment {
     private List<FreeBoard.Data> data;
+    private final String myId = "joyyir";
     View root;
 
     public CommunityFragment2()
