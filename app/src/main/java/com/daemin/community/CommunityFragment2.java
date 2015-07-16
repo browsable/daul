@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -31,7 +30,7 @@ import java.util.Map;
  */
 public class CommunityFragment2 extends BasicFragment {
     private List<FreeBoard.Data> data;
-    private final String myId = "joyyir";
+    private final String userId = "joyyir";
     View root;
 
     public CommunityFragment2()
@@ -59,7 +58,7 @@ public class CommunityFragment2 extends BasicFragment {
                             ActionSlideExpandableListView list = (ActionSlideExpandableListView) root.findViewById(R.id.list);
 
                             // fill the list with data
-                            list.setAdapter(buildDummyData());
+                            list.setAdapter(new ActionSlideExpandableListAdapter(data, userId));
 
                             // listen for events in the two buttons for every list item.
                             // the 'position' var will tell which list item is clicked
@@ -67,6 +66,7 @@ public class CommunityFragment2 extends BasicFragment {
 
                                 @Override
                                 public void onClick(View listView, View buttonview, int position) {
+                                    Toast.makeText(getActivity(), "이거 언제 호출되냐?", Toast.LENGTH_SHORT).show();
                                     /**
                                      * Normally you would put a switch
                                      * statement here, and depending on
@@ -124,8 +124,4 @@ public class CommunityFragment2 extends BasicFragment {
         }
         return root;
     }
-    public ListAdapter buildDummyData() {
-        return new ActionSlideExpandableListAdapter(data);
-    }
-
 }

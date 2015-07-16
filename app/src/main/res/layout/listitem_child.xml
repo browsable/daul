@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/margin_xs">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,9 +48,9 @@
         android:paddingBottom="5dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
     <LinearLayout
+        android:id="@+id/llCommentBts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_xs"
         android:orientation="horizontal">
         <TextView
             android:layout_width="match_parent"

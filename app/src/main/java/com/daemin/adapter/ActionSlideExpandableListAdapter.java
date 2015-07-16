@@ -5,14 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.community.Comment;
 import com.daemin.community.github.FreeBoard;
 import com.daemin.timetable.R;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +28,11 @@ import java.util.List;
 public class ActionSlideExpandableListAdapter extends BaseAdapter {
     private List<FreeBoard.Data> data;
     private List<Comment> comment;
+    private String userId;
 
-    public ActionSlideExpandableListAdapter(List<FreeBoard.Data> data) {
+    public ActionSlideExpandableListAdapter(List<FreeBoard.Data> data, String userId) {
         this.data = data;
+        this.userId = userId;
 
         comment = new ArrayList<>();
         comment.add(new Comment(1, "안녕하세요!", "07.07 21:00", "joyyir"));
@@ -49,6 +57,8 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final Context context = parent.getContext();
+
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.listitem_expandable, parent, false);
@@ -66,21 +76,42 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         tvGroupContent.setText(((FreeBoard.Data) getItem(position)).getBody());
         tvCountComment.setText(String.valueOf(comment.size()));
 
-        ListView lvComment = (ListView) convertView.findViewById(R.id.lvComment);
-        CommentListAdapter commentListAdapter = new CommentListAdapter(comment);
+        final ListView lvComment = (ListView) convertView.findViewById(R.id.lvComment);
+        final CommentListAdapter commentListAdapter = new CommentListAdapter(comment, userId);
         lvComment.setAdapter(commentListAdapter);
         Common.setListViewHeightBasedOnChildren(lvComment);
+
+        Button btEditComment = (Button) convertView.findViewById(R.id.btEditComment);
+        final EditText etComment = (EditText) convertView.findViewById(R.id.etComment);
+        btEditComment.setOnClickListener(new View.OnClickListener() {
+            String commentContent;
+
+            @Override
+            public void onClick(View v) {
+                commentContent = etComment.getText().toString();
+
+                if (commentContent.length() <= 0) {
+                    Toast.makeText(context, "댓글 내용을 입력하세요", Toast.LENGTH_SHORT).show();
+                } else {
+                    comment.add(new Comment(0, commentContent, new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())), userId));
+                    etComment.setText("");
+                    commentListAdapter.notifyDataSetChanged();
+                    Common.setListViewHeightBasedOnChildren(lvComment);
+                }
+            }
+        });
+
         return convertView;
     }
 }
 
-
-
 class CommentListAdapter extends BaseAdapter{
     private List<Comment> comment;
+    private String userId;
 
-    public CommentListAdapter(List<Comment> comment) {
+    public CommentListAdapter(List<Comment> comment, String userId) {
         this.comment = comment;
+        this.userId = userId;
     }
 
     @Override
@@ -100,6 +131,8 @@ class CommentListAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final int pos = position;
+
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.listitem_child, parent, false);
@@ -108,10 +141,25 @@ class CommentListAdapter extends BaseAdapter{
         TextView tvChildId = (TextView) convertView.findViewById(R.id.tvChildId);
         TextView tvChildDate = (TextView) convertView.findViewById(R.id.tvChildDate);
         TextView tvChildContent = (TextView) convertView.findViewById(R.id.tvChildContent);
+        LinearLayout llCommentBts = (LinearLayout) convertView.findViewById(R.id.llCommentBts);
 
         tvChildId.setText(((Comment)getItem(position)).getUserId());
-        tvChildDate.setText(((Comment)getItem(position)).getDate());
+        tvChildDate.setText(((Comment) getItem(position)).getDate());
         tvChildContent.setText(((Comment) getItem(position)).getBody());
+
+        if(userId != tvChildId.getText())
+            llCommentBts.setVisibility(View.GONE);
+        else{
+            Button btChildEdit = (Button) convertView.findViewById(R.id.btChildEdit);
+            Button btChildRemove = (Button) convertView.findViewById(R.id.btChildRemove);
+            btChildRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    comment.remove(getItem(pos));
+                    notifyDataSetChanged();
+                }
+            });
+        }
 
         return convertView;
     }
