@@ -52,6 +52,7 @@ dependencies {
     compile 'com.navercorp.volleyextensions:volleyer:2.0.+'
     compile 'com.sothree.slidinguppanel:library:3.0.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.8.+'
+    compile 'org.threeten:threetenbp:0.8.1'
     compile('org.simpleframework:simple-xml:2.7.+'){
         exclude module: 'stax'
         exclude module: 'stax-api'

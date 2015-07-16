@@ -1,62 +1,67 @@
 package com.daemin.common;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import android.content.Context;
+
+import com.daemin.timetable.R;
+
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.temporal.WeekFields;
+
+import java.util.Locale;
 
 public class CurrentTime{
-	// 현재 시간을 msec으로 구한다.
-			private long now = System.currentTimeMillis();
-			// 현재 시간을 저장 한다.
-			private Date date = new Date(now);
+	//년도
+	public static Integer getYear() {
+		LocalDate now = LocalDate.now();
+		return now.getYear();
+	}
+	//월
+	public static Integer getMonthOfYear() {
+		LocalDate now = LocalDate.now();
+		return now.getMonth().getValue();
+	}
+	//일
+	public static Integer getDayOfWeek() {
+		LocalDate now = LocalDate.now();
+		return now.getDayOfWeek().getValue();
+	}
+	//주
+	public static Integer getWeekOfMonth() {
+		LocalDate now = LocalDate.now();
+		WeekFields weekFields = WeekFields.of(Locale.getDefault());
+		return now.get(weekFields.weekOfMonth());
+	}
+	//~월 ~째주
+	public static String getTitleMonthWeek(Context context) {
+		LocalDate now = LocalDate.now();
+		WeekFields weekFields = WeekFields.of(Locale.getDefault());
+		return " "+String.valueOf(now.getMonth().getValue())+ context.getString(R.string.month)+" "
+				+ String.valueOf(now.get(weekFields.weekOfMonth()))+ context.getString((R.string.weekofmonth));
+	}
+	public static Integer preTitleYear(Context context, int indexForTitle) {
+		LocalDate now = LocalDate.now();
+		return now.plusWeeks(indexForTitle).getYear();
+	}
+	public static Integer backTitleYear(Context context, int indexForTitle) {
+		LocalDate now = LocalDate.now();
+		return now.minusWeeks(indexForTitle).getYear();
+	}
+	public static String preTitleMonthWeek(Context context, int indexForTitle) {
+		LocalDate now = LocalDate.now();
+		WeekFields weekFields = WeekFields.of(Locale.getDefault());
+		return " "+String.valueOf(now.plusWeeks(indexForTitle).getMonth().getValue())+ context.getString(R.string.month)+" "
+				+ String.valueOf(now.plusWeeks(indexForTitle).get(weekFields.weekOfMonth()))+ context.getString((R.string.weekofmonth));
+	}
+	public static String backTitleMonthWeek(Context context, int indexForTitle) {
+		LocalDate now = LocalDate.now();
+		WeekFields weekFields = WeekFields.of(Locale.getDefault());
+		return " "+String.valueOf(now.minusWeeks(indexForTitle).getMonth().getValue())+ context.getString(R.string.month)+" "
+				+ String.valueOf(now.minusWeeks(indexForTitle).get(weekFields.weekOfMonth()))+ context.getString((R.string.weekofmonth));
+	}
+	public static String getYMD() {
+		LocalDate now = LocalDate.now();
+		return DateTimeFormatter.ofPattern("yyyy.MM.dd").format(now);
+	}
 
-			// 시간 포맷 지정
-			private SimpleDateFormat CurYearFormat = new SimpleDateFormat("yyyy");
-			private SimpleDateFormat CurMonthFormat = new SimpleDateFormat("M");
-			private SimpleDateFormat CurDayFormat = new SimpleDateFormat("dd");
-			private SimpleDateFormat CurHourFormat = new SimpleDateFormat("HH");
-			private SimpleDateFormat CurMinFormat = new SimpleDateFormat("mm");
-
-			private String CurYear =CurYearFormat.format(date);
-			private String CurMonth = CurMonthFormat.format(date);
-			private String CurDay = CurDayFormat.format(date);
-			private String CurHour = CurHourFormat.format(date); 
-			private String CurMin =  CurMinFormat.format(date);
-			private Calendar oCalendar = Calendar.getInstance();
-			private int DayOfWeekIndex = oCalendar.get(Calendar.DAY_OF_WEEK);
-			private int CurAMPM = oCalendar.get(Calendar.AM_PM);
-			private String DayOfWeek = "";//요일
-
-			private String WeekOfMonth = String.valueOf(oCalendar.get(Calendar.WEEK_OF_MONTH));
-			public int getCurAMPM() {return CurAMPM;}
-			public SimpleDateFormat getCurYearFormat() {
-				return CurYearFormat;
-			}
-			public SimpleDateFormat getCurMonthFormat() {
-				return CurMonthFormat;
-			}
-			public SimpleDateFormat getCurDayFormat() {
-				return CurDayFormat;
-			}
-			public String getCurYear() {
-				return CurYear;
-			}
-			public String getCurMonth() {
-				return CurMonth;
-			}
-			public String getCurDay() {
-				return CurDay;
-			}
-			public int getDayOfWeekIndex() {
-				return DayOfWeekIndex;
-			}
-			public String getCurHour() {
-				return CurHour;
-			}
-			public String getCurMin() {
-				return CurMin;
-			}
-			public String getWeekOfMonth() {return WeekOfMonth;}
-
-			public String getDayOfWeek() {return DayOfWeek;}
 }

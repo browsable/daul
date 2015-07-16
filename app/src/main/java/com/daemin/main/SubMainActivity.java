@@ -33,27 +33,23 @@ import android.widget.CalendarView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import com.daemin.adapter.DialogNormalListAdapter;
 import com.daemin.adapter.HorizontalListAdapter;
 import com.daemin.area.AreaFragment;
 import com.daemin.common.AsyncCallback;
 import com.daemin.common.AsyncExecutor;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.Common;
-import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.common.DatabaseHandler;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
 import com.daemin.community.CommunityFragment2;
-import com.daemin.data.DialogNormalData;
 import com.daemin.data.SubjectData;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.MyPreferences;
@@ -103,6 +99,7 @@ public class SubMainActivity extends FragmentActivity {
 	CalendarView cal;
 	GradientDrawable gd;
 	Boolean adapterFlag=false;
+	static int indexForTitle=0;
 	private HorizontalListView hlv, hlvRecommend;
 	DatabaseHandler db;
 	public void setDb(DatabaseHandler db) {
@@ -126,8 +123,8 @@ public class SubMainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		singleton = this;
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+		//getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
 		setContentView(R.layout.activity_main);
 		if (User.USER.isSubjectDownloadState()) db = new DatabaseHandler(this);
 		DrawMode.CURRENT.setMode(0);
@@ -154,6 +151,7 @@ public class SubMainActivity extends FragmentActivity {
 		hlv = (HorizontalListView) findViewById(R.id.hlv);
 		hlvRecommend = (HorizontalListView) findViewById(R.id.hlvRecommend);
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+		mLayout.setTouchEnabled(true);
 		rlBar = (RelativeLayout) findViewById(R.id.rlBar);
 		switcher = (TextSwitcher) findViewById(R.id.switcher);
 		ViewGroup.LayoutParams params = llDialog.getLayoutParams();
@@ -162,30 +160,16 @@ public class SubMainActivity extends FragmentActivity {
 		llDialog.setLayoutParams(params);
 		flSurface = (FrameLayout) findViewById(R.id.flSurface);
 		frame_container = (FrameLayout) findViewById(R.id.frame_container);
-		/*params = flSurface.getLayoutParams();
+
+		params = flSurface.getLayoutParams();
 		params.height = dm.heightPixels * 7 / 8;
-		flSurface.setLayoutParams(params);*/
+		flSurface.setLayoutParams(params);
 		InitSurfaceView = new InitSurfaceView(this);
 		flSurface.addView(InitSurfaceView);
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
 		colorName = Common.MAIN_COLOR;
-		CurrentTime ct = new CurrentTime();
-		String startYear = ct.getCurYear();
-		String startMonthOfYear = ct.getCurMonth();
-		String startDayOfMonth = ct.getCurDay();
-		String endYear = startYear;
-		String endMonthOfYear = startMonthOfYear;
-		String endDayOfMonth = startDayOfMonth;
-		String startHour = ct.getCurHour();
-		String startMinute = "00";
-		String endHour = Convert.IntAddO(Integer.parseInt(startHour) + 1);
-		String endMinute = "00";
-		String weekOfMonth = ct.getWeekOfMonth();
-		int AMPM = ct.getCurAMPM();
-		int sDayOfWeekIndex = ct.getDayOfWeekIndex();
-		String sDayOfWeek = Convert.IndexToDayOfWeek(sDayOfWeekIndex);
-		tvTitleYear.setText(startYear + getString(R.string.year));
+		tvTitleYear.setText(CurrentTime.getYear() + getString(R.string.year));
 		switcher.setFactory(new ViewSwitcher.ViewFactory() {
 
 			@Override
@@ -199,20 +183,20 @@ public class SubMainActivity extends FragmentActivity {
 			}
 		});
 		Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
-		Animation out = AnimationUtils.loadAnimation(this,android.R.anim.slide_out_right);
+		Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
 		switcher.setInAnimation(in);
 		switcher.setOutAnimation(out);
-		switcher.setText(" "+startMonthOfYear+getString(R.string.month)+" "+weekOfMonth+getString(R.string.weekofmonth));
+		switcher.setText(CurrentTime.getTitleMonthWeek(this));
 
 
-		ArrayList<DialogNormalData> normalList = new ArrayList<>();
+		/*ArrayList<DialogNormalData> normalList = new ArrayList<>();
 		normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
 				endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
 
 		ListView lvTime = (ListView) findViewById(R.id.lvTime);
 		ArrayAdapter adapter = new DialogNormalListAdapter(this, normalList);
 		lvTime.setAdapter(adapter);
-		Common.setListViewHeightBasedOnChildren(lvTime);
+		Common.setListViewHeightBasedOnChildren(lvTime);*/
 		colorButtonSetting();
 
 		if (savedInstanceState != null)
@@ -430,6 +414,7 @@ public class SubMainActivity extends FragmentActivity {
 						R.color.gray));
 				break;
 			case R.id.btUniv:
+				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(1);
 				Common.stateFilter(Common.getTempTimePos());
 				llNormal.setVisibility(View.GONE);
@@ -522,6 +507,7 @@ public class SubMainActivity extends FragmentActivity {
 				});
 				break;
 			case R.id.btRecommend:
+				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(2);
 				hlvRecommend.setVisibility(View.GONE);
 				tvRecommendDummy.setVisibility(View.VISIBLE);
@@ -569,8 +555,24 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				break;
 			case R.id.btBack:
+					--indexForTitle;
+					if(indexForTitle<0) {
+						tvTitleYear.setText(CurrentTime.backTitleYear(this, -indexForTitle) + getString(R.string.year));
+						switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
+					}else{
+						tvTitleYear.setText(CurrentTime.preTitleYear(this,indexForTitle) + getString(R.string.year));
+						switcher.setText(CurrentTime.preTitleMonthWeek(this,indexForTitle));
+					}
 				break;
 			case R.id.btForward:
+					++indexForTitle;
+					if(indexForTitle<0) {
+						tvTitleYear.setText(CurrentTime.backTitleYear(this,-indexForTitle) + getString(R.string.year));
+						switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
+					}else{
+						tvTitleYear.setText(CurrentTime.preTitleYear(this,indexForTitle) + getString(R.string.year));
+						switcher.setText(CurrentTime.preTitleMonthWeek(this,indexForTitle));
+					}
 				break;
 		}
 

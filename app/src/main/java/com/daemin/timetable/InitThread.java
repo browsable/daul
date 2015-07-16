@@ -20,7 +20,7 @@ import com.daemin.main.SubMainActivity;
 public class InitThread extends Thread {
 	SurfaceHolder mholder;
 	private boolean isLoop = true;
-	private int width, height; //화면의 전체 너비, 높이
+	private int width, height, dayOfWeek; //화면의 전체 너비, 높이
 	Context context;
 	private Paint hp; // 1시간 간격 수평선
 	private Paint hpvp; // 30분 간격 수평선, 수직선
@@ -30,7 +30,6 @@ public class InitThread extends Thread {
 	static int tempxth;
 	static int tempyth;
 	Canvas canvas;
-	CurrentTime ct;
 
 	public InitThread(SurfaceHolder holder, Context context) {
 		this.mholder = holder;
@@ -49,7 +48,7 @@ public class InitThread extends Thread {
 
 		datep = new Paint(Paint.ANTI_ALIAS_FLAG);
 		datep.setColor(Color.parseColor("#104EC7B3"));
-		ct = new CurrentTime();
+		dayOfWeek = CurrentTime.getDayOfWeek();
 	}
 
 	public Canvas getCanvas() {
@@ -76,7 +75,7 @@ public class InitThread extends Thread {
 				width = canvas.getWidth();
 				height = canvas.getHeight();
 				synchronized (mholder) {
-					initScreen(ct.getDayOfWeekIndex());
+					initScreen(dayOfWeek);
 					Common.checkTableStateIsNothing = true;
 
 					// 사각형 그리기
