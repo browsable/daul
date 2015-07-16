@@ -1,7 +1,5 @@
 package com.daemin.common;
 
-import java.util.*;
-
 public class Convert {
 
 	public static int DayOfWeekToXth(int DayOfWeekIndex) {
@@ -123,14 +121,6 @@ public class Convert {
 			return String.format("%02d",i);
 		}
 		return String.valueOf(i);
-	}
-	public static String getDayofWeek(int year, int monthOfYear, int dayOfMonth){
-		Calendar cal= Calendar.getInstance ();
-	    cal.set(Calendar.YEAR, year);
-	    cal.set(Calendar.MONTH, monthOfYear);
-	    cal.set(Calendar.DATE, dayOfMonth);
-	    cal.get(Calendar.DAY_OF_WEEK);
-	    return Convert.IndexToDayOfWeek(cal.get(Calendar.DAY_OF_WEEK));
 	}
 	public static String XthToDayOfWeek(int Xth) {
 		switch (Xth) {
