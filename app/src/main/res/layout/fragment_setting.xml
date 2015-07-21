@@ -190,6 +190,7 @@
             android:background="@color/lightgray" />
 
         <LinearLayout
+            android:id="@+id/btSettingLockActivity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_l"

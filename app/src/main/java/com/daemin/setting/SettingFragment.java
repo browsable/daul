@@ -40,6 +40,7 @@ public class SettingFragment extends BasicFragment {
     private ImageView ivProfile;
     private LinearLayout btSettingUnivActivity;
     private LinearLayout btSettingIdActivity;
+    private LinearLayout btSettingLockActivity;
 
     public SettingFragment() {
         super(R.layout.fragment_setting, "SettingFragment");
@@ -60,6 +61,7 @@ public class SettingFragment extends BasicFragment {
             ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
             btSettingUnivActivity = (LinearLayout)root.findViewById(R.id.btSettingUnivActivity);
             btSettingIdActivity = (LinearLayout)root.findViewById(R.id.btSettingIdActivity);
+            btSettingLockActivity = (LinearLayout)root.findViewById(R.id.btSettingLockActivity);
 
             File path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES);
@@ -84,6 +86,15 @@ public class SettingFragment extends BasicFragment {
                 /*getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
                 SubMainActivity.getInstance().changeFragment(SettingIdFragment.class,"메일주소 변경",R.color.maincolor);
+            }
+        });
+
+        btSettingLockActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
+                SubMainActivity.getInstance().changeFragment(SettingLockFragment.class,"암호잠금",R.color.maincolor);
             }
         });
 
