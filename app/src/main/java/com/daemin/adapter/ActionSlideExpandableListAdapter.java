@@ -68,7 +68,7 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         TextView tvGroupTime = (TextView) convertView.findViewById(R.id.tvGroupTime);
         TextView tvGroupId = (TextView) convertView.findViewById(R.id.tvGroupId);
         TextView tvGroupContent = (TextView) convertView.findViewById(R.id.tvGroupContent);
-        TextView tvCountComment = (TextView) convertView.findViewById(R.id.tvCountComment);
+        final TextView tvCountComment = (TextView) convertView.findViewById(R.id.tvCountComment);
 
         tvGroupTitle.setText(((FreeBoard.Data)getItem(position)).getTitle());
         tvGroupTime.setText(((FreeBoard.Data) getItem(position)).getWhen());
@@ -95,6 +95,7 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
                 } else {
                     comment.add(new Comment(0, commentContent, new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())), userId));
                     etComment.setText("");
+                    tvCountComment.setText(String.valueOf(comment.size()));
                     commentListAdapter.notifyDataSetChanged();
                     Common.setListViewHeightBasedOnChildren(lvComment);
                 }
