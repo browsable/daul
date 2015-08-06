@@ -35,11 +35,11 @@
     </LinearLayout>
     <TextView
         android:id="@+id/tvChildContent"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:gravity="left"
         android:textSize="13dip"
-        android:text="댓글 내용입니다. 랄라랄라랄"
+        android:text="가나다라"
         android:textColor="@color/black"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"

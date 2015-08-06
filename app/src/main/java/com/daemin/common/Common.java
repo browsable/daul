@@ -2,6 +2,7 @@ package com.daemin.common;
 
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -86,15 +87,33 @@ public class Common {
 		for (int i = 0; i < listAdapter.getCount(); i++) {
 			View listItem = listAdapter.getView(i, null, listView);
 			listItem.measure(0, 0);
-			if(i == listAdapter.getCount()-1)
-				Log.d("junyeong", "last : " + String.valueOf(listItem.getMeasuredHeight()));
 			totalHeight += listItem.getMeasuredHeight();
 		}
 
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
 		params.height = totalHeight
 				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-		Log.d("junyeong", String.valueOf(params.height));
 		listView.setLayoutParams(params);
+	}
+
+	/**
+	 * TextView의 text를 보기 좋게 줄바꿈해준다.
+	 * 출처 - http://blog.naver.com/min_ting/110118117984
+	 * @param textPaint      TextView의 Paint 객체
+	 * @param strText        문자열
+	 * @param breakWidth     줄바꿈 하고 싶은 width값 지정
+	 * @return
+	 */
+	public static String breakText(Paint textPaint, String strText, int breakWidth) {
+		StringBuilder sb = new StringBuilder();
+		int endValue = 0;
+		do{
+			endValue = textPaint.breakText(strText, true, breakWidth, null);
+			if(endValue > 0) {
+				sb.append(strText.substring(0, endValue)).append("\n");
+				strText = strText.substring(endValue);
+			}
+		}while(endValue > 0);
+		return sb.toString().substring(0, sb.length()-1);  // 마지막 "\n"를 제거
 	}
 }

@@ -153,41 +153,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-
-        <LinearLayout
-            android:id="@+id/llExpandable"
+        <ListView
+            android:id="@+id/lvComment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <ListView
-                android:id="@+id/lvComment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </ListView>
-            <LinearLayout
-                android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_xs"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <EditText
+                android:id="@+id/etComment"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_xs"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <EditText
-                    android:id="@+id/etComment"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-                    android:textSize="13dip"
-                    android:hint="댓글을 남겨보세요."/>
-                <Button
-                    android:id="@+id/btEditComment"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:text="확인"
-                    android:background="@drawable/bg_maincolor_round_border"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"/>
-            </LinearLayout>
+                android:layout_weight="1"
+                android:layout_marginLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+                android:textSize="13dip"
+                android:hint="댓글을 남겨보세요."
+                android:layout_gravity="left" />
+            <Button
+                android:id="@+id/btEditComment"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="확인"
+                android:background="@drawable/bg_maincolor_round_border"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
         </LinearLayout>
+
         <!--
         <LinearLayout
             android:layout_width="match_parent"
