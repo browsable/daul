@@ -36,9 +36,12 @@ public class CurrentTime {
 
     //~월 ~째주
     public static String getTitleMonthWeek(Context context) {
-        DateTime dt = DateTime.now();
+        DateTime dt = new DateTime();
+        int firstWeekOfWeekyear = dt.dayOfMonth().withMinimumValue().getWeekOfWeekyear();
+        int calWeekOfMonth = dt.getWeekOfWeekyear()-firstWeekOfWeekyear+1;
+        if(calWeekOfMonth<0) calWeekOfMonth+=53;
         return  " "+dt.getMonthOfYear()+ context.getString(R.string.month)+" "
-                +  (((dt.getDayOfMonth() - 1) / 7) + 1) + context.getString((R.string.weekofmonth));
+                +  calWeekOfMonth + context.getString((R.string.weekofmonth));
     }
     public static Integer preTitleYear(int indexForTitle) {
         LocalDate now = LocalDate.now();
@@ -49,14 +52,20 @@ public class CurrentTime {
         return now.minusWeeks(indexForTitle).getYear();
     }
     public static String preTitleMonthWeek(Context context, int indexForTitle) {
-        DateTime dt = DateTime.now();
+        DateTime dt = new DateTime();
+        int firstWeekOfWeekyear = dt.plusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getWeekOfWeekyear();
+        int calWeekOfMonth = dt.plusWeeks(indexForTitle).getWeekOfWeekyear()-firstWeekOfWeekyear+1;
+        if(calWeekOfMonth<0) calWeekOfMonth+=53;
         return  " "+dt.plusWeeks(indexForTitle).getMonthOfYear()+ context.getString(R.string.month)+" "
-                +  (((dt.plusWeeks(indexForTitle).getDayOfMonth() - 1) / 7) + 1) + context.getString((R.string.weekofmonth));
+                +  calWeekOfMonth + context.getString((R.string.weekofmonth));
     }
     public static String backTitleMonthWeek(Context context, int indexForTitle) {
-        DateTime dt = DateTime.now();
+        DateTime dt = new DateTime();
+        int firstWeekOfWeekyear = dt.minusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getWeekOfWeekyear();
+        int calWeekOfMonth = dt.minusWeeks(indexForTitle).getWeekOfWeekyear()-firstWeekOfWeekyear+1;
+        if(calWeekOfMonth<0) calWeekOfMonth+=53;
         return  " "+dt.minusWeeks(indexForTitle).getMonthOfYear()+ context.getString(R.string.month)+" "
-                +  (((dt.minusWeeks(indexForTitle).getDayOfMonth() - 1) / 7) + 1) + context.getString((R.string.weekofmonth));
+                +  calWeekOfMonth + context.getString((R.string.weekofmonth));
     }
     public static String getYMD() {
         LocalDate date = LocalDate.now();
