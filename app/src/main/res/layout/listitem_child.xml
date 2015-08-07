@@ -18,8 +18,8 @@
             android:textSize="10dip"
             android:text="joyyir"
             android:textColor="@color/gray"
-            android:paddingTop="5dp"
-            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+            android:paddingLeft="@dimen/margin_l"
+            android:paddingTop="@dimen/margin_default" />
         <TextView
             android:id="@+id/tvChildDate"
             android:layout_width="0px"
@@ -29,11 +29,11 @@
             android:textSize="10dip"
             android:text="02.02 18:00"
             android:textColor="@color/gray"
-            android:paddingTop="5dp"
+            android:paddingTop="@dimen/margin_default"
             android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-            android:paddingRight="30dp"/>
+            android:paddingRight="@dimen/margin_l"/>
     </LinearLayout>
-    <TextView
+    <EditText
         android:id="@+id/tvChildContent"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
@@ -41,11 +41,13 @@
         android:textSize="13dip"
         android:text="가나다라"
         android:textColor="@color/black"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:paddingRight="30dp"
-        android:inputType="textMultiLine" />
+        android:paddingTop="@dimen/margin_xs"
+        android:paddingBottom="@dimen/margin_xs"
+        android:paddingLeft="@dimen/margin_l"
+        android:paddingRight="@dimen/margin_l"
+        android:inputType="textMultiLine"
+        android:background="@null"
+        android:editable="false"/>
     <LinearLayout
         android:id="@+id/llCommentBts"
         android:layout_width="match_parent"
@@ -66,7 +68,7 @@
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_maincolor_round_border"
-            android:layout_marginRight="@dimen/margin_xs"
+            android:layout_marginRight="@dimen/margin_l"
             android:text="삭제"
             android:textSize="13dip"/>
     </LinearLayout>

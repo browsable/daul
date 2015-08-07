@@ -34,6 +34,13 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         this.data = data;
         this.userId = userId;
 
+        FreeBoard.Data sampleData = new FreeBoard.Data();
+        sampleData.setTitle("연결고리#힙합");
+        sampleData.setWhen("2015.08.07 12:32");
+        sampleData.setAccount_no(1111);
+        sampleData.setBody("너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리!");
+        data.add(0, sampleData);
+
         comment = new ArrayList<>();
         comment.add(new Comment(1, "애자일 소프트웨어 개발(Agile software development) 혹은 애자일 개발 프로세스는 " +
                 "소프트웨어 엔지니어링에 대한 개념적인 얼개로, 프로젝트의 생명주기동안 반복적인 개발을 촉진한다. " +
@@ -150,14 +157,14 @@ class CommentListAdapter extends BaseAdapter{
 
         TextView tvChildId = (TextView) convertView.findViewById(R.id.tvChildId);
         TextView tvChildDate = (TextView) convertView.findViewById(R.id.tvChildDate);
-        TextView tvChildContent = (TextView) convertView.findViewById(R.id.tvChildContent);
+        EditText tvChildContent = (EditText) convertView.findViewById(R.id.tvChildContent);
         LinearLayout llCommentBts = (LinearLayout) convertView.findViewById(R.id.llCommentBts);
 
         tvChildId.setText(((Comment) getItem(position)).getUserId());
         tvChildDate.setText(((Comment) getItem(position)).getDate());
         tvChildContent.setText(Common.breakText(tvChildContent.getPaint(),
                 ((Comment) getItem(position)).getBody(),
-                tvChildContent.getLayoutParams().width-tvChildContent.getPaddingLeft()-tvChildContent.getPaddingRight()));
+                tvChildContent.getLayoutParams().width - tvChildContent.getPaddingLeft() - tvChildContent.getPaddingRight()));
                 // 마지막 인자는 TextView에서 글이 삽입되는 최대 width를 구함
 
         if(userId != tvChildId.getText())
