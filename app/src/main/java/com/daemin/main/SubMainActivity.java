@@ -75,7 +75,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-
 public class SubMainActivity extends FragmentActivity {
 
 	static final String TAG = "MainActivity";
@@ -557,21 +556,21 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btBack:
 					--indexForTitle;
 					if(indexForTitle<0) {
-						tvTitleYear.setText(CurrentTime.backTitleYear(this, -indexForTitle) + getString(R.string.year));
+						tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
 						switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
 					}else{
-						tvTitleYear.setText(CurrentTime.preTitleYear(this,indexForTitle) + getString(R.string.year));
-						switcher.setText(CurrentTime.preTitleMonthWeek(this,indexForTitle));
+						tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
+						switcher.setText(CurrentTime.preTitleMonthWeek(this, indexForTitle));
 					}
 				break;
 			case R.id.btForward:
 					++indexForTitle;
 					if(indexForTitle<0) {
-						tvTitleYear.setText(CurrentTime.backTitleYear(this,-indexForTitle) + getString(R.string.year));
+						tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
 						switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
 					}else{
-						tvTitleYear.setText(CurrentTime.preTitleYear(this,indexForTitle) + getString(R.string.year));
-						switcher.setText(CurrentTime.preTitleMonthWeek(this,indexForTitle));
+						tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
+						switcher.setText(CurrentTime.preTitleMonthWeek(this, indexForTitle));
 					}
 				break;
 		}
@@ -831,6 +830,7 @@ public class SubMainActivity extends FragmentActivity {
 		editor.putString("EngUnivName", User.USER.getEngUnivName());
 		editor.commit();
 		Common.setLlIncludeDepIn(false);
+		indexForTitle = 0;
 		adapterFlag = false;
 	}
 }

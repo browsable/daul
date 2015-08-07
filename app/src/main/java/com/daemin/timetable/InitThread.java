@@ -48,7 +48,7 @@ public class InitThread extends Thread {
 
 		datep = new Paint(Paint.ANTI_ALIAS_FLAG);
 		datep.setColor(Color.parseColor("#104EC7B3"));
-		dayOfWeek = CurrentTime.getDayOfWeek();
+		dayOfWeek = CurrentTime.getDayOfWeek()+1;
 	}
 
 	public Canvas getCanvas() {

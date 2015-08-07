@@ -29,7 +29,7 @@
         </activity>
         <activity android:name="com.daemin.main.SubMainActivity"
             android:label="@string/app_menu"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize|screenLayout"
 			android:screenOrientation="portrait"
             >
