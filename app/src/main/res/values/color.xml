@@ -17,6 +17,7 @@
     <color name="dimgray">#696969</color>
     <color name="gray">#808080</color>
     <color name="red">#FF0000</color>
+    <color name="blue">#0000FF</color>
     <color name="darkgray">#80000000</color>
     <color name="orange">#FF8878</color>
     <!-- 시간표 입력 시 선택 색상 -->
