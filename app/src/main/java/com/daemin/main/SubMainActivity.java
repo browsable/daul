@@ -60,6 +60,7 @@ import com.daemin.friend.FriendFragment;
 import com.daemin.repository.GroupListFromServerRepository;
 import com.daemin.setting.SettingFragment;
 import com.daemin.timetable.InitSurfaceView;
+import com.daemin.timetable.InitThread;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -325,6 +326,7 @@ public class SubMainActivity extends FragmentActivity {
 	// 드로어 메뉴 버튼 클릭 리스너
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public void mOnClick(View v) {
+		InitThread it = InitSurfaceView.getI_Thread();
 		switch (v.getId()) {
 			case R.id.ibMenu:
 				boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLeftDrawer);
@@ -558,9 +560,11 @@ public class SubMainActivity extends FragmentActivity {
 					if(indexForTitle<0) {
 						tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
 						switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
+						it.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
 					}else{
 						tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
 						switcher.setText(CurrentTime.preTitleMonthWeek(this, indexForTitle));
+						it.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
 					}
 				break;
 			case R.id.btForward:
@@ -568,9 +572,11 @@ public class SubMainActivity extends FragmentActivity {
 					if(indexForTitle<0) {
 						tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
 						switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
+						it.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
 					}else{
 						tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
 						switcher.setText(CurrentTime.preTitleMonthWeek(this, indexForTitle));
+						it.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
 					}
 				break;
 		}

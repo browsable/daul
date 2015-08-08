@@ -6,7 +6,7 @@
     <dimen name="widget_margin">8dp</dimen>
 
 
-
+	<dimen name="margin_xxxl">28dp</dimen>
     <dimen name="margin_xxl">25dp</dimen>
 	<dimen name="margin_xl">20dp</dimen>
 	<dimen name="margin_l">15dp</dimen>
@@ -14,6 +14,7 @@
 	<dimen name="margin_s">8dp</dimen>
 	<dimen name="margin_xs">6dp</dimen>
 	<dimen name="margin_xxs">4dp</dimen>
+	<dimen name="margin_xxxs">2dp</dimen>
 
 	
 	<dimen name="textsize_xxxl">20sp</dimen>

@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlBar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="@color/maincolor" >
         <TextView
             android:id="@+id/tvTitle"
@@ -51,12 +51,12 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_s"
                 android:textStyle="bold" />
-        <TextSwitcher
-            android:id="@+id/switcher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            />
+            <TextSwitcher
+                android:id="@+id/switcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                />
             <Button
                 android:id="@+id/btForward"
                 android:layout_width="24dp"
@@ -71,7 +71,7 @@
 
         <ImageButton
             android:id="@+id/ibMenu"
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
@@ -114,19 +114,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-            <FrameLayout
-                android:id="@+id/flSurface"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical" />
-            <requestFocus />
-            <FrameLayout
-                android:id="@+id/frame_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone" />
+                <FrameLayout
+                    android:id="@+id/flSurface"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" />
+                <requestFocus />
+                <FrameLayout
+                    android:id="@+id/frame_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
