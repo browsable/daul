@@ -13,19 +13,17 @@ import org.joda.time.format.DateTimeFormat;
  * Created by hernia on 2015-08-07.
  */
 public class CurrentTime {
-
+    static LocalDate now = LocalDate.now();
     //년도
     public static Integer getYear() {
-        LocalDate now = LocalDate.now();
+
         return now.getYear();
     }
     public static Integer getMonthOfYear() {
-        LocalDate now = LocalDate.now();
         return now.getMonthOfYear();
     }
     //일
     public static Integer getDayOfWeek() {
-        LocalDate now = LocalDate.now();
         return now.getDayOfWeek();
     }
     //주
@@ -36,41 +34,35 @@ public class CurrentTime {
 
     //~월 ~째주
     public static String getTitleMonthWeek(Context context) {
-        DateTime dt = new DateTime();
-        int firstWeekOfWeekyear = dt.dayOfMonth().withMinimumValue().getWeekOfWeekyear();
-        int calWeekOfMonth = dt.getWeekOfWeekyear()-firstWeekOfWeekyear+1;
-        if(calWeekOfMonth<0) calWeekOfMonth+=53;
-        return  " "+dt.getMonthOfYear()+ context.getString(R.string.month)+" "
+        int firstWeekOfWeekyear = now.dayOfMonth().withMinimumValue().getWeekOfWeekyear();
+        int calWeekOfMonth = now.getWeekOfWeekyear()-firstWeekOfWeekyear+1;
+        if(calWeekOfMonth<0) calWeekOfMonth=now.getWeekOfWeekyear()+1;
+        return  " "+now.getMonthOfYear()+ context.getString(R.string.month)+" "
                 +  calWeekOfMonth + context.getString((R.string.weekofmonth));
     }
     public static Integer preTitleYear(int indexForTitle) {
-        LocalDate now = LocalDate.now();
         return now.plusWeeks(indexForTitle).getYear();
     }
     public static Integer backTitleYear(int indexForTitle) {
-        LocalDate now = LocalDate.now();
         return now.minusWeeks(indexForTitle).getYear();
     }
     public static String preTitleMonthWeek(Context context, int indexForTitle) {
-        DateTime dt = new DateTime();
-        int firstWeekOfWeekyear = dt.plusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getWeekOfWeekyear();
-        int calWeekOfMonth = dt.plusWeeks(indexForTitle).getWeekOfWeekyear()-firstWeekOfWeekyear+1;
-        if(calWeekOfMonth<0) calWeekOfMonth+=53;
-        return  " "+dt.plusWeeks(indexForTitle).getMonthOfYear()+ context.getString(R.string.month)+" "
+        int firstWeekOfWeekyear = now.plusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getWeekOfWeekyear();
+        int calWeekOfMonth = now.plusWeeks(indexForTitle).getWeekOfWeekyear()-firstWeekOfWeekyear+1;
+        if(calWeekOfMonth<0) calWeekOfMonth=now.plusWeeks(indexForTitle).getWeekOfWeekyear()+1;
+        return  " "+now.plusWeeks(indexForTitle).getMonthOfYear()+ context.getString(R.string.month)+" "
                 +  calWeekOfMonth + context.getString((R.string.weekofmonth));
     }
     public static String backTitleMonthWeek(Context context, int indexForTitle) {
-        DateTime dt = new DateTime();
-        int firstWeekOfWeekyear = dt.minusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getWeekOfWeekyear();
-        int calWeekOfMonth = dt.minusWeeks(indexForTitle).getWeekOfWeekyear()-firstWeekOfWeekyear+1;
-        if(calWeekOfMonth<0) calWeekOfMonth+=53;
-        return  " "+dt.minusWeeks(indexForTitle).getMonthOfYear()+ context.getString(R.string.month)+" "
+        int firstWeekOfWeekyear = now.minusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getWeekOfWeekyear();
+        int calWeekOfMonth = now.minusWeeks(indexForTitle).getWeekOfWeekyear()-firstWeekOfWeekyear+1;
+        if(calWeekOfMonth<0) calWeekOfMonth=now.minusWeeks(indexForTitle).getWeekOfWeekyear()+1;
+        return  " "+now.minusWeeks(indexForTitle).getMonthOfYear()+ context.getString(R.string.month)+" "
                 +  calWeekOfMonth + context.getString((R.string.weekofmonth));
     }
     public static String getYMD() {
-        LocalDate date = LocalDate.now();
         org.joda.time.format.DateTimeFormatter fmt = DateTimeFormat.forPattern("d MMMM, yyyy");
-        return date.toString(fmt);
+        return now.toString(fmt);
     }
 
     /*public void shouldGetAfterOneDay() {
