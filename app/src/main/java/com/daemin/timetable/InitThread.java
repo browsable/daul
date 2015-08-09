@@ -62,7 +62,7 @@ public class InitThread extends Thread {
 
 		datep = new Paint(Paint.ANTI_ALIAS_FLAG);
 		datep.setColor(Color.parseColor("#104EC7B3"));
-		dayOfWeek = CurrentTime.getDayOfWeek()+1;
+		dayOfWeek = CurrentTime.getDayOfWeek();
 	}
 
 	public Canvas getCanvas() {
@@ -241,38 +241,33 @@ public class InitThread extends Thread {
 		canvas.drawText("SAT", width * 14 / 15 - 17, height * 2/ 62, tpblue);
 
 		switch (day) {
-		case 1: // 일요일
-			canvas.drawRect(width * 1 / 15, ((height * 2) - 10) / 64,
-					width * 3 / 15, height * 62 / 64, datep);
-			break;
-		case 2: // 월요일
-
+		case 1: // 월요일
 			canvas.drawRect(width * 3 / 15, ((height * 2) - 10) / 64,
 					width * 5 / 15, height * 62 / 64, datep);
 			break;
-		case 3: // 화요일
-
+		case 2: // 화요일
 			canvas.drawRect(width * 5 / 15, ((height * 2) - 10) / 64,
 					width * 7 / 15, height * 62 / 64, datep);
 			break;
-		case 4: // 수요일
-
+		case 3: // 수요일
 			canvas.drawRect(width * 7 / 15, ((height * 2) - 10) / 64,
 					width * 9 / 15, height * 62 / 64, datep);
 			break;
-		case 5: // 목요일
-
+		case 4: // 목요일
 			canvas.drawRect(width * 9 / 15, ((height * 2) - 10) / 64,
 					width * 11 / 15, height * 62 / 64, datep);
 			break;
-		case 6: // 금요일
-
+		case 5: // 금요일
 			canvas.drawRect(width * 11 / 15, ((height * 2) - 10) / 64,
 					width * 13 / 15, height * 62 / 64, datep);
 			break;
-		case 7: // 토요일
+		case 6: // 토요일
 			canvas.drawRect(width * 13 / 15, ((height * 2) - 10) / 64,
 					width * 15 / 15, height * 62 / 64, datep);
+			break;
+		case 7: // 일요일
+			canvas.drawRect(width * 1 / 15, ((height * 2) - 10) / 64,
+					width * 3 / 15, height * 62 / 64, datep);
 			break;
 		}
 

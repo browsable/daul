@@ -2,6 +2,7 @@ package com.daemin.common;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.daemin.timetable.DateOfWeekData;
 import com.daemin.timetable.R;
@@ -23,7 +24,10 @@ public class CurrentTime {
         return now.weekOfWeekyear().roundCeilingCopy().minusDays(2);
     }
     public static DateOfWeekData getDateOfWeek() {
-        if(now.getDayOfWeek()==7) fst = now.plusWeeks(1).weekOfWeekyear().roundFloorCopy().minusDays(1);
+        if(now.getDayOfWeek()==7){
+            Log.i("hi","hi");
+            fst = now.plusWeeks(1).weekOfWeekyear().roundFloorCopy().minusDays(1);
+        }
         else fst = now.weekOfWeekyear().roundFloorCopy().minusDays(1);
        dowd.setAllDate(
                fst.getMonthOfYear()+"/"+fst.getDayOfMonth(),
@@ -74,7 +78,13 @@ public class CurrentTime {
     public static String getTitleMonthWeek(Context context) {
         int lastDayofWeek = getLastDayOfWeek().getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
         int firstDayOfMonth=0;
-        if(now.dayOfMonth().withMinimumValue().getDayOfWeek()==7) firstDayOfMonth = now.dayOfMonth().withMinimumValue().plusDays(2).getWeekOfWeekyear();
+        if(now.dayOfMonth().withMinimumValue().getDayOfWeek()==7) {
+            firstDayOfMonth = now.dayOfMonth().withMinimumValue().plusWeeks(1).getWeekOfWeekyear();
+        }
+        else if(now.getDayOfWeek()==7){
+            lastDayofWeek = getLastDayOfWeek().plusWeeks(1).getWeekOfWeekyear();
+            firstDayOfMonth = now.dayOfMonth().withMinimumValue().getWeekOfWeekyear();
+        }
         else firstDayOfMonth = now.dayOfMonth().withMinimumValue().getWeekOfWeekyear(); //이번달 첫날 토요일의 주차
         int calWeekOfMonth = lastDayofWeek-firstDayOfMonth+1;
         if(calWeekOfMonth<0) calWeekOfMonth = lastDayofWeek+1;
@@ -84,7 +94,13 @@ public class CurrentTime {
     public static String preTitleMonthWeek(Context context, int indexForTitle) {
         int lastDayofWeek = getLastDayOfWeek().plusWeeks(indexForTitle).getWeekOfWeekyear(); //다음 토요일의 년대비 주차
         int firstDayOfMonth=0;
-        if(now.plusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getDayOfWeek()==7) firstDayOfMonth = now.plusWeeks(indexForTitle).dayOfMonth().withMinimumValue().plusDays(2).getWeekOfWeekyear();
+        if(now.dayOfMonth().withMinimumValue().getDayOfWeek()==7){
+            firstDayOfMonth = now.plusWeeks(indexForTitle).dayOfMonth().withMinimumValue().plusWeeks(1).getWeekOfWeekyear();
+        }
+        else if(now.getDayOfWeek()==7){
+            lastDayofWeek = getLastDayOfWeek().plusWeeks(indexForTitle).plusWeeks(1).getWeekOfWeekyear();
+            firstDayOfMonth = now.plusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getWeekOfWeekyear(); //이번달 첫날 토요일의 주차
+        }
         else firstDayOfMonth = now.plusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getWeekOfWeekyear(); //이번달 첫날 토요일의 주차
         int calWeekOfMonth = lastDayofWeek-firstDayOfMonth+1;
         if(calWeekOfMonth<0) calWeekOfMonth = lastDayofWeek+1;
@@ -94,8 +110,15 @@ public class CurrentTime {
     public static String backTitleMonthWeek(Context context, int indexForTitle) {
         int lastDayofWeek = getLastDayOfWeek().minusWeeks(indexForTitle).getWeekOfWeekyear(); //다음 토요일의 년대비 주차
         int firstDayOfMonth=0;
-        if(now.minusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getDayOfWeek()==7) firstDayOfMonth = now.minusWeeks(indexForTitle).dayOfMonth().withMinimumValue().plusDays(2).getWeekOfWeekyear();
-        else firstDayOfMonth = now.minusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getWeekOfWeekyear();
+        if(now.dayOfMonth().withMinimumValue().getDayOfWeek()==7){
+            firstDayOfMonth = now.minusWeeks(indexForTitle).dayOfMonth().withMinimumValue().plusWeeks(1).getWeekOfWeekyear();
+        }
+        else if(now.getDayOfWeek()==7){
+            lastDayofWeek = getLastDayOfWeek().minusWeeks(indexForTitle).plusWeeks(1).getWeekOfWeekyear();
+            firstDayOfMonth = now.minusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getWeekOfWeekyear(); //이번달 첫날 토요일의 주차
+        }
+        else firstDayOfMonth = now.minusWeeks(indexForTitle).dayOfMonth().withMinimumValue().getWeekOfWeekyear(); //이번달 첫날 토요일의 주차
+
         int calWeekOfMonth = lastDayofWeek - firstDayOfMonth + 1;
         if(calWeekOfMonth<0) calWeekOfMonth = lastDayofWeek+1;
         return " " + getLastDayOfWeek().minusWeeks(indexForTitle).getMonthOfYear() + context.getString(R.string.month) + " "
