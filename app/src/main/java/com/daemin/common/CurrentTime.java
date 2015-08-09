@@ -13,7 +13,7 @@ import org.joda.time.LocalDate;
  */
 public class CurrentTime {
     static LocalDate now = LocalDate.now();
-    //static LocalDate now = new LocalDate(2015,8,5);
+    //static LocalDate now = new LocalDate(2017,1,1);
     static DateOfWeekData dowd = new DateOfWeekData();
     static LocalDate fst; //해당날짜의 첫째 date
     public static Integer getYear() {
@@ -24,8 +24,8 @@ public class CurrentTime {
         else return now.withDayOfWeek(6);
     }
     public static LocalDate getFirstDayOfWeekYear(){
-        if(getLastDayOfWeek().withDayOfMonth(1).getDayOfWeek()==7) return getLastDayOfWeek().withDayOfMonth(1).plusWeeks(1).plusDays(1).withDayOfWeek(6);
-        else return getLastDayOfWeek().withDayOfMonth(1).plusWeeks(1).withDayOfWeek(6);
+        if(getLastDayOfWeek().withDayOfMonth(1).getDayOfWeek()==7) return getLastDayOfWeek().withDayOfMonth(1).plusDays(1).withDayOfWeek(6);
+        return getLastDayOfWeek().withDayOfMonth(1).withDayOfWeek(6);
     }
     public static LocalDate getPlusDayOfWeek(int plus){
         if(now.getDayOfWeek()==7)  return now.plusDays(1).plusWeeks(plus).withDayOfWeek(6);

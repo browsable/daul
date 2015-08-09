@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlBar"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="42dp"
         android:background="@color/maincolor" >
         <TextView
             android:id="@+id/tvTitle"
