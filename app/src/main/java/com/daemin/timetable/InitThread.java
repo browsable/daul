@@ -183,39 +183,39 @@ public class InitThread extends Thread {
 
 		float[] hp_hour = {
 				// 가로선 : 1시간 간격
-				26, height / 32, width, height / 32, 26, height * 3 / 32, width,
-				height * 3 / 32, 26, height * 5 / 32, width, height * 5 / 32, 26,
-				height * 7 / 32, width, height * 7 / 32, 26, height * 9 / 32, width,
-				height * 9 / 32, 26, height * 11 / 32, width, height * 11 / 32, 26,
-				height * 13 / 32, width, height * 13 / 32, 26, height * 15 / 32, width,
-				height * 15 / 32, 26, height * 17 / 32, width, height * 17 / 32, 26,
-				height * 19 / 32, width, height * 19 / 32, 26, height * 21 / 32, width,
-				height * 21 / 32, 26, height * 23 / 32, width, height * 23 / 32, 26,
-				height * 25 / 32, width, height * 25 / 32, 26, height * 27 / 32, width,
-				height * 27 / 32, 26, height * 29 / 32, width, height * 29 / 32, 26,
-				height * 31 / 32, width, height * 31 / 32 };
+				26, height / 32 + 6, width, height / 32 + 6 , 26, height * 3 / 32 + 6, width,
+				height * 3 / 32 + 6, 26, height * 5 / 32 + 6, width, height * 5 / 32 + 6, 26,
+				height * 7 / 32 + 6, width, height * 7 / 32 + 6, 26, height * 9 / 32 + 6, width,
+				height * 9 / 32 + 6, 26, height * 11 / 32 + 6, width, height * 11 / 32 + 6, 26,
+				height * 13 / 32 + 6, width, height * 13 / 32 + 6, 26, height * 15 / 32 + 6, width,
+				height * 15 / 32 + 6, 26, height * 17 / 32 + 6, width, height * 17 / 32 + 6, 26,
+				height * 19 / 32 + 6, width, height * 19 / 32 + 6, 26, height * 21 / 32 + 6, width,
+				height * 21 / 32 + 6, 26, height * 23 / 32 + 6, width, height * 23 / 32 + 6, 26,
+				height * 25 / 32 + 6, width, height * 25 / 32 + 6, 26, height * 27 / 32 + 6, width,
+				height * 27 / 32 + 6, 26, height * 29 / 32 + 6, width, height * 29 / 32 + 6, 26,
+				height * 31 / 32 + 6, width, height * 31 / 32 + 6 };
 		float[] hp_half = {
 				// 가로선 : 30분 간격
-				0, height * 2 / 32, width, height * 2 / 32, 0, height * 4 / 32, width,
-				height * 4 / 32, 0, height * 6 / 32, width, height * 6 / 32, 0,
-				height * 8 / 32, width, height * 8 / 32, 0, height * 10 / 32, width,
-				height * 10 / 32, 0, height * 12 / 32, width, height * 12 / 32, 0,
-				height * 14 / 32, width, height * 14 / 32, 0, height * 16 / 32, width,
-				height * 16 / 32, 0, height * 18 / 32, width, height * 18 / 32, 0,
-				height * 20 / 32, width, height * 20 / 32, 0, height * 22 / 32, width,
-				height * 22 / 32, 0, height * 24 / 32, width, height * 24 / 32, 0,
-				height * 26 / 32, width, height * 26 / 32, 0, height * 28 / 32, width,
-				height * 28 / 32, 0, height * 30 / 32, width, height * 30 / 32 };
+				0, height * 2 / 32+ 6, width, height * 2 / 32+ 6, 0, height * 4 / 32 + 6, width,
+				height * 4 / 32 + 6, 0, height * 6 / 32 + 6, width, height * 6 / 32 + 6, 0,
+				height * 8 / 32 + 6, width, height * 8 / 32+ 6, 0, height * 10 / 32 + 6, width,
+				height * 10 / 32 + 6, 0, height * 12 / 32 + 6, width, height * 12 / 32 + 6, 0,
+				height * 14 / 32 + 6, width, height * 14 / 32, 0, height * 16 / 32, width,
+				height * 16 / 32 + 6, 0, height * 18 / 32 + 6, width, height * 18 / 32 + 6, 0,
+				height * 20 / 32 + 6, width, height * 20 / 32, 0, height * 22 / 32, width,
+				height * 22 / 32 + 6, 0, height * 24 / 32 + 6, width, height * 24 / 32 + 6, 0,
+				height * 26 / 32 + 6, width, height * 26 / 32, 0, height * 28 / 32, width,
+				height * 28 / 32 + 6, 0, height * 30 / 32 + 6, width, height * 30 / 32 + 6 };
 
 		float[] vp = {
 				// 세로 선
-				width / 15, height / 32, width / 15, height * 31 / 32, width * 3 / 15,
-				height / 32, width * 3 / 15, height * 31 / 32, width * 5 / 15,
-				height / 32, width * 5 / 15, height * 31 / 32, width * 7 / 15,
-				height / 32, width * 7 / 15, height * 31 / 32, width * 9 / 15,
-				height / 32, width * 9 / 15, height * 31 / 32, width * 11 / 15,
-				height / 32, width * 11 / 15, height * 31 / 32, width * 13 / 15,
-				height / 32, width * 13 / 15, height * 31 / 32, };
+				width / 15, height / 32 + 6, width / 15, height * 31 / 32 + 6, width * 3 / 15,
+				height / 32 + 6, width * 3 / 15, height * 31 / 32 + 6, width * 5 / 15,
+				height / 32 + 6, width * 5 / 15, height * 31 / 32 + 6, width * 7 / 15,
+				height / 32 + 6, width * 7 / 15, height * 31 / 32 + 6, width * 9 / 15,
+				height / 32 + 6, width * 9 / 15, height * 31 / 32 + 6, width * 11 / 15,
+				height / 32 + 6, width * 11 / 15, height * 31 / 32 + 6, width * 13 / 15,
+				height / 32 + 6, width * 13 / 15, height * 31 / 32 + 6, };
 
 		canvas.drawColor(Color.WHITE);
 		canvas.drawLines(hp_hour, hp);
@@ -227,50 +227,50 @@ public class InitThread extends Thread {
 			canvas.drawText(String.valueOf(i + 8), 2,
 					((2 * i + 1) * height / 32) + 7, np);
 		}
-		canvas.drawText(sun, width * 2 / 15, height / 62 - 4, tpred);
-		canvas.drawText(mon, width * 4 / 15, height / 62 - 4, tp);
-		canvas.drawText(tue, width * 6 / 15, height / 62 - 4, tp);
-		canvas.drawText(wed, width * 8 / 15, height / 62 - 4, tp);
-		canvas.drawText(thr, width * 10 / 15, height / 62 - 4, tp);
-		canvas.drawText(fri, width * 12 / 15, height / 62 - 4, tp);
-		canvas.drawText(sat, width * 14 / 15, height / 62 - 4, tpblue);
+		canvas.drawText(sun, width * 2 / 15, height / 62, tpred);
+		canvas.drawText(mon, width * 4 / 15, height / 62, tp);
+		canvas.drawText(tue, width * 6 / 15, height / 62, tp);
+		canvas.drawText(wed, width * 8 / 15, height / 62, tp);
+		canvas.drawText(thr, width * 10 / 15, height / 62, tp);
+		canvas.drawText(fri, width * 12 / 15, height / 62, tp);
+		canvas.drawText(sat, width * 14 / 15, height / 62, tpblue);
 
-		canvas.drawText("SUN", width * 2 / 15, height * 2/ 62 - 3, tpred);
-		canvas.drawText("MON", width * 4 / 15, height * 2/ 62 - 3, tp);
-		canvas.drawText("TUE", width * 6 / 15, height * 2/ 62 - 3, tp);
-		canvas.drawText("WED", width * 8 / 15, height * 2/ 62 - 3, tp);
-		canvas.drawText("THU", width * 10 / 15, height * 2/ 62 - 3, tp);
-		canvas.drawText("FRI", width * 12 / 15, height * 2/ 62 - 3, tp);
-		canvas.drawText("SAT", width * 14 / 15, height * 2/ 62 - 3, tpblue);
+		canvas.drawText("SUN", width * 2 / 15, height * 2/ 62 - 1, tpred);
+		canvas.drawText("MON", width * 4 / 15, height * 2/ 62 - 1, tp);
+		canvas.drawText("TUE", width * 6 / 15, height * 2/ 62 - 1, tp);
+		canvas.drawText("WED", width * 8 / 15, height * 2/ 62 - 1, tp);
+		canvas.drawText("THU", width * 10 / 15, height * 2/ 62 - 1, tp);
+		canvas.drawText("FRI", width * 12 / 15, height * 2/ 62 - 1, tp);
+		canvas.drawText("SAT", width * 14 / 15, height * 2/ 62 - 1, tpblue);
 
 		switch (day) {
 		case 1: // 월요일
-			canvas.drawRect(width * 3 / 15, ((height * 2) - 10) / 64,
-					width * 5 / 15, height * 62 / 64, datep);
+			canvas.drawRect(width * 3 / 15, ((height * 2) - 10) / 64 + 6,
+					width * 5 / 15, height * 62 / 64 + 6, datep);
 			break;
 		case 2: // 화요일
-			canvas.drawRect(width * 5 / 15, ((height * 2) - 10) / 64,
-					width * 7 / 15, height * 62 / 64, datep);
+			canvas.drawRect(width * 5 / 15, ((height * 2) - 10) / 64 + 6,
+					width * 7 / 15, height * 62 / 64 + 6, datep);
 			break;
 		case 3: // 수요일
-			canvas.drawRect(width * 7 / 15, ((height * 2) - 10) / 64,
-					width * 9 / 15, height * 62 / 64, datep);
+			canvas.drawRect(width * 7 / 15, ((height * 2) - 10) / 64 + 6,
+					width * 9 / 15, height * 62 / 64 + 6, datep);
 			break;
 		case 4: // 목요일
-			canvas.drawRect(width * 9 / 15, ((height * 2) - 10) / 64,
-					width * 11 / 15, height * 62 / 64, datep);
+			canvas.drawRect(width * 9 / 15, ((height * 2) - 10) / 64 + 6,
+					width * 11 / 15, height * 62 / 64 + 6, datep);
 			break;
 		case 5: // 금요일
-			canvas.drawRect(width * 11 / 15, ((height * 2) - 10) / 64,
-					width * 13 / 15, height * 62 / 64, datep);
+			canvas.drawRect(width * 11 / 15, ((height * 2) - 10) / 64 + 6,
+					width * 13 / 15, height * 62 / 64 + 6, datep);
 			break;
 		case 6: // 토요일
-			canvas.drawRect(width * 13 / 15, ((height * 2) - 10) / 64,
-					width * 15 / 15, height * 62 / 64, datep);
+			canvas.drawRect(width * 13 / 15, ((height * 2) - 10) / 64 + 6,
+					width * 15 / 15, height * 62 / 64 + 6, datep);
 			break;
 		case 7: // 일요일
-			canvas.drawRect(width * 1 / 15, ((height * 2) - 10) / 64,
-					width * 3 / 15, height * 62 / 64, datep);
+			canvas.drawRect(width * 1 / 15, ((height * 2) - 10) / 64 + 6,
+					width * 3 / 15, height * 62 / 64 + 6, datep);
 			break;
 		}
 
