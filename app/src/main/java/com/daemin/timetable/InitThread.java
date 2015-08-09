@@ -25,8 +25,7 @@ public class InitThread extends Thread {
 	Context context;
 	private Paint hp; // 1시간 간격 수평선
 	private Paint hpvp; // 30분 간격 수평선, 수직선
-	private Paint tp,tpred,tpblue; // 시간 텍스트
-	private Paint rp; // 사각형
+	private Paint tp,tpred,tpblue,np; // 시간 텍스트
 	private Paint datep;
 	static int tempxth;
 	static int tempyth;
@@ -50,14 +49,18 @@ public class InitThread extends Thread {
 
 		hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		hpvp.setAlpha(70);
-
+		np = new Paint(Paint.ANTI_ALIAS_FLAG);
+		np.setTextSize(18);
 		tp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		tp.setTextSize(18);
+		tp.setTextAlign(Paint.Align.CENTER);
 		tpred = new Paint(Paint.ANTI_ALIAS_FLAG);
 		tpred.setTextSize(18);
+		tpred.setTextAlign(Paint.Align.CENTER);
 		tpred.setColor(context.getResources().getColor(R.color.red));
 		tpblue = new Paint(Paint.ANTI_ALIAS_FLAG);
 		tpblue.setTextSize(18);
+		tpblue.setTextAlign(Paint.Align.CENTER);
 		tpblue.setColor(context.getResources().getColor(R.color.blue));
 
 		datep = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -218,27 +221,27 @@ public class InitThread extends Thread {
 		canvas.drawLines(hp_hour, hp);
 		canvas.drawLines(hp_half, hpvp);
 		canvas.drawLines(vp, hpvp);
-		canvas.drawText("8", 12, height * 1 / 32 + 7, tp);
-		canvas.drawText("9", 12, height * 3 / 32 + 7, tp);
+		canvas.drawText("8", 12, height * 1 / 32 + 7, np);
+		canvas.drawText("9", 12, height * 3 / 32 + 7, np);
 		for (int i = 2; i < 16; i++) {
 			canvas.drawText(String.valueOf(i + 8), 2,
-					((2 * i + 1) * height / 32) + 7, tp);
+					((2 * i + 1) * height / 32) + 7, np);
 		}
-		canvas.drawText(sun, width * 2 / 15 - 17, height / 62, tpred);
-		canvas.drawText(mon, width * 4 / 15 - 12, height / 62, tp);
-		canvas.drawText(tue, width * 6 / 15 - 16, height / 62, tp);
-		canvas.drawText(wed, width * 8 / 15 - 13, height / 62, tp);
-		canvas.drawText(thr, width * 10 / 15 - 11, height / 62, tp);
-		canvas.drawText(fri, width * 12 / 15 - 13, height / 62, tp);
-		canvas.drawText(sat, width * 14 / 15 - 13, height / 62, tpblue);
+		canvas.drawText(sun, width * 2 / 15, height / 62 - 4, tpred);
+		canvas.drawText(mon, width * 4 / 15, height / 62 - 4, tp);
+		canvas.drawText(tue, width * 6 / 15, height / 62 - 4, tp);
+		canvas.drawText(wed, width * 8 / 15, height / 62 - 4, tp);
+		canvas.drawText(thr, width * 10 / 15, height / 62 - 4, tp);
+		canvas.drawText(fri, width * 12 / 15, height / 62 - 4, tp);
+		canvas.drawText(sat, width * 14 / 15, height / 62 - 4, tpblue);
 
-		canvas.drawText("SUN", width * 2 / 15 - 21, height * 2/ 62, tpred);
-		canvas.drawText("MON", width * 4 / 15 - 16, height * 2/ 62, tp);
-		canvas.drawText("TUE", width * 6 / 15 - 20, height * 2/ 62, tp);
-		canvas.drawText("WED", width * 8 / 15 - 17, height * 2/ 62, tp);
-		canvas.drawText("THU", width * 10 / 15 - 15, height * 2/ 62, tp);
-		canvas.drawText("FRI", width * 12 / 15 - 17, height * 2/ 62, tp);
-		canvas.drawText("SAT", width * 14 / 15 - 17, height * 2/ 62, tpblue);
+		canvas.drawText("SUN", width * 2 / 15, height * 2/ 62 - 3, tpred);
+		canvas.drawText("MON", width * 4 / 15, height * 2/ 62 - 3, tp);
+		canvas.drawText("TUE", width * 6 / 15, height * 2/ 62 - 3, tp);
+		canvas.drawText("WED", width * 8 / 15, height * 2/ 62 - 3, tp);
+		canvas.drawText("THU", width * 10 / 15, height * 2/ 62 - 3, tp);
+		canvas.drawText("FRI", width * 12 / 15, height * 2/ 62 - 3, tp);
+		canvas.drawText("SAT", width * 14 / 15, height * 2/ 62 - 3, tpblue);
 
 		switch (day) {
 		case 1: // 월요일

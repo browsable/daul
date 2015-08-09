@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlBar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="46dp"
         android:background="@color/maincolor" >
         <TextView
             android:id="@+id/tvTitle"
@@ -68,10 +68,9 @@
 
         </LinearLayout>
 
-
         <ImageButton
             android:id="@+id/ibMenu"
-            android:layout_width="40dp"
+            android:layout_width="46dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
@@ -118,7 +117,8 @@
                     android:id="@+id/flSurface"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    />
                 <requestFocus />
                 <FrameLayout
                     android:id="@+id/frame_container"
