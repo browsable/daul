@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -16,7 +17,9 @@ import com.daemin.common.BasicFragment;
 import com.daemin.common.MyVolley;
 import com.daemin.community.github.FreeBoard;
 import com.daemin.community.github.GithubActivity;
+import com.daemin.community.lib.AbstractSlideExpandableListAdapter;
 import com.daemin.community.lib.ActionSlideExpandableListView;
+import com.daemin.community.lib.SlideExpandableListAdapter;
 import com.daemin.timetable.R;
 import com.navercorp.volleyextensions.request.Jackson2Request;
 
@@ -34,12 +37,14 @@ public class CommunityFragment2 extends BasicFragment {
 
     public CommunityFragment2(){
         super(R.layout.fragment_community2, "CommunityFragment");
+        //super(R.layout.fragment_write_article, "CommunityFragment");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = super.onCreateView(inflater, container, savedInstanceState);
 
+        //if(layoutId <= 0 ) {
         if (layoutId > 0) {
             final String GET_PERSON_URL = "http://timedao.heeguchi.me/app/getArticleList";
 
@@ -53,7 +58,23 @@ public class CommunityFragment2 extends BasicFragment {
                             data = response.getData();
 
                             ActionSlideExpandableListView list = (ActionSlideExpandableListView) root.findViewById(R.id.list);
-                            list.setAdapter(new ActionSlideExpandableListAdapter(data, userId));
+                            final ActionSlideExpandableListAdapter adapter = new ActionSlideExpandableListAdapter(data, userId);
+                            list.setAdapter(adapter);
+                            ((SlideExpandableListAdapter)list.getAdapter()).setItemExpandCollapseListener(new AbstractSlideExpandableListAdapter.OnItemExpandCollapseListener() {
+                                @Override
+                                public void onExpand(View itemView, int position) {
+                                    ImageView groupIndicator = (ImageView) ((View) itemView.getParent()).findViewById(R.id.expandable_arrow);
+                                    groupIndicator.setImageResource(R.drawable.ic_action_collapse);
+                                    adapter.setExpandCollapseList(position, adapter.EXPANDED);
+                                }
+
+                                @Override
+                                public void onCollapse(View itemView, int position) {
+                                    ImageView groupIndicator = (ImageView) ((View) itemView.getParent()).findViewById(R.id.expandable_arrow);
+                                    groupIndicator.setImageResource(R.drawable.ic_action_expand);
+                                    adapter.setExpandCollapseList(position, adapter.COLLAPSED);
+                                }
+                            });
                         }
                     }, new Response.ErrorListener() {
                         @Override

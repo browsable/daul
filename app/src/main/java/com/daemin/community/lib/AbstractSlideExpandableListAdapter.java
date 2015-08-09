@@ -7,12 +7,9 @@ import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-
-import com.daemin.timetable.R;
 
 import java.util.BitSet;
 
@@ -226,21 +223,8 @@ public abstract class AbstractSlideExpandableListAdapter extends WrapperListAdap
         }
 
         button.setOnClickListener(new View.OnClickListener() {
-            private boolean isExpanded = false;
-            private final ImageView groupIndicator = (ImageView)button.findViewById(R.id.expandable_arrow);
-
             @Override
             public void onClick(final View view) {
-                // Jun-yeong : Group Indicator의 동작을 위해 추가한 부분
-                if(isExpanded){
-                    groupIndicator.setImageResource(R.drawable.ic_action_expand);
-                    isExpanded = false;
-                }
-                else{
-                    groupIndicator.setImageResource(R.drawable.ic_action_collapse);
-                    isExpanded = true;
-                }
-                // 추가한 부분 끝
 
                 Animation a = target.getAnimation();
 

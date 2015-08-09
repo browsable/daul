@@ -46,8 +46,7 @@
         android:paddingLeft="@dimen/margin_l"
         android:paddingRight="@dimen/margin_l"
         android:inputType="textMultiLine"
-        android:background="@null"
-        android:editable="false"/>
+        android:background="@null" />
     <LinearLayout
         android:id="@+id/llCommentBts"
         android:layout_width="match_parent"

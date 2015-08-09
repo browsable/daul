@@ -92,6 +92,17 @@
             android:scaleType="fitXY"
             android:src="@drawable/bt_cancel"
             android:visibility="gone"/>
+        <Button
+            android:id="@+id/btWriteArticle"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/margin_s"
+            android:text="글쓰기"
+            android:textSize="13dip"
+            android:background="@drawable/bg_maincolor_round_border"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <android.support.v4.widget.DrawerLayout

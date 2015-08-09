@@ -32,5 +32,6 @@ public class SlideExpandableListAdapter extends AbstractSlideExpandableListAdapt
         return parent.findViewById(expandable_view_id);
     }
 
+
 }
 
