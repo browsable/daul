@@ -50,6 +50,7 @@ import com.daemin.common.DatabaseHandler;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
 import com.daemin.community.CommunityFragment2;
+import com.daemin.community.WriteArticleFragment;
 import com.daemin.data.SubjectData;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.MyPreferences;
@@ -84,7 +85,7 @@ public class SubMainActivity extends FragmentActivity {
 	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend,llTitle;
 	ImageButton ibMenu, ibBack;
 	TextView tvTitle,tvTitleYear,tvRecommendDummy;
-	Button btPlus,btNormal, btUniv, btRecommend, btColor, btDialCancel,btShowUniv,btShowDep,btShowGrade,btEnter;
+	Button btPlus,btNormal, btUniv, btRecommend, btColor, btDialCancel, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
 	FrameLayout flSurface, frame_container;
 	RelativeLayout rlBar;
 	Fragment mContent = null;
@@ -148,6 +149,7 @@ public class SubMainActivity extends FragmentActivity {
 		btUniv = (Button) findViewById(R.id.btUniv);
 		btRecommend = (Button) findViewById(R.id.btRecommend);
 		btColor = (Button) findViewById(R.id.btColor);
+		btWriteArticle = (Button) findViewById(R.id.btWriteArticle);
 		hlv = (HorizontalListView) findViewById(R.id.hlv);
 		hlvRecommend = (HorizontalListView) findViewById(R.id.hlvRecommend);
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
@@ -327,6 +329,9 @@ public class SubMainActivity extends FragmentActivity {
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public void mOnClick(View v) {
 		InitThread it = InitSurfaceView.getI_Thread();
+
+		btWriteArticle.setVisibility(View.GONE);
+
 		switch (v.getId()) {
 			case R.id.ibMenu:
 				boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLeftDrawer);
@@ -388,6 +393,13 @@ public class SubMainActivity extends FragmentActivity {
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				surfaceFlag = true;
 				BackKeyName = "";
+				btWriteArticle.setVisibility(View.VISIBLE);
+				btWriteArticle.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						changeFragment(WriteArticleFragment.class, "커뮤니티", R.color.orange);
+					}
+				});
 				break;
 			case R.id.btSetting:
 				llTitle.setVisibility(View.GONE);
@@ -458,21 +470,19 @@ public class SubMainActivity extends FragmentActivity {
 						btEnter.setOnClickListener(new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								if(Common.isOnline()){
-									if(User.USER.isSubjectDownloadState()){
+								if (Common.isOnline()) {
+									if (User.USER.isSubjectDownloadState()) {
 										Toast.makeText(SubMainActivity.this, "이미 다운로드된 상태이므로 과목셋팅만", Toast.LENGTH_SHORT).show();
 										setupSubjectDatas();
-									}
-									else {
+									} else {
 										Toast.makeText(SubMainActivity.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
 										DownloadSqlite(engName);
 									}
-								}else{
-									if(User.USER.isSubjectDownloadState()){
+								} else {
+									if (User.USER.isSubjectDownloadState()) {
 										Toast.makeText(SubMainActivity.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
 										setupSubjectDatas();
-									}
-									else {
+									} else {
 										Toast.makeText(SubMainActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
 									}
 								}

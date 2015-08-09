@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,10 +30,14 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
     private List<FreeBoard.Data> data;
     private List<Comment> comment;
     private String userId;
+    private List<Integer> expandCollapseList;
+    public final int COLLAPSED = 0;
+    public final int EXPANDED = 1;
 
     public ActionSlideExpandableListAdapter(List<FreeBoard.Data> data, String userId) {
         this.data = data;
         this.userId = userId;
+        expandCollapseList = new ArrayList<>();
 
         FreeBoard.Data sampleData = new FreeBoard.Data();
         sampleData.setTitle("연결고리#힙합");
@@ -49,6 +54,9 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         comment.add(new Comment(2, "반가워요 호호호호", "07.07 22:00", "skyrocket"));
         comment.add(new Comment(3, "이거 좋아요!", "07.07 23:00", "fade2black"));
         comment.add(new Comment(4, "ㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱ", "08.06 16:00", "baboda"));
+
+        for(int i = 0; i < data.size(); i++)
+            expandCollapseList.add(i, COLLAPSED);
     }
 
     @Override
@@ -80,12 +88,17 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         TextView tvGroupId = (TextView) convertView.findViewById(R.id.tvGroupId);
         TextView tvGroupContent = (TextView) convertView.findViewById(R.id.tvGroupContent);
         final TextView tvCountComment = (TextView) convertView.findViewById(R.id.tvCountComment);
+        ImageView expandable_arrow = (ImageView) convertView.findViewById(R.id.expandable_arrow);
 
         tvGroupTitle.setText(((FreeBoard.Data) getItem(position)).getTitle());
         tvGroupTime.setText(((FreeBoard.Data) getItem(position)).getWhen());
         tvGroupId.setText(String.valueOf(((FreeBoard.Data) getItem(position)).getAccount_no()));
         tvGroupContent.setText(((FreeBoard.Data) getItem(position)).getBody());
         tvCountComment.setText(String.valueOf(comment.size()));
+        if(expandCollapseList.get(position) == EXPANDED)
+            expandable_arrow.setImageResource(R.drawable.ic_action_collapse);
+        else
+            expandable_arrow.setImageResource(R.drawable.ic_action_expand);
 
         final ListView lvComment = (ListView) convertView.findViewById(R.id.lvComment);
         final CommentListAdapter commentListAdapter = new CommentListAdapter(comment, userId, lvComment, tvCountComment);
@@ -114,6 +127,10 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         });
 
         return convertView;
+    }
+
+    public void setExpandCollapseList(int position, int expandOrCollapse){
+        expandCollapseList.set(position, expandOrCollapse);
     }
 }
 
@@ -166,6 +183,7 @@ class CommentListAdapter extends BaseAdapter{
                 ((Comment) getItem(position)).getBody(),
                 tvChildContent.getLayoutParams().width - tvChildContent.getPaddingLeft() - tvChildContent.getPaddingRight()));
                 // 마지막 인자는 TextView에서 글이 삽입되는 최대 width를 구함
+        tvChildContent.setFocusableInTouchMode(false);
 
         if(userId != tvChildId.getText())
             llCommentBts.setVisibility(View.GONE);
