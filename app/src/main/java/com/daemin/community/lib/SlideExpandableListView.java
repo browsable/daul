@@ -1,7 +1,6 @@
 package com.daemin.community.lib;
 
 import android.content.Context;
-import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
@@ -67,7 +66,7 @@ class SlideExpandableListView extends ListView {
     }
 
 
-    @Override
+   /* @Override
     public Parcelable onSaveInstanceState() {
         return adapter.onSaveInstanceState(super.onSaveInstanceState());
     }
@@ -83,5 +82,5 @@ class SlideExpandableListView extends ListView {
         super.onRestoreInstanceState(ss.getSuperState());
 
         adapter.onRestoreInstanceState(ss);
-    }
+    }*/
 }

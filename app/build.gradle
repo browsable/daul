@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 'Google Inc.:Google APIs:22'
-    buildToolsVersion "23.0.0 rc2"
+    buildToolsVersion '23.0.0 rc3'
 
     defaultConfig {
         applicationId "com.daemin.timetable"
@@ -58,4 +58,5 @@ dependencies {
         exclude module: 'xpp3'
     }
     compile 'joda-time:joda-time:2.8.1'
+    //compile 'com.sothree.slidinguppanel:library:3.1.1'
 }
