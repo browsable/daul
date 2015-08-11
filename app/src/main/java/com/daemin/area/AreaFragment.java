@@ -20,7 +20,7 @@ public class AreaFragment extends BasicFragment {
 
 		View root = super.onCreateView(inflater, container, savedInstanceState);
 		if (layoutId > 0) {
-
+			//test
 			//load();
 		}
 		return root;
