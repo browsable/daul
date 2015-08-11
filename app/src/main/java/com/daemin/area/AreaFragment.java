@@ -22,6 +22,7 @@ public class AreaFragment extends BasicFragment {
 		if (layoutId > 0) {
 			//test
 			//test3
+			//test2
 			//load();
 		}
 		return root;
