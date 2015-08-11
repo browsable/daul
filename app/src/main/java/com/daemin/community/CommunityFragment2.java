@@ -31,9 +31,11 @@ import java.util.Map;
  * Created by hernia on 2015-07-07.
  */
 public class CommunityFragment2 extends BasicFragment {
-    private List<FreeBoard.Data> data;
+    private static CommunityFragment2 singleton;
     private final String userId = "joyyir";
-    View root;
+    private List<FreeBoard.Data> data;
+    private View root;
+    ActionSlideExpandableListAdapter adapter;
 
     public CommunityFragment2(){
         super(R.layout.fragment_community2, "CommunityFragment");
@@ -43,6 +45,7 @@ public class CommunityFragment2 extends BasicFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = super.onCreateView(inflater, container, savedInstanceState);
+        singleton = this;
 
         //if(layoutId <= 0 ) {
         if (layoutId > 0) {
@@ -58,7 +61,7 @@ public class CommunityFragment2 extends BasicFragment {
                             data = response.getData();
 
                             ActionSlideExpandableListView list = (ActionSlideExpandableListView) root.findViewById(R.id.list);
-                            final ActionSlideExpandableListAdapter adapter = new ActionSlideExpandableListAdapter(data, userId);
+                            adapter = new ActionSlideExpandableListAdapter(data, userId);
                             list.setAdapter(adapter);
                             ((SlideExpandableListAdapter)list.getAdapter()).setItemExpandCollapseListener(new AbstractSlideExpandableListAdapter.OnItemExpandCollapseListener() {
                                 @Override
@@ -96,5 +99,13 @@ public class CommunityFragment2 extends BasicFragment {
         }
 
         return root;
+    }
+
+    public static CommunityFragment2 getInstance(){
+        return singleton;
+    }
+
+    public List<FreeBoard.Data> getData(){
+        return data;
     }
 }

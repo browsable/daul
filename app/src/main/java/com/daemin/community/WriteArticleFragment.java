@@ -9,7 +9,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.daemin.common.BasicFragment;
+import com.daemin.community.github.FreeBoard;
+import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Jun-yeong on 2015-08-09.
@@ -30,9 +35,19 @@ public class WriteArticleFragment extends BasicFragment {
                 return;
             }
 
+//            Article.setTitle(etArticleTitle.getText().toString());
+//            Article.setContent(etArticleContent.getText().toString());
+//            Article.setDate(new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())));
+//            Article.setUserId("joyyir");
 
+            FreeBoard.Data data = new FreeBoard.Data();
+            data.setWhen(new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())));
+            data.setBody(etArticleContent.getText().toString());
+            data.setTitle(etArticleTitle.getText().toString());
+            data.setAccount_no(921111);
 
-
+            CommunityFragment2.getInstance().getData().add(0, data);
+            SubMainActivity.getInstance().changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
         }
     }
 
@@ -50,8 +65,6 @@ public class WriteArticleFragment extends BasicFragment {
             btWriteArticle = (Button) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.btWriteArticle);
             btWriteArticle.setText("확인");
             btWriteArticle.setOnClickListener(new mOnClick());
-
-
         }
         return root;
     }
