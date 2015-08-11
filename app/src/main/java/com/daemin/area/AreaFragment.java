@@ -23,6 +23,7 @@ public class AreaFragment extends BasicFragment {
 			//test
 			//test3
 			//test23423
+			//test356565
 			//load();
 		}
 		return root;

@@ -71,6 +71,7 @@ class SlideExpandableListView extends ListView {
         return adapter.onSaveInstanceState(super.onSaveInstanceState());
     }
 
+    // Fragment add -> Activity 띄우는거
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         if(!(state instanceof AbstractSlideExpandableListAdapter.SavedState)) {
