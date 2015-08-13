@@ -40,7 +40,7 @@ public class SettingFragment extends BasicFragment {
     private ImageView ivProfile;
     private LinearLayout btSettingUnivActivity;
     private LinearLayout btSettingIdActivity;
-    private LinearLayout btSettingLockActivity;
+    private LinearLayout btSettingCustomerActivity;
 
     public SettingFragment() {
         super(R.layout.fragment_setting, "SettingFragment");
@@ -61,7 +61,7 @@ public class SettingFragment extends BasicFragment {
             ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
             btSettingUnivActivity = (LinearLayout)root.findViewById(R.id.btSettingUnivActivity);
             btSettingIdActivity = (LinearLayout)root.findViewById(R.id.btSettingIdActivity);
-            btSettingLockActivity = (LinearLayout)root.findViewById(R.id.btSettingLockActivity);
+            btSettingCustomerActivity = (LinearLayout)root.findViewById(R.id.btSettingCustomerActivity);
 
             File path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES);
@@ -89,12 +89,12 @@ public class SettingFragment extends BasicFragment {
             }
         });
 
-        btSettingLockActivity.setOnClickListener(new View.OnClickListener() {
+        btSettingCustomerActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
-                SubMainActivity.getInstance().changeFragment(SettingLockFragment.class,"암호잠금",R.color.maincolor);
+                SubMainActivity.getInstance().changeFragment(SettingCustomerFragment.class,"고객센터",R.color.maincolor);
             }
         });
 

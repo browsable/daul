@@ -17,12 +17,12 @@ import com.daemin.common.BasicFragment;
 import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
 
-public class SettingLockFragment extends BasicFragment {
+public class SettingWithdrawlFragment extends BasicFragment {
 
     ImageButton ibMenu, ibBack;
     String[] arrayDep={};
-    public SettingLockFragment() {
-        super(R.layout.fragment_setting_lock, "SettingLockFragment");
+    public SettingWithdrawlFragment() {
+        super(R.layout.fragment_setting_withdrawl, "SettingWithdrawlFragment");
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -36,7 +36,7 @@ public class SettingLockFragment extends BasicFragment {
             ibBack = SubMainActivity.getInstance().getIbBack();
             ibMenu.setVisibility(View.GONE);
             ibBack.setVisibility(View.VISIBLE);
-            SubMainActivity.getInstance().setBackKeyName("SettingLockFragment");
+            SubMainActivity.getInstance().setBackKeyName("SettingWithdrawlFragment");
         }
         ibBack.setOnClickListener(new View.OnClickListener() {
                     @Override
