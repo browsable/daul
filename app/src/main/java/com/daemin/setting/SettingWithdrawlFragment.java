@@ -12,20 +12,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
 import com.daemin.common.BasicFragment;
 import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
 
-public class SettingCustomerFragment extends BasicFragment {
-    private LinearLayout btSettingLockActivity;
-    private LinearLayout btSettingWithdrawlActivity;
+public class SettingWithdrawlFragment extends BasicFragment {
 
     ImageButton ibMenu, ibBack;
     String[] arrayDep={};
-    public SettingCustomerFragment() {
-        super(R.layout.fragment_setting_customer, "SettingCustomerFragment");
+    public SettingWithdrawlFragment() {
+        super(R.layout.fragment_setting_withdrawl, "SettingWithdrawlFragment");
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -39,36 +36,15 @@ public class SettingCustomerFragment extends BasicFragment {
             ibBack = SubMainActivity.getInstance().getIbBack();
             ibMenu.setVisibility(View.GONE);
             ibBack.setVisibility(View.VISIBLE);
-            SubMainActivity.getInstance().setBackKeyName("SettingCustomerFragment");
-
-            btSettingLockActivity = (LinearLayout)root.findViewById(R.id.btSettingLockActivity);
-            btSettingWithdrawlActivity = (LinearLayout)root.findViewById(R.id.btSettingWithdrawlActivity);
+            SubMainActivity.getInstance().setBackKeyName("SettingWithdrawlFragment");
         }
         ibBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        SubMainActivity.getInstance().changeFragment(SettingFragment.class, "설정",R.color.maincolor);
+                        SubMainActivity.getInstance().changeFragment(SettingCustomerFragment.class, "고객센터",R.color.maincolor);
                         SubMainActivity.getInstance().setBackKeyName("");
                 ibMenu.setVisibility(View.VISIBLE);
                 ibBack.setVisibility(View.GONE);
-            }
-        });
-
-        btSettingLockActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
-                SubMainActivity.getInstance().changeFragment(SettingLockFragment.class, "암호잠금", R.color.maincolor);
-            }
-        });
-
-        btSettingWithdrawlActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
-                SubMainActivity.getInstance().changeFragment(SettingWithdrawlFragment.class,"TimeDAO 탈퇴",R.color.maincolor);
             }
         });
 

@@ -18,6 +18,7 @@ import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
 
 public class SettingLockFragment extends BasicFragment {
+
     ImageButton ibMenu, ibBack;
     String[] arrayDep={};
     public SettingLockFragment() {
@@ -35,12 +36,12 @@ public class SettingLockFragment extends BasicFragment {
             ibBack = SubMainActivity.getInstance().getIbBack();
             ibMenu.setVisibility(View.GONE);
             ibBack.setVisibility(View.VISIBLE);
-            SubMainActivity.getInstance().setBackKeyName("SettingIdFragment");
+            SubMainActivity.getInstance().setBackKeyName("SettingLockFragment");
         }
         ibBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        SubMainActivity.getInstance().changeFragment(SettingFragment.class, "설정",R.color.maincolor);
+                        SubMainActivity.getInstance().changeFragment(SettingCustomerFragment.class, "고객센터",R.color.maincolor);
                         SubMainActivity.getInstance().setBackKeyName("");
                 ibMenu.setVisibility(View.VISIBLE);
                 ibBack.setVisibility(View.GONE);
