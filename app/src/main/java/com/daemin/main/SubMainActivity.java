@@ -41,6 +41,7 @@ import android.widget.ViewSwitcher;
 
 import com.daemin.adapter.HorizontalListAdapter;
 import com.daemin.area.AreaFragment;
+import com.daemin.calendar.CalendarFragment;
 import com.daemin.common.AsyncCallback;
 import com.daemin.common.AsyncExecutor;
 import com.daemin.common.BackPressCloseHandler;
@@ -83,7 +84,7 @@ public class SubMainActivity extends FragmentActivity {
 	InitSurfaceView InitSurfaceView;
 	DrawerLayout mDrawerLayout;
 	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend,llTitle;
-	ImageButton ibMenu, ibBack;
+	ImageButton ibMenu, ibBack, ibCalendar;
 	TextView tvTitle,tvTitleYear,tvRecommendDummy;
 	Button btPlus,btNormal, btUniv, btRecommend, btColor, btDialCancel, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
 	FrameLayout flSurface, frame_container;
@@ -100,6 +101,7 @@ public class SubMainActivity extends FragmentActivity {
 	CalendarView cal;
 	GradientDrawable gd;
 	Boolean adapterFlag=false;
+	int keyboardHeight;
 	static int indexForTitle=0;
 	private HorizontalListView hlv, hlvRecommend;
 	DatabaseHandler db;
@@ -110,10 +112,18 @@ public class SubMainActivity extends FragmentActivity {
 	public static SubMainActivity getInstance() {
 		return singleton;
 	}
-	public ImageButton getIbBack() {
-		return ibBack;
-	}
-	public ImageButton getIbMenu() { return ibMenu; }
+	public ImageButton getIbBack() {return ibBack;}
+	public ImageButton getIbMenu() {return ibMenu;}
+	public com.daemin.timetable.InitSurfaceView getInitSurfaceView() {return InitSurfaceView;}
+	public LinearLayout getLlTitle() {return llTitle;}
+	public ImageButton getIbCalendar() {return ibCalendar;}
+	public TextView getTvTitle() {return tvTitle;}
+	public Button getBtPlus() {return btPlus;}
+	public SlidingUpPanelLayout getmLayout() {return mLayout;}
+	public FrameLayout getFlSurface() {return flSurface;}
+	public Boolean getSurfaceFlag() {return surfaceFlag;}
+	public void setSurfaceFlag(Boolean surfaceFlag) {this.surfaceFlag = surfaceFlag;}
+	public FrameLayout getFrame_container() {return frame_container;}
 	public void setBackKeyName(String backKeyName) {
 		BackKeyName = backKeyName;
 	}
@@ -132,6 +142,7 @@ public class SubMainActivity extends FragmentActivity {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		ibMenu = (ImageButton) findViewById(R.id.ibMenu);
 		ibBack = (ImageButton) findViewById(R.id.ibBack);
+		ibCalendar = (ImageButton) findViewById(R.id.ibCalendar);
 		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
 		llDialog = (LinearLayout) findViewById(R.id.llDialog);
 		llColor = (LinearLayout) findViewById(R.id.llColor);
@@ -189,8 +200,6 @@ public class SubMainActivity extends FragmentActivity {
 		switcher.setInAnimation(in);
 		switcher.setOutAnimation(out);
 		switcher.setText(CurrentTime.getTitleMonthWeek(this));
-
-
 		/*ArrayList<DialogNormalData> normalList = new ArrayList<>();
 		normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
 				endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
@@ -319,12 +328,11 @@ public class SubMainActivity extends FragmentActivity {
 		case R.color.maincolor:
 			rlBar.setBackgroundResource(R.color.maincolor);
 			break;
-		case R.color.orange:
+			case R.color.orange:
 			rlBar.setBackgroundResource(R.color.orange);
 			break;
 		}
 	}
-
 	// 드로어 메뉴 버튼 클릭 리스너
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public void mOnClick(View v) {
@@ -334,6 +342,7 @@ public class SubMainActivity extends FragmentActivity {
 
 		switch (v.getId()) {
 			case R.id.ibMenu:
+				mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLeftDrawer);
 				if (drawerOpen) {
 					mDrawerLayout.closeDrawer(mLeftDrawer);
@@ -341,13 +350,30 @@ public class SubMainActivity extends FragmentActivity {
 				else {
 					mDrawerLayout.openDrawer(mLeftDrawer);
 				}
-				mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+
+				break;
+			case R.id.ibCalendar:
+				llTitle.setVisibility(View.GONE);
+				tvTitle.setVisibility(View.VISIBLE);
+				btPlus.setVisibility(View.GONE);
+				ibMenu.setVisibility(View.GONE);
+				ibBack.setVisibility(View.VISIBLE);
+				ibCalendar.setVisibility(View.GONE);
+				mLayout.setTouchEnabled(false);
+				changeFragment(CalendarFragment.class, "", R.color.maincolor);
+				flSurface.setVisibility(View.GONE);
+				frame_container.setVisibility(View.VISIBLE);
+				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+				surfaceFlag = true;
+				BackKeyName = "";
 				break;
 			case R.id.btTimetable:
 				llTitle.setVisibility(View.VISIBLE);
 				tvTitle.setVisibility(View.GONE);
 				btPlus.setVisibility(View.VISIBLE);
+				ibCalendar.setVisibility(View.VISIBLE);
 				mLayout.setVisibility(View.VISIBLE);
+
 				mLayout.setTouchEnabled(true);
 				changeFragment(TimetableFragment.class, "", R.color.maincolor);
 				flSurface.setVisibility(View.VISIBLE);
@@ -362,6 +388,7 @@ public class SubMainActivity extends FragmentActivity {
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
+				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
 				changeFragment(FriendFragment.class, "친구시간표", R.color.orange);
 				flSurface.setVisibility(View.GONE);
@@ -374,6 +401,7 @@ public class SubMainActivity extends FragmentActivity {
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
+				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
 				changeFragment(AreaFragment.class, "주변시간표", R.color.maincolor);
 				flSurface.setVisibility(View.GONE);
@@ -386,6 +414,7 @@ public class SubMainActivity extends FragmentActivity {
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
+				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
 				changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
 				flSurface.setVisibility(View.GONE);
@@ -405,6 +434,7 @@ public class SubMainActivity extends FragmentActivity {
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
+				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
 				changeFragment(SettingFragment.class, "설정", R.color.maincolor);
 				flSurface.setVisibility(View.GONE);

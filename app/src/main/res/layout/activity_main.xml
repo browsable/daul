@@ -87,9 +87,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:background="@color/transparency"
-            android:padding="@dimen/margin_l"
+            android:padding="@dimen/margin_default"
             android:scaleType="fitXY"
-            android:src="@drawable/bt_cancel"
+            android:src="@drawable/bt_back"
             android:visibility="gone"/>
         <Button
             android:id="@+id/btWriteArticle"
@@ -102,6 +102,19 @@
             android:textSize="13dip"
             android:background="@drawable/bg_maincolor_round_border"
             android:visibility="gone"/>
+
+        <ImageButton
+            android:id="@+id/ibCalendar"
+            android:layout_width="46dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/transparency"
+            android:padding="@dimen/margin_s"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_action_event"
+            android:onClick="mOnClick"
+            />
     </RelativeLayout>
 
     <android.support.v4.widget.DrawerLayout
@@ -185,6 +198,4 @@
         </LinearLayout>
 
     </android.support.v4.widget.DrawerLayout>
-
-
 </LinearLayout>

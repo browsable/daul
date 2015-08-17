@@ -26,6 +26,5 @@
 	<dimen name="textsize_xs">8sp</dimen>
 	<dimen name="textsize_xxs">6sp</dimen>
 	<dimen name="textsize_xxxs">4sp</dimen>
-	
-	
+	<dimen name="keyboard_height">230dip</dimen>
 </resources>
