@@ -3,12 +3,12 @@ package com.daemin.timetable;
 /**
  * Created by hernia on 2015-08-08.
  */
-public class DateOfWeekData {
+public class DayOfWeekData {
     String sun,mon,tue,wed,thr,fri,sat;
 
-    public DateOfWeekData() {
+    public DayOfWeekData() {
     }
-    public DateOfWeekData(String sun, String mon, String tue, String wed, String thr, String fri, String sat) {
+    public DayOfWeekData(String sun, String mon, String tue, String wed, String thr, String fri, String sat) {
         this.sun = sun;
         this.mon = mon;
         this.tue = tue;

@@ -6,15 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
-import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
-import com.daemin.enumclass.DrawMode;
-import com.daemin.enumclass.PosState;
-import com.daemin.enumclass.TimePos;
-import com.daemin.main.SubMainActivity;
+import com.daemin.enumclass.DayOfMonthPos;
+import com.daemin.enumclass.DayOfMonthPosState;
 
 @SuppressLint("DefaultLocale")
 public class InitMonthThread extends InitThread {
@@ -32,7 +29,7 @@ public class InitMonthThread extends InitThread {
 	Canvas canvas;
 
 	public InitMonthThread(SurfaceHolder holder, Context context) {
-		DateOfWeekData dowd = CurrentTime.getDateOfWeek();
+		DayOfWeekData dowd = CurrentTime.getDateOfWeek();
 		this.mholder = holder;
 		this.context = context;
 		this.sun = dowd.getSun();
@@ -71,7 +68,7 @@ public class InitMonthThread extends InitThread {
 	public Canvas getCanvas() {
 		return canvas;
 	}
-	public void setCurrentTime(DateOfWeekData dowd){
+	public void setCurrentTime(DayOfWeekData dowd){
 		this.sun = dowd.getSun();
 		this.mon = dowd.getMon();
 		this.tue = dowd.getTue();
@@ -104,8 +101,8 @@ public class InitMonthThread extends InitThread {
 					Common.checkTableStateIsNothing = true;
 
 					// 사각형 그리기
-					for (TimePos ETP : TimePos.values()) {
-						ETP.drawTimePos(canvas, width, height);
+					for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
+						DOMP.drawTimePos(canvas, width, height);
 					}
 				}
 			} catch (Exception e) {
@@ -118,63 +115,26 @@ public class InitMonthThread extends InitThread {
 	}
 
 	public void getDownXY(int xth, int yth) {
-		makeTimePos(xth, yth, "down");
+		makeTimePos(xth, yth);
 		tempxth = xth;
 		tempyth = yth;
 	}
 
 	public void getMoveXY(int xth, int yth) {
 		if (tempxth != xth || tempyth != yth) {
-			makeTimePos(xth, yth, "move");
+			makeTimePos(xth, yth);
 			tempxth = xth;
 			tempyth = yth;
 		}
 	}
 
-	public void ActionUp() {
-		// EnumTimePos.valueOf(Convert.getxyMerge(xth,
-		// yth)).setPosState(PosState.END);
-		/*
-		 * for (EnumTimePos ETP : EnumTimePos.values()) { if (ETP.getPosState()
-		 * != PosState.NO_PAINT) { Log.i(ETP.name(),
-		 * String.valueOf(ETP.getGroupNumber())); } }
-		 */
-	}
-
-	public void makeTimePos(int xth, int yth, String touchType) {
-		TimePos ETP = TimePos.valueOf(Convert.getxyMerge(xth, yth));
-		switch(DrawMode.CURRENT.getMode()) {
-			case 0: case 3://일반
-				if (ETP.getPosState() == PosState.NO_PAINT) {
-					if (touchType.equals("down")) {
-						ETP.setPosState(PosState.START);
-						Common.getTempTimePos().add(ETP.name());
-					} else {
-						ETP.setPosState(PosState.INTERMEDIATE);
-						Common.getTempTimePos().add(ETP.name());
-					}
-				} else {
-					ETP.setPosState(PosState.NO_PAINT);
-				}
-				break;
-			case 1: //대학
-				//대학선택시에 그리는 것은 막고 선택한 과목은 함께 지워져야함
-				if (Common.checkTableStateIsNothing&& Common.isLlIncludeDepIn()) {
-					Toast.makeText(context,"과목을 선택하세요",Toast.LENGTH_SHORT).show();
-				}else {
-					Common.stateFilter(Common.getTempTimePos());
-				}
-				break;
-			case 2: //추천
-				if (ETP.getPosState() == PosState.NO_PAINT) {
-					Common.stateFilter(Common.getTempTimePos());
-					ETP.setPosState(PosState.RECOMMEND);
-					Common.getTempTimePos().add(ETP.name());
-					SubMainActivity.getInstance().setupRecommendDatas(ETP.name());
-				}else{
-					Common.stateFilter(Common.getTempTimePos());
-				}
-				break;
+	public void makeTimePos(int xth, int yth) {
+		DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
+		if (DOMP.getPosState() == DayOfMonthPosState.NO_PAINT) {
+			DOMP.setPosState(DayOfMonthPosState.PAINT);
+			Common.getTempTimePos().add(DOMP.name());
+		} else {
+			DOMP.setPosState(DayOfMonthPosState.NO_PAINT);
 		}
 		return;
 	}
@@ -183,20 +143,20 @@ public class InitMonthThread extends InitThread {
 
 		float[] hp_hour = {
 				// 가로선 : 1시간 간격
-				0, height / 32 + 6, width, height / 32 + 6 , 0, height * 5 / 32 + 6, width,
-				height * 5 / 32 + 6, 0, height * 9 / 32 + 6, width, height * 9 / 32 + 6, 0,
-				height * 13 / 32 + 6, width, height * 13 / 32 + 6, 0, height * 17 / 32 + 6, width,
-				height * 17 / 32 + 6, 0, height * 21 / 32 + 6, width, height * 21 / 32 + 6, 0,
-				height * 25 / 32 + 6, width, height * 25 / 32 + 6};
+				0, height / 32 + 6, width, height / 32 + 6 , 0, height * 12 / 64 + 6, width,
+				height * 12 / 64 + 6, 0, height * 22 / 64 + 6, width, height * 22 / 64 + 6, 0,
+				height * 32 / 64 + 6, width, height * 32 / 64 + 6, 0, height * 42 / 64 + 6, width,
+				height * 42 / 64 + 6, 0, height * 52 / 64 + 6, width, height * 52 / 64 + 6, 0,
+				height * 62 / 64 + 6, width, height * 62 / 64 + 6};
 
 		float[] vp = {
 				// 세로 선
 				width / 7, height / 32 + 6, width / 7, height * 62 / 64+ 6, width * 2 / 7,
-				height / 32 + 6, width * 2 / 7, height * 25 / 32+ 6, width * 3 / 7,
-				height / 32 + 6, width * 3 / 7, height * 25 / 32+ 6, width * 4 / 7,
-				height / 32 + 6, width * 4 / 7, height * 25 / 32+ 6, width * 5 / 7,
-				height / 32 + 6, width * 5 / 7, height * 25 / 32+ 6, width * 6 / 7,
-				height / 32 + 6, width * 6 / 7, height * 25 / 32+ 6};
+				height / 32 + 6, width * 2 / 7, height * 62 / 64+ 6, width * 3 / 7,
+				height / 32 + 6, width * 3 / 7, height * 62 / 64+ 6, width * 4 / 7,
+				height / 32 + 6, width * 4 / 7, height * 62 / 64+ 6, width * 5 / 7,
+				height / 32 + 6, width * 5 / 7, height * 62 / 64+ 6, width * 6 / 7,
+				height / 32 + 6, width * 6 / 7, height * 62 / 64+ 6};
 
 		canvas.drawColor(Color.WHITE);
 		canvas.drawLines(hp_hour, hp);

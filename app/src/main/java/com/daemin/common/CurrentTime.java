@@ -3,7 +3,7 @@ package com.daemin.common;
 
 import android.content.Context;
 
-import com.daemin.timetable.DateOfWeekData;
+import com.daemin.timetable.DayOfWeekData;
 import com.daemin.timetable.R;
 
 import org.joda.time.LocalDate;
@@ -14,7 +14,7 @@ import org.joda.time.LocalDate;
 public class CurrentTime {
     static LocalDate now = LocalDate.now();
     //static LocalDate now = new LocalDate(2017,1,1);
-    static DateOfWeekData dowd = new DateOfWeekData();
+    static DayOfWeekData dowd = new DayOfWeekData();
     static LocalDate fst; //해당날짜의 첫째 date
     public static Integer getYear() {
         return getLastDayOfWeek().getYear();
@@ -43,7 +43,7 @@ public class CurrentTime {
         if(getMinusDayOfWeek(minus).withDayOfMonth(1).getDayOfWeek()==7) return getMinusDayOfWeek(minus).withDayOfMonth(1).plusDays(1).withDayOfWeek(6);
         else return getMinusDayOfWeek(minus).withDayOfMonth(1).withDayOfWeek(6);
     }
-    public static DateOfWeekData getDateOfWeek() {
+    public static DayOfWeekData getDateOfWeek() {
         if(now.getDayOfWeek()==7) fst = now.plusWeeks(1).weekOfWeekyear().roundFloorCopy().minusDays(1);
         else fst = now.weekOfWeekyear().roundFloorCopy().minusDays(1);
        dowd.setAllDate(
@@ -57,7 +57,7 @@ public class CurrentTime {
         );
         return dowd;
     }
-    public static DateOfWeekData getPreDateOfWeek(int indexForTitle) {
+    public static DayOfWeekData getPreDateOfWeek(int indexForTitle) {
         LocalDate pre = fst.plusWeeks(indexForTitle);
         dowd.setAllDate(
                 pre.getMonthOfYear() + "/" + pre.getDayOfMonth(),
@@ -70,7 +70,7 @@ public class CurrentTime {
         );
         return dowd;
     }
-    public static DateOfWeekData getBackDateOfWeek(int indexForTitle) {
+    public static DayOfWeekData getBackDateOfWeek(int indexForTitle) {
         LocalDate back = fst.minusWeeks(indexForTitle);
         dowd.setAllDate(
                 back.getMonthOfYear() + "/" + back.getDayOfMonth(),

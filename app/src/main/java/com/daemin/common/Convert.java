@@ -74,6 +74,20 @@ public class Convert {
 		}
 		return "P"+x+y;
 	}
+	public static String getxyMergeForMonth(int Xth, int Yth) {
+		String x, y;
+		if (Xth < 10) {
+			x =  String.format("%02d",Xth);
+		}else{
+			x = String.valueOf(Xth);
+		}
+		if (Yth < 10) {
+			y =  String.format("%02d",Yth);
+		}else{
+			y = String.valueOf(Yth);
+		}
+		return "M"+x+y;
+	}
 
 	public static String IndexToDayOfWeek(int DayOfWeekIndex) {
 		switch (DayOfWeekIndex) {

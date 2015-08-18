@@ -90,42 +90,74 @@ public class InitSurfaceView extends SurfaceView implements
 
 	@SuppressLint({ "ClickableViewAccessibility", "DefaultLocale" })
 	public boolean onTouchEvent(MotionEvent event) {
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-				calXthYth(event);
-				if (xth > 0 && yth > 0 && yth < 30) {
-					initThread.getDownXY(xth, yth);
-					outOfTouchArea = false;
-				}else{
-					outOfTouchArea = true;
+		switch (mode) {
+			case "week":
+				switch (event.getAction()) {
+					case MotionEvent.ACTION_DOWN:
+						calXthYth(event);
+						if (xth > 0 && yth > 0 && yth < 30) {
+							initThread.getDownXY(xth, yth);
+							outOfTouchArea = false;
+						} else {
+							outOfTouchArea = true;
+						}
+						break;
+					case MotionEvent.ACTION_MOVE:
+						if (!outOfTouchArea) {
+							calXthYth(event);
+							if (xth > 0 && yth > 0 && yth < 30) {
+								initThread.getMoveXY(xth, yth);
+							}
+						}
+						break;
 				}
-			break;
-		case MotionEvent.ACTION_MOVE:
-			if(!outOfTouchArea){
-				calXthYth(event);
-				if (xth > 0 && yth > 0 && yth < 30) {
-					initThread.getMoveXY(xth, yth);
+				break;
+			case "month":
+				switch (event.getAction()) {
+					case MotionEvent.ACTION_DOWN:
+						calXthYth(event);
+						if (xth > 0 && yth > 0 && yth < 7) {
+							initThread.getDownXY(xth, yth);
+							outOfTouchArea = false;
+						} else {
+							outOfTouchArea = true;
+						}
+						break;
+					case MotionEvent.ACTION_MOVE:
+						if (!outOfTouchArea) {
+							calXthYth(event);
+							if (xth > 0 && yth > 0 && yth < 7) {
+								initThread.getMoveXY(xth, yth);
+							}
+						}
+						break;
 				}
-			}
-			break;
-		case MotionEvent.ACTION_UP:
-			initThread.ActionUp();
-			break;
+				break;
 		}
-
 		return true;
 	}
 	public void calXthYth(MotionEvent event) {
-		//화면에 x축으로 15등분 중 몇번째에 위치하는지
-		xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 15 / initThread.getWidth();
-		if (xth % 2 == 0) {
-			xth -= 1;
-		}
-		//화면에 y축으로 32등분 중 몇번째에 위치하는지
-		yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * 32 / initThread.getHeight();
-		if (yth % 2 == 0) {
-			if(DrawMode.CURRENT.getMode()==0 || DrawMode.CURRENT.getMode()==3) yth -= 1;
-		}
+		switch (mode) {
+			case "week":
+					//화면에 x축으로 15등분 중 몇번째에 위치하는지
+					xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 15 / initThread.getWidth();
+					if (xth % 2 == 0) {
+						xth -= 1;
+					}
+					//화면에 y축으로 32등분 중 몇번째에 위치하는지
+					yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * 32 / initThread.getHeight();
+					if (yth % 2 == 0) {
+						if (DrawMode.CURRENT.getMode() == 0 || DrawMode.CURRENT.getMode() == 3)
+							yth -= 1;
+					}
+				break;
+			case "month":
+				//화면에 x축으로 7등분 중 몇번째에 위치하는지
+				xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 7 / initThread.getWidth()+1;
+				//화면에 y축으로 6등분 중 몇번째에 위치하는지
+				yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * 6 / initThread.getHeight()+1;
+				break;
+			}
 		return;
 	}
 }

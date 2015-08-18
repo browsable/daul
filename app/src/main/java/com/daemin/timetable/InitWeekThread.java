@@ -32,7 +32,7 @@ public class InitWeekThread extends InitThread {
 	Canvas canvas;
 
 	public InitWeekThread(SurfaceHolder holder, Context context) {
-		DateOfWeekData dowd = CurrentTime.getDateOfWeek();
+		DayOfWeekData dowd = CurrentTime.getDateOfWeek();
 		this.mholder = holder;
 		this.context = context;
 		this.sun = dowd.getSun();
@@ -71,7 +71,7 @@ public class InitWeekThread extends InitThread {
 	public Canvas getCanvas() {
 		return canvas;
 	}
-	public void setCurrentTime(DateOfWeekData dowd){
+	public void setCurrentTime(DayOfWeekData dowd){
 		this.sun = dowd.getSun();
 		this.mon = dowd.getMon();
 		this.tue = dowd.getTue();
@@ -129,16 +129,6 @@ public class InitWeekThread extends InitThread {
 			tempxth = xth;
 			tempyth = yth;
 		}
-	}
-
-	public void ActionUp() {
-		// EnumTimePos.valueOf(Convert.getxyMerge(xth,
-		// yth)).setPosState(PosState.END);
-		/*
-		 * for (EnumTimePos ETP : EnumTimePos.values()) { if (ETP.getPosState()
-		 * != PosState.NO_PAINT) { Log.i(ETP.name(),
-		 * String.valueOf(ETP.getGroupNumber())); } }
-		 */
 	}
 
 	public void makeTimePos(int xth, int yth, String touchType) {
@@ -215,17 +205,17 @@ public class InitWeekThread extends InitThread {
 				height / 32 + 6, width * 7 / 15, height * 31 / 32 + 6, width * 9 / 15,
 				height / 32 + 6, width * 9 / 15, height * 31 / 32 + 6, width * 11 / 15,
 				height / 32 + 6, width * 11 / 15, height * 31 / 32 + 6, width * 13 / 15,
-				height / 32 + 6, width * 13 / 15, height * 31 / 32 + 6, };
+				height / 32 + 6, width * 13 / 15, height * 31 / 32 + 6 };
 
 		canvas.drawColor(Color.WHITE);
 		canvas.drawLines(hp_hour, hp);
 		canvas.drawLines(hp_half, hpvp);
 		canvas.drawLines(vp, hpvp);
-		canvas.drawText("8", 12, height * 1 / 32 + 7, np);
-		canvas.drawText("9", 12, height * 3 / 32 + 7, np);
+		canvas.drawText("8", 12, height * 1 / 32 + 9, np);
+		canvas.drawText("9", 12, height * 3 / 32 + 9, np);
 		for (int i = 2; i < 16; i++) {
 			canvas.drawText(String.valueOf(i + 8), 2,
-					((2 * i + 1) * height / 32) + 7, np);
+					((2 * i + 1) * height / 32) + 9, np);
 		}
 		canvas.drawText(sun, width * 2 / 15, height / 62, tpred);
 		canvas.drawText(mon, width * 4 / 15, height / 62, tp);
