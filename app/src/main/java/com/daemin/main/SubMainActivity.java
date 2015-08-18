@@ -41,7 +41,6 @@ import android.widget.ViewSwitcher;
 
 import com.daemin.adapter.HorizontalListAdapter;
 import com.daemin.area.AreaFragment;
-import com.daemin.calendar.CalendarFragment;
 import com.daemin.common.AsyncCallback;
 import com.daemin.common.AsyncExecutor;
 import com.daemin.common.BackPressCloseHandler;
@@ -92,7 +91,7 @@ public class SubMainActivity extends FragmentActivity {
 	Fragment mContent = null;
 	Boolean surfaceFlag = false, colorFlag = false;
 	BackPressCloseHandler backPressCloseHandler;
-	String BackKeyName="",colorName,korName,engName;
+	String BackKeyName="",colorName,korName,engName,viewMode;
 	HorizontalListAdapter adapter;
 	AutoCompleteTextView actvSelectUniv,actvSelectDep, actvSelectGrade;
 	Boolean clickFlag1=false;
@@ -114,7 +113,7 @@ public class SubMainActivity extends FragmentActivity {
 	}
 	public ImageButton getIbBack() {return ibBack;}
 	public ImageButton getIbMenu() {return ibMenu;}
-	public com.daemin.timetable.InitSurfaceView getInitSurfaceView() {return InitSurfaceView;}
+	public InitSurfaceView getInitSurfaceView() {return InitSurfaceView;}
 	public LinearLayout getLlTitle() {return llTitle;}
 	public ImageButton getIbCalendar() {return ibCalendar;}
 	public TextView getTvTitle() {return tvTitle;}
@@ -138,6 +137,7 @@ public class SubMainActivity extends FragmentActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
 		setContentView(R.layout.activity_main);
 		if (User.USER.isSubjectDownloadState()) db = new DatabaseHandler(this);
+		viewMode = MyPreferences.USERINFO.getPref().getString("viewMode","week");
 		DrawMode.CURRENT.setMode(0);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		ibMenu = (ImageButton) findViewById(R.id.ibMenu);
@@ -177,7 +177,7 @@ public class SubMainActivity extends FragmentActivity {
 		params = flSurface.getLayoutParams();
 		params.height = dm.heightPixels * 7 / 8;
 		flSurface.setLayoutParams(params);
-		InitSurfaceView = new InitSurfaceView(this);
+		InitSurfaceView = new InitSurfaceView(this,viewMode);
 		flSurface.addView(InitSurfaceView);
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
@@ -336,7 +336,7 @@ public class SubMainActivity extends FragmentActivity {
 	// 드로어 메뉴 버튼 클릭 리스너
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public void mOnClick(View v) {
-		InitThread it = InitSurfaceView.getI_Thread();
+		InitThread it = InitSurfaceView.getInitThread();
 
 		btWriteArticle.setVisibility(View.GONE);
 
@@ -353,18 +353,22 @@ public class SubMainActivity extends FragmentActivity {
 
 				break;
 			case R.id.ibCalendar:
-				llTitle.setVisibility(View.GONE);
-				tvTitle.setVisibility(View.VISIBLE);
-				btPlus.setVisibility(View.GONE);
-				ibMenu.setVisibility(View.GONE);
-				ibBack.setVisibility(View.VISIBLE);
-				ibCalendar.setVisibility(View.GONE);
-				mLayout.setTouchEnabled(false);
-				changeFragment(CalendarFragment.class, "", R.color.maincolor);
-				flSurface.setVisibility(View.GONE);
-				frame_container.setVisibility(View.VISIBLE);
+				llTitle.setVisibility(View.VISIBLE);
+				frame_container.setVisibility(View.GONE);
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-				surfaceFlag = true;
+				switch(viewMode){
+					case "week":
+						viewMode = "month";
+						InitSurfaceView.setMode(viewMode);
+						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
+						break;
+					case "month":
+						viewMode = "week";
+						InitSurfaceView.setMode(viewMode);
+						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
+						break;
+				}
+				surfaceFlag = false;
 				BackKeyName = "";
 				break;
 			case R.id.btTimetable:
@@ -373,7 +377,6 @@ public class SubMainActivity extends FragmentActivity {
 				btPlus.setVisibility(View.VISIBLE);
 				ibCalendar.setVisibility(View.VISIBLE);
 				mLayout.setVisibility(View.VISIBLE);
-
 				mLayout.setTouchEnabled(true);
 				changeFragment(TimetableFragment.class, "", R.color.maincolor);
 				flSurface.setVisibility(View.VISIBLE);
@@ -390,9 +393,9 @@ public class SubMainActivity extends FragmentActivity {
 				btPlus.setVisibility(View.GONE);
 				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
-				changeFragment(FriendFragment.class, "친구시간표", R.color.orange);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
+				changeFragment(FriendFragment.class, "친구시간표", R.color.orange);
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				surfaceFlag = true;
 				BackKeyName = "";
@@ -403,9 +406,9 @@ public class SubMainActivity extends FragmentActivity {
 				btPlus.setVisibility(View.GONE);
 				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
-				changeFragment(AreaFragment.class, "주변시간표", R.color.maincolor);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
+				changeFragment(AreaFragment.class, "주변시간표", R.color.maincolor);
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				surfaceFlag = true;
 				BackKeyName = "";
@@ -416,9 +419,9 @@ public class SubMainActivity extends FragmentActivity {
 				btPlus.setVisibility(View.GONE);
 				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
-				changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
+				changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				surfaceFlag = true;
 				BackKeyName = "";
@@ -436,9 +439,9 @@ public class SubMainActivity extends FragmentActivity {
 				btPlus.setVisibility(View.GONE);
 				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
-				changeFragment(SettingFragment.class, "설정", R.color.maincolor);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
+				changeFragment(SettingFragment.class, "설정", R.color.maincolor);
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				surfaceFlag = true;
 				BackKeyName = "";
@@ -874,6 +877,7 @@ public class SubMainActivity extends FragmentActivity {
 		editor.putBoolean("GroupListDownloadState",User.USER.isGroupListDownloadState());
 		editor.putBoolean("SubjectDownloadState", User.USER.isSubjectDownloadState());
 		editor.putString("EngUnivName", User.USER.getEngUnivName());
+		editor.putString("viewMode",viewMode);
 		editor.commit();
 		Common.setLlIncludeDepIn(false);
 		indexForTitle = 0;

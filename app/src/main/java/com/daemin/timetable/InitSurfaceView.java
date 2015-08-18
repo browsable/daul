@@ -16,30 +16,50 @@ public class InitSurfaceView extends SurfaceView implements
 		SurfaceHolder.Callback {
 
 	private SurfaceHolder holder;
-	private InitThread i_Thread;
+	private InitThread initThread;
 	float txPos, tyPos;
 	Context context;
 	private int xth, yth;
 	private boolean outOfTouchArea;
+	private String mode;
 
-	public InitSurfaceView(Context context) {
+	public InitSurfaceView(Context context, String mode) {
 		super(context);
 		this.context = context;
+		this.mode = mode;
 		holder = getHolder();
 		holder.addCallback(this);
-		i_Thread = new InitThread(holder, context);
+		switch (mode){
+			case "week":
+				initThread = new InitWeekThread(holder, context);
+				break;
+			case "month":
+				initThread = new InitMonthThread(holder, context);
+				break;
+		}
 	}
-	public InitThread getI_Thread() {
-		return i_Thread;
+	public InitThread getInitThread() {
+		return initThread;
+	}
+	//week or month mode
+	public void setMode(String mode) {
+		this.mode = mode;
 	}
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		if (!i_Thread.isAlive()) {
-			i_Thread = new InitThread(holder, context);
+		if (!initThread.isAlive()) {
+			switch (mode){
+				case "week":
+					initThread = new InitWeekThread(holder, context);
+					break;
+				case "month":
+					initThread = new InitMonthThread(holder, context);
+					break;
+			}
 		}
-		i_Thread.setRunning(true);
-		i_Thread.start();
-		
+		initThread.setRunning(true);
+		initThread.start();
+
 	}
 
 	@Override
@@ -50,10 +70,10 @@ public class InitSurfaceView extends SurfaceView implements
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		boolean done = true;
-		i_Thread.setRunning(false);
+		initThread.setRunning(false);
 		while (done) {
 			try {
-				i_Thread.join();
+				initThread.join();
 				done = false;
 				SerialNumberGenerator.COUNT.initCount();
 				for (TimePos ETP : TimePos.values()) {
@@ -66,7 +86,7 @@ public class InitSurfaceView extends SurfaceView implements
 
 			}
 		}
-	} 
+	}
 
 	@SuppressLint({ "ClickableViewAccessibility", "DefaultLocale" })
 	public boolean onTouchEvent(MotionEvent event) {
@@ -74,7 +94,7 @@ public class InitSurfaceView extends SurfaceView implements
 		case MotionEvent.ACTION_DOWN:
 				calXthYth(event);
 				if (xth > 0 && yth > 0 && yth < 30) {
-					i_Thread.getDownXY(xth, yth);
+					initThread.getDownXY(xth, yth);
 					outOfTouchArea = false;
 				}else{
 					outOfTouchArea = true;
@@ -84,12 +104,12 @@ public class InitSurfaceView extends SurfaceView implements
 			if(!outOfTouchArea){
 				calXthYth(event);
 				if (xth > 0 && yth > 0 && yth < 30) {
-					i_Thread.getMoveXY(xth, yth);
+					initThread.getMoveXY(xth, yth);
 				}
 			}
 			break;
 		case MotionEvent.ACTION_UP:
-				i_Thread.ActionUp();
+			initThread.ActionUp();
 			break;
 		}
 
@@ -97,12 +117,12 @@ public class InitSurfaceView extends SurfaceView implements
 	}
 	public void calXthYth(MotionEvent event) {
 		//화면에 x축으로 15등분 중 몇번째에 위치하는지
-		xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 15 / i_Thread.getWidth();
+		xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 15 / initThread.getWidth();
 		if (xth % 2 == 0) {
 			xth -= 1;
 		}
 		//화면에 y축으로 32등분 중 몇번째에 위치하는지
-		yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * 32 / i_Thread.getHeight();
+		yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * 32 / initThread.getHeight();
 		if (yth % 2 == 0) {
 			if(DrawMode.CURRENT.getMode()==0 || DrawMode.CURRENT.getMode()==3) yth -= 1;
 		}
