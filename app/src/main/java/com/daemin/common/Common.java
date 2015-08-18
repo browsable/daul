@@ -5,12 +5,13 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.daemin.enumclass.DayOfMonthPos;
+import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.timetable.R;
@@ -63,12 +64,20 @@ public class Common {
 		Common.tempTimePos = tempTimePos;
 	}
 
-
 	//원하는 상태의 TimePos 객체를 반환
-	public static void stateFilter(ArrayList<String> tempTimePos){
+	public static void stateFilter(ArrayList<String> tempTimePos,String viewMode){
 		if(tempTimePos!=null) {
-			for(String t : tempTimePos){
-				TimePos.valueOf(t).setPosState(PosState.NO_PAINT);
+			switch(viewMode){
+				case "week":
+					for(String t : tempTimePos){
+						TimePos.valueOf(t).setPosState(PosState.NO_PAINT);
+					}
+					break;
+				case "month":
+					for(String t : tempTimePos){
+						DayOfMonthPos.valueOf(t).setPosState(DayOfMonthPosState.NO_PAINT);
+					}
+					break;
 			}
 		}
 		Common.getTempTimePos().clear();

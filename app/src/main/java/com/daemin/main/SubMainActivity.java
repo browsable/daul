@@ -29,7 +29,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -79,13 +78,12 @@ import java.util.concurrent.Callable;
 
 public class SubMainActivity extends FragmentActivity {
 
-	static final String TAG = "MainActivity";
 	InitSurfaceView InitSurfaceView;
 	DrawerLayout mDrawerLayout;
 	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend,llTitle;
 	ImageButton ibMenu, ibBack, ibCalendar;
 	TextView tvTitle,tvTitleYear,tvRecommendDummy;
-	Button btPlus,btNormal, btUniv, btRecommend, btColor, btDialCancel, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
+	Button btPlus,btNormal, btUniv, btRecommend, btColor, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
 	FrameLayout flSurface, frame_container;
 	RelativeLayout rlBar;
 	Fragment mContent = null;
@@ -97,32 +95,17 @@ public class SubMainActivity extends FragmentActivity {
 	Boolean clickFlag1=false;
 	Boolean clickFlag2=false;
 	Boolean clickFlag3=false;
-	CalendarView cal;
 	GradientDrawable gd;
 	Boolean adapterFlag=false;
-	int keyboardHeight;
 	static int indexForTitle=0;
 	private HorizontalListView hlv, hlvRecommend;
 	DatabaseHandler db;
-	public void setDb(DatabaseHandler db) {
-		this.db = db;
-	}
 	static SubMainActivity singleton;
 	public static SubMainActivity getInstance() {
 		return singleton;
 	}
 	public ImageButton getIbBack() {return ibBack;}
 	public ImageButton getIbMenu() {return ibMenu;}
-	public InitSurfaceView getInitSurfaceView() {return InitSurfaceView;}
-	public LinearLayout getLlTitle() {return llTitle;}
-	public ImageButton getIbCalendar() {return ibCalendar;}
-	public TextView getTvTitle() {return tvTitle;}
-	public Button getBtPlus() {return btPlus;}
-	public SlidingUpPanelLayout getmLayout() {return mLayout;}
-	public FrameLayout getFlSurface() {return flSurface;}
-	public Boolean getSurfaceFlag() {return surfaceFlag;}
-	public void setSurfaceFlag(Boolean surfaceFlag) {this.surfaceFlag = surfaceFlag;}
-	public FrameLayout getFrame_container() {return frame_container;}
 	public void setBackKeyName(String backKeyName) {
 		BackKeyName = backKeyName;
 	}
@@ -358,11 +341,27 @@ public class SubMainActivity extends FragmentActivity {
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				switch(viewMode){
 					case "week":
+						btUniv.setVisibility(View.INVISIBLE);
+						btRecommend.setVisibility(View.INVISIBLE);
+						DrawMode.CURRENT.setMode(0);
+						Common.stateFilter(Common.getTempTimePos(), viewMode);
+						llNormal.setVisibility(View.VISIBLE);
+						llUniv.setVisibility(View.GONE);
+						llRecommend.setVisibility(View.GONE);
+						btNormal.setTextColor(getResources().getColor(
+								R.color.white));
 						viewMode = "month";
 						InitSurfaceView.setMode(viewMode);
 						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
 						break;
 					case "month":
+						btUniv.setVisibility(View.VISIBLE);
+						btRecommend.setVisibility(View.VISIBLE);
+						Common.stateFilter(Common.getTempTimePos(), viewMode);
+						btUniv.setTextColor(getResources().getColor(
+								R.color.gray));
+						btRecommend.setTextColor(getResources().getColor(
+								R.color.gray));
 						viewMode = "week";
 						InitSurfaceView.setMode(viewMode);
 						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
@@ -448,7 +447,7 @@ public class SubMainActivity extends FragmentActivity {
 				break;
 			case R.id.btNormal:
 				DrawMode.CURRENT.setMode(0);
-				Common.stateFilter(Common.getTempTimePos());
+				Common.stateFilter(Common.getTempTimePos(),viewMode);
 				llNormal.setVisibility(View.VISIBLE);
 				llUniv.setVisibility(View.GONE);
 				llRecommend.setVisibility(View.GONE);
@@ -462,7 +461,7 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btUniv:
 				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(1);
-				Common.stateFilter(Common.getTempTimePos());
+				Common.stateFilter(Common.getTempTimePos(),viewMode);
 				llNormal.setVisibility(View.GONE);
 				llUniv.setVisibility(View.VISIBLE);
 				llRecommend.setVisibility(View.GONE);
@@ -556,7 +555,7 @@ public class SubMainActivity extends FragmentActivity {
 				hlvRecommend.setVisibility(View.GONE);
 				tvRecommendDummy.setVisibility(View.VISIBLE);
 				tvRecommendDummy.setText(getResources().getString(R.string.select_time));
-				Common.stateFilter(Common.getTempTimePos());
+				Common.stateFilter(Common.getTempTimePos(),viewMode);
 				llNormal.setVisibility(View.GONE);
 				llUniv.setVisibility(View.GONE);
 				llRecommend.setVisibility(View.VISIBLE);
@@ -589,7 +588,7 @@ public class SubMainActivity extends FragmentActivity {
 						DrawMode.CURRENT.setMode(0);
 						break;
 					case 1:
-						Common.stateFilter(Common.getTempTimePos());
+						Common.stateFilter(Common.getTempTimePos(),viewMode);
 						DrawMode.CURRENT.setMode(3);
 						adapterFlag=false;
 						break;
@@ -649,7 +648,7 @@ public class SubMainActivity extends FragmentActivity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 				ArrayList<String> tempTimePos = new ArrayList<>();
-				Common.stateFilter(Common.getTempTimePos());
+				Common.stateFilter(Common.getTempTimePos(),viewMode);
 				for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
 						.toString())) {
 					tempTimePos.add(timePos);
@@ -758,7 +757,7 @@ public class SubMainActivity extends FragmentActivity {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 						ArrayList<String> tempTimePos = new ArrayList<>();
-						Common.stateFilter(Common.getTempTimePos());
+						Common.stateFilter(Common.getTempTimePos(),viewMode);
 						for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
 								.toString())) {
 							tempTimePos.add(timePos);

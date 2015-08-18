@@ -152,17 +152,17 @@ public class InitWeekThread extends InitThread {
 				if (Common.checkTableStateIsNothing&& Common.isLlIncludeDepIn()) {
 					Toast.makeText(context,"과목을 선택하세요",Toast.LENGTH_SHORT).show();
 				}else {
-					Common.stateFilter(Common.getTempTimePos());
+					Common.stateFilter(Common.getTempTimePos(),"week");
 				}
 				break;
 			case 2: //추천
 				if (ETP.getPosState() == PosState.NO_PAINT) {
-					Common.stateFilter(Common.getTempTimePos());
+					Common.stateFilter(Common.getTempTimePos(),"week");
 					ETP.setPosState(PosState.RECOMMEND);
 					Common.getTempTimePos().add(ETP.name());
 					SubMainActivity.getInstance().setupRecommendDatas(ETP.name());
 				}else{
-					Common.stateFilter(Common.getTempTimePos());
+					Common.stateFilter(Common.getTempTimePos(),"week");
 				}
 				break;
 		}
