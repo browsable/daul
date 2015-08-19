@@ -342,6 +342,7 @@ public class SubMainActivity extends FragmentActivity {
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				switch(viewMode){
 					case "week":
+						//ibCalendar.setBackgroundResource(R.drawable.ic_month);
 						btUniv.setVisibility(View.INVISIBLE);
 						btRecommend.setVisibility(View.INVISIBLE);
 						DrawMode.CURRENT.setMode(0);
@@ -356,6 +357,7 @@ public class SubMainActivity extends FragmentActivity {
 						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
 						break;
 					case "month":
+						//ibCalendar.setBackgroundResource(R.drawable.ic_week);
 						btUniv.setVisibility(View.VISIBLE);
 						btRecommend.setVisibility(View.VISIBLE);
 						Common.stateFilter(Common.getTempTimePos(), viewMode);

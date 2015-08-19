@@ -84,8 +84,10 @@ public class CurrentTime {
         );
         return dowd;
     }
-    public static Integer getDayOfWeek() {
-        return now.getDayOfWeek();
+    public static int getDayOfWeek() {
+        int dayOfWeek = now.getDayOfWeek();
+        if(dayOfWeek==7) dayOfWeek=0;
+        return dayOfWeek;
     }
     public static Integer preTitleYear(int indexForTitle) {
         return now.plusWeeks(indexForTitle).getYear();
@@ -134,5 +136,13 @@ public class CurrentTime {
     }
     public static int getDayNumOfMonth(){
         return now.dayOfMonth().withMaximumValue().getDayOfMonth();
+    }
+    //주차
+    public static int getWeekNum() {
+        int lastDayofWeek = getLastDayOfWeek().getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
+        int firstDayOfMonth = getFirstDayOfWeekYear().getWeekOfWeekyear();
+        int calWeekOfMonth = lastDayofWeek-firstDayOfMonth+1;
+        if(calWeekOfMonth<0) calWeekOfMonth = lastDayofWeek+1;
+        return calWeekOfMonth;
     }
 }

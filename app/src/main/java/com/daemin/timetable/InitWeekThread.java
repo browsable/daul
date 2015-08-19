@@ -259,7 +259,7 @@ public class InitWeekThread extends InitThread {
 			canvas.drawRect(width * 13 / 15, ((height * 2) - 10) / 64 + 6,
 					width * 15 / 15, height * 62 / 64 + 6, datep);
 			break;
-		case 7: // 일요일
+		case 0: // 일요일
 			canvas.drawRect(width * 1 / 15, ((height * 2) - 10) / 64 + 6,
 					width * 3 / 15, height * 62 / 64 + 6, datep);
 			break;
