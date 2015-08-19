@@ -1,4 +1,4 @@
-package com.daemin.timetable;
+package com.daemin.data;
 
 /**
  * Created by hernia on 2015-08-08.

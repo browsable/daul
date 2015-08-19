@@ -122,6 +122,7 @@ public class SubMainActivity extends FragmentActivity {
 		viewMode = MyPreferences.USERINFO.getPref().getString("viewMode","week");
 		DrawMode.CURRENT.setMode(0);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		ibMenu = (ImageButton) findViewById(R.id.ibMenu);
 		ibBack = (ImageButton) findViewById(R.id.ibBack);
 		ibCalendar = (ImageButton) findViewById(R.id.ibCalendar);
@@ -318,7 +319,7 @@ public class SubMainActivity extends FragmentActivity {
 	// 드로어 메뉴 버튼 클릭 리스너
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public void mOnClick(View v) {
-		InitThread it = InitSurfaceView.getInitThread();
+		InitThread it =InitSurfaceView.getInitThread();
 
 		btWriteArticle.setVisibility(View.GONE);
 
