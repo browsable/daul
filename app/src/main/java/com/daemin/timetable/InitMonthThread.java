@@ -10,6 +10,7 @@ import android.view.SurfaceHolder;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
+import com.daemin.data.DayOfWeekData;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
 
@@ -17,28 +18,22 @@ import com.daemin.enumclass.DayOfMonthPosState;
 public class InitMonthThread extends InitThread {
 	SurfaceHolder mholder;
 	private boolean isLoop = true;
-	private int width, height, dayOfWeek; //화면의 전체 너비, 높이
-	private String sun,mon,tue,wed,thr,fri,sat;
+	private int width, height,dayOfWeekOfLastMonth,dayNumOfMonth;//이전달의 마지막날 요일
+	private String[] monthData;
 	Context context;
 	private Paint hp; // 1시간 간격 수평선
 	private Paint hpvp; // 30분 간격 수평선, 수직선
-	private Paint tp,tpred,tpblue,np; // 시간 텍스트
-	private Paint datep;
+	private Paint tp,tpred,tpblue,tpgray; // 시간 텍스트
 	static int tempxth;
 	static int tempyth;
 	Canvas canvas;
 
 	public InitMonthThread(SurfaceHolder holder, Context context) {
-		DayOfWeekData dowd = CurrentTime.getDateOfWeek();
 		this.mholder = holder;
 		this.context = context;
-		this.sun = dowd.getSun();
-		this.mon = dowd.getMon();
-		this.tue = dowd.getTue();
-		this.wed = dowd.getWed();
-		this.thr = dowd.getThr();
-		this.fri = dowd.getFri();
-		this.sat = dowd.getSat();
+		this.monthData = CurrentTime.getDayOfLastMonth();
+		this.dayOfWeekOfLastMonth = CurrentTime.getDayOfWeekOfLastMonth();
+		this.dayNumOfMonth = CurrentTime.getDayNumOfMonth();
 		tempxth = 0;
 		tempyth = 0;
 		hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -46,36 +41,23 @@ public class InitMonthThread extends InitThread {
 
 		hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		hpvp.setAlpha(70);
-		np = new Paint(Paint.ANTI_ALIAS_FLAG);
-		np.setTextSize(18);
 		tp = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tp.setTextSize(18);
+		tp.setTextSize(20);
 		tp.setTextAlign(Paint.Align.CENTER);
 		tpred = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tpred.setTextSize(18);
+		tpred.setTextSize(20);
 		tpred.setTextAlign(Paint.Align.CENTER);
 		tpred.setColor(context.getResources().getColor(R.color.red));
 		tpblue = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tpblue.setTextSize(18);
+		tpblue.setTextSize(20);
 		tpblue.setTextAlign(Paint.Align.CENTER);
 		tpblue.setColor(context.getResources().getColor(R.color.blue));
-
-		datep = new Paint(Paint.ANTI_ALIAS_FLAG);
-		datep.setColor(Color.parseColor("#104EC7B3"));
-		dayOfWeek = CurrentTime.getDayOfWeek();
-	}
-
-	public Canvas getCanvas() {
-		return canvas;
+		tpgray = new Paint(Paint.ANTI_ALIAS_FLAG);
+		tpgray.setTextSize(20);
+		tpgray.setTextAlign(Paint.Align.CENTER);
+		tpgray.setColor(context.getResources().getColor(R.color.gray));
 	}
 	public void setCurrentTime(DayOfWeekData dowd){
-		this.sun = dowd.getSun();
-		this.mon = dowd.getMon();
-		this.tue = dowd.getTue();
-		this.wed = dowd.getWed();
-		this.thr = dowd.getThr();
-		this.fri = dowd.getFri();
-		this.sat = dowd.getSat();
 	}
 	public void setRunning(boolean isLoop) {
 		this.isLoop = isLoop;
@@ -97,7 +79,7 @@ public class InitMonthThread extends InitThread {
 				width = canvas.getWidth();
 				height = canvas.getHeight();
 				synchronized (mholder) {
-					initScreen(dayOfWeek);
+					initScreen();
 					Common.checkTableStateIsNothing = true;
 
 					// 사각형 그리기
@@ -139,8 +121,7 @@ public class InitMonthThread extends InitThread {
 		return;
 	}
 
-	public void initScreen(int day) {
-
+	public void initScreen() {
 		float[] hp_hour = {
 				// 가로선 : 1시간 간격
 				0, height / 32 + 6, width, height / 32 + 6 , 0, height * 12 / 64 + 6, width,
@@ -162,53 +143,34 @@ public class InitMonthThread extends InitThread {
 		canvas.drawLines(hp_hour, hp);
 		canvas.drawLines(vp, hpvp);
 
-		/*canvas.drawText(sun, width * 2 / 15, height / 62, tpred);
-		canvas.drawText(mon, width * 4 / 15, height / 62, tp);
-		canvas.drawText(tue, width * 6 / 15, height / 62, tp);
-		canvas.drawText(wed, width * 8 / 15, height / 62, tp);
-		canvas.drawText(thr, width * 10 / 15, height / 62, tp);
-		canvas.drawText(fri, width * 12 / 15, height / 62, tp);
-		canvas.drawText(sat, width * 14 / 15, height / 62, tpblue);*/
-
-		canvas.drawText("SUN", width * 1 / 14, height * 2/ 62 - 1, tpred);
+		canvas.drawText("SUN", width * 1 / 14, height * 2 / 62 - 1, tpred);
 		canvas.drawText("MON", width * 3 / 14, height * 2/ 62 - 1, tp);
 		canvas.drawText("TUE", width * 5 / 14, height * 2/ 62 - 1, tp);
 		canvas.drawText("WED", width * 7 / 14, height * 2/ 62 - 1, tp);
-		canvas.drawText("THU", width * 9 / 14, height * 2/ 62 - 1, tp);
-		canvas.drawText("FRI", width * 11 / 14, height * 2/ 62 - 1, tp);
-		canvas.drawText("SAT", width * 13 / 14, height * 2/ 62 - 1, tpblue);
+		canvas.drawText("THU", width * 9 / 14, height * 2 / 62 - 1, tp);
+		canvas.drawText("FRI", width * 11 / 14, height * 2 / 62 - 1, tp);
+		canvas.drawText("SAT", width * 13 / 14, height * 2 / 62 - 1, tpblue);
 
-		/*switch (day) {
-		case 1: // 월요일
-			canvas.drawRect(width * 3 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 5 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 2: // 화요일
-			canvas.drawRect(width * 5 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 7 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 3: // 수요일
-			canvas.drawRect(width * 7 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 9 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 4: // 목요일
-			canvas.drawRect(width * 9 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 11 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 5: // 금요일
-			canvas.drawRect(width * 11 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 13 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 6: // 토요일
-			canvas.drawRect(width * 13 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 15 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 7: // 일요일
-			canvas.drawRect(width * 1 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 3 / 15, height * 62 / 64 + 6, datep);
-			break;
-		}*/
-
+		for(int i = 0; i<dayOfWeekOfLastMonth+1; i++){
+			canvas.drawText(monthData[i], width * (4*i+1) / 28, height* 4 / 64, tpgray);
+		}
+		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+			int j = i%7;
+			switch(j){
+				case 0:
+					canvas.drawText(monthData[i], width * 1 / 28, height* (( 10 * (i/7)) + 4) / 64, tpred);
+					break;
+				case 6:
+					canvas.drawText(monthData[i], width * 25 / 28, height * ((10 * (i/7)) + 4) / 64, tpblue);
+					break;
+				default:
+					canvas.drawText(monthData[i], width * (4*j+1) / 28, height * ((10 * (i/7)) + 4) / 64, tp);
+					break;
+			}
+		}
+		for(int i = dayOfWeekOfLastMonth+dayNumOfMonth+1; i<42; i++){
+			canvas.drawText(monthData[i], width * (4*(i%7)+1) / 28, height * ((10 * (i/7)) + 4) / 64, tpgray);
+		}
 	}
 
 }

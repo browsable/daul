@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
+import com.daemin.data.DayOfWeekData;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
@@ -211,11 +212,11 @@ public class InitWeekThread extends InitThread {
 		canvas.drawLines(hp_hour, hp);
 		canvas.drawLines(hp_half, hpvp);
 		canvas.drawLines(vp, hpvp);
-		canvas.drawText("8", 12, height * 1 / 32 + 9, np);
-		canvas.drawText("9", 12, height * 3 / 32 + 9, np);
+		canvas.drawText("8", 12, height * 1 / 32 + 13, np);
+		canvas.drawText("9", 12, height * 3 / 32 + 13, np);
 		for (int i = 2; i < 16; i++) {
 			canvas.drawText(String.valueOf(i + 8), 2,
-					((2 * i + 1) * height / 32) + 9, np);
+					((2 * i + 1) * height / 32) + 13, np);
 		}
 		canvas.drawText(sun, width * 2 / 15, height / 62, tpred);
 		canvas.drawText(mon, width * 4 / 15, height / 62, tp);

@@ -3,7 +3,7 @@ package com.daemin.common;
 
 import android.content.Context;
 
-import com.daemin.timetable.DayOfWeekData;
+import com.daemin.data.DayOfWeekData;
 import com.daemin.timetable.R;
 
 import org.joda.time.LocalDate;
@@ -23,6 +23,7 @@ public class CurrentTime {
         if(now.getDayOfWeek()==7)  return now.plusDays(1).withDayOfWeek(6);
         else return now.withDayOfWeek(6);
     }
+    //이달의 첫 날이 속한 토요일
     public static LocalDate getFirstDayOfWeekYear(){
         if(getLastDayOfWeek().withDayOfMonth(1).getDayOfWeek()==7) return getLastDayOfWeek().withDayOfMonth(1).plusDays(1).withDayOfWeek(6);
         return getLastDayOfWeek().withDayOfMonth(1).withDayOfWeek(6);
@@ -115,5 +116,23 @@ public class CurrentTime {
         if(calWeekOfMonth<0) calWeekOfMonth = lastDayofWeek+1;
         return " " + getMinusDayOfWeek(indexForTitle).getMonthOfYear() + context.getString(R.string.month) + " "
                 + calWeekOfMonth + context.getString((R.string.weekofmonth));
+    }
+
+    //month
+    public static String[] getDayOfLastMonth(){
+        String monthData[] = new String[42];
+        LocalDate firstDay = now.minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
+        for(int i =0; i<42; i++){
+            monthData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
+        }
+        return monthData;
+    }
+    public static int getDayOfWeekOfLastMonth(){
+        int dayOfWeek = now.minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
+        if(dayOfWeek==7) dayOfWeek=0;
+        return dayOfWeek;
+    }
+    public static int getDayNumOfMonth(){
+        return now.dayOfMonth().withMaximumValue().getDayOfMonth();
     }
 }
