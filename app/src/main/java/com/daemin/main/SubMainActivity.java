@@ -49,7 +49,6 @@ import com.daemin.common.DatabaseHandler;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
 import com.daemin.community.CommunityFragment2;
-import com.daemin.community.WriteArticleFragment;
 import com.daemin.data.SubjectData;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.MyPreferences;
@@ -424,13 +423,6 @@ public class SubMainActivity extends FragmentActivity {
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				surfaceFlag = true;
 				BackKeyName = "";
-				btWriteArticle.setVisibility(View.VISIBLE);
-				btWriteArticle.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						changeFragment(WriteArticleFragment.class, "커뮤니티", R.color.orange);
-					}
-				});
 				break;
 			case R.id.btSetting:
 				llTitle.setVisibility(View.GONE);

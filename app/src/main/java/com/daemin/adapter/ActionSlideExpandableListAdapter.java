@@ -1,6 +1,10 @@
 package com.daemin.adapter;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +35,15 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
     private List<Comment> comment;
     private String userId;
     private List<Integer> expandCollapseList;
+    private Activity activity;
     public final int COLLAPSED = 0;
     public final int EXPANDED = 1;
 
-    public ActionSlideExpandableListAdapter(List<FreeBoard.Data> data, String userId) {
+    public ActionSlideExpandableListAdapter(List<FreeBoard.Data> data, String userId, Activity activity) {
         this.data = data;
         this.userId = userId;
-        expandCollapseList = new ArrayList<>();
+        this.expandCollapseList = new ArrayList<>();
+        this.activity = activity;
 
         FreeBoard.Data sampleData = new FreeBoard.Data();
         sampleData.setTitle("연결고리#힙합");
@@ -101,7 +107,7 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
             expandable_arrow.setImageResource(R.drawable.ic_action_expand);
 
         final ListView lvComment = (ListView) convertView.findViewById(R.id.lvComment);
-        final CommentListAdapter commentListAdapter = new CommentListAdapter(comment, userId, lvComment, tvCountComment);
+        final CommentListAdapter commentListAdapter = new CommentListAdapter(comment, userId, lvComment, tvCountComment, activity);
         lvComment.setAdapter(commentListAdapter);
         Common.setListViewHeightBasedOnChildren(lvComment);
 
@@ -140,12 +146,14 @@ class CommentListAdapter extends BaseAdapter{
     private String userId;
     private ListView listView;
     private TextView tvCountComment;
+    private Activity activity;
 
-    public CommentListAdapter(List<Comment> comment, String userId, ListView listView, TextView tvCountComment) {
+    public CommentListAdapter(List<Comment> comment, String userId, ListView listView, TextView tvCountComment, Activity activity) {
         this.comment = comment;
         this.userId = userId;
         this.listView = listView;
         this.tvCountComment = tvCountComment;
+        this.activity = activity;
     }
 
     @Override
@@ -196,10 +204,29 @@ class CommentListAdapter extends BaseAdapter{
             btChildRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    comment.remove(getItem(pos));
-                    tvCountComment.setText(String.valueOf(comment.size()));
-                    notifyDataSetChanged();
-                    Common.setListViewHeightBasedOnChildren(listView);
+                    AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+
+                    alert.setTitle("정말 삭제하시겠습니까?");
+                    alert.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            comment.remove(getItem(pos));
+                            tvCountComment.setText(String.valueOf(comment.size()));
+                            notifyDataSetChanged();
+                            Common.setListViewHeightBasedOnChildren(listView);
+
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    Dialog dialog = alert.create();
+                    dialog.show();
                 }
             });
         }

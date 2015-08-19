@@ -1,15 +1,16 @@
 package com.daemin.community;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.daemin.common.BasicFragment;
-import com.daemin.community.github.FreeBoard;
 import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
 
@@ -35,18 +36,27 @@ public class WriteArticleFragment extends BasicFragment {
                 return;
             }
 
-//            Article.setTitle(etArticleTitle.getText().toString());
-//            Article.setContent(etArticleContent.getText().toString());
-//            Article.setDate(new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())));
-//            Article.setUserId("joyyir");
+            Article.setIsWritten(true);
+            Article.setTitle(etArticleTitle.getText().toString());
+            Article.setContent(etArticleContent.getText().toString());
+            Article.setDate(new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())));
+            Article.setUserId("joyyir");
 
-            FreeBoard.Data data = new FreeBoard.Data();
+            /*FreeBoard.Data data = new FreeBoard.Data();
             data.setWhen(new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())));
             data.setBody(etArticleContent.getText().toString());
             data.setTitle(etArticleTitle.getText().toString());
             data.setAccount_no(921111);
 
-            CommunityFragment2.getInstance().getData().add(0, data);
+            CommunityFragment2.getInstance().getData().add(0, data);*/
+
+            // 키보드 내리기
+            InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(etArticleTitle.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(etArticleContent.getWindowToken(), 0);
+
+            etArticleTitle.setText("");
+            etArticleContent.setText("");
             SubMainActivity.getInstance().changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
         }
     }
@@ -63,9 +73,11 @@ public class WriteArticleFragment extends BasicFragment {
             etArticleTitle = (EditText) root.findViewById(R.id.etArticleTitle);
             etArticleContent = (EditText) root.findViewById(R.id.etArticleContent);
             btWriteArticle = (Button) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.btWriteArticle);
+
             btWriteArticle.setText("확인");
             btWriteArticle.setOnClickListener(new mOnClick());
         }
+
         return root;
     }
 }
