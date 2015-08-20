@@ -84,10 +84,17 @@ public class CurrentTime {
         );
         return dowd;
     }
-    public static int getDayOfWeek() {
-        int dayOfWeek = now.getDayOfWeek();
-        if(dayOfWeek==7) dayOfWeek=0;
-        return dayOfWeek;
+    public static String getTitleYearMonth(Context context) {
+        return " " + getYear() + context.getString(R.string.year) + " "
+                + now.getMonthOfYear() + context.getString((R.string.month));
+    }
+    public static String preTitleYearMonth(Context context, int indexForTitle) {
+        return " " + getLastDayOfWeek().plusMonths(indexForTitle).getYear() + context.getString(R.string.year) + " "
+                + now.plusMonths(indexForTitle).getMonthOfYear() + context.getString((R.string.month));
+    }
+    public static String backTitleYearMonth(Context context, int indexForTitle) {
+        return " " + getLastDayOfWeek().minusMonths(indexForTitle).getYear() + context.getString(R.string.year) + " "
+                + now.minusMonths(indexForTitle).getMonthOfYear() + context.getString((R.string.month));
     }
     public static Integer preTitleYear(int indexForTitle) {
         return now.plusWeeks(indexForTitle).getYear();
@@ -131,16 +138,80 @@ public class CurrentTime {
     }
     public static int getDayOfWeekOfLastMonth(){
         int dayOfWeek = now.minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
-        if(dayOfWeek==7) dayOfWeek=0;
+        //if(dayOfWeek==7) dayOfWeek=0;
         return dayOfWeek;
     }
+
     public static int getDayNumOfMonth(){
         return now.dayOfMonth().withMaximumValue().getDayOfMonth();
+    }
+    public static int getDayOfWeek() {
+        int dayOfWeek = now.getDayOfWeek();
+        if(dayOfWeek==7) dayOfWeek=0;
+        return dayOfWeek;
     }
     //주차
     public static int getWeekNum() {
         int lastDayofWeek = getLastDayOfWeek().getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
         int firstDayOfMonth = getFirstDayOfWeekYear().getWeekOfWeekyear();
+        int calWeekOfMonth = lastDayofWeek-firstDayOfMonth+1;
+        if(calWeekOfMonth<0) calWeekOfMonth = lastDayofWeek+1;
+        return calWeekOfMonth;
+    }
+    //pre
+    public static String[] getPreDayOfLastMonth(int indexForTitle){
+        String monthData[] = new String[42];
+        LocalDate firstDay = now.plusMonths(indexForTitle).minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
+        for(int i =0; i<42; i++){
+            monthData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
+        }
+        return monthData;
+    }
+    public static int getPreDayOfWeekOfLastMonth(int indexForTitle){
+        int dayOfWeek = now.plusMonths(indexForTitle).minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
+        //if(dayOfWeek==7) dayOfWeek=0;
+        return dayOfWeek;
+    }
+    public static int getPreDayNumOfMonth(int indexForTitle){
+        return now.plusMonths(indexForTitle).dayOfMonth().withMaximumValue().getDayOfMonth();
+    }
+    public static int getPreDayOfWeek(int indexForTitle) {
+        int dayOfWeek = now.plusMonths(indexForTitle).getDayOfWeek();
+        if(dayOfWeek==7) dayOfWeek=0;
+        return dayOfWeek;
+    }
+    public static int getPreWeekNum(int indexForTitle) {
+        int lastDayofWeek = getLastDayOfWeek().plusMonths(indexForTitle).getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
+        int firstDayOfMonth = getFirstDayOfWeekYear().plusMonths(indexForTitle).getWeekOfWeekyear();
+        int calWeekOfMonth = lastDayofWeek-firstDayOfMonth+1;
+        if(calWeekOfMonth<0) calWeekOfMonth = lastDayofWeek+1;
+        return calWeekOfMonth;
+    }
+    //back
+    public static String[] getBackDayOfLastMonth(int indexForTitle){
+        String monthData[] = new String[42];
+        LocalDate firstDay = now.minusMonths(indexForTitle).minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
+        for(int i =0; i<42; i++){
+            monthData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
+        }
+        return monthData;
+    }
+    public static int getBackDayOfWeekOfLastMonth(int indexForTitle){
+        int dayOfWeek = now.minusMonths(indexForTitle).minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
+        //if(dayOfWeek==7) dayOfWeek=0;
+        return dayOfWeek;
+    }
+    public static int getBackDayNumOfMonth(int indexForTitle){
+        return now.minusMonths(indexForTitle).dayOfMonth().withMaximumValue().getDayOfMonth();
+    }
+    public static int getBackDayOfWeek(int indexForTitle) {
+        int dayOfWeek = now.minusMonths(indexForTitle).getDayOfWeek();
+        if(dayOfWeek==7) dayOfWeek=0;
+        return dayOfWeek;
+    }
+    public static int getBackWeekNum(int indexForTitle) {
+        int lastDayofWeek = getLastDayOfWeek().minusMonths(indexForTitle).getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
+        int firstDayOfMonth = getFirstDayOfWeekYear().minusMonths(indexForTitle).getWeekOfWeekyear();
         int calWeekOfMonth = lastDayofWeek-firstDayOfMonth+1;
         if(calWeekOfMonth<0) calWeekOfMonth = lastDayofWeek+1;
         return calWeekOfMonth;
