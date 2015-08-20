@@ -92,7 +92,7 @@ public class CommunityFragment extends BasicFragment {
     View root;
 
     public CommunityFragment() {
-        super(R.layout.listitem_community, "CommunityFragment");
+        super(R.layout.listitem_community_post, "CommunityFragment");
     }
 
     @Override

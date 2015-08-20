@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -86,7 +87,7 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listitem_expandable, parent, false);
+            convertView = inflater.inflate(R.layout.listitem_community_post, parent, false);
         }
 
         TextView tvGroupTitle = (TextView) convertView.findViewById(R.id.tvGroupTitle);
@@ -128,6 +129,10 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
                     tvCountComment.setText(String.valueOf(comment.size()));
                     notifyDataSetChanged();
                     Common.setListViewHeightBasedOnChildren(lvComment);
+
+                    // 키보드 내리기
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etComment.getWindowToken(), 0);
                 }
             }
         });
@@ -177,7 +182,7 @@ class CommentListAdapter extends BaseAdapter{
 
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listitem_child, parent, false);
+            convertView = inflater.inflate(R.layout.listitem_community_comment, parent, false);
         }
 
         TextView tvChildId = (TextView) convertView.findViewById(R.id.tvChildId);

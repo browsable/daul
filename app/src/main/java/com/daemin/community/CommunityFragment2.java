@@ -57,7 +57,7 @@ public class CommunityFragment2 extends BasicFragment {
             btWriteArticle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SubMainActivity.getInstance().changeFragment(WriteArticleFragment.class, "커뮤니티", R.color.orange);
+                    SubMainActivity.getInstance().changeFragment(WritePostFragment.class, "커뮤니티", R.color.orange);
                 }
             });
 
@@ -70,38 +70,18 @@ public class CommunityFragment2 extends BasicFragment {
                     new Response.Listener<FreeBoard>() {
                         @Override
                         public void onResponse(FreeBoard response) {
-                            /*AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-
-                            alert.setTitle("정말 삭제하시겠습니까?");
-                            alert.setPositiveButton("예", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            alert.setNegativeButton("아니오", new DialogInterface.OnClickListener(){
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            Dialog dialog = alert.create();
-                            dialog.show();*/
-
-
                             data = response.getData();
 
-                            if(Article.isWritten() == true){
+                            if(Post.isWritten() == true){
                                 FreeBoard.Data addedData = new FreeBoard.Data();
 
-                                addedData.setWhen(Article.getDate());
-                                addedData.setBody(Article.getContent());
-                                addedData.setTitle(Article.getTitle());
+                                addedData.setWhen(Post.getDate());
+                                addedData.setBody(Post.getContent());
+                                addedData.setTitle(Post.getTitle());
                                 addedData.setAccount_no(921111);
 
                                 data.add(0, addedData);
-                                Article.setIsWritten(false);
+                                Post.setIsWritten(false);
                             }
 
                             ActionSlideExpandableListView list = (ActionSlideExpandableListView) root.findViewById(R.id.list);

@@ -877,4 +877,6 @@ public class SubMainActivity extends FragmentActivity {
 		indexForTitle = 0;
 		adapterFlag = false;
 	}
+
+
 }

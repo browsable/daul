@@ -4,11 +4,6 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical" >
-    <ExpandableListView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-</ExpandableListView>
-
     <Button
         android:id="@+id/github_activity_button"
         android:layout_width="wrap_content"

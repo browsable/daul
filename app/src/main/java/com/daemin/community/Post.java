@@ -3,14 +3,14 @@ package com.daemin.community;
 /**
  * Created by Jun-yeong on 2015-08-10.
  */
-public class Article {
+public class Post {
     private static boolean isWritten;
     private static String title;
     private static String date;
     private static String userId;
     private static String content;
 
-    public Article() {
+    public Post() {
         isWritten = false;
     }
 
@@ -33,21 +33,21 @@ public class Article {
     }
 
     public static void setIsWritten(boolean isWritten) {
-        Article.isWritten = isWritten;
+        Post.isWritten = isWritten;
     }
     public static void setTitle(String title) {
-        Article.title = title;
+        Post.title = title;
     }
 
     public static void setDate(String date) {
-        Article.date = date;
+        Post.date = date;
     }
 
     public static void setUserId(String userId) {
-        Article.userId = userId;
+        Post.userId = userId;
     }
 
     public static void setContent(String content) {
-        Article.content = content;
+        Post.content = content;
     }
 }

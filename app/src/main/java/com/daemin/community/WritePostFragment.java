@@ -1,7 +1,10 @@
 package com.daemin.community;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +23,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by Jun-yeong on 2015-08-09.
  */
-public class WriteArticleFragment extends BasicFragment {
+public class WritePostFragment extends BasicFragment {
     private View root;
     private Button btWriteArticle;
     private EditText etArticleTitle, etArticleContent;
@@ -36,11 +39,11 @@ public class WriteArticleFragment extends BasicFragment {
                 return;
             }
 
-            Article.setIsWritten(true);
-            Article.setTitle(etArticleTitle.getText().toString());
-            Article.setContent(etArticleContent.getText().toString());
-            Article.setDate(new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())));
-            Article.setUserId("joyyir");
+            Post.setIsWritten(true);
+            Post.setTitle(etArticleTitle.getText().toString());
+            Post.setContent(etArticleContent.getText().toString());
+            Post.setDate(new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())));
+            Post.setUserId("joyyir");
 
             /*FreeBoard.Data data = new FreeBoard.Data();
             data.setWhen(new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())));
@@ -61,8 +64,8 @@ public class WriteArticleFragment extends BasicFragment {
         }
     }
 
-    public WriteArticleFragment(){
-        super(R.layout.fragment_write_article, "WriteArticleFragment");
+    public WritePostFragment(){
+        super(R.layout.fragment_write_article, "WritePostFragment");
     }
 
     @Override
@@ -76,6 +79,23 @@ public class WriteArticleFragment extends BasicFragment {
 
             btWriteArticle.setText("확인");
             btWriteArticle.setOnClickListener(new mOnClick());
+
+            root.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if(keyCode == KeyEvent.KEYCODE_BACK){
+                        Log.d("junyeong", "백키 누름");
+                        Intent intent = new Intent(getActivity(), SubMainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.putExtra("finishstatus", true);
+                        startActivity(intent);
+                        getActivity().finish();
+                        return true;
+                    }
+                    Log.d("junyeong", "뭔키냐 이건");
+                    return false;
+                }
+            });
         }
 
         return root;
