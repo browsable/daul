@@ -58,8 +58,9 @@ import com.daemin.enumclass.User;
 import com.daemin.friend.FriendFragment;
 import com.daemin.repository.GroupListFromServerRepository;
 import com.daemin.setting.SettingFragment;
+import com.daemin.timetable.InitMonthThread;
 import com.daemin.timetable.InitSurfaceView;
-import com.daemin.timetable.InitThread;
+import com.daemin.timetable.InitWeekThread;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -156,7 +157,6 @@ public class SubMainActivity extends FragmentActivity {
 		llDialog.setLayoutParams(params);
 		flSurface = (FrameLayout) findViewById(R.id.flSurface);
 		frame_container = (FrameLayout) findViewById(R.id.frame_container);
-
 		params = flSurface.getLayoutParams();
 		params.height = dm.heightPixels * 7 / 8;
 		flSurface.setLayoutParams(params);
@@ -215,6 +215,13 @@ public class SubMainActivity extends FragmentActivity {
 
 			}
 		});
+
+		if(viewMode.equals("month")){
+			btUniv.setVisibility(View.INVISIBLE);
+			btRecommend.setVisibility(View.INVISIBLE);
+			switcher.setText(CurrentTime.getTitleYearMonth(this));
+			tvTitleYear.setVisibility(View.GONE);
+		}
 		//Log.i("phone", User.USER.getPhoneNum());
 		backPressCloseHandler = new BackPressCloseHandler(this);
 	}
@@ -319,7 +326,6 @@ public class SubMainActivity extends FragmentActivity {
 	// 드로어 메뉴 버튼 클릭 리스너
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public void mOnClick(View v) {
-		InitThread it =InitSurfaceView.getInitThread();
 
 		btWriteArticle.setVisibility(View.GONE);
 
@@ -342,6 +348,9 @@ public class SubMainActivity extends FragmentActivity {
 				switch(viewMode){
 					case "week":
 						//ibCalendar.setBackgroundResource(R.drawable.ic_month);
+						indexForTitle = 0;
+						switcher.setText(CurrentTime.getTitleYearMonth(this));
+						tvTitleYear.setVisibility(View.GONE);
 						btUniv.setVisibility(View.INVISIBLE);
 						btRecommend.setVisibility(View.INVISIBLE);
 						DrawMode.CURRENT.setMode(0);
@@ -356,7 +365,11 @@ public class SubMainActivity extends FragmentActivity {
 						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
 						break;
 					case "month":
+						indexForTitle = 0;
 						//ibCalendar.setBackgroundResource(R.drawable.ic_week);
+						switcher.setText("");
+						switcher.setText(CurrentTime.getTitleMonthWeek(this));
+						tvTitleYear.setVisibility(View.VISIBLE);
 						btUniv.setVisibility(View.VISIBLE);
 						btRecommend.setVisibility(View.VISIBLE);
 						Common.stateFilter(Common.getTempTimePos(), viewMode);
@@ -593,28 +606,76 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				break;
 			case R.id.btBack:
-					--indexForTitle;
-					if(indexForTitle<0) {
-						tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
-						switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
-						it.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
-					}else{
-						tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
-						switcher.setText(CurrentTime.preTitleMonthWeek(this, indexForTitle));
-						it.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
-					}
+				switch(viewMode) {
+					case "week":
+						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
+						--indexForTitle;
+						if (indexForTitle < 0) {
+							tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
+							switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
+							iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
+						} else {
+							tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
+							switcher.setText(CurrentTime.preTitleMonthWeek(this, indexForTitle));
+							iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
+						}
+						break;
+					case "month":
+						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
+						--indexForTitle;
+						if (indexForTitle < 0) {
+							switcher.setText(CurrentTime.backTitleYearMonth(this, -indexForTitle));
+							im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
+									CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
+									CurrentTime.getBackDayNumOfMonth(-indexForTitle),
+									CurrentTime.getBackDayOfWeek(-indexForTitle),
+									CurrentTime.getBackWeekNum(-indexForTitle));
+						} else {
+							switcher.setText(CurrentTime.preTitleYearMonth(this, indexForTitle));
+							im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
+									CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
+									CurrentTime.getPreDayNumOfMonth(indexForTitle),
+									CurrentTime.getPreDayOfWeek(indexForTitle),
+									CurrentTime.getPreWeekNum(indexForTitle));
+						}
+						break;
+				}
 				break;
 			case R.id.btForward:
-					++indexForTitle;
-					if(indexForTitle<0) {
-						tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
-						switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
-						it.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
-					}else{
-						tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
-						switcher.setText(CurrentTime.preTitleMonthWeek(this, indexForTitle));
-						it.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
-					}
+				switch(viewMode) {
+					case "week":
+						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
+						++indexForTitle;
+						if (indexForTitle < 0) {
+							tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
+							switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
+							iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
+						} else {
+							tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
+							switcher.setText(CurrentTime.preTitleMonthWeek(this, indexForTitle));
+							iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
+						}
+						break;
+					case "month":
+						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
+						++indexForTitle;
+						if (indexForTitle < 0) {
+							switcher.setText(CurrentTime.backTitleYearMonth(this, -indexForTitle));
+							im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
+									CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
+									CurrentTime.getBackDayNumOfMonth(-indexForTitle),
+									CurrentTime.getBackDayOfWeek(-indexForTitle),
+									CurrentTime.getBackWeekNum(-indexForTitle));
+						} else {
+							switcher.setText(CurrentTime.preTitleYearMonth(this, indexForTitle));
+							im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
+									CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
+									CurrentTime.getPreDayNumOfMonth(indexForTitle),
+									CurrentTime.getPreDayOfWeek(indexForTitle),
+									CurrentTime.getPreWeekNum(indexForTitle));
+						}
+						break;
+				}
 				break;
 		}
 

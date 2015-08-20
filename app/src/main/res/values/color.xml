@@ -14,6 +14,7 @@
     <color name="whitesmoke">#F5F5F5</color>
     <color name="black">#000000</color>
     <color name="lightgray">#20000000</color>
+    <color name="middlegray">#50000000</color>
     <color name="dimgray">#696969</color>
     <color name="gray">#808080</color>
     <color name="red">#FF0000</color>

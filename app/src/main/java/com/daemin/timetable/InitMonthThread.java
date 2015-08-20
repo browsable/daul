@@ -10,7 +10,6 @@ import android.view.SurfaceHolder;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
-import com.daemin.data.DayOfWeekData;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
 
@@ -57,14 +56,19 @@ public class InitMonthThread extends InitThread {
 		tpgray = new Paint(Paint.ANTI_ALIAS_FLAG);
 		tpgray.setTextSize(22);
 		tpgray.setTextAlign(Paint.Align.CENTER);
-		tpgray.setColor(context.getResources().getColor(R.color.gray));
+		tpgray.setColor(context.getResources().getColor(R.color.middlegray));
 
 		cp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		cp.setStyle(Paint.Style.STROKE);
 		cp.setStrokeWidth(2);
 		cp.setColor(Color.RED);
 	}
-	public void setCurrentTime(DayOfWeekData dowd){
+	public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth, int dayOfWeek, int weekNum){
+		this.monthData = monthData;
+		this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
+		this.dayNumOfMonth = dayNumOfMonth;
+		this.dayOfWeek = dayOfWeek;
+		this.weekNum = weekNum;
 	}
 	public void setRunning(boolean isLoop) {
 		this.isLoop = isLoop;
@@ -159,7 +163,7 @@ public class InitMonthThread extends InitThread {
 		canvas.drawText("SAT", width * 13 / 14, height * 2 / 62 - 1, tpblue);
 
 		for(int i = 0; i<dayOfWeekOfLastMonth+1; i++){
-			canvas.drawText(monthData[i], width * (4*i+1) / 28-6, height* 4 / 64, tpgray);
+			canvas.drawText(monthData[i], width * (4*(i%7)+1) / 28-6, height* (( 10 * (i/7)) + 4)/ 64, tpgray);
 		}
 		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
 			int j = i%7;
