@@ -1,10 +1,7 @@
 package com.daemin.community;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +21,7 @@ import java.text.SimpleDateFormat;
  * Created by Jun-yeong on 2015-08-09.
  */
 public class WritePostFragment extends BasicFragment {
+    private static WritePostFragment singleton;
     private View root;
     private Button btWriteArticle;
     private EditText etArticleTitle, etArticleContent;
@@ -58,14 +56,14 @@ public class WritePostFragment extends BasicFragment {
             imm.hideSoftInputFromWindow(etArticleTitle.getWindowToken(), 0);
             imm.hideSoftInputFromWindow(etArticleContent.getWindowToken(), 0);
 
-            etArticleTitle.setText("");
-            etArticleContent.setText("");
+            initEditText();
             SubMainActivity.getInstance().changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
         }
     }
 
     public WritePostFragment(){
         super(R.layout.fragment_write_article, "WritePostFragment");
+        singleton = this;
     }
 
     @Override
@@ -73,6 +71,8 @@ public class WritePostFragment extends BasicFragment {
         root = super.onCreateView(inflater, container, savedInstanceState);
 
         if (layoutId > 0) {
+            SubMainActivity.getInstance().setBackKeyName("WritePostFragment");
+
             etArticleTitle = (EditText) root.findViewById(R.id.etArticleTitle);
             etArticleContent = (EditText) root.findViewById(R.id.etArticleContent);
             btWriteArticle = (Button) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.btWriteArticle);
@@ -80,24 +80,17 @@ public class WritePostFragment extends BasicFragment {
             btWriteArticle.setText("확인");
             btWriteArticle.setOnClickListener(new mOnClick());
 
-            root.setOnKeyListener(new View.OnKeyListener() {
-                @Override
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    if(keyCode == KeyEvent.KEYCODE_BACK){
-                        Log.d("junyeong", "백키 누름");
-                        Intent intent = new Intent(getActivity(), SubMainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra("finishstatus", true);
-                        startActivity(intent);
-                        getActivity().finish();
-                        return true;
-                    }
-                    Log.d("junyeong", "뭔키냐 이건");
-                    return false;
-                }
-            });
         }
 
         return root;
+    }
+
+    public void initEditText() {
+        etArticleTitle.setText("");
+        etArticleContent.setText("");
+    }
+
+    public static WritePostFragment getInstance(){
+        return singleton;
     }
 }

@@ -33,23 +33,23 @@ import java.util.Map;
  * Created by hernia on 2015-07-07.
  */
 public class CommunityFragment2 extends BasicFragment {
+    private final String GET_PERSON_URL = "http://timedao.heeguchi.me/app/getArticleList";
     private static CommunityFragment2 singleton;
     private final String userId = "joyyir";
+    private int userAccountNum = 921111;
     private List<FreeBoard.Data> data;
     private View root;
     ActionSlideExpandableListAdapter adapter;
 
     public CommunityFragment2(){
         super(R.layout.fragment_community2, "CommunityFragment");
-        //super(R.layout.fragment_write_article, "CommunityFragment");
+        singleton = this;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = super.onCreateView(inflater, container, savedInstanceState);
-        singleton = this;
 
-        //if(layoutId <= 0 ) {
         if (layoutId > 0) {
             Button btWriteArticle = (Button) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.btWriteArticle);
             btWriteArticle.setVisibility(View.VISIBLE);
@@ -60,8 +60,6 @@ public class CommunityFragment2 extends BasicFragment {
                     SubMainActivity.getInstance().changeFragment(WritePostFragment.class, "커뮤니티", R.color.orange);
                 }
             });
-
-            final String GET_PERSON_URL = "http://timedao.heeguchi.me/app/getArticleList";
 
             RequestQueue requestQueue = MyVolley.getRequestQueue();
 
@@ -78,14 +76,14 @@ public class CommunityFragment2 extends BasicFragment {
                                 addedData.setWhen(Post.getDate());
                                 addedData.setBody(Post.getContent());
                                 addedData.setTitle(Post.getTitle());
-                                addedData.setAccount_no(921111);
+                                addedData.setAccount_no(userAccountNum);
 
                                 data.add(0, addedData);
                                 Post.setIsWritten(false);
                             }
 
                             ActionSlideExpandableListView list = (ActionSlideExpandableListView) root.findViewById(R.id.list);
-                            adapter = new ActionSlideExpandableListAdapter(data, userId, getActivity());
+                            adapter = new ActionSlideExpandableListAdapter(data, userId, userAccountNum, getActivity());
                             list.setAdapter(adapter);
                             ((SlideExpandableListAdapter)list.getAdapter()).setItemExpandCollapseListener(new AbstractSlideExpandableListAdapter.OnItemExpandCollapseListener() {
                                 @Override

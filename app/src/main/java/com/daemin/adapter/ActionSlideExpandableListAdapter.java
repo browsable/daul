@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,21 +36,23 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
     private List<FreeBoard.Data> data;
     private List<Comment> comment;
     private String userId;
+    private int userAccountNum;
     private List<Integer> expandCollapseList;
     private Activity activity;
     public final int COLLAPSED = 0;
     public final int EXPANDED = 1;
 
-    public ActionSlideExpandableListAdapter(List<FreeBoard.Data> data, String userId, Activity activity) {
+    public ActionSlideExpandableListAdapter(List<FreeBoard.Data> data, String userId, int userAccountNum, Activity activity) {
         this.data = data;
         this.userId = userId;
-        this.expandCollapseList = new ArrayList<>();
+        this.userAccountNum = userAccountNum;
         this.activity = activity;
+        this.expandCollapseList = new ArrayList<>();
 
         FreeBoard.Data sampleData = new FreeBoard.Data();
         sampleData.setTitle("연결고리#힙합");
         sampleData.setWhen("2015.08.07 12:32");
-        sampleData.setAccount_no(1111);
+        sampleData.setAccount_no(921111);
         sampleData.setBody("너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리!");
         data.add(0, sampleData);
 
@@ -96,6 +99,7 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         TextView tvGroupContent = (TextView) convertView.findViewById(R.id.tvGroupContent);
         final TextView tvCountComment = (TextView) convertView.findViewById(R.id.tvCountComment);
         ImageView expandable_arrow = (ImageView) convertView.findViewById(R.id.expandable_arrow);
+        LinearLayout llButtonGroup = (LinearLayout) convertView.findViewById(R.id.llButtonGroup);
 
         tvGroupTitle.setText(((FreeBoard.Data) getItem(position)).getTitle());
         tvGroupTime.setText(((FreeBoard.Data) getItem(position)).getWhen());
@@ -106,6 +110,11 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
             expandable_arrow.setImageResource(R.drawable.ic_action_collapse);
         else
             expandable_arrow.setImageResource(R.drawable.ic_action_expand);
+
+        if(!String.valueOf(userAccountNum).equals(tvGroupId.getText()))
+            llButtonGroup.setVisibility(View.INVISIBLE);
+        else
+            llButtonGroup.setVisibility(View.VISIBLE);
 
         final ListView lvComment = (ListView) convertView.findViewById(R.id.lvComment);
         final CommentListAdapter commentListAdapter = new CommentListAdapter(comment, userId, lvComment, tvCountComment, activity);
@@ -124,15 +133,30 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
                 if (commentContent.length() <= 0) {
                     Toast.makeText(context, "댓글 내용을 입력하세요", Toast.LENGTH_SHORT).show();
                 } else {
-                    comment.add(new Comment(0, commentContent, new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())), userId));
-                    etComment.setText("");
-                    tvCountComment.setText(String.valueOf(comment.size()));
-                    notifyDataSetChanged();
-                    Common.setListViewHeightBasedOnChildren(lvComment);
+                    if(commentListAdapter.getEditMode() == commentListAdapter.COMMENT_ADD_MODE) {
+                        Log.d("junyeong", "삽입 모드");
+                        comment.add(new Comment(0, commentContent, new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())), userId));
+                        etComment.setText("");
+                        tvCountComment.setText(String.valueOf(comment.size()));
+                        notifyDataSetChanged();
+                        Common.setListViewHeightBasedOnChildren(lvComment);
 
-                    // 키보드 내리기
-                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(etComment.getWindowToken(), 0);
+                        // 키보드 내리기
+                        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(etComment.getWindowToken(), 0);
+                    }
+                    else if(commentListAdapter.getEditMode() == commentListAdapter.COMMENT_MODIFY_MODE){
+                        Log.d("junyeong", "수정 모드");
+                        comment.set(commentListAdapter.getModifiedPos(),
+                                new Comment(0, commentContent, new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())), userId));
+                        commentListAdapter.setEditMode(commentListAdapter.COMMENT_ADD_MODE);
+
+                        // 윗 부분과 공통 소스... 합칠지 말지 고민
+                        etComment.setText("");
+                        tvCountComment.setText(String.valueOf(comment.size()));
+                        notifyDataSetChanged();
+                        Common.setListViewHeightBasedOnChildren(lvComment);
+                    }
                 }
             }
         });
@@ -151,7 +175,12 @@ class CommentListAdapter extends BaseAdapter{
     private String userId;
     private ListView listView;
     private TextView tvCountComment;
+    private Button btEditComment;
     private Activity activity;
+    private int editMode, modifiedPos;
+
+    public final int COMMENT_ADD_MODE = 0;
+    public final int COMMENT_MODIFY_MODE = 1;
 
     public CommentListAdapter(List<Comment> comment, String userId, ListView listView, TextView tvCountComment, Activity activity) {
         this.comment = comment;
@@ -159,6 +188,10 @@ class CommentListAdapter extends BaseAdapter{
         this.listView = listView;
         this.tvCountComment = tvCountComment;
         this.activity = activity;
+
+        btEditComment = (Button) ((View) listView.getParent()).findViewById(R.id.btEditComment);
+        Log.d("junyeong", this.toString() + " 생성자 : 삽입모드로 바뀜");
+        editMode = COMMENT_ADD_MODE;
     }
 
     @Override
@@ -187,7 +220,7 @@ class CommentListAdapter extends BaseAdapter{
 
         TextView tvChildId = (TextView) convertView.findViewById(R.id.tvChildId);
         TextView tvChildDate = (TextView) convertView.findViewById(R.id.tvChildDate);
-        EditText tvChildContent = (EditText) convertView.findViewById(R.id.tvChildContent);
+        final EditText tvChildContent = (EditText) convertView.findViewById(R.id.tvChildContent);
         LinearLayout llCommentBts = (LinearLayout) convertView.findViewById(R.id.llCommentBts);
 
         tvChildId.setText(((Comment) getItem(position)).getUserId());
@@ -198,7 +231,7 @@ class CommentListAdapter extends BaseAdapter{
                 // 마지막 인자는 TextView에서 글이 삽입되는 최대 width를 구함
         tvChildContent.setFocusableInTouchMode(false);
 
-        if(userId != tvChildId.getText())
+        if(!userId.equals(tvChildId.getText()))
             llCommentBts.setVisibility(View.GONE);
         else{
             llCommentBts.setVisibility(View.VISIBLE);
@@ -206,6 +239,23 @@ class CommentListAdapter extends BaseAdapter{
             Button btChildEdit = (Button) convertView.findViewById(R.id.btChildEdit);
             Button btChildRemove = (Button) convertView.findViewById(R.id.btChildRemove);
 
+            btChildEdit.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Log.d("junyeong", this.toString() + " onClick : 수정모드로 바뀜");
+                    editMode = COMMENT_MODIFY_MODE;
+                    modifiedPos = pos;
+
+                    EditText etComment = (EditText) ((View) listView.getParent()).findViewById(R.id.etComment);
+
+                    etComment.setText(tvChildContent.getText());
+                    etComment.setSelection(etComment.length());
+                    etComment.requestFocus();
+
+                    InputMethodManager mgr = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    mgr.showSoftInput(activity.getCurrentFocus(), InputMethodManager.SHOW_FORCED);
+                }
+            });
             btChildRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -237,5 +287,17 @@ class CommentListAdapter extends BaseAdapter{
         }
 
         return convertView;
+    }
+
+    public void setEditMode(int editMode) {
+        this.editMode = editMode;
+    }
+
+    public int getEditMode() {
+        return editMode;
+    }
+
+    public int getModifiedPos() {
+        return modifiedPos;
     }
 }

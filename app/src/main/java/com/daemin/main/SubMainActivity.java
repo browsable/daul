@@ -327,7 +327,9 @@ public class SubMainActivity extends FragmentActivity {
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public void mOnClick(View v) {
 
-		btWriteArticle.setVisibility(View.GONE);
+		// "글쓰기" 버튼은 메뉴를 펼칠 때를 제외하고 언제나 숨김
+		if(v.getId() != R.id.ibMenu )
+			btWriteArticle.setVisibility(View.GONE);
 
 		switch (v.getId()) {
 			case R.id.ibMenu:
