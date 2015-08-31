@@ -26,7 +26,7 @@ public class AppController extends Application {
         singleton = this;
         User.USER.setGroupListDownloadState(MyPreferences.USERINFO.getPref().getBoolean("GroupListDownloadState", false));
         User.USER.setSubjectDownloadState(MyPreferences.USERINFO.getPref().getBoolean("SubjectDownloadState", false));
-        User.USER.setEngUnivName(MyPreferences.USERINFO.getPref().getString("EngUnivName",""));
+        User.USER.setEngUnivName(MyPreferences.USERINFO.getPref().getString("EngUnivName", ""));
         MyVolley.init(this);
         setupDatabase();
         /*TelephonyManager systemService = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);

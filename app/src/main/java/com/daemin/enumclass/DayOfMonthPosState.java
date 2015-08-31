@@ -18,9 +18,6 @@ public enum DayOfMonthPosState {
         }
     };
     public Paint rp; // 사각형
-    public String getStateName() {
-        return stateName;
-    }
     public String stateName;
     DayOfMonthPosState(String stateName) {
         this.stateName = stateName;

@@ -11,9 +11,7 @@ import com.daemin.common.Common;
  * Created by hernia on 2015-06-27.
  */
 public enum PosState {
-    START("START"),
-    INTERMEDIATE("INTERMEDIATE"),
-    END("END"),
+    PAINT("PAINT"),
     ENROLL("ENROLL"),
     NO_PAINT("NO_PAINT") {
         @Override
@@ -38,11 +36,6 @@ public enum PosState {
     };
 
     public Paint rp; // 사각형
-
-    public String getStateName() {
-        return stateName;
-    }
-
     public String stateName;
     PosState(String stateName) {
         this.stateName = stateName;

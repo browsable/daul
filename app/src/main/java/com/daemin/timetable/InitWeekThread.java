@@ -69,9 +69,6 @@ public class InitWeekThread extends InitThread {
 		dayOfWeek = CurrentTime.getDayOfWeek();
 	}
 
-	public Canvas getCanvas() {
-		return canvas;
-	}
 	public void setCurrentTime(DayOfWeekData dowd){
 		this.sun = dowd.getSun();
 		this.mon = dowd.getMon();
@@ -137,13 +134,8 @@ public class InitWeekThread extends InitThread {
 		switch(DrawMode.CURRENT.getMode()) {
 			case 0: case 3://일반
 				if (ETP.getPosState() == PosState.NO_PAINT) {
-					if (touchType.equals("down")) {
-						ETP.setPosState(PosState.START);
-						Common.getTempTimePos().add(ETP.name());
-					} else {
-						ETP.setPosState(PosState.INTERMEDIATE);
-						Common.getTempTimePos().add(ETP.name());
-					}
+					ETP.setPosState(PosState.PAINT);
+					Common.getTempTimePos().add(ETP.name());
 				} else {
 					ETP.setPosState(PosState.NO_PAINT);
 				}
@@ -185,7 +177,7 @@ public class InitWeekThread extends InitThread {
 				height * 25 / 32 + 6, width, height * 25 / 32 + 6, 26, height * 27 / 32 + 6, width,
 				height * 27 / 32 + 6, 26, height * 29 / 32 + 6, width, height * 29 / 32 + 6, 26,
 				height * 31 / 32 + 6, width, height * 31 / 32 + 6 };
-		float[] hp_half = {
+		/*float[] hp_half = {
 				// 가로선 : 30분 간격
 				0, height * 2 / 32+ 6, width, height * 2 / 32+ 6, 0, height * 4 / 32 + 6, width,
 				height * 4 / 32 + 6, 0, height * 6 / 32 + 6, width, height * 6 / 32 + 6, 0,
@@ -196,7 +188,7 @@ public class InitWeekThread extends InitThread {
 				height * 20 / 32 + 6, width, height * 20 / 32, 0, height * 22 / 32, width,
 				height * 22 / 32 + 6, 0, height * 24 / 32 + 6, width, height * 24 / 32 + 6, 0,
 				height * 26 / 32 + 6, width, height * 26 / 32, 0, height * 28 / 32, width,
-				height * 28 / 32 + 6, 0, height * 30 / 32 + 6, width, height * 30 / 32 + 6 };
+				height * 28 / 32 + 6, 0, height * 30 / 32 + 6, width, height * 30 / 32 + 6 };*/
 
 		float[] vp = {
 				// 세로 선
@@ -210,13 +202,13 @@ public class InitWeekThread extends InitThread {
 
 		canvas.drawColor(Color.WHITE);
 		canvas.drawLines(hp_hour, hp);
-		canvas.drawLines(hp_half, hpvp);
+		//canvas.drawLines(hp_half, hpvp);
 		canvas.drawLines(vp, hpvp);
-		canvas.drawText("8", 12, height * 1 / 32 + 13, np);
-		canvas.drawText("9", 12, height * 3 / 32 + 13, np);
+		canvas.drawText("8", 12, height * 1 / 32 + 12, np);
+		canvas.drawText("9", 12, height * 3 / 32 + 12, np);
 		for (int i = 2; i < 16; i++) {
 			canvas.drawText(String.valueOf(i + 8), 2,
-					((2 * i + 1) * height / 32) + 13, np);
+					((2 * i + 1) * height / 32) + 12, np);
 		}
 		canvas.drawText(sun, width * 2 / 15, height / 62, tpred);
 		canvas.drawText(mon, width * 4 / 15, height / 62, tp);
@@ -234,36 +226,7 @@ public class InitWeekThread extends InitThread {
 		canvas.drawText("FRI", width * 12 / 15, height * 2/ 62 - 1, tp);
 		canvas.drawText("SAT", width * 14 / 15, height * 2/ 62 - 1, tpblue);
 
-		switch (day) {
-		case 1: // 월요일
-			canvas.drawRect(width * 3 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 5 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 2: // 화요일
-			canvas.drawRect(width * 5 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 7 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 3: // 수요일
-			canvas.drawRect(width * 7 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 9 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 4: // 목요일
-			canvas.drawRect(width * 9 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 11 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 5: // 금요일
-			canvas.drawRect(width * 11 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 13 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 6: // 토요일
-			canvas.drawRect(width * 13 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 15 / 15, height * 62 / 64 + 6, datep);
-			break;
-		case 0: // 일요일
-			canvas.drawRect(width * 1 / 15, ((height * 2) - 10) / 64 + 6,
-					width * 3 / 15, height * 62 / 64 + 6, datep);
-			break;
-		}
-
+		canvas.drawRect(width * (2*day+1) / 15, ((height * 2) - 10) / 64 + 6,
+				width * (2*day+3) / 15, height * 62 / 64 + 6, datep);
 	}
 }
