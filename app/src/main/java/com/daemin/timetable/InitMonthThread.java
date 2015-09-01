@@ -17,12 +17,12 @@ import com.daemin.enumclass.DayOfMonthPosState;
 public class InitMonthThread extends InitThread {
 	SurfaceHolder mholder;
 	private boolean isLoop = true;
-	private int width, height,dayOfWeekOfLastMonth,dayNumOfMonth,dayOfWeek,weekNum;//이전달의 마지막날 요일
+	private int width, height,dayOfWeekOfLastMonth,dayNumOfMonth,dayOfMonth;//이전달의 마지막날 요일
 	private String[] monthData;
 	Context context;
 	private Paint hp; // 1시간 간격 수평선
 	private Paint hpvp; // 30분 간격 수평선, 수직선
-	private Paint tp,tpred,tpblue,tpgray,cp; // 시간 텍스트
+	private Paint tp,tpred,tpblue,tpgray; // 시간 텍스트
 	static int tempxth;
 	static int tempyth;
 	Canvas canvas;
@@ -33,8 +33,7 @@ public class InitMonthThread extends InitThread {
 		this.monthData = CurrentTime.getDayOfLastMonth();
 		this.dayOfWeekOfLastMonth = CurrentTime.getDayOfWeekOfLastMonth();
 		this.dayNumOfMonth = CurrentTime.getDayNumOfMonth();
-		this.dayOfWeek = CurrentTime.getDayOfWeek();
-		this.weekNum = CurrentTime.getWeekNum();
+		this.dayOfMonth = CurrentTime.getDayOfMonth();
 		tempxth = 0;
 		tempyth = 0;
 		hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -43,32 +42,27 @@ public class InitMonthThread extends InitThread {
 		hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		hpvp.setAlpha(70);
 		tp = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tp.setTextSize(22);
+		tp.setTextSize(24);
 		tp.setTextAlign(Paint.Align.CENTER);
 		tpred = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tpred.setTextSize(22);
+		tpred.setTextSize(24);
 		tpred.setTextAlign(Paint.Align.CENTER);
 		tpred.setColor(context.getResources().getColor(R.color.red));
 		tpblue = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tpblue.setTextSize(22);
+		tpblue.setTextSize(24);
 		tpblue.setTextAlign(Paint.Align.CENTER);
 		tpblue.setColor(context.getResources().getColor(R.color.blue));
 		tpgray = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tpgray.setTextSize(22);
+		tpgray.setTextSize(24);
 		tpgray.setTextAlign(Paint.Align.CENTER);
 		tpgray.setColor(context.getResources().getColor(R.color.middlegray));
-
-		cp = new Paint(Paint.ANTI_ALIAS_FLAG);
-		cp.setStyle(Paint.Style.STROKE);
-		cp.setStrokeWidth(2);
-		cp.setColor(Color.RED);
+		int tmp = dayOfWeekOfLastMonth+dayOfMonth+1;
+		DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(tmp%7,tmp/ 7 + 1)).setPosState(DayOfMonthPosState.PAINT);
 	}
-	public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth, int dayOfWeek, int weekNum){
+	public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth){
 		this.monthData = monthData;
 		this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
 		this.dayNumOfMonth = dayNumOfMonth;
-		this.dayOfWeek = dayOfWeek;
-		this.weekNum = weekNum;
 	}
 	public void setRunning(boolean isLoop) {
 		this.isLoop = isLoop;
@@ -182,7 +176,6 @@ public class InitMonthThread extends InitThread {
 		for(int i = dayOfWeekOfLastMonth + dayNumOfMonth + 1; i < 42; i++) {
 			canvas.drawText(monthData[i], width * (4*(i%7)+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tpgray);
 		}
-		canvas.drawCircle(width * (4*dayOfWeek+1) / 28-6, height * (10 * (weekNum-1) + 3) / 63+1,18, cp);
 	}
 
 }

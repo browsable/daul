@@ -66,7 +66,6 @@ public class InitWeekThread extends InitThread {
 
 		datep = new Paint(Paint.ANTI_ALIAS_FLAG);
 		datep.setColor(Color.parseColor("#104EC7B3"));
-		dayOfWeek = CurrentTime.getDayOfWeek();
 	}
 
 	public void setCurrentTime(DayOfWeekData dowd){

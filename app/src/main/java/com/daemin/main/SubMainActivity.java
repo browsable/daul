@@ -629,16 +629,12 @@ public class SubMainActivity extends FragmentActivity {
 							switcher.setText(CurrentTime.backTitleYearMonth(this, -indexForTitle));
 							im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
 									CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
-									CurrentTime.getBackDayNumOfMonth(-indexForTitle),
-									CurrentTime.getBackDayOfWeek(-indexForTitle),
-									CurrentTime.getBackWeekNum(-indexForTitle));
+									CurrentTime.getBackDayNumOfMonth(-indexForTitle));
 						} else {
 							switcher.setText(CurrentTime.preTitleYearMonth(this, indexForTitle));
 							im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
 									CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
-									CurrentTime.getPreDayNumOfMonth(indexForTitle),
-									CurrentTime.getPreDayOfWeek(indexForTitle),
-									CurrentTime.getPreWeekNum(indexForTitle));
+									CurrentTime.getPreDayNumOfMonth(indexForTitle));
 						}
 						break;
 				}
@@ -665,16 +661,12 @@ public class SubMainActivity extends FragmentActivity {
 							switcher.setText(CurrentTime.backTitleYearMonth(this, -indexForTitle));
 							im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
 									CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
-									CurrentTime.getBackDayNumOfMonth(-indexForTitle),
-									CurrentTime.getBackDayOfWeek(-indexForTitle),
-									CurrentTime.getBackWeekNum(-indexForTitle));
+									CurrentTime.getBackDayNumOfMonth(-indexForTitle));
 						} else {
 							switcher.setText(CurrentTime.preTitleYearMonth(this, indexForTitle));
 							im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
 									CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
-									CurrentTime.getPreDayNumOfMonth(indexForTitle),
-									CurrentTime.getPreDayOfWeek(indexForTitle),
-									CurrentTime.getPreWeekNum(indexForTitle));
+									CurrentTime.getPreDayNumOfMonth(indexForTitle));
 						}
 						break;
 				}
