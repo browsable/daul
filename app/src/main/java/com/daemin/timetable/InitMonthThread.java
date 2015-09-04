@@ -26,7 +26,6 @@ public class InitMonthThread extends InitThread {
 	static int tempxth;
 	static int tempyth;
 	Canvas canvas;
-
 	public InitMonthThread(SurfaceHolder holder, Context context) {
 		this.mholder = holder;
 		this.context = context;
@@ -57,7 +56,9 @@ public class InitMonthThread extends InitThread {
 		tpgray.setTextAlign(Paint.Align.CENTER);
 		tpgray.setColor(context.getResources().getColor(R.color.middlegray));
 		int tmp = dayOfWeekOfLastMonth+dayOfMonth+1;
-		DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(tmp%7,tmp/ 7 + 1)).setPosState(DayOfMonthPosState.PAINT);
+		int tx = tmp%7;
+		if(tx==0)--tmp; tx = 7;
+		DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(tx,tmp/ 7 + 1)).setPosState(DayOfMonthPosState.PAINT);
 	}
 	public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth){
 		this.monthData = monthData;
@@ -75,7 +76,10 @@ public class InitMonthThread extends InitThread {
 	public int getHeight() {
 		return height;
 	}
-
+	@Override
+	public String getDayOfWeek(int index) {
+		return null;
+	}
 	public void run() {
 		while (isLoop) {
 			canvas = null;

@@ -38,13 +38,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import com.daemin.adapter.BottomNormalListAdapter2;
+import com.daemin.adapter.BottomNormalListAdapter;
 import com.daemin.adapter.HorizontalListAdapter;
 import com.daemin.area.AreaFragment;
 import com.daemin.common.AsyncCallback;
 import com.daemin.common.AsyncExecutor;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.Common;
+import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.common.DatabaseHandler;
 import com.daemin.common.HorizontalListView;
@@ -227,11 +228,40 @@ public class SubMainActivity extends FragmentActivity {
 	public void makeNormalList(){
 		normalList = new ArrayList<>();
 		HorizontalListView lvTime = (HorizontalListView) findViewById(R.id.lvTime);
-		normalAdapter = new BottomNormalListAdapter2(this, normalList);
+		normalAdapter = new BottomNormalListAdapter(this, normalList);
 		lvTime.setAdapter(normalAdapter);
 	}
-	public void updateNormalList(String YMD, String StartTime, String endTime){
-		normalList.add( new BottomNormalData(YMD,StartTime,endTime));
+	public void updateNormalList(){
+		normalList.clear();
+		int tmpXth=0,tmpYth=0,startYth=1,endYth=1;
+		String YMD="";
+		for (TimePos ETP : TimePos.values()) {
+			if(ETP.getPosState()==PosState.PAINT){
+				if(tmpXth!=ETP.getXth()){
+					tmpXth = ETP.getXth();
+					YMD = InitSurfaceView.getInitThread().getDayOfWeek(tmpXth);
+					tmpYth=0;startYth=1;endYth=1;
+				}
+				if(ETP.getYth()==tmpYth+2){
+					normalList.remove(normalList.size()-1);
+					tmpYth = ETP.getYth();
+					endYth = tmpYth+2;
+					normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth) + ":00", Convert.YthToHourOfDay(endYth)+":00"));
+				}else{
+					if(startYth==endYth) {
+						tmpYth = startYth = ETP.getYth();
+						endYth = startYth+2;
+						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth) + ":00", Convert.YthToHourOfDay(endYth)+":00"));
+					}
+					else {
+						tmpYth = startYth = ETP.getYth();
+						endYth = startYth+2;
+						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth) + ":00", Convert.YthToHourOfDay(endYth)+":00"));
+					}
+
+				}
+			}
+		}
 		normalAdapter.notifyDataSetChanged();
 	}
 	public void colorButtonSetting(){
@@ -454,6 +484,8 @@ public class SubMainActivity extends FragmentActivity {
 				break;
 			case R.id.btNormal:
 				DrawMode.CURRENT.setMode(0);
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				Common.stateFilter(Common.getTempTimePos(),viewMode);
 				llNormal.setVisibility(View.VISIBLE);
 				llUniv.setVisibility(View.GONE);

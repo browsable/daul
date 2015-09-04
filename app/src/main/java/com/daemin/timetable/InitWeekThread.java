@@ -28,7 +28,7 @@ public class InitWeekThread extends InitThread {
 	private Paint hpvp; // 30분 간격 수평선, 수직선
 	private Paint tp,tpred,tpblue,np; // 시간 텍스트
 	private Paint datep;
-	static int tempxth,tempyth,startXth,endYth;
+	static int tempxth,tempyth;
 	Canvas canvas;
 
 	public InitWeekThread(SurfaceHolder holder, Context context) {
@@ -68,7 +68,26 @@ public class InitWeekThread extends InitThread {
 		datep = new Paint(Paint.ANTI_ALIAS_FLAG);
 		datep.setColor(Color.parseColor("#104EC7B3"));
 	}
-
+	public String getDayOfWeek(int index) {
+		switch (index){
+			case 1:
+				return sun;
+			case 3:
+				return mon;
+			case 5:
+				return tue;
+			case 7:
+				return wed;
+			case 9:
+				return thr;
+			case 11:
+				return fri;
+			case 13:
+				return sat;
+			default:
+				return "";
+		}
+	}
 	public void setCurrentTime(DayOfWeekData dowd){
 		this.sun = dowd.getSun();
 		this.mon = dowd.getMon();
@@ -129,34 +148,7 @@ public class InitWeekThread extends InitThread {
 		}
 	}
 	public void getActionUp() {
-		for (TimePos ETP : TimePos.values()) {
-			if(ETP.getPosState()==PosState.PAINT){
-				switch (ETP.getXth()){
-					case 1:
-						//Convert.getNormalData(sun,ETP.getYth());
-						break;
-					case 3:
-						Toast.makeText(context,mon,Toast.LENGTH_SHORT).show();
-						break;
-					case 5:
-						Toast.makeText(context,tue,Toast.LENGTH_SHORT).show();
-						break;
-					case 7:
-						Toast.makeText(context,wed,Toast.LENGTH_SHORT).show();
-						break;
-					case 9:
-						Toast.makeText(context,thr,Toast.LENGTH_SHORT).show();
-						break;
-					case 11:
-						Toast.makeText(context,fri,Toast.LENGTH_SHORT).show();
-						break;
-					case 13:
-						Toast.makeText(context,sat,Toast.LENGTH_SHORT).show();
-						break;
-				}
-			}
-		}
-		SubMainActivity.getInstance().updateNormalList("8/11","10:00","11:00");
+		SubMainActivity.getInstance().updateNormalList();
 	}
 
 	public void makeTimePos(int xth, int yth, String touchType) {
@@ -202,24 +194,11 @@ public class InitWeekThread extends InitThread {
 				height * 9 / 32 + 18, width / 20, height * 11 / 32 + 18, width, height * 11 / 32 + 18, width / 20,
 				height * 13 / 32 + 18, width, height * 13 / 32 + 18, width / 20, height * 15 / 32 + 18, width,
 				height * 15 / 32 + 18, width / 20, height * 17 / 32 + 18, width, height * 17 / 32 + 18, width / 20,
-				height * 19 / 32 + 18, width, height * 19 / 32 + 26, width / 20, height * 21 / 32 + 18, width,
+				height * 19 / 32 + 18, width, height * 19 / 32 + 18, width / 20, height * 21 / 32 + 18, width,
 				height * 21 / 32 + 18, width / 20, height * 23 / 32 + 18, width, height * 23 / 32 + 18, width / 20,
-				height * 25 / 32 + 18, width, height * 25 / 32 + 26, width / 20, height * 27 / 32 + 18, width,
+				height * 25 / 32 + 18, width, height * 25 / 32 + 18, width / 20, height * 27 / 32 + 18, width,
 				height * 27 / 32 + 18, width / 20, height * 29 / 32 + 18, width, height * 29 / 32 + 18, width / 20,
 				height * 31 / 32 + 18, width, height * 31 / 32 + 18 };
-		/*float[] hp_half = {
-				// 가로선 : 30분 간격
-				0, height * 2 / 32+ 6, width, height * 2 / 32+ 6, 0, height * 4 / 32 + 6, width,
-				height * 4 / 32 + 6, 0, height * 6 / 32 + 6, width, height * 6 / 32 + 6, 0,
-				height * 8 / 32 + 6, width, height * 8 / 32+ 6, 0, height * 10 / 32 + 6, width,
-				height * 10 / 32 + 6, 0, height * 12 / 32 + 6, width, height * 12 / 32 + 6, 0,
-				height * 14 / 32 + 6, width, height * 14 / 32, 0, height * 16 / 32, width,
-				height * 16 / 32 + 6, 0, height * 18 / 32 + 6, width, height * 18 / 32 + 6, 0,
-				height * 20 / 32 + 6, width, height * 20 / 32, 0, height * 22 / 32, width,
-				height * 22 / 32 + 6, 0, height * 24 / 32 + 6, width, height * 24 / 32 + 6, 0,
-				height * 26 / 32 + 6, width, height * 26 / 32, 0, height * 28 / 32, width,
-				height * 28 / 32 + 6, 0, height * 30 / 32 + 6, width, height * 30 / 32 + 6 };*/
-
 		float[] vp = {
 				// 세로 선
 				width / 15, height / 32 + 18, width / 15, height * 31 / 32 + 18, width * 3 / 15,
