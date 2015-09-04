@@ -2,9 +2,11 @@ package com.daemin.common;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.User;
+import com.daemin.timetable.R;
 
 import timedao_group.DaoMaster;
 import timedao_group.DaoSession;
@@ -29,6 +31,16 @@ public class AppController extends Application {
         User.USER.setEngUnivName(MyPreferences.USERINFO.getPref().getString("EngUnivName", ""));
         MyVolley.init(this);
         setupDatabase();
+        if(Common.isOnline()) {
+            if (User.USER.isGroupListDownloadState()) {
+                Toast.makeText(this, "그룹리스트다운로드되있는상태", Toast.LENGTH_SHORT).show();
+            }else{
+                MyRequest.getGroupList();
+            }
+        }
+        else{
+            Toast.makeText(this, this.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+        }
         /*TelephonyManager systemService = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         String phonenum = systemService.getLine1Number();
         if(phonenum!=null) {

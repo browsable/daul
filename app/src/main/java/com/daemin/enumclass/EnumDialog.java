@@ -88,15 +88,15 @@ public enum EnumDialog implements View.OnClickListener {
             int AMPM = ct.getCurAMPM();
             int sDayOfWeekIndex = ct.getDayOfWeekIndex();
             String sDayOfWeek = Convert.IndexToDayOfWeek(sDayOfWeekIndex);
-            ArrayList<DialogNormalData> normalList = new ArrayList<>();
-            normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
+            ArrayList<BottomNormalData> normalList = new ArrayList<>();
+            normalList.add( new BottomNormalData(startYear,startMonthOfYear,startDayOfMonth,
                     endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
-            normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
+            normalList.add( new BottomNormalData(startYear,startMonthOfYear,startDayOfMonth,
                     endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
-            normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
+            normalList.add( new BottomNormalData(startYear,startMonthOfYear,startDayOfMonth,
                     endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
             ListView lvTime = (ListView) dialog.findViewById(R.id.lvTime);
-            ArrayAdapter adapter = new DialogNormalListAdapter(context, normalList);
+            ArrayAdapter adapter = new BottomNormalListAdapter(context, normalList);
             lvTime.setAdapter(adapter);
             Common.setListViewHeightBasedOnChildren(lvTime);
            }

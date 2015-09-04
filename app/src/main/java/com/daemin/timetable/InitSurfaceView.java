@@ -110,6 +110,14 @@ public class InitSurfaceView extends SurfaceView implements
 							}
 						}
 						break;
+					case MotionEvent.ACTION_UP:
+						if (!outOfTouchArea) {
+							calXthYth(event);
+							if (xth > 0 && yth > 0 && yth < 30) {
+								initThread.getActionUp();
+							}
+						}
+						break;
 				}
 				break;
 			case "month":

@@ -28,8 +28,7 @@ public class InitWeekThread extends InitThread {
 	private Paint hpvp; // 30분 간격 수평선, 수직선
 	private Paint tp,tpred,tpblue,np; // 시간 텍스트
 	private Paint datep;
-	static int tempxth;
-	static int tempyth;
+	static int tempxth,tempyth,startXth,endYth;
 	Canvas canvas;
 
 	public InitWeekThread(SurfaceHolder holder, Context context) {
@@ -43,6 +42,7 @@ public class InitWeekThread extends InitThread {
 		this.thr = dowd.getThr();
 		this.fri = dowd.getFri();
 		this.sat = dowd.getSat();
+		this.dayOfWeek = CurrentTime.getDayOfWeek();
 		tempxth = 0;
 		tempyth = 0;
 		hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -51,16 +51,17 @@ public class InitWeekThread extends InitThread {
 		hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		hpvp.setAlpha(70);
 		np = new Paint(Paint.ANTI_ALIAS_FLAG);
-		np.setTextSize(18);
+		np.setTextSize(24);
+		np.setTextAlign(Paint.Align.CENTER);
 		tp = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tp.setTextSize(18);
+		tp.setTextSize(24);
 		tp.setTextAlign(Paint.Align.CENTER);
 		tpred = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tpred.setTextSize(18);
+		tpred.setTextSize(24);
 		tpred.setTextAlign(Paint.Align.CENTER);
 		tpred.setColor(context.getResources().getColor(R.color.red));
 		tpblue = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tpblue.setTextSize(18);
+		tpblue.setTextSize(24);
 		tpblue.setTextAlign(Paint.Align.CENTER);
 		tpblue.setColor(context.getResources().getColor(R.color.blue));
 
@@ -127,6 +128,36 @@ public class InitWeekThread extends InitThread {
 			tempyth = yth;
 		}
 	}
+	public void getActionUp() {
+		for (TimePos ETP : TimePos.values()) {
+			if(ETP.getPosState()==PosState.PAINT){
+				switch (ETP.getXth()){
+					case 1:
+						//Convert.getNormalData(sun,ETP.getYth());
+						break;
+					case 3:
+						Toast.makeText(context,mon,Toast.LENGTH_SHORT).show();
+						break;
+					case 5:
+						Toast.makeText(context,tue,Toast.LENGTH_SHORT).show();
+						break;
+					case 7:
+						Toast.makeText(context,wed,Toast.LENGTH_SHORT).show();
+						break;
+					case 9:
+						Toast.makeText(context,thr,Toast.LENGTH_SHORT).show();
+						break;
+					case 11:
+						Toast.makeText(context,fri,Toast.LENGTH_SHORT).show();
+						break;
+					case 13:
+						Toast.makeText(context,sat,Toast.LENGTH_SHORT).show();
+						break;
+				}
+			}
+		}
+		SubMainActivity.getInstance().updateNormalList("8/11","10:00","11:00");
+	}
 
 	public void makeTimePos(int xth, int yth, String touchType) {
 		TimePos ETP = TimePos.valueOf(Convert.getxyMerge(xth, yth));
@@ -165,17 +196,17 @@ public class InitWeekThread extends InitThread {
 
 		float[] hp_hour = {
 				// 가로선 : 1시간 간격
-				26, height / 32 + 6, width, height / 32 + 6 , 26, height * 3 / 32 + 6, width,
-				height * 3 / 32 + 6, 26, height * 5 / 32 + 6, width, height * 5 / 32 + 6, 26,
-				height * 7 / 32 + 6, width, height * 7 / 32 + 6, 26, height * 9 / 32 + 6, width,
-				height * 9 / 32 + 6, 26, height * 11 / 32 + 6, width, height * 11 / 32 + 6, 26,
-				height * 13 / 32 + 6, width, height * 13 / 32 + 6, 26, height * 15 / 32 + 6, width,
-				height * 15 / 32 + 6, 26, height * 17 / 32 + 6, width, height * 17 / 32 + 6, 26,
-				height * 19 / 32 + 6, width, height * 19 / 32 + 6, 26, height * 21 / 32 + 6, width,
-				height * 21 / 32 + 6, 26, height * 23 / 32 + 6, width, height * 23 / 32 + 6, 26,
-				height * 25 / 32 + 6, width, height * 25 / 32 + 6, 26, height * 27 / 32 + 6, width,
-				height * 27 / 32 + 6, 26, height * 29 / 32 + 6, width, height * 29 / 32 + 6, 26,
-				height * 31 / 32 + 6, width, height * 31 / 32 + 6 };
+				width / 20, height / 32 + 18, width, height / 32 + 18 , width / 20, height * 3 / 32+18, width,
+				height * 3 / 32 + 18, width / 20, height * 5 / 32 + 18, width, height * 5 / 32 + 18, width / 20,
+				height * 7 / 32 + 18, width, height * 7 / 32 + 18, width / 20, height * 9 / 32 + 18, width,
+				height * 9 / 32 + 18, width / 20, height * 11 / 32 + 18, width, height * 11 / 32 + 18, width / 20,
+				height * 13 / 32 + 18, width, height * 13 / 32 + 18, width / 20, height * 15 / 32 + 18, width,
+				height * 15 / 32 + 18, width / 20, height * 17 / 32 + 18, width, height * 17 / 32 + 18, width / 20,
+				height * 19 / 32 + 18, width, height * 19 / 32 + 26, width / 20, height * 21 / 32 + 18, width,
+				height * 21 / 32 + 18, width / 20, height * 23 / 32 + 18, width, height * 23 / 32 + 18, width / 20,
+				height * 25 / 32 + 18, width, height * 25 / 32 + 26, width / 20, height * 27 / 32 + 18, width,
+				height * 27 / 32 + 18, width / 20, height * 29 / 32 + 18, width, height * 29 / 32 + 18, width / 20,
+				height * 31 / 32 + 18, width, height * 31 / 32 + 18 };
 		/*float[] hp_half = {
 				// 가로선 : 30분 간격
 				0, height * 2 / 32+ 6, width, height * 2 / 32+ 6, 0, height * 4 / 32 + 6, width,
@@ -191,41 +222,41 @@ public class InitWeekThread extends InitThread {
 
 		float[] vp = {
 				// 세로 선
-				width / 15, height / 32 + 6, width / 15, height * 31 / 32 + 6, width * 3 / 15,
-				height / 32 + 6, width * 3 / 15, height * 31 / 32 + 6, width * 5 / 15,
-				height / 32 + 6, width * 5 / 15, height * 31 / 32 + 6, width * 7 / 15,
-				height / 32 + 6, width * 7 / 15, height * 31 / 32 + 6, width * 9 / 15,
-				height / 32 + 6, width * 9 / 15, height * 31 / 32 + 6, width * 11 / 15,
-				height / 32 + 6, width * 11 / 15, height * 31 / 32 + 6, width * 13 / 15,
-				height / 32 + 6, width * 13 / 15, height * 31 / 32 + 6 };
+				width / 15, height / 32 + 18, width / 15, height * 31 / 32 + 18, width * 3 / 15,
+				height / 32 + 18, width * 3 / 15, height * 31 / 32 + 18, width * 5 / 15,
+				height / 32 + 18, width * 5 / 15, height * 31 / 32 + 18, width * 7 / 15,
+				height / 32 + 18, width * 7 / 15, height * 31 / 32 + 18, width * 9 / 15,
+				height / 32 + 18, width * 9 / 15, height * 31 / 32 + 18, width * 11 / 15,
+				height / 32 + 18, width * 11 / 15, height * 31 / 32 + 18, width * 13 / 15,
+				height / 32 + 18, width * 13 / 15, height * 31 / 32 + 18 };
 
 		canvas.drawColor(Color.WHITE);
 		canvas.drawLines(hp_hour, hp);
 		//canvas.drawLines(hp_half, hpvp);
 		canvas.drawLines(vp, hpvp);
-		canvas.drawText("8", 12, height * 1 / 32 + 12, np);
-		canvas.drawText("9", 12, height * 3 / 32 + 12, np);
+		canvas.drawText("8", (width / 20)*5/8, height * 1 / 32 + 26, np);
+		canvas.drawText("9", (width / 20)*5/8, height * 3 / 32 + 26, np);
 		for (int i = 2; i < 16; i++) {
-			canvas.drawText(String.valueOf(i + 8), 2,
-					((2 * i + 1) * height / 32) + 12, np);
+			canvas.drawText(String.valueOf(i + 8), width / 40,
+					((2 * i + 1) * height / 32) + 26, np);
 		}
-		canvas.drawText(sun, width * 2 / 15, height / 62, tpred);
-		canvas.drawText(mon, width * 4 / 15, height / 62, tp);
-		canvas.drawText(tue, width * 6 / 15, height / 62, tp);
-		canvas.drawText(wed, width * 8 / 15, height / 62, tp);
-		canvas.drawText(thr, width * 10 / 15, height / 62, tp);
-		canvas.drawText(fri, width * 12 / 15, height / 62, tp);
-		canvas.drawText(sat, width * 14 / 15, height / 62, tpblue);
+		canvas.drawText(sun, width * 2 / 15, (height / 32 + 18)*7/16, tpred);
+		canvas.drawText(mon, width * 4 / 15, (height / 32 + 18)*7/16, tp);
+		canvas.drawText(tue, width * 6 / 15, (height / 32 + 18)*7/16, tp);
+		canvas.drawText(wed, width * 8 / 15, (height / 32 + 18)*7/16, tp);
+		canvas.drawText(thr, width * 10 / 15, (height / 32 + 18)*7/16, tp);
+		canvas.drawText(fri, width * 12 / 15, (height / 32 + 18)*7/16, tp);
+		canvas.drawText(sat, width * 14 / 15, (height / 32 + 18)*7/16, tpblue);
 
-		canvas.drawText("SUN", width * 2 / 15, height * 2/ 62 - 1, tpred);
-		canvas.drawText("MON", width * 4 / 15, height * 2/ 62 - 1, tp);
-		canvas.drawText("TUE", width * 6 / 15, height * 2/ 62 - 1, tp);
-		canvas.drawText("WED", width * 8 / 15, height * 2/ 62 - 1, tp);
-		canvas.drawText("THU", width * 10 / 15, height * 2/ 62 - 1, tp);
-		canvas.drawText("FRI", width * 12 / 15, height * 2/ 62 - 1, tp);
-		canvas.drawText("SAT", width * 14 / 15, height * 2/ 62 - 1, tpblue);
+		canvas.drawText("SUN", width * 2 / 15, (height / 32 + 18)*15/16, tpred);
+		canvas.drawText("MON", width * 4 / 15, (height / 32 + 18)*15/16, tp);
+		canvas.drawText("TUE", width * 6 / 15, (height / 32 + 18)*15/16, tp);
+		canvas.drawText("WED", width * 8 / 15, (height / 32 + 18)*15/16, tp);
+		canvas.drawText("THU", width * 10 / 15, (height / 32 + 18)*15/16, tp);
+		canvas.drawText("FRI", width * 12 / 15, (height / 32 + 18)*15/16, tp);
+		canvas.drawText("SAT", width * 14 / 15, (height / 32 + 18)*15/16, tpblue);
 
-		canvas.drawRect(width * (2*day+1) / 15, ((height * 2) - 10) / 64 + 6,
-				width * (2*day+3) / 15, height * 62 / 64 + 6, datep);
+		canvas.drawRect(width * (2*day+1) / 15, ((height * 2) - 10) / 64 + 18,
+				width * (2*day+3) / 15, height * 62 / 64 + 18, datep);
 	}
 }

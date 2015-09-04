@@ -1,5 +1,5 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:widget="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
@@ -48,15 +48,18 @@
                 android:layout_height="match_parent"
                 android:background="@color/lightgray"
                 />
-            <ListView
+            <com.daemin.common.HorizontalListView
                 android:id="@+id/lvTime"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:divider="@color/lightgray"
-                android:dividerHeight="1dp"
+                android:fadingEdgeLength="1dp"
+                android:requiresFadingEdge="horizontal"
                 android:layout_weight="1"
+                widget:dividerWidth="1dp"
                 />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

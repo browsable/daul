@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.daemin.adapter.BottomNormalListAdapter2;
 import com.daemin.adapter.HorizontalListAdapter;
 import com.daemin.area.AreaFragment;
 import com.daemin.common.AsyncCallback;
@@ -49,6 +50,7 @@ import com.daemin.common.DatabaseHandler;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
 import com.daemin.community.CommunityFragment2;
+import com.daemin.data.BottomNormalData;
 import com.daemin.data.SubjectData;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.MyPreferences;
@@ -112,6 +114,8 @@ public class SubMainActivity extends FragmentActivity {
 	TextSwitcher switcher;
 	//bottom drawer
 	private SlidingUpPanelLayout mLayout;
+	ArrayList<BottomNormalData> normalList;
+	ArrayAdapter normalAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -165,33 +169,9 @@ public class SubMainActivity extends FragmentActivity {
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
 		colorName = Common.MAIN_COLOR;
-		tvTitleYear.setText(CurrentTime.getYear() + getString(R.string.year));
-		switcher.setFactory(new ViewSwitcher.ViewFactory() {
-
-			@Override
-			public View makeView() {
-				TextView myText = new TextView(SubMainActivity.this);
-				myText.setGravity(Gravity.BOTTOM);
-				myText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-				myText.setTypeface(Typeface.DEFAULT_BOLD);
-				myText.setTextColor(Color.WHITE);
-				return myText;
-			}
-		});
-		Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
-		Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
-		switcher.setInAnimation(in);
-		switcher.setOutAnimation(out);
-		switcher.setText(CurrentTime.getTitleMonthWeek(this));
-		/*ArrayList<DialogNormalData> normalList = new ArrayList<>();
-		normalList.add( new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
-				endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM));
-
-		ListView lvTime = (ListView) findViewById(R.id.lvTime);
-		ArrayAdapter adapter = new DialogNormalListAdapter(this, normalList);
-		lvTime.setAdapter(adapter);
-		Common.setListViewHeightBasedOnChildren(lvTime);*/
+		setTitle();
 		colorButtonSetting();
+		makeNormalList();
 
 		if (savedInstanceState != null)
 			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
@@ -225,19 +205,36 @@ public class SubMainActivity extends FragmentActivity {
 		//Log.i("phone", User.USER.getPhoneNum());
 		backPressCloseHandler = new BackPressCloseHandler(this);
 	}
-
-	/*public static ArrayList<DialogNormalData> makeNormalList(){
-
-		new DialogNormalData(startYear,startMonthOfYear,startDayOfMonth,
-				endYear,endMonthOfYear,endDayOfMonth,startHour,startMinute,endHour,endMinute,AMPM)
-		if(tempTimePos!=null) {
-			for(String t : tempTimePos){
-				TimePos.valueOf(t).setPosState(PosState.NO_PAINT);
+	public void setTitle(){
+		tvTitleYear.setText(CurrentTime.getYear() + getString(R.string.year));
+		switcher.setFactory(new ViewSwitcher.ViewFactory() {
+			@Override
+			public View makeView() {
+				TextView myText = new TextView(SubMainActivity.this);
+				myText.setGravity(Gravity.BOTTOM);
+				myText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+				myText.setTypeface(Typeface.DEFAULT_BOLD);
+				myText.setTextColor(Color.WHITE);
+				return myText;
 			}
-		}
-		return;
-	}*/
-	private void colorButtonSetting(){
+		});
+		Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
+		Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
+		switcher.setInAnimation(in);
+		switcher.setOutAnimation(out);
+		switcher.setText(CurrentTime.getTitleMonthWeek(this));
+	}
+	public void makeNormalList(){
+		normalList = new ArrayList<>();
+		HorizontalListView lvTime = (HorizontalListView) findViewById(R.id.lvTime);
+		normalAdapter = new BottomNormalListAdapter2(this, normalList);
+		lvTime.setAdapter(normalAdapter);
+	}
+	public void updateNormalList(String YMD, String StartTime, String endTime){
+		normalList.add( new BottomNormalData(YMD,StartTime,endTime));
+		normalAdapter.notifyDataSetChanged();
+	}
+	public void colorButtonSetting(){
 		gd = (GradientDrawable) btColor.getBackground().mutate();
 		String[] dialogColorBtn = getResources().getStringArray(R.array.dialogColorBtn);
 		for (int i = 0; i < dialogColorBtn.length; i++) {
@@ -588,6 +585,12 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btAddTime:
 				break;
 			case R.id.btPlus:
+				switch(viewMode) {
+					case "week":
+						break;
+					case "month":
+						break;
+				}
 					mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 					if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);
 				break;

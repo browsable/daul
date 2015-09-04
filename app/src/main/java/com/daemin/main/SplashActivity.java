@@ -6,11 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
 
-import com.daemin.common.Common;
-import com.daemin.common.MyRequest;
-import com.daemin.enumclass.User;
 import com.daemin.timetable.R;
 
 public class SplashActivity extends Activity {
@@ -23,16 +19,6 @@ public class SplashActivity extends Activity {
 			super.onCreate(savedInstanceState);
 			singleton = this;
 			setContentView(R.layout.activity_splash);
-			if(Common.isOnline()) {
-				if (User.USER.isGroupListDownloadState()) {
-					Toast.makeText(this, "그룹리스트다운로드되있는상태", Toast.LENGTH_SHORT).show();
-				}else{
-					MyRequest.getGroupList();
-				}
-			}
-			else{
-				Toast.makeText(this, this.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-			}
 			initialize();
 		}
 

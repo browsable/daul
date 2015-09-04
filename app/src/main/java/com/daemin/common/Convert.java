@@ -192,4 +192,27 @@ public class Convert {
 			return "";
 		}
 	}
+
+	/*public static BottomNormalData getNormalData(String dayName, int yth) {
+		String year =
+		BottomNormalData bnd = null;
+		String[] result = dayName.split("/");
+		switch (dayName){
+			case 1:
+				break;
+			case 3:
+				break;
+			case 5:
+				break;
+			case 7:
+				break;
+			case 9:
+				break;
+			case 11:
+				break;
+			case 13:
+				break;
+		}
+		return bnd;
+	}*/
 }

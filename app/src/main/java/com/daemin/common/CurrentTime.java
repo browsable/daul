@@ -7,17 +7,23 @@ import com.daemin.data.DayOfWeekData;
 import com.daemin.timetable.R;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Created by hernia on 2015-08-07.
  */
 public class CurrentTime {
     static LocalDate now = LocalDate.now();
-    //static LocalDate now = new LocalDate(2015,8,31);
+    //static LocalDate now = new LocalDate(2015,11,29);
     static DayOfWeekData dowd = new DayOfWeekData();
     static LocalDate fst; //해당날짜의 첫째 date
     public static int getYear() {
         return getLastDayOfWeek().getYear();
+    }
+    public static String getYMD(){
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("M/d");
+        return fmt.print(now);
     }
     public static int getDayOfWeek() {
         int dayOfWeek = now.getDayOfWeek();
@@ -29,6 +35,7 @@ public class CurrentTime {
         if(now.getDayOfWeek()==7) return now.plusDays(1).withDayOfWeek(6);
         else return now.withDayOfWeek(6);
     }
+
     //이달의 첫 날이 속한 토요일
     public static LocalDate getFirstDayOfWeekYear(){
         if(getLastDayOfWeek().withDayOfMonth(1).getDayOfWeek()==7) return getLastDayOfWeek().withDayOfMonth(1).plusDays(1).withDayOfWeek(6);

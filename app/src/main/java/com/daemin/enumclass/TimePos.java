@@ -50,6 +50,14 @@ public enum TimePos {
         this.posState = PosState.NO_PAINT;
     }
 
+    public int getXth() {
+        return xth;
+    }
+
+    public int getYth() {
+        return yth;
+    }
+
     public void setPosState(PosState posState) {
         this.posState = posState;
     }

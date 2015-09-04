@@ -22,16 +22,16 @@ public enum PosState {
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
             Common.checkTableStateIsNothing = false;
-            canvas.drawRect(width * xth / 15, height * yth / 32 + 6,
-                    width * (xth + 2) / 15, height * (yth + 1) / 32 + 6, rp);
+            canvas.drawRect(width * xth / 15, height * yth / 32 + 18,
+                    width * (xth + 2) / 15, height * (yth + 1) / 32 + 18, rp);
         }
     },
     RECOMMEND("RECOMMEND"){
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
             Common.checkTableStateIsNothing = false;
-            canvas.drawRect(width * xth / 15, height * yth / 32 + 6,
-                    width * (xth + 2) / 15, height * (yth + 1) / 32 + 6, rp);
+            canvas.drawRect(width * xth / 15, height * yth / 32 + 18,
+                    width * (xth + 2) / 15, height * (yth + 1) / 32 + 18, rp);
         }
     };
 
@@ -46,8 +46,8 @@ public enum PosState {
 
     public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
         Common.checkTableStateIsNothing = false;
-            canvas.drawRect(width * xth / 15, height * yth / 32 + 6,
-                    width * (xth + 2) / 15, height * (yth + 2) / 32 + 6, rp);
+            canvas.drawRect(width * xth / 15, height * yth / 32 + 18,
+                    width * (xth + 2) / 15, height * (yth + 2) / 32 + 18, rp);
 
     }
 }

@@ -114,6 +114,8 @@ public class InitMonthThread extends InitThread {
 			tempyth = yth;
 		}
 	}
+	public void getActionUp() {
+	}
 
 	public void makeTimePos(int xth, int yth) {
 		DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));

@@ -92,5 +92,6 @@
         android:divider="@color/transparency"
         android:fadingEdgeLength="1dp"
         android:requiresFadingEdge="horizontal"
-        widget:dividerWidth="1dp"  />
+        widget:dividerWidth="1dp"
+        />
 </LinearLayout>
