@@ -102,7 +102,30 @@
             android:textSize="13dip"
             android:background="@drawable/bg_maincolor_round_border"
             android:visibility="gone"/>
-
+        <ImageButton
+            android:id="@+id/btfindSchedule"
+            android:layout_width="46dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/transparency"
+            android:padding="@dimen/margin_s"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_area_find"
+            android:visibility="gone"
+            />
+        <ImageButton
+            android:id="@+id/btwriteSchedule"
+            android:layout_width="46dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/transparency"
+            android:padding="@dimen/margin_xxxl"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_action_event"
+            android:visibility="gone"
+            />
         <ImageButton
             android:id="@+id/ibCalendar"
             android:layout_width="46dp"

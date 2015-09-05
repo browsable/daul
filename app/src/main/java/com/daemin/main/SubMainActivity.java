@@ -456,6 +456,32 @@ public class SubMainActivity extends FragmentActivity {
 				surfaceFlag = true;
 				BackKeyName = "";
 				break;
+			/*case R.id.btfindSchedule:
+				llTitle.setVisibility(View.GONE);
+				tvTitle.setVisibility(View.VISIBLE);
+				btPlus.setVisibility(View.GONE);
+				ibCalendar.setVisibility(View.GONE);
+				mLayout.setTouchEnabled(false);
+				flSurface.setVisibility(View.GONE);
+				frame_container.setVisibility(View.VISIBLE);
+				changeFragment(AreaFragment.class, "주변시간표검색", R.color.maincolor);
+				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+				surfaceFlag = true;
+				BackKeyName = "";
+				break;
+			case R.id.btwriteSchedule:
+				llTitle.setVisibility(View.GONE);
+				tvTitle.setVisibility(View.VISIBLE);
+				btPlus.setVisibility(View.GONE);
+				ibCalendar.setVisibility(View.GONE);
+				mLayout.setTouchEnabled(false);
+				flSurface.setVisibility(View.GONE);
+				frame_container.setVisibility(View.VISIBLE);
+				changeFragment(AreaFragment.class, "주변시간표작성", R.color.maincolor);
+				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+				surfaceFlag = true;
+				BackKeyName = "";
+				break;*/
 			case R.id.btCommunity:
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
