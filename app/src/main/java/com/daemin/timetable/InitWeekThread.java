@@ -26,8 +26,7 @@ public class InitWeekThread extends InitThread {
 	Context context;
 	private Paint hp; // 1시간 간격 수평선
 	private Paint hpvp; // 30분 간격 수평선, 수직선
-	private Paint tp,tpred,tpblue,np; // 시간 텍스트
-	private Paint datep;
+	private Paint tp,tpred,tpblue; // 시간 텍스트
 	static int tempxth,tempyth;
 	Canvas canvas;
 
@@ -47,12 +46,8 @@ public class InitWeekThread extends InitThread {
 		tempyth = 0;
 		hp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		hp.setColor(context.getResources().getColor(R.color.maincolor));
-
 		hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		hpvp.setAlpha(70);
-		np = new Paint(Paint.ANTI_ALIAS_FLAG);
-		np.setTextSize(24);
-		np.setTextAlign(Paint.Align.CENTER);
 		tp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		tp.setTextSize(24);
 		tp.setTextAlign(Paint.Align.CENTER);
@@ -64,12 +59,9 @@ public class InitWeekThread extends InitThread {
 		tpblue.setTextSize(24);
 		tpblue.setTextAlign(Paint.Align.CENTER);
 		tpblue.setColor(context.getResources().getColor(R.color.blue));
-
-		datep = new Paint(Paint.ANTI_ALIAS_FLAG);
-		datep.setColor(Color.parseColor("#104EC7B3"));
 	}
-	public String getDayOfWeek(int index) {
-		switch (index){
+	public String getMonthAndDay(int... index) {
+		switch (index[0]){
 			case 1:
 				return sun;
 			case 3:
@@ -108,7 +100,6 @@ public class InitWeekThread extends InitThread {
 	public int getHeight() {
 		return height;
 	}
-
 	public void run() {
 		while (isLoop) {
 			canvas = null;
@@ -148,7 +139,7 @@ public class InitWeekThread extends InitThread {
 		}
 	}
 	public void getActionUp() {
-		SubMainActivity.getInstance().updateNormalList();
+		SubMainActivity.getInstance().updateWeekList();
 	}
 
 	public void makeTimePos(int xth, int yth, String touchType) {
@@ -211,13 +202,12 @@ public class InitWeekThread extends InitThread {
 
 		canvas.drawColor(Color.WHITE);
 		canvas.drawLines(hp_hour, hp);
-		//canvas.drawLines(hp_half, hpvp);
 		canvas.drawLines(vp, hpvp);
-		canvas.drawText("8", (width / 20)*5/8, height * 1 / 32 + 26, np);
-		canvas.drawText("9", (width / 20)*5/8, height * 3 / 32 + 26, np);
+		canvas.drawText("8", (width / 20)*5/8, height * 1 / 32 + 26, tp);
+		canvas.drawText("9", (width / 20)*5/8, height * 3 / 32 + 26, tp);
 		for (int i = 2; i < 16; i++) {
 			canvas.drawText(String.valueOf(i + 8), width / 40,
-					((2 * i + 1) * height / 32) + 26, np);
+					((2 * i + 1) * height / 32) + 26, tp);
 		}
 		canvas.drawText(sun, width * 2 / 15, (height / 32 + 18)*7/16, tpred);
 		canvas.drawText(mon, width * 4 / 15, (height / 32 + 18)*7/16, tp);
@@ -235,7 +225,9 @@ public class InitWeekThread extends InitThread {
 		canvas.drawText("FRI", width * 12 / 15, (height / 32 + 18)*15/16, tp);
 		canvas.drawText("SAT", width * 14 / 15, (height / 32 + 18)*15/16, tpblue);
 
-		canvas.drawRect(width * (2*day+1) / 15, ((height * 2) - 10) / 64 + 18,
-				width * (2*day+3) / 15, height * 62 / 64 + 18, datep);
+		hp.setAlpha(10);
+		canvas.drawRect(width * (2 * day + 1) / 15, ((height * 2) - 10) / 64 + 18,
+				width * (2 * day + 3) / 15, height * 62 / 64 + 18, hp);
+		hp.setAlpha(100);
 	}
 }

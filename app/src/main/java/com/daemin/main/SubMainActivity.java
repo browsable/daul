@@ -53,6 +53,8 @@ import com.daemin.common.MyRequest;
 import com.daemin.community.CommunityFragment2;
 import com.daemin.data.BottomNormalData;
 import com.daemin.data.SubjectData;
+import com.daemin.enumclass.DayOfMonthPos;
+import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.PosState;
@@ -231,7 +233,7 @@ public class SubMainActivity extends FragmentActivity {
 		normalAdapter = new BottomNormalListAdapter(this, normalList);
 		lvTime.setAdapter(normalAdapter);
 	}
-	public void updateNormalList(){
+	public void updateWeekList(){
 		normalList.clear();
 		int tmpXth=0,tmpYth=0,startYth=1,endYth=1;
 		String YMD="";
@@ -239,7 +241,7 @@ public class SubMainActivity extends FragmentActivity {
 			if(ETP.getPosState()==PosState.PAINT){
 				if(tmpXth!=ETP.getXth()){
 					tmpXth = ETP.getXth();
-					YMD = InitSurfaceView.getInitThread().getDayOfWeek(tmpXth);
+					YMD = InitSurfaceView.getInitThread().getMonthAndDay(tmpXth);
 					tmpYth=0;startYth=1;endYth=1;
 				}
 				if(ETP.getYth()==tmpYth+2){
@@ -260,6 +262,20 @@ public class SubMainActivity extends FragmentActivity {
 					}
 
 				}
+			}
+		}
+		normalAdapter.notifyDataSetChanged();
+	}
+	public void updateMonthList(){
+		normalList.clear();
+		int tmpXth=0,tmpYth=0;
+		String YMD="";
+		for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
+			if (DOMP.getPosState() == DayOfMonthPosState.PAINT) {
+				tmpXth = DOMP.getXth();
+				tmpYth = DOMP.getYth();
+				YMD = CurrentTime.getTitleMonth()+"/"+InitSurfaceView.getInitThread().getMonthAndDay(tmpXth - 1, 7 * (tmpYth - 1));
+				normalList.add(new BottomNormalData(YMD, "8:00","9:00"));
 			}
 		}
 		normalAdapter.notifyDataSetChanged();

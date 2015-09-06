@@ -11,16 +11,14 @@ import com.daemin.common.Common;
  * Created by hernia on 2015-06-27.
  */
 public enum DayOfMonthPosState {
-    PAINT("PAINT"),
-    NO_PAINT("NO_PAINT") {
+    PAINT(),
+    NO_PAINT() {
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
         }
     };
     public Paint rp; // 사각형
-    public String stateName;
-    DayOfMonthPosState(String stateName) {
-        this.stateName = stateName;
+    DayOfMonthPosState() {
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
         rp.setColor(Color.parseColor(Common.MAIN_COLOR));
         rp.setAlpha(100);
