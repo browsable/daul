@@ -977,9 +977,11 @@ public class SubMainActivity extends FragmentActivity {
 		editor.putBoolean("GroupListDownloadState",User.USER.isGroupListDownloadState());
 		editor.putBoolean("SubjectDownloadState", User.USER.isSubjectDownloadState());
 		editor.putString("EngUnivName", User.USER.getEngUnivName());
-		editor.putString("viewMode",viewMode);
+		editor.putString("viewMode", viewMode);
 		editor.commit();
 		Common.setLlIncludeDepIn(false);
+		Common.stateFilter(Common.getTempTimePos(), viewMode);
+		CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
 		indexForTitle = 0;
 		adapterFlag = false;
 	}

@@ -20,6 +20,13 @@ public class CurrentTime {
     public static int getYear() {
         return getLastDayOfWeek().getYear();
     }
+    public static LocalDate getNow() {
+        return now;
+    }
+    public static void setTitleMonth(int titleMonth) {
+        CurrentTime.titleMonth = titleMonth;
+
+    }
     public static int getTitleMonth() {
         return titleMonth;
     }
@@ -99,7 +106,7 @@ public class CurrentTime {
     }
     public static String getTitleYearMonth(Context context) {
         return " " + getYear() + context.getString(R.string.year) + " "
-                + titleMonth + context.getString((R.string.month));
+                + now.getMonthOfYear() + context.getString((R.string.month));
     }
     public static String preTitleYearMonth(Context context, int indexForTitle) {
         titleMonth = now.plusMonths(indexForTitle).getMonthOfYear();
