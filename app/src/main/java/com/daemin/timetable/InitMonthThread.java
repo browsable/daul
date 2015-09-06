@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
+import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
@@ -56,8 +57,14 @@ public class InitMonthThread extends InitThread {
 		tpgray.setTextAlign(Paint.Align.CENTER);
 		tpgray.setColor(context.getResources().getColor(R.color.middlegray));
 		int tmp = dayOfWeekOfLastMonth+dayOfMonth+1;
+		Toast.makeText(context,String.valueOf(tmp),Toast.LENGTH_SHORT).show();
 		int tx = tmp%7;
-		if(tx==0)--tmp; tx = 7;
+		Toast.makeText(context,String.valueOf(tx),Toast.LENGTH_SHORT).show();
+		if(tx==0){
+			--tmp;
+			tx = 7;
+		}
+		Toast.makeText(context,String.valueOf(tx),Toast.LENGTH_SHORT).show();
 		DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(tx,tmp/ 7 + 1)).setPosState(DayOfMonthPosState.PAINT);
 	}
 	public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth){
