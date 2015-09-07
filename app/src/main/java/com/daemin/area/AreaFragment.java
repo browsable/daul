@@ -15,9 +15,9 @@ import com.daemin.timetable.R;
 
 public class AreaFragment extends BasicFragment {
 	private static AreaFragment singleton;
-	ImageButton btfindSchedule;
-	ImageButton btwriteSchedule;
 	private View root;
+	ImageButton ibfindSchedule, ibwriteSchedule;
+
 	//public static RequestQueue queue;
 	public AreaFragment() {
 		super(R.layout.fragment_area1, "AreaFragment");
@@ -30,33 +30,29 @@ public class AreaFragment extends BasicFragment {
 
 		View root = super.onCreateView(inflater, container, savedInstanceState);
 		if (layoutId > 0) {
-			btfindSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.btfindSchedule);
-			btwriteSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.btwriteSchedule);
-			btfindSchedule.setVisibility(View.VISIBLE);
-			btwriteSchedule.setVisibility(View.VISIBLE);
-
-			btwriteSchedule.setOnClickListener(new View.OnClickListener() {
+			ibfindSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibfindSchedule);
+			ibwriteSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibwriteSchedule);
+			ibfindSchedule.setVisibility(View.VISIBLE);
+			ibwriteSchedule.setVisibility(View.VISIBLE);
+			ibfindSchedule.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(getActivity(),"Click btwriteSchedule",Toast.LENGTH_LONG);
+					Toast.makeText(getActivity(),"Click btfind Schedule",Toast.LENGTH_LONG);
 					//SubMainActivity.getInstance().changeFragment(AreaFragment2.class, "커뮤니티", R.color.orange);
 				}
 			});
 
-			btwriteSchedule.setOnClickListener(new View.OnClickListener() {
+			ibwriteSchedule.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					SubMainActivity.getInstance().changeFragment(AreaFragment2.class, "이벤트작성", R.color.maincolor);
+					ibfindSchedule.setVisibility(View.GONE);
+					ibwriteSchedule.setVisibility(View.GONE);
+
 				}
 			});
 		}
 		return root;
-	}
-	@Override
-	public void onDestroy(){
-		btfindSchedule.setVisibility(View.GONE);
-		btwriteSchedule.setVisibility(View.GONE);
-		super.onDestroyView();
 	}
 
 	public static AreaFragment getInstance(){

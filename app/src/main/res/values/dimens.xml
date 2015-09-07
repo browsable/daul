@@ -5,7 +5,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="widget_margin">8dp</dimen>
 
-
+	<dimen name="margin_xxxxl">50dp</dimen>
 	<dimen name="margin_xxxl">28dp</dimen>
     <dimen name="margin_xxl">25dp</dimen>
 	<dimen name="margin_xl">20dp</dimen>

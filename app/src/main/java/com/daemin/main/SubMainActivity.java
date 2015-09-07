@@ -84,11 +84,11 @@ public class SubMainActivity extends FragmentActivity {
 	InitSurfaceView InitSurfaceView;
 	DrawerLayout mDrawerLayout;
 	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend,llTitle;
-	ImageButton ibMenu, ibBack, ibCalendar;
+	ImageButton ibMenu, ibBack, ibCalendar, ibfindSchedule, ibwriteSchedule;
 	TextView tvTitle,tvTitleYear,tvRecommendDummy;
 	Button btPlus,btNormal, btUniv, btRecommend, btColor, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
 	FrameLayout flSurface, frame_container;
-	RelativeLayout rlBar;
+	RelativeLayout rlBar,bt_area;
 	Fragment mContent = null;
 	Boolean surfaceFlag = false, colorFlag = false;
 	BackPressCloseHandler backPressCloseHandler;
@@ -141,6 +141,7 @@ public class SubMainActivity extends FragmentActivity {
 		llIncludeUniv = (LinearLayout) findViewById(R.id.llIncludeUniv);
 		llIncludeDep = (LinearLayout) findViewById(R.id.llIncludeDep);
 		llTitle = (LinearLayout) findViewById(R.id.llTitle);
+		bt_area = (RelativeLayout) findViewById(R.id.bt_area);
 		tvTitle = (TextView) findViewById(R.id.tvTitle);
 		tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
 		tvRecommendDummy = (TextView) findViewById(R.id.tvRecommendDummy);
@@ -150,6 +151,8 @@ public class SubMainActivity extends FragmentActivity {
 		btRecommend = (Button) findViewById(R.id.btRecommend);
 		btColor = (Button) findViewById(R.id.btColor);
 		btWriteArticle = (Button) findViewById(R.id.btWriteArticle);
+		ibfindSchedule = (ImageButton)findViewById(R.id.ibfindSchedule);
+		ibwriteSchedule = (ImageButton)findViewById(R.id.ibwriteSchedule);
 		hlv = (HorizontalListView) findViewById(R.id.hlv);
 		hlvRecommend = (HorizontalListView) findViewById(R.id.hlvRecommend);
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
@@ -415,6 +418,7 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btTimetable:
+				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.VISIBLE);
 				tvTitle.setVisibility(View.GONE);
 				btPlus.setVisibility(View.VISIBLE);
@@ -431,6 +435,7 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btFriend:
+				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
@@ -444,6 +449,7 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btArea:
+				bt_area.setVisibility(View.VISIBLE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
@@ -456,20 +462,8 @@ public class SubMainActivity extends FragmentActivity {
 				surfaceFlag = true;
 				BackKeyName = "";
 				break;
-			/*case R.id.btfindSchedule:
-				llTitle.setVisibility(View.GONE);
-				tvTitle.setVisibility(View.VISIBLE);
-				btPlus.setVisibility(View.GONE);
-				ibCalendar.setVisibility(View.GONE);
-				mLayout.setTouchEnabled(false);
-				flSurface.setVisibility(View.GONE);
-				frame_container.setVisibility(View.VISIBLE);
-				changeFragment(AreaFragment.class, "주변시간표검색", R.color.maincolor);
-				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-				surfaceFlag = true;
-				BackKeyName = "";
-				break;
-			case R.id.btwriteSchedule:
+			case R.id.ibwriteSchedule:
+				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
@@ -481,8 +475,9 @@ public class SubMainActivity extends FragmentActivity {
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				surfaceFlag = true;
 				BackKeyName = "";
-				break;*/
+				break;
 			case R.id.btCommunity:
+				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
@@ -496,6 +491,7 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btSetting:
+				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
@@ -509,6 +505,7 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btNormal:
+				bt_area.setVisibility(View.GONE);
 				DrawMode.CURRENT.setMode(0);
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
@@ -524,6 +521,7 @@ public class SubMainActivity extends FragmentActivity {
 						R.color.gray));
 				break;
 			case R.id.btUniv:
+
 				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(1);
 				Common.stateFilter(Common.getTempTimePos(),viewMode);
