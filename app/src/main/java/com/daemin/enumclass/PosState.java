@@ -11,14 +11,14 @@ import com.daemin.common.Common;
  * Created by hernia on 2015-06-27.
  */
 public enum PosState {
-    PAINT("PAINT"),
-    ENROLL("ENROLL"),
-    NO_PAINT("NO_PAINT") {
+    PAINT(),
+    ENROLL(),
+    NO_PAINT() {
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
         }
     },
-    TEMPORARY("TEMPORARY"){ //대학에서 과목 임시선택
+    TEMPORARY(){ //대학에서 과목 임시선택
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
             Common.checkTableStateIsNothing = false;
@@ -26,7 +26,7 @@ public enum PosState {
                     width * (xth + 2) / 15, height * (yth + 1) / 32 + 18, rp);
         }
     },
-    RECOMMEND("RECOMMEND"){
+    RECOMMEND(){
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
             Common.checkTableStateIsNothing = false;
@@ -36,9 +36,7 @@ public enum PosState {
     };
 
     public Paint rp; // 사각형
-    public String stateName;
-    PosState(String stateName) {
-        this.stateName = stateName;
+    PosState() {
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
         rp.setColor(Color.parseColor(Common.MAIN_COLOR));
         rp.setAlpha(100);

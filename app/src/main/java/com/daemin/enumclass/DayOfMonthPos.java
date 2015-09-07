@@ -16,16 +16,19 @@ public enum DayOfMonthPos {
     private DayOfMonthPosState posState;
     private int xth;
     private int yth;
-
     DayOfMonthPos() {
     }
-
     DayOfMonthPos(int xth, int yth) {
         this.xth = xth;
         this.yth = yth;
         this.posState = DayOfMonthPosState.NO_PAINT;
     }
-
+    public int getXth() {
+        return xth;
+    }
+    public int getYth() {
+        return yth;
+    }
     public void setPosState(DayOfMonthPosState posState) {
         this.posState = posState;
     }

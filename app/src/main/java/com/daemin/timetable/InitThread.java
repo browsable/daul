@@ -10,6 +10,6 @@ public abstract class InitThread extends Thread {
     public abstract void getActionUp();
     public abstract int getWidth();
     public abstract int getHeight();
-    public abstract String getDayOfWeek(int index);
+    public abstract String getMonthAndDay(int... index);
 
 }

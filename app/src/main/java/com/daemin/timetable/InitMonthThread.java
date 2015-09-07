@@ -12,12 +12,13 @@ import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
+import com.daemin.main.SubMainActivity;
 
 @SuppressLint("DefaultLocale")
 public class InitMonthThread extends InitThread {
 	SurfaceHolder mholder;
 	private boolean isLoop = true;
-	private int width, height,dayOfWeekOfLastMonth,dayNumOfMonth,dayOfMonth;//이전달의 마지막날 요일
+	private int width, height,dayOfWeekOfLastMonth,dayNumOfMonth,dayOfMonth,tmp,tx;//이전달의 마지막날 요일
 	private String[] monthData;
 	Context context;
 	private Paint hp; // 1시간 간격 수평선
@@ -37,7 +38,6 @@ public class InitMonthThread extends InitThread {
 		tempyth = 0;
 		hp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		hp.setColor(context.getResources().getColor(R.color.maincolor));
-
 		hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		hpvp.setAlpha(70);
 		tp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -55,10 +55,12 @@ public class InitMonthThread extends InitThread {
 		tpgray.setTextSize(24);
 		tpgray.setTextAlign(Paint.Align.CENTER);
 		tpgray.setColor(context.getResources().getColor(R.color.middlegray));
-		int tmp = dayOfWeekOfLastMonth+dayOfMonth+1;
-		int tx = tmp%7;
-		if(tx==0)--tmp; tx = 7;
-		DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(tx,tmp/ 7 + 1)).setPosState(DayOfMonthPosState.PAINT);
+		tmp = dayOfWeekOfLastMonth+dayOfMonth+1;
+		tx = tmp%7;
+		if(tx==0){
+			--tmp;
+			tx = 7;
+		}
 	}
 	public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth){
 		this.monthData = monthData;
@@ -77,8 +79,8 @@ public class InitMonthThread extends InitThread {
 		return height;
 	}
 	@Override
-	public String getDayOfWeek(int index) {
-		return null;
+	public String getMonthAndDay(int... index) {
+		return monthData[index[0]+index[1]];
 	}
 	public void run() {
 		while (isLoop) {
@@ -90,7 +92,6 @@ public class InitMonthThread extends InitThread {
 				synchronized (mholder) {
 					initScreen();
 					Common.checkTableStateIsNothing = true;
-
 					// 사각형 그리기
 					for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
 						DOMP.drawTimePos(canvas, width, height);
@@ -106,19 +107,24 @@ public class InitMonthThread extends InitThread {
 	}
 
 	public void getDownXY(int xth, int yth) {
-		makeTimePos(xth, yth);
-		tempxth = xth;
-		tempyth = yth;
-	}
-
-	public void getMoveXY(int xth, int yth) {
-		if (tempxth != xth || tempyth != yth) {
+		if(!(xth>0&&xth+7*(yth-1)<dayOfWeekOfLastMonth+2 || xth+7*(yth-1)>dayOfWeekOfLastMonth + dayNumOfMonth + 1)) {
 			makeTimePos(xth, yth);
 			tempxth = xth;
 			tempyth = yth;
 		}
 	}
+
+	public void getMoveXY(int xth, int yth) {
+		if (tempxth != xth || tempyth != yth) {
+			if(!(xth>0&&xth+7*(yth-1)<dayOfWeekOfLastMonth+2 || xth+7*(yth-1)>dayOfWeekOfLastMonth + dayNumOfMonth + 1)) {
+				makeTimePos(xth, yth);
+				tempxth = xth;
+				tempyth = yth;
+			}
+		}
+	}
 	public void getActionUp() {
+		SubMainActivity.getInstance().updateMonthList();
 	}
 
 	public void makeTimePos(int xth, int yth) {
@@ -153,7 +159,10 @@ public class InitMonthThread extends InitThread {
 		canvas.drawColor(Color.WHITE);
 		canvas.drawLines(hp_hour, hp);
 		canvas.drawLines(vp, hpvp);
-
+		hp.setAlpha(10);
+		canvas.drawRect(width * (tx - 1) / 7, height * ((tmp / 7) * 10 + 2) / 64 + 6,
+				width * tx / 7, height * ((tmp / 7 + 1) * 10 + 2) / 64 + 6, hp);
+		hp.setAlpha(100);
 		canvas.drawText("SUN", width * 1 / 14, height * 2 / 62 - 1, tpred);
 		canvas.drawText("MON", width * 3 / 14, height * 2/ 62 - 1, tp);
 		canvas.drawText("TUE", width * 5 / 14, height * 2/ 62 - 1, tp);
@@ -182,6 +191,7 @@ public class InitMonthThread extends InitThread {
 		for(int i = dayOfWeekOfLastMonth + dayNumOfMonth + 1; i < 42; i++) {
 			canvas.drawText(monthData[i], width * (4*(i%7)+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tpgray);
 		}
+
 	}
 
 }

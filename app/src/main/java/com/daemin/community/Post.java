@@ -7,6 +7,7 @@ public class Post {
     private static boolean isWritten;
     private static String title;
     private static String date;
+    private static String time;
     private static String userId;
     private static String content;
 
@@ -32,9 +33,14 @@ public class Post {
         return content;
     }
 
+    public static String getTime() { return time; }
+
+    public static void setTime(String time) { Post.time = time; }
+
     public static void setIsWritten(boolean isWritten) {
         Post.isWritten = isWritten;
     }
+
     public static void setTitle(String title) {
         Post.title = title;
     }
