@@ -40,7 +40,8 @@ public class WritePostFragment extends BasicFragment {
             Post.setIsWritten(true);
             Post.setTitle(etArticleTitle.getText().toString());
             Post.setContent(etArticleContent.getText().toString());
-            Post.setDate(new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())));
+            Post.setDate(new SimpleDateFormat("yyyy/MM/dd").format(new Date(System.currentTimeMillis())));
+            Post.setTime(new SimpleDateFormat("HH:mm").format(new Date(System.currentTimeMillis())));
             Post.setUserId("joyyir");
 
             /*FreeBoard.Data data = new FreeBoard.Data();

@@ -68,15 +68,18 @@ public class CommunityFragment2 extends BasicFragment {
                     new Response.Listener<FreeBoard>() {
                         @Override
                         public void onResponse(FreeBoard response) {
+                            Log.d("junyeong", response.toString());
                             data = response.getData();
 
                             if(Post.isWritten() == true){
                                 FreeBoard.Data addedData = new FreeBoard.Data();
 
-                                addedData.setWhen(Post.getDate());
-                                addedData.setBody(Post.getContent());
+                                addedData.setDate(Post.getDate());
+                                addedData.setTime(Post.getTime());
+                                addedData.setBody_t(Post.getContent());
                                 addedData.setTitle(Post.getTitle());
                                 addedData.setAccount_no(userAccountNum);
+                                addedData.setNickname(userId);
 
                                 data.add(0, addedData);
                                 Post.setIsWritten(false);
