@@ -48,6 +48,8 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.common.DatabaseHandler;
+import com.daemin.common.DialMonthPicker;
+import com.daemin.common.DialWeekPicker;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
 import com.daemin.community.CommunityFragment2;
@@ -235,7 +237,25 @@ public class SubMainActivity extends FragmentActivity {
 		HorizontalListView lvTime = (HorizontalListView) findViewById(R.id.lvTime);
 		normalAdapter = new BottomNormalListAdapter(this, normalList);
 		lvTime.setAdapter(normalAdapter);
+		lvTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				switch(viewMode){
+					case "week":
+						String startTime = ((TextView) view.findViewById(R.id.tvStartTime)).getText().toString();
+						String endTime = ((TextView) view.findViewById(R.id.tvEndTime)).getText().toString();
+						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this,startTime,endTime);
+						dwp.show();
+						break;
+					case "month":
+						DialMonthPicker dmp = new DialMonthPicker(SubMainActivity.this);
+						dmp.show();
+						break;
+				}
+			}
+		});
 	}
+
 	public void updateWeekList(){
 		normalList.clear();
 		int tmpXth=0,tmpYth=0,startYth=1,endYth=1;
@@ -268,6 +288,7 @@ public class SubMainActivity extends FragmentActivity {
 			}
 		}
 		normalAdapter.notifyDataSetChanged();
+
 	}
 	public void updateMonthList(){
 		normalList.clear();
@@ -390,6 +411,8 @@ public class SubMainActivity extends FragmentActivity {
 
 				break;
 			case R.id.ibCalendar:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				llTitle.setVisibility(View.VISIBLE);
 				frame_container.setVisibility(View.GONE);
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
@@ -434,6 +457,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btTimetable:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.VISIBLE);
 				tvTitle.setVisibility(View.GONE);
@@ -451,6 +476,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btFriend:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
@@ -465,6 +492,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btArea:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				bt_area.setVisibility(View.VISIBLE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
@@ -493,6 +522,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btCommunity:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
@@ -507,6 +538,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btSetting:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
@@ -525,6 +558,7 @@ public class SubMainActivity extends FragmentActivity {
 				DrawMode.CURRENT.setMode(0);
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
+				DrawMode.CURRENT.setMode(0);
 				Common.stateFilter(Common.getTempTimePos(),viewMode);
 				llNormal.setVisibility(View.VISIBLE);
 				llUniv.setVisibility(View.GONE);
@@ -537,6 +571,8 @@ public class SubMainActivity extends FragmentActivity {
 						R.color.gray));
 				break;
 			case R.id.btUniv:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 
 				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(1);
@@ -629,7 +665,9 @@ public class SubMainActivity extends FragmentActivity {
 				});
 				break;
 			case R.id.btRecommend:
-				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
+				//getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(2);
 				hlvRecommend.setVisibility(View.GONE);
 				tvRecommendDummy.setVisibility(View.VISIBLE);
@@ -657,12 +695,12 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btAddTime:
 				break;
 			case R.id.btPlus:
-				switch(viewMode) {
+				/*switch(viewMode) {
 					case "week":
 						break;
 					case "month":
 						break;
-				}
+				}*/
 					mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 					if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);
 				break;
@@ -683,6 +721,9 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				break;
 			case R.id.btBack:
+				Common.stateFilter(Common.getTempTimePos(), viewMode);
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				switch(viewMode) {
 					case "week":
 						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
@@ -715,6 +756,9 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				break;
 			case R.id.btForward:
+				Common.stateFilter(Common.getTempTimePos(), viewMode);
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				switch(viewMode) {
 					case "week":
 						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();

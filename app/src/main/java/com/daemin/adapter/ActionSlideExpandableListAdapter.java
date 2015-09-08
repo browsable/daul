@@ -123,6 +123,7 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
 
         Button btEditComment = (Button) convertView.findViewById(R.id.btEditComment);
         final EditText etComment = (EditText) convertView.findViewById(R.id.etComment);
+        etComment.requestFocus();
         btEditComment.setOnClickListener(new View.OnClickListener() {
             String commentContent;
 

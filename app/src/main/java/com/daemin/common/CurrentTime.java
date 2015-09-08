@@ -7,6 +7,8 @@ import com.daemin.data.DayOfWeekData;
 import com.daemin.timetable.R;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Created by hernia on 2015-08-07.
@@ -26,6 +28,10 @@ public class CurrentTime {
     public static void setTitleMonth(int titleMonth) {
         CurrentTime.titleMonth = titleMonth;
 
+    }
+    public static String getYMD(){
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yy/MM/dd");
+        return fmt.print(now);
     }
     public static int getTitleMonth() {
         return titleMonth;

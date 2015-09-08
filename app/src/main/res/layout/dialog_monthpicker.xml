@@ -1,0 +1,123 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_maincolor_border"
+    android:orientation="vertical" >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:textSize="@dimen/margin_l"
+        android:text="@string/tvDailTitle"
+        android:textStyle="bold"
+        android:layout_weight="2"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/maincolor" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_default"
+            android:gravity="center">
+        <NumberPicker
+            android:id="@+id/npStartHour"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            />
+        <View
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:background="@color/transparency" />
+        <NumberPicker
+            android:id="@+id/npStartMin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            />
+            </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text=" ~ "
+            android:textSize="@dimen/margin_xxl"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="@dimen/margin_default"
+            >
+        <NumberPicker
+            android:id="@+id/npEndHour"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            />
+        <View
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:background="@color/transparency" />
+        <NumberPicker
+            android:id="@+id/npEndMin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            />
+            </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/maincolor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btDialCancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/btDailCancel"
+            android:background="@drawable/bt_click"
+            android:textColor="@color/black"
+            android:textSize="@dimen/margin_l"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/maincolor" />
+
+        <Button
+            android:id="@+id/btDialSetting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/btDailSetting"
+            android:background="@drawable/bt_click"
+            android:textColor="@color/black"
+            android:textSize="@dimen/margin_l"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

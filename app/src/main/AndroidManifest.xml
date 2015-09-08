@@ -20,8 +20,7 @@
         
         <activity
             android:name="com.daemin.main.SplashActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:windowSoftInputMode="adjustPan">
+            android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 
@@ -30,7 +29,6 @@
         </activity>
         <activity android:name="com.daemin.main.SubMainActivity"
             android:label="@string/app_menu"
-            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize|screenLayout"
 			android:screenOrientation="portrait"
             >

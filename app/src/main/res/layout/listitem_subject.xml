@@ -4,7 +4,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/margin_xs"
-    android:background="@drawable/bg_dimgray_border_right">
+    android:background="@drawable/bt_normal">
 
     <TextView
         android:id="@+id/time"
