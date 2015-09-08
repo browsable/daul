@@ -95,15 +95,8 @@ public class DialMonthPicker extends Dialog {
         npEndHour.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                if (npStartHour.getValue() == newVal && npEndMin.getValue()==0) {
-                    npEndMin.setValue(1);
-                }
-            }
-        });
-        npEndMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                if (newVal == 0) npEndHour.setValue(npEndHour.getValue() + 1);
+                if (npStartHour.getValue() == newVal) npEndMin.setMinValue(1);
+                else npEndMin.setMinValue(0);
             }
         });
     }
