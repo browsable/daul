@@ -3,8 +3,8 @@
     <!-- This is the line -->
     <item>
         <shape>
-            <padding android:left="0px" android:top="0px" android:right="1px" android:bottom="0px"/>
-            <solid android:color="@color/dimgray" />
+            <padding android:left="0px" android:top="0px" android:right="2px" android:bottom="0px"/>
+            <solid android:color="@color/lightgray" />
         </shape>
     </item>
     <!-- This is the main color -->

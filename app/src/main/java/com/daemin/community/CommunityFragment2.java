@@ -49,7 +49,7 @@ public class CommunityFragment2 extends BasicFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = super.onCreateView(inflater, container, savedInstanceState);
-
+        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         if (layoutId > 0) {
             Button btWriteArticle = (Button) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.btWriteArticle);
             btWriteArticle.setVisibility(View.VISIBLE);

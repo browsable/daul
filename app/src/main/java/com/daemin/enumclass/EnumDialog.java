@@ -1,67 +1,38 @@
 /*
 
+
 package com.daemin.enumclass;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
+import android.app.TimePickerDialog;
 import android.os.Build;
-import android.os.Environment;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.TimePicker;
 
-import com.daemin.adapter.DialogNormalListAdapter;
-import com.daemin.adapter.HorizontalListAdapter;
-import com.daemin.common.AsyncCallback;
-import com.daemin.common.AsyncExecutor;
+import com.daemin.adapter.BottomNormalListAdapter;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
-import com.daemin.common.DatabaseHandler;
-import com.daemin.common.HorizontalListView;
-import com.daemin.common.MyRequest;
-import com.daemin.data.DialogNormalData;
-import com.daemin.data.SubjectData;
-import com.daemin.repository.GroupListFromServerRepository;
+import com.daemin.data.BottomNormalData;
 import com.daemin.timetable.R;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
+
 
 
 */
 /**
  * Created by hernia on 2015-06-27.
  *//*
+
 
 
 
@@ -104,8 +75,8 @@ public enum EnumDialog implements View.OnClickListener {
 
 
 
-    */
-/*    @Override
+
+    @Override
         public void EnrollEvent() {
             super.EnrollEvent();
             btAddTime.setOnClickListener(new View.OnClickListener() {
@@ -276,6 +247,8 @@ public enum EnumDialog implements View.OnClickListener {
             }
         };
     };*//*
+*/
+/*
 
 
     String dialFlag = "",colorName,korName,engName;
@@ -562,8 +535,8 @@ public enum EnumDialog implements View.OnClickListener {
                     colorFlag = false;
                 }
                 break;
-            */
-/*case R.id.btUpDown:
+
+case R.id.btUpDown:
                     Window window = dialog.getWindow();
                 if (clickFlag4) {
                     window.setGravity(Gravity.BOTTOM);
@@ -579,7 +552,7 @@ public enum EnumDialog implements View.OnClickListener {
                     clickFlag4 = true;
                 }
 
-                break;*//*
+                break;
 
         }
     }
@@ -818,5 +791,6 @@ public enum EnumDialog implements View.OnClickListener {
         }
     }
 }
+
 
 */

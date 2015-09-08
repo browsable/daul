@@ -56,7 +56,7 @@
                 android:fadingEdgeLength="1dp"
                 android:requiresFadingEdge="horizontal"
                 android:layout_weight="1"
-                widget:dividerWidth="1dp"
+                widget:dividerWidth="0dp"
                 />
         </LinearLayout>
 

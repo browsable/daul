@@ -4,13 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.daemin.common.BasicFragment;
-import com.daemin.community.WritePostFragment;
-import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
 
 public class AreaFragment extends BasicFragment {
@@ -20,7 +16,7 @@ public class AreaFragment extends BasicFragment {
 
 	//public static RequestQueue queue;
 	public AreaFragment() {
-		super(R.layout.fragment_area1, "AreaFragment");
+		super(R.layout.fragment_phone, "AreaFragment");
 		singleton = this;
 	}
 
@@ -30,14 +26,14 @@ public class AreaFragment extends BasicFragment {
 
 		View root = super.onCreateView(inflater, container, savedInstanceState);
 		if (layoutId > 0) {
-			ibfindSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibfindSchedule);
+			/*ibfindSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibfindSchedule);
 			ibwriteSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibwriteSchedule);
 			ibfindSchedule.setVisibility(View.VISIBLE);
 			ibwriteSchedule.setVisibility(View.VISIBLE);
 			ibfindSchedule.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(getActivity(),"Click btfind Schedule",Toast.LENGTH_LONG);
+					Toast.makeText(getActivity(), "Click btfind Schedule", Toast.LENGTH_LONG);
 					//SubMainActivity.getInstance().changeFragment(AreaFragment2.class, "커뮤니티", R.color.orange);
 				}
 			});
@@ -50,7 +46,7 @@ public class AreaFragment extends BasicFragment {
 					ibwriteSchedule.setVisibility(View.GONE);
 
 				}
-			});
+			});*/
 		}
 		return root;
 	}

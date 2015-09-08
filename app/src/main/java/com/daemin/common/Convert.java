@@ -188,6 +188,8 @@ public class Convert {
 			return "21";
 		case 29:
 			return "22";
+		case 31:
+			return "23";
 		default:
 			return "";
 		}

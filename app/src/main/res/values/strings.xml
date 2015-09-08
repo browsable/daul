@@ -81,6 +81,9 @@
     <string name="single_tap_zoom_network_image_view_activity_text">Single Tap Zoom NetworkImageView</string>
     <string name="double_tap_zoom_network_image_view_activity_text">Double Tap Zoom NetworkImageView</string>
 
-
+    <!--시간설정 다이얼 -->
+    <string name="tvDailTitle">시간 설정</string>
+    <string name="btDailCancel">취소</string>
+    <string name="btDailSetting">설정</string>
 
 </resources>

@@ -1,10 +1,12 @@
 package com.daemin.main;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -32,6 +35,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -235,6 +239,55 @@ public class SubMainActivity extends FragmentActivity {
 		HorizontalListView lvTime = (HorizontalListView) findViewById(R.id.lvTime);
 		normalAdapter = new BottomNormalListAdapter(this, normalList);
 		lvTime.setAdapter(normalAdapter);
+		lvTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				String startTime = ((TextView) view.findViewById(R.id.tvStartTime)).getText().toString();
+				final String endTime = ((TextView) view.findViewById(R.id.tvEndTime)).getText().toString();
+				final Dialog dialog = new Dialog(SubMainActivity.this,android.R.style.Theme_Holo_Light_Dialog);
+				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+				dialog.setContentView(R.layout.dialog_timepicker);
+				dialog.setCancelable(true);
+				final TextView tvDialEndTime = (TextView) dialog.findViewById(R.id.tvDialEndTime);
+				TextView tvDailStartTime = (TextView) dialog.findViewById(R.id.tvDialStartTime);
+				tvDailStartTime.setText(startTime);
+				Button btDialCancel = (Button) dialog.findViewById(R.id.btDialCancel);
+				btDialCancel.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dialog.cancel();
+					}
+				});
+				tvDialEndTime.setText(endTime.split(":")[0] + " : ");
+				NumberPicker numberPicker = (NumberPicker) dialog.findViewById(R.id.numberPicker);
+				numberPicker.setMaxValue(59);
+				numberPicker.setMinValue(0);
+				numberPicker.setFormatter(new NumberPicker.Formatter() {
+					@Override
+					public String format(int i) {
+						return String.format("%02d", i);
+					}
+				});
+				numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+					@Override
+					public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+						if(newVal==0) tvDialEndTime.setText(endTime.split(":")[0] + " : ");
+						else tvDialEndTime.setText(String.valueOf(Integer.parseInt(endTime.split(":")[0])-1) + " : ");
+					}
+				});
+				Window window = dialog.getWindow();
+				window.setBackgroundDrawable(new ColorDrawable(
+						android.graphics.Color.TRANSPARENT));
+				window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+				WindowManager.LayoutParams layoutParams = window.getAttributes();
+				DisplayMetrics dm = view.getContext().getResources().getDisplayMetrics();
+				layoutParams.width = dm.widthPixels*2/3;;
+				layoutParams.height = dm.heightPixels/3;
+				window.setAttributes(layoutParams);
+				window.setGravity(Gravity.CENTER);
+				dialog.show();
+			}
+		});
 	}
 	public void updateWeekList(){
 		normalList.clear();
@@ -268,6 +321,7 @@ public class SubMainActivity extends FragmentActivity {
 			}
 		}
 		normalAdapter.notifyDataSetChanged();
+
 	}
 	public void updateMonthList(){
 		normalList.clear();
@@ -390,6 +444,8 @@ public class SubMainActivity extends FragmentActivity {
 
 				break;
 			case R.id.ibCalendar:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				llTitle.setVisibility(View.VISIBLE);
 				frame_container.setVisibility(View.GONE);
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
@@ -434,6 +490,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btTimetable:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.VISIBLE);
 				tvTitle.setVisibility(View.GONE);
@@ -451,6 +509,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btFriend:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
@@ -465,6 +525,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btArea:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				bt_area.setVisibility(View.VISIBLE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
@@ -493,6 +555,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btCommunity:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
@@ -507,6 +571,8 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btSetting:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				bt_area.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
@@ -525,6 +591,7 @@ public class SubMainActivity extends FragmentActivity {
 				DrawMode.CURRENT.setMode(0);
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
+				DrawMode.CURRENT.setMode(0);
 				Common.stateFilter(Common.getTempTimePos(),viewMode);
 				llNormal.setVisibility(View.VISIBLE);
 				llUniv.setVisibility(View.GONE);
@@ -537,6 +604,8 @@ public class SubMainActivity extends FragmentActivity {
 						R.color.gray));
 				break;
 			case R.id.btUniv:
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 
 				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(1);
@@ -629,7 +698,9 @@ public class SubMainActivity extends FragmentActivity {
 				});
 				break;
 			case R.id.btRecommend:
-				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
+				//getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(2);
 				hlvRecommend.setVisibility(View.GONE);
 				tvRecommendDummy.setVisibility(View.VISIBLE);
@@ -657,12 +728,12 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btAddTime:
 				break;
 			case R.id.btPlus:
-				switch(viewMode) {
+				/*switch(viewMode) {
 					case "week":
 						break;
 					case "month":
 						break;
-				}
+				}*/
 					mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 					if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);
 				break;
@@ -683,6 +754,9 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				break;
 			case R.id.btBack:
+				Common.stateFilter(Common.getTempTimePos(), viewMode);
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				switch(viewMode) {
 					case "week":
 						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
@@ -715,6 +789,9 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				break;
 			case R.id.btForward:
+				Common.stateFilter(Common.getTempTimePos(), viewMode);
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
 				switch(viewMode) {
 					case "week":
 						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
