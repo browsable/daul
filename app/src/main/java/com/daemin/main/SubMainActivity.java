@@ -1,12 +1,10 @@
 package com.daemin.main;
 
 import android.annotation.TargetApi;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,7 +21,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -35,7 +32,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -52,6 +48,8 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.common.DatabaseHandler;
+import com.daemin.common.DialMonthPicker;
+import com.daemin.common.DialWeekPicker;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
 import com.daemin.community.CommunityFragment2;
@@ -242,53 +240,22 @@ public class SubMainActivity extends FragmentActivity {
 		lvTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				String startTime = ((TextView) view.findViewById(R.id.tvStartTime)).getText().toString();
-				final String endTime = ((TextView) view.findViewById(R.id.tvEndTime)).getText().toString();
-				final Dialog dialog = new Dialog(SubMainActivity.this,android.R.style.Theme_Holo_Light_Dialog);
-				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				dialog.setContentView(R.layout.dialog_timepicker);
-				dialog.setCancelable(true);
-				final TextView tvDialEndTime = (TextView) dialog.findViewById(R.id.tvDialEndTime);
-				TextView tvDailStartTime = (TextView) dialog.findViewById(R.id.tvDialStartTime);
-				tvDailStartTime.setText(startTime);
-				Button btDialCancel = (Button) dialog.findViewById(R.id.btDialCancel);
-				btDialCancel.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						dialog.cancel();
-					}
-				});
-				tvDialEndTime.setText(endTime.split(":")[0] + " : ");
-				NumberPicker numberPicker = (NumberPicker) dialog.findViewById(R.id.numberPicker);
-				numberPicker.setMaxValue(59);
-				numberPicker.setMinValue(0);
-				numberPicker.setFormatter(new NumberPicker.Formatter() {
-					@Override
-					public String format(int i) {
-						return String.format("%02d", i);
-					}
-				});
-				numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-					@Override
-					public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-						if(newVal==0) tvDialEndTime.setText(endTime.split(":")[0] + " : ");
-						else tvDialEndTime.setText(String.valueOf(Integer.parseInt(endTime.split(":")[0])-1) + " : ");
-					}
-				});
-				Window window = dialog.getWindow();
-				window.setBackgroundDrawable(new ColorDrawable(
-						android.graphics.Color.TRANSPARENT));
-				window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-				WindowManager.LayoutParams layoutParams = window.getAttributes();
-				DisplayMetrics dm = view.getContext().getResources().getDisplayMetrics();
-				layoutParams.width = dm.widthPixels*2/3;;
-				layoutParams.height = dm.heightPixels/3;
-				window.setAttributes(layoutParams);
-				window.setGravity(Gravity.CENTER);
-				dialog.show();
+				switch(viewMode){
+					case "week":
+						String startTime = ((TextView) view.findViewById(R.id.tvStartTime)).getText().toString();
+						String endTime = ((TextView) view.findViewById(R.id.tvEndTime)).getText().toString();
+						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this,startTime,endTime);
+						dwp.show();
+						break;
+					case "month":
+						DialMonthPicker dmp = new DialMonthPicker(SubMainActivity.this);
+						dmp.show();
+						break;
+				}
 			}
 		});
 	}
+
 	public void updateWeekList(){
 		normalList.clear();
 		int tmpXth=0,tmpYth=0,startYth=1,endYth=1;
