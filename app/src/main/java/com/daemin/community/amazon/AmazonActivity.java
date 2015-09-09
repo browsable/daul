@@ -52,9 +52,7 @@ public class AmazonActivity extends Activity {
                         loadingProgress.setVisibility(View.INVISIBLE);
                         listView.setVisibility(View.VISIBLE);
 
-                        listView.setAdapter(new AmazonListAdapter(
-                                AmazonActivity.this, feed.getChannel()
-                                .getShoppingItems()));
+                        listView.setAdapter(new AmazonListAdapter(AmazonActivity.this, feed.getChannel().getShoppingItems()));
                     }
                 });
 
