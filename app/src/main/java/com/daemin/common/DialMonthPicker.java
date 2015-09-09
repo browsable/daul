@@ -55,9 +55,11 @@ public class DialMonthPicker extends Dialog {
             }
         });
     }
+    Context context;
     public DialMonthPicker(Context context) {
         // Dialog 배경을 투명 처리 해준다.
         super(context, android.R.style.Theme_Holo_Light_Dialog);
+        this.context = context;
     }
     private void setNP() {
         npStartHour.setMaxValue(22);
@@ -98,6 +100,7 @@ public class DialMonthPicker extends Dialog {
                         npEndMin.setValue(0);
                     } else {
                         npEndMin.setMinValue(0);
+                        npEndMin.setMaxValue(59);
                         npStartMin.setValue(0);
                         npEndMin.setValue(0);
                     }
@@ -107,29 +110,28 @@ public class DialMonthPicker extends Dialog {
         npStartMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                int newV = newVal+1;
                 if(npStartHour.getValue()==npEndHour.getValue()){
-                    if(newV==60){
+                    if(newVal==59){
                         npEndHour.setMinValue(npStartHour.getValue() + 1);
                         npEndHour.setValue(npStartHour.getValue() + 1);
+                        npEndMin.setMinValue(0);
+                        npEndMin.setMaxValue(59);
+                        npEndMin.setValue(0);
                         if(npStartHour.getValue()+1==23){
                             npEndMin.setMinValue(0);
-                            npEndMin.setValue(0);
-                        }else{
                             npEndMin.setMaxValue(0);
                             npEndMin.setValue(0);
                         }
                     }else {
-                        npEndMin.setMinValue(newV);
-                        npEndMin.setValue(newV);
+                        npEndMin.setMinValue(newVal+1);
+                        npEndMin.setMaxValue(59);
+                        npEndMin.setValue(newVal+1);
                     }
                 }else{
-                    if(newV==60) {
+                    if(newVal==59) {
                         npEndHour.setMinValue(npStartHour.getValue() + 1);
-                        npEndHour.setValue(npStartHour.getValue() + 1);
                     }else{
                         npEndHour.setMinValue(npStartHour.getValue());
-                        npEndHour.setValue(npStartHour.getValue() + 1);
                     }
                     npEndMin.setMinValue(0);
                 }
@@ -143,8 +145,13 @@ public class DialMonthPicker extends Dialog {
                         npEndMin.setMaxValue(59);
                 }else{
                     npEndMin.setMinValue(0);
-                    npStartMin.setValue(0);
-                    npEndMin.setValue(0);
+                    if(newVal==23){
+                        npEndMin.setValue(0);
+                        npEndMin.setMaxValue(0);
+                    }else{
+                        npEndMin.setMaxValue(59);
+                        npEndMin.setValue(npStartMin.getValue());
+                    }
                 }
 
             }
