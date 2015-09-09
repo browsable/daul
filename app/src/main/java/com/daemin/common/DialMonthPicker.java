@@ -66,7 +66,7 @@ public class DialMonthPicker extends Dialog {
         npStartMin.setMaxValue(59);
         npStartMin.setMinValue(0);
         npStartMin.setValue(0);
-        npEndHour.setMaxValue(22);
+        npEndHour.setMaxValue(23);
         npEndHour.setMinValue(8);
         npEndHour.setValue(9);
         npEndMin.setMaxValue(59);
@@ -87,16 +87,76 @@ public class DialMonthPicker extends Dialog {
         npStartHour.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                npEndHour.setMaxValue(22);
                 npEndHour.setMinValue(newVal);
                 npEndHour.setValue(newVal + 1);
+                if (newVal == npEndHour.getValue()) {
+                    npEndMin.setMinValue(1);
+                    npEndMin.setValue(1);
+                } else {
+                    if (newVal == 22) {
+                        npEndMin.setMaxValue(0);
+                        npEndMin.setValue(0);
+                    } else {
+                        npEndMin.setMinValue(0);
+                        npStartMin.setValue(0);
+                        npEndMin.setValue(0);
+                    }
+                }
+            }
+        });
+        npStartMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                int newV = newVal+1;
+                if(npStartHour.getValue()==npEndHour.getValue()){
+                    if(newV==60){
+                        npEndHour.setMinValue(npStartHour.getValue() + 1);
+                        npEndHour.setValue(npStartHour.getValue() + 1);
+                        if(npStartHour.getValue()+1==23){
+                            npEndMin.setMinValue(0);
+                            npEndMin.setValue(0);
+                        }else{
+                            npEndMin.setMaxValue(0);
+                            npEndMin.setValue(0);
+                        }
+                    }else {
+                        npEndMin.setMinValue(newV);
+                        npEndMin.setValue(newV);
+                    }
+                }else{
+                    if(newV==60) {
+                        npEndHour.setMinValue(npStartHour.getValue() + 1);
+                        npEndHour.setValue(npStartHour.getValue() + 1);
+                    }else{
+                        npEndHour.setMinValue(npStartHour.getValue());
+                        npEndHour.setValue(npStartHour.getValue() + 1);
+                    }
+                    npEndMin.setMinValue(0);
+                }
             }
         });
         npEndHour.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                if (npStartHour.getValue() == newVal) npEndMin.setMinValue(1);
-                else npEndMin.setMinValue(0);
+                if(npStartHour.getValue()==newVal){
+                        npEndMin.setMinValue(npStartMin.getValue() + 1);
+                        npEndMin.setMaxValue(59);
+                }else{
+                    npEndMin.setMinValue(0);
+                    npStartMin.setValue(0);
+                    npEndMin.setValue(0);
+                }
+
+            }
+        });
+        npEndMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                if(npStartHour.getValue()==npEndHour.getValue()){
+                    picker.setMinValue(npStartMin.getValue()+1);
+                }else{
+                    npEndMin.setMinValue(0);
+                }
             }
         });
     }

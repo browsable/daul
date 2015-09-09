@@ -26,7 +26,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:padding="@dimen/margin_default"
+            android:paddingLeft="@dimen/margin_l"
+            android:paddingRight="@dimen/margin_l"
             android:gravity="center">
         <NumberPicker
             android:id="@+id/npStartHour"
@@ -35,10 +36,14 @@
             android:gravity="center"
             android:layout_weight="1"
             />
-        <View
-            android:layout_width="4dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/transparency" />
+            android:text=":"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/margin_xl"
+            />
         <NumberPicker
             android:id="@+id/npStartMin"
             android:layout_width="match_parent"
@@ -59,7 +64,8 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="center"
-            android:padding="@dimen/margin_default"
+            android:paddingLeft="@dimen/margin_l"
+            android:paddingRight="@dimen/margin_l"
             >
         <NumberPicker
             android:id="@+id/npEndHour"
@@ -68,10 +74,14 @@
             android:gravity="center"
             android:layout_weight="1"
             />
-        <View
-            android:layout_width="4dp"
-            android:layout_height="match_parent"
-            android:background="@color/transparency" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=":"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/margin_xl"
+                />
         <NumberPicker
             android:id="@+id/npEndMin"
             android:layout_width="match_parent"
