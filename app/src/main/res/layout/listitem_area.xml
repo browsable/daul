@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_gravity="center_vertical">
+        <TextView
+            android:id="@+id/event_title"
+            android:text="title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:typeface="monospace"
+            />
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/event_enroll"
+                android:text="등록일 :"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="#000000"
+                />
+            <TextView
+                android:id="@+id/event_time"
+                android:text="time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:layout_toRightOf="@id/event_enroll"
+                android:textColor="#000000"
+                />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/event_user"
+            android:text="user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="14sp"
+            android:textColor="#000000"
+            />
+
+
+
+    </LinearLayout>
+</LinearLayout>
