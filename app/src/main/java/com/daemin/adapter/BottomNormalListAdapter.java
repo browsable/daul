@@ -41,7 +41,7 @@ public class BottomNormalListAdapter extends ArrayAdapter<BottomNormalData> {
         holder.tvYMD.setText(getItem(position).getYMD());
         holder.tvStartTime.setText(getItem(position).getStartTime());
         holder.tvEndTime.setText(getItem(position).getEndTime());
-
+    //holder = 재활용
         return convertView;
     }
 
