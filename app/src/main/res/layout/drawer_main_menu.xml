@@ -6,14 +6,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_l"
+            android:layout_marginBottom="@dimen/margin_l"
             android:layout_weight="3"
             android:gravity="center"
             android:orientation="vertical" >
@@ -45,17 +46,18 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="100dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:padding="@dimen/margin_xxl" >
+            android:padding="@dimen/margin_xxl">
 
             <LinearLayout
                 android:id="@+id/btTimetable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginBottom="@dimen/margin_xl"
                 android:gravity="center_vertical"
                 android:onClick="mOnClick"
                 android:orientation="horizontal" >
@@ -84,6 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginBottom="@dimen/margin_xl"
                 android:gravity="center_vertical"
                 android:onClick="mOnClick"
                 android:orientation="horizontal" >
@@ -112,6 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginBottom="@dimen/margin_xl"
                 android:gravity="center_vertical"
                 android:onClick="mOnClick"
                 android:orientation="horizontal" >
@@ -134,12 +138,40 @@
                     android:textSize="@dimen/textsize_l"
                     android:textStyle="bold" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/margin_xl"
+                android:gravity="center_vertical"
+                android:onClick="mOnClick"
+                android:orientation="horizontal" >
 
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="@dimen/margin_default"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_community" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="스케쥴검색"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textsize_l"
+                    android:textStyle="bold" />
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/btCommunity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginBottom="@dimen/margin_xl"
                 android:gravity="center_vertical"
                 android:onClick="mOnClick"
                 android:orientation="horizontal" >

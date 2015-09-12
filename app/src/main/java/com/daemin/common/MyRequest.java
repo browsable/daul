@@ -42,9 +42,9 @@ public class MyRequest {
                 new Response.Listener<GroupListData>() {
                     @Override
                     public void onResponse(GroupListData response) {
-                        /*for(GroupListData.Data d : response.getData()){
-                                groupListData.add(d.getName());
-                        }*/
+                        for(GroupListData.Data d : response.getData()){
+                                Log.i(d.getEngname(),d.getKorname());
+                        }
                         GroupListFromServerRepository.clearGroupListFromServer(context);
                         for(GroupListData.Data d : response.getData()){
                             GroupListFromServer groupListFromServer = new GroupListFromServer();

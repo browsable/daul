@@ -85,5 +85,8 @@
     <string name="tvDailTitle">시간 설정</string>
     <string name="btDailCancel">취소</string>
     <string name="btDailSetting">설정</string>
+    <string name="title_activity_community">CommunityActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

@@ -129,10 +129,10 @@ public class SubMainActivity extends FragmentActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
 		setContentView(R.layout.activity_main);
 		if (User.USER.isSubjectDownloadState()) db = new DatabaseHandler(this);
-		viewMode = MyPreferences.USERINFO.getPref().getString("viewMode","week");
-		DrawMode.CURRENT.setMode(0);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		viewMode = MyPreferences.USERINFO.getPref().getString("viewMode","week");
+		DrawMode.CURRENT.setMode(0);
 		ibMenu = (ImageButton) findViewById(R.id.ibMenu);
 		ibBack = (ImageButton) findViewById(R.id.ibBack);
 		ibCalendar = (ImageButton) findViewById(R.id.ibCalendar);
@@ -400,15 +400,14 @@ public class SubMainActivity extends FragmentActivity {
 
 		switch (v.getId()) {
 			case R.id.ibMenu:
-				mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLeftDrawer);
 				if (drawerOpen) {
 					mDrawerLayout.closeDrawer(mLeftDrawer);
 				}
 				else {
 					mDrawerLayout.openDrawer(mLeftDrawer);
+					mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				}
-
 				break;
 			case R.id.ibCalendar:
 				normalList.clear();
@@ -530,10 +529,10 @@ public class SubMainActivity extends FragmentActivity {
 				btPlus.setVisibility(View.GONE);
 				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
+				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
 				changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
-				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				surfaceFlag = true;
 				BackKeyName = "";
 				break;
@@ -1052,6 +1051,8 @@ public class SubMainActivity extends FragmentActivity {
 		CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
 		indexForTitle = 0;
 		adapterFlag = false;
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(ibMenu.getWindowToken(), 0);
 	}
 
 

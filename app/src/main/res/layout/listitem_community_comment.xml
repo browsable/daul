@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/margin_xs">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +32,7 @@
             android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
             android:paddingRight="@dimen/margin_l"/>
     </LinearLayout>
-    <EditText
+    <TextView
         android:id="@+id/tvChildContent"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
@@ -52,6 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/margin_s"
         android:gravity="right">
         <Button
             android:id="@+id/btChildEdit"

@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
     <com.daemin.community.lib.ActionSlideExpandableListView
         android:id="@+id/list"
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent" />
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:layout_width="match_parent" />
 </LinearLayout>

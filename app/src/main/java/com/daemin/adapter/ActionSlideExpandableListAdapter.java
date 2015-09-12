@@ -20,12 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daemin.common.Common;
+import com.daemin.common.CurrentTime;
 import com.daemin.community.Comment;
 import com.daemin.community.github.FreeBoard;
 import com.daemin.timetable.R;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,20 +40,15 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
     private Activity activity;
     public final int COLLAPSED = 0;
     public final int EXPANDED = 1;
-
+    LayoutInflater inflater;
+    CommentListAdapter commentListAdapter;
     public ActionSlideExpandableListAdapter(List<FreeBoard.Data> data, String userId, int userAccountNum, Activity activity) {
         this.data = data;
         this.userId = userId;
         this.userAccountNum = userAccountNum;
         this.activity = activity;
         this.expandCollapseList = new ArrayList<>();
-
-        /*FreeBoard.Data sampleData = new FreeBoard.Data();
-        sampleData.setTitle("연결고리#힙합");
-        sampleData.setWhen("2015.08.07 12:32");
-        sampleData.setAccount_no(921111);
-        sampleData.setBody("너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리!");
-        data.add(0, sampleData);*/
+        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         comment = new ArrayList<>();
         comment.add(new Comment(1, "애자일 소프트웨어 개발(Agile software development) 혹은 애자일 개발 프로세스는 " +
@@ -87,86 +81,94 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
-
+        final Holder holder;
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            holder = new Holder();
             convertView = inflater.inflate(R.layout.listitem_community_post, parent, false);
+            holder.tvGroupTitle = (TextView) convertView.findViewById(R.id.tvGroupTitle);
+            holder.tvGroupTime = (TextView) convertView.findViewById(R.id.tvGroupTime);
+            holder.tvGroupId = (TextView) convertView.findViewById(R.id.tvGroupId);
+            holder.tvGroupContent = (TextView) convertView.findViewById(R.id.tvGroupContent);
+            holder.tvCountComment = (TextView) convertView.findViewById(R.id.tvCountComment);
+            holder.expandable_arrow = (ImageView) convertView.findViewById(R.id.expandable_arrow);
+            holder.llButtonGroup = (LinearLayout) convertView.findViewById(R.id.llButtonGroup);
+            holder.btEditComment = (Button) convertView.findViewById(R.id.btEditComment);
+            holder.etComment = (EditText) convertView.findViewById(R.id.etComment);
+            holder.lvComment = (ListView) convertView.findViewById(R.id.lvComment);
+            commentListAdapter = new CommentListAdapter(comment, userId, holder.lvComment, holder.tvCountComment, activity);
+            holder.lvComment.setAdapter(commentListAdapter);
+            Common.setListViewHeightBasedOnChildren(holder.lvComment);
+            convertView.setTag(holder);
+        } else {
+            holder = (Holder) convertView.getTag();
         }
+        holder.tvGroupTitle.setText(((FreeBoard.Data) getItem(position)).getTitle());
+        holder.tvGroupTime.setText(((FreeBoard.Data) getItem(position)).getDate() + ' ' + ((FreeBoard.Data) getItem(position)).getTime());
+        holder.tvGroupId.setText(String.valueOf(((FreeBoard.Data) getItem(position)).getNickname()));
+        holder.tvGroupContent.setText(((FreeBoard.Data) getItem(position)).getBody_t());
+        holder.tvCountComment.setText(String.valueOf(comment.size()));
+        holder.etComment.requestFocus();
 
-        TextView tvGroupTitle = (TextView) convertView.findViewById(R.id.tvGroupTitle);
-        TextView tvGroupTime = (TextView) convertView.findViewById(R.id.tvGroupTime);
-        TextView tvGroupId = (TextView) convertView.findViewById(R.id.tvGroupId);
-        TextView tvGroupContent = (TextView) convertView.findViewById(R.id.tvGroupContent);
-        final TextView tvCountComment = (TextView) convertView.findViewById(R.id.tvCountComment);
-        ImageView expandable_arrow = (ImageView) convertView.findViewById(R.id.expandable_arrow);
-        LinearLayout llButtonGroup = (LinearLayout) convertView.findViewById(R.id.llButtonGroup);
-
-        tvGroupTitle.setText(((FreeBoard.Data) getItem(position)).getTitle());
-        tvGroupTime.setText(((FreeBoard.Data) getItem(position)).getDate() + ' ' + ((FreeBoard.Data) getItem(position)).getTime());
-        tvGroupId.setText(String.valueOf(((FreeBoard.Data) getItem(position)).getNickname()));
-        tvGroupContent.setText(((FreeBoard.Data) getItem(position)).getBody_t());
-        tvCountComment.setText(String.valueOf(comment.size()));
-        if(expandCollapseList.get(position) == EXPANDED)
-            expandable_arrow.setImageResource(R.drawable.ic_action_collapse);
+        if (expandCollapseList.get(position) == EXPANDED)
+            holder.expandable_arrow.setImageResource(R.drawable.ic_action_collapse);
         else
-            expandable_arrow.setImageResource(R.drawable.ic_action_expand);
+            holder.expandable_arrow.setImageResource(R.drawable.ic_action_expand);
 
-        if(userAccountNum != ((FreeBoard.Data) getItem(position)).getAccount_no())
-            llButtonGroup.setVisibility(View.INVISIBLE);
+        if (userAccountNum != ((FreeBoard.Data) getItem(position)).getAccount_no())
+            holder.llButtonGroup.setVisibility(View.INVISIBLE);
         else
-            llButtonGroup.setVisibility(View.VISIBLE);
+            holder.llButtonGroup.setVisibility(View.VISIBLE);
 
-        final ListView lvComment = (ListView) convertView.findViewById(R.id.lvComment);
-        final CommentListAdapter commentListAdapter = new CommentListAdapter(comment, userId, lvComment, tvCountComment, activity);
-        lvComment.setAdapter(commentListAdapter);
-        Common.setListViewHeightBasedOnChildren(lvComment);
 
-        Button btEditComment = (Button) convertView.findViewById(R.id.btEditComment);
-        final EditText etComment = (EditText) convertView.findViewById(R.id.etComment);
-        etComment.requestFocus();
-        btEditComment.setOnClickListener(new View.OnClickListener() {
+
+        holder.btEditComment.setOnClickListener(new View.OnClickListener() {
             String commentContent;
-
             @Override
             public void onClick(View v) {
-                commentContent = etComment.getText().toString();
-
+                commentContent = holder.etComment.getText().toString();
                 if (commentContent.length() <= 0) {
                     Toast.makeText(context, "댓글 내용을 입력하세요", Toast.LENGTH_SHORT).show();
                 } else {
-                    if(commentListAdapter.getEditMode() == commentListAdapter.COMMENT_ADD_MODE) {
+                    if (commentListAdapter.getEditMode() == commentListAdapter.COMMENT_ADD_MODE) {
                         Log.d("junyeong", "삽입 모드");
-                        comment.add(new Comment(0, commentContent, new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())), userId));
-                        etComment.setText("");
-                        tvCountComment.setText(String.valueOf(comment.size()));
-                        notifyDataSetChanged();
-                        Common.setListViewHeightBasedOnChildren(lvComment);
+                        comment.add(new Comment(0, commentContent, CurrentTime.getMD(), userId));
 
-                        // 키보드 내리기
-                        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(etComment.getWindowToken(), 0);
-                    }
-                    else if(commentListAdapter.getEditMode() == commentListAdapter.COMMENT_MODIFY_MODE){
+                    } else if (commentListAdapter.getEditMode() == commentListAdapter.COMMENT_MODIFY_MODE) {
                         Log.d("junyeong", "수정 모드");
                         comment.set(commentListAdapter.getModifiedPos(),
-                                new Comment(0, commentContent, new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())), userId));
+                                new Comment(0, commentContent, CurrentTime.getMD(), userId));
                         commentListAdapter.setEditMode(commentListAdapter.COMMENT_ADD_MODE);
-
-                        // 윗 부분과 공통 소스... 합칠지 말지 고민
-                        etComment.setText("");
-                        tvCountComment.setText(String.valueOf(comment.size()));
-                        notifyDataSetChanged();
-                        Common.setListViewHeightBasedOnChildren(lvComment);
                     }
                 }
+                holder.etComment.setText("");
+                holder.tvCountComment.setText(String.valueOf(comment.size()));
+                notifyDataSetChanged();
+                commentListAdapter.notifyDataSetChanged();
+                Common.setListViewHeightBasedOnChildren(holder.lvComment);
+                // 키보드 내리기
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(holder.etComment.getWindowToken(), 0);
+                holder.etComment.requestFocus();
+
             }
         });
-
         return convertView;
     }
 
     public void setExpandCollapseList(int position, int expandOrCollapse){
         expandCollapseList.set(position, expandOrCollapse);
+    }
+    private static class Holder {
+        public TextView tvGroupTitle;
+        public TextView tvGroupTime;
+        public TextView tvGroupId;
+        public TextView tvGroupContent;
+        public TextView tvCountComment;
+        public ImageView expandable_arrow;
+        public LinearLayout llButtonGroup;
+        public Button btEditComment;
+        public ListView lvComment;
+        public EditText etComment;
     }
 }
 
@@ -176,10 +178,9 @@ class CommentListAdapter extends BaseAdapter{
     private String userId;
     private ListView listView;
     private TextView tvCountComment;
-    private Button btEditComment;
     private Activity activity;
     private int editMode, modifiedPos;
-
+    public LayoutInflater inflater;
     public final int COMMENT_ADD_MODE = 0;
     public final int COMMENT_MODIFY_MODE = 1;
 
@@ -189,8 +190,7 @@ class CommentListAdapter extends BaseAdapter{
         this.listView = listView;
         this.tvCountComment = tvCountComment;
         this.activity = activity;
-
-        btEditComment = (Button) ((View) listView.getParent()).findViewById(R.id.btEditComment);
+        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Log.d("junyeong", this.toString() + " 생성자 : 삽입모드로 바뀜");
         editMode = COMMENT_ADD_MODE;
     }
@@ -213,34 +213,34 @@ class CommentListAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final int pos = position;
-
+        final Holder holder;
         if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            holder = new Holder();
             convertView = inflater.inflate(R.layout.listitem_community_comment, parent, false);
+            holder.tvChildId = (TextView) convertView.findViewById(R.id.tvChildId);
+            holder.tvChildDate = (TextView) convertView.findViewById(R.id.tvChildDate);
+            holder.tvChildContent = (TextView) convertView.findViewById(R.id.tvChildContent);
+            holder.llCommentBts = (LinearLayout) convertView.findViewById(R.id.llCommentBts);
+            holder.btChildEdit = (Button) convertView.findViewById(R.id.btChildEdit);
+            holder.btChildRemove = (Button) convertView.findViewById(R.id.btChildRemove);
+            convertView.setTag(holder);
+        }else{
+            holder = (Holder) convertView.getTag();
         }
-
-        TextView tvChildId = (TextView) convertView.findViewById(R.id.tvChildId);
-        TextView tvChildDate = (TextView) convertView.findViewById(R.id.tvChildDate);
-        final EditText tvChildContent = (EditText) convertView.findViewById(R.id.tvChildContent);
-        LinearLayout llCommentBts = (LinearLayout) convertView.findViewById(R.id.llCommentBts);
-
-        tvChildId.setText(((Comment) getItem(position)).getUserId());
-        tvChildDate.setText(((Comment) getItem(position)).getDate());
-        tvChildContent.setText(Common.breakText(tvChildContent.getPaint(),
+        holder.tvChildId.setText(((Comment) getItem(position)).getUserId());
+        holder.tvChildDate.setText(((Comment) getItem(position)).getDate());
+        holder.tvChildContent.setText(Common.breakText(holder.tvChildContent.getPaint(),
                 ((Comment) getItem(position)).getBody(),
-                tvChildContent.getLayoutParams().width - tvChildContent.getPaddingLeft() - tvChildContent.getPaddingRight()));
-                // 마지막 인자는 TextView에서 글이 삽입되는 최대 width를 구함
-        tvChildContent.setFocusableInTouchMode(false);
+                holder.tvChildContent.getLayoutParams().width - holder.tvChildContent.getPaddingLeft() - holder.tvChildContent.getPaddingRight()));
+        // 마지막 인자는 TextView에서 글이 삽입되는 최대 width를 구함
+        holder.tvChildContent.setFocusableInTouchMode(false);
 
-        if(!userId.equals(tvChildId.getText()))
-            llCommentBts.setVisibility(View.GONE);
+        if(!userId.equals(holder.tvChildId.getText()))
+            holder.llCommentBts.setVisibility(View.GONE);
         else{
-            llCommentBts.setVisibility(View.VISIBLE);
+            holder.llCommentBts.setVisibility(View.VISIBLE);
 
-            Button btChildEdit = (Button) convertView.findViewById(R.id.btChildEdit);
-            Button btChildRemove = (Button) convertView.findViewById(R.id.btChildRemove);
-
-            btChildEdit.setOnClickListener(new View.OnClickListener(){
+            holder.btChildEdit.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     Log.d("junyeong", this.toString() + " onClick : 수정모드로 바뀜");
@@ -249,15 +249,13 @@ class CommentListAdapter extends BaseAdapter{
 
                     EditText etComment = (EditText) ((View) listView.getParent()).findViewById(R.id.etComment);
 
-                    etComment.setText(tvChildContent.getText());
+                    etComment.setText(holder.tvChildContent.getText());
                     etComment.setSelection(etComment.length());
-                    etComment.requestFocus();
-
-                    InputMethodManager mgr = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    mgr.showSoftInput(activity.getCurrentFocus(), InputMethodManager.SHOW_FORCED);
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                 }
             });
-            btChildRemove.setOnClickListener(new View.OnClickListener() {
+            holder.btChildRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(activity);
@@ -300,5 +298,13 @@ class CommentListAdapter extends BaseAdapter{
 
     public int getModifiedPos() {
         return modifiedPos;
+    }
+    private static class Holder {
+        public TextView tvChildId;
+        public TextView tvChildDate;
+        public TextView tvChildContent;
+        public LinearLayout llCommentBts;
+        public Button btChildEdit;
+        public Button btChildRemove;
     }
 }

@@ -8,6 +8,19 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="21" />
 
+    <!-- Permission -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_CONtACTS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name="com.daemin.common.AppController"
@@ -15,68 +28,62 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar" >
-        <!--android:largeHeap="true"-->
-        
-        
+
+        <!-- android:largeHeap="true" -->
+
         <activity
             android:name="com.daemin.main.SplashActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.daemin.main.SubMainActivity"
-            android:label="@string/app_menu"
+        <activity
+            android:name="com.daemin.main.SubMainActivity"
             android:configChanges="orientation|screenSize|screenLayout"
-			android:screenOrientation="portrait"
-            >
+            android:label="@string/app_menu"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="com.daemin.timetable.widget.CALL_ACTIVITY"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.daemin.timetable.widget.CALL_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.daemin.community.github.GithubActivity"></activity>
-        <activity android:name="com.daemin.community.amazon.AmazonActivity"></activity>
-        <activity android:name="com.daemin.community.lib.DoubleTapZoomNetworkImageViewActivity"></activity>
-        <activity android:name="com.daemin.community.lib.SingleTapZoomNetworkImageViewActivity"></activity>
-        <receiver android:name="com.daemin.widget.MyCustomWidget">
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_configuration4_4"/>
+        <activity android:name="com.daemin.community.github.GithubActivity" />
+        <activity android:name="com.daemin.community.amazon.AmazonActivity" />
+        <activity android:name="com.daemin.community.lib.DoubleTapZoomNetworkImageViewActivity" />
+        <activity android:name="com.daemin.community.lib.SingleTapZoomNetworkImageViewActivity" />
+
+        <receiver android:name="com.daemin.widget.MyCustomWidget" >
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_configuration4_4" />
+
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="com.daemin.widget.widget.ACTION_UPDATE"/>
-                <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.daemin.widget.widget.ACTION_UPDATE" />
+                <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY" />
             </intent-filter>
         </receiver>
-        
-        <receiver android:name="com.daemin.widget.MyCustomWidget2">
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_configuration3_3"/>
+        <receiver android:name="com.daemin.widget.MyCustomWidget2" >
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_configuration3_3" />
+
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="com.daemin.widget.widget.ACTION_UPDATE"/>
-                <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.daemin.widget.widget.ACTION_UPDATE" />
+                <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY" />
             </intent-filter>
         </receiver>
 
         <service
-        	android:enabled="true"
-       		android:name="com.daemin.widget.MyCustomWidget$UpdateService">
-		  </service>
+            android:name="com.daemin.widget.MyCustomWidget$UpdateService"
+            android:enabled="true" >
+        </service>
+
     </application>
 
-    <!-- Permission-->
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_CONtACTS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    
 </manifest>

@@ -6,6 +6,7 @@ import android.content.Context;
 import com.daemin.data.DayOfWeekData;
 import com.daemin.timetable.R;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -29,9 +30,10 @@ public class CurrentTime {
         CurrentTime.titleMonth = titleMonth;
 
     }
-    public static String getYMD(){
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("yy/MM/dd");
-        return fmt.print(now);
+    public static String getMD(){
+        DateTime dt = DateTime.now();
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("MM.dd HH:mm");
+        return fmt.print(dt);
     }
     public static int getTitleMonth() {
         return titleMonth;
