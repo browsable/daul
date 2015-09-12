@@ -49,6 +49,12 @@ public class ActionSlideExpandableListAdapter extends BaseAdapter {
         this.activity = activity;
         this.expandCollapseList = new ArrayList<>();
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        /*FreeBoard.Data sampleData = new FreeBoard.Data();
+        sampleData.setTitle("연결고리#힙합");
+        sampleData.setDate("2015.08.07 12:32");
+        sampleData.setAccount_no(921111);
+        sampleData.setBody_t("너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리! 너와 나의 연결고리 이건 우리안의 소리!");
+        data.add(sampleData);*/
 
         comment = new ArrayList<>();
         comment.add(new Comment(1, "애자일 소프트웨어 개발(Agile software development) 혹은 애자일 개발 프로세스는 " +
