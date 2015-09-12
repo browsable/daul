@@ -1,166 +1,118 @@
 package com.daemin.community;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.daemin.adapter.CommunityListAdapter;
 import com.daemin.common.BasicFragment;
-import com.daemin.community.amazon.AmazonActivity;
+import com.daemin.common.MyVolley;
+import com.daemin.community.github.FreeBoard;
 import com.daemin.community.github.GithubActivity;
-import com.daemin.community.lib.DoubleTapZoomNetworkImageViewActivity;
-import com.daemin.community.lib.SingleTapZoomNetworkImageViewActivity;
+import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
-
-public class CommunityFragment extends BasicFragment {
-
-
-    public CommunityFragment() {
-        super(R.layout.fragment_community, "CommunityFragment");
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View root = super.onCreateView(inflater, container, savedInstanceState);
-        if (layoutId > 0) {
-
-            Button githubActivityButton = (Button) root.findViewById(R.id.github_activity_button);
-            Button amazonActivityButton = (Button) root.findViewById(R.id.amazon_activity_button);
-            Button singleTapZoomNetworkImageViewActivityButton = (Button) root.findViewById(R.id.single_tap_zoom_network_image_view_activity_button);
-            Button doubleTapZoomNetworkImageViewActivityButton = (Button) root.findViewById(R.id.double_tap_zoom_network_image_view_activity_button);
-            githubActivityButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), GithubActivity.class);
-                    getActivity().startActivity(intent);
-                }});
-
-            amazonActivityButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), AmazonActivity.class);
-                    getActivity().startActivity(intent);
-                }});
-
-            singleTapZoomNetworkImageViewActivityButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), SingleTapZoomNetworkImageViewActivity.class);
-                    getActivity().startActivity(intent);
-                }});
-
-            doubleTapZoomNetworkImageViewActivityButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), DoubleTapZoomNetworkImageViewActivity.class);
-                    getActivity().startActivity(intent);
-                }});
-
-        }
-
-        return root;
-    }
-
-}
-
-/*
-
-package com.daemin.community;
-
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ExpandableListView;
-import android.widget.Toast;
-
-import com.daemin.adapter.BaseExpandableAdapter2;
-import com.daemin.common.BasicFragment;
-import com.daemin.timetable.R;
+import com.navercorp.volleyextensions.request.Jackson2Request;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * Created by hernia on 2015-07-07.
+ */
 public class CommunityFragment extends BasicFragment {
-    private ArrayList<String> mGroupList = null;
-    private ArrayList<ArrayList<String>> mChildList = null;
-    private ArrayList<String> mChildListContent = null;
-    private ExpandableListView mListView;
-    View root;
-
-    public CommunityFragment() {
-        super(R.layout.listitem_community_post, "CommunityFragment");
+    private final String GET_PERSON_URL = "http://timedao.heeguchi.me/app/getArticleList";
+    private static CommunityFragment singleton;
+    private final String userId = "joyyir";
+    private int userAccountNum = 921111;
+    private List<FreeBoard.Data> data;
+    private View root;
+    CommunityListAdapter adapter;
+    ListView list;
+    private ProgressBar loadingProgress;
+    public CommunityFragment(){
+        super(R.layout.fragment_community, "CommunityFragment");
+        singleton = this;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onDestroyView() {
+        super.onDestroyView();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(root.getWindowToken(), 0);
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = super.onCreateView(inflater, container, savedInstanceState);
         if (layoutId > 0) {
-            mListView = (ExpandableListView) root.findViewById(R.id.lvExpComment);
-            mGroupList = new ArrayList<String>();
-            mChildList = new ArrayList<ArrayList<String>>();
-            mChildListContent = new ArrayList<String>();
-
-            mGroupList.add("가위");
-            mGroupList.add("바위");
-            mGroupList.add("보");
-
-            mChildListContent.add("1");
-            mChildListContent.add("2");
-            mChildListContent.add("3");
-
-            mChildList.add(mChildListContent);
-            mChildList.add(mChildListContent);
-            mChildList.add(mChildListContent);
-
-            mListView.setAdapter(new BaseExpandableAdapter2(getActivity(), mGroupList, mChildList));
-
-            // 그룹 클릭 했을 경우 이벤트
-            mListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            Button btWriteArticle = (Button) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.btWriteArticle);
+            btWriteArticle.setVisibility(View.VISIBLE);
+            btWriteArticle.setText("글쓰기");
+            btWriteArticle.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onGroupClick(ExpandableListView parent, View v,
-                                            int groupPosition, long id) {
-                    Toast.makeText(getActivity(), "g click = " + groupPosition,
-                            Toast.LENGTH_SHORT).show();
-                    return false;
+                public void onClick(View v) {
+                    SubMainActivity.getInstance().changeFragment(WritePostFragment.class, "커뮤니티", R.color.orange);
                 }
             });
-
-            // 차일드 클릭 했을 경우 이벤트
-            mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            loadingProgress = (ProgressBar) root.findViewById(R.id.loadingProgress);
+            list = (ListView) root.findViewById(R.id.list);
+            data = new ArrayList<>();
+            adapter = new CommunityListAdapter(getActivity(),data);
+            list.setAdapter(adapter);
+            RequestQueue requestQueue = MyVolley.getRequestQueue();
+            Jackson2Request<FreeBoard> jackson2Request = new Jackson2Request<FreeBoard>(
+                    Request.Method.POST,GET_PERSON_URL, FreeBoard.class,
+                    new Response.Listener<FreeBoard>() {
+                        @Override
+                        public void onResponse(FreeBoard response) {
+                            Log.d("junyeong", response.toString());
+                            for(FreeBoard.Data dt: response.getData()) {
+                                loadingProgress.setVisibility(View.INVISIBLE);
+                                data.add(dt);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d(GithubActivity.class.getSimpleName(), "" + error.getMessage());
+                        }
+                    }
+            ){
                 @Override
-                public boolean onChildClick(ExpandableListView parent, View v,
-                                            int groupPosition, int childPosition, long id) {
-                    Toast.makeText(getActivity(), "c click = " + childPosition,
-                            Toast.LENGTH_SHORT).show();
-                    return false;
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("table","freeboard");
+                    map.put("page","1");
+                    return map;
                 }
-            });
+            };
 
-            // 그룹이 닫힐 경우 이벤트
-            mListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-                @Override
-                public void onGroupCollapse(int groupPosition) {
-                    Toast.makeText(getActivity(), "g Collapse = " + groupPosition,
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            // 그룹이 열릴 경우 이벤트
-            mListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-                @Override
-                public void onGroupExpand(int groupPosition) {
-                    Toast.makeText(getActivity(), "g Expand = " + groupPosition,
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
+            requestQueue.add(jackson2Request);
         }
 
         return root;
     }
-}*/
+
+    public static CommunityFragment getInstance(){
+        return singleton;
+    }
+
+    public List<FreeBoard.Data> getData(){
+        return data;
+    }
+}

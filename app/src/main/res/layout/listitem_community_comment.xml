@@ -32,7 +32,7 @@
             android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
             android:paddingRight="@dimen/margin_l"/>
     </LinearLayout>
-    <TextView
+    <EditText
         android:id="@+id/tvChildContent"
         android:layout_width="360dp"
         android:layout_height="wrap_content"

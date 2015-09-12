@@ -1,30 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    xmlns:widget="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/item">
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:background="#FFFFFF">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_l"
+                android:layout_marginTop="@dimen/margin_l"
+                android:layout_marginLeft="@dimen/margin_l"
+                android:layout_marginRight="@dimen/margin_l"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/margin_l"
-                    android:background="@drawable/bg_circle"
+                <com.daemin.common.RoundedCornerNetworkImageView
+                    android:id="@+id/ivProfile"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="@dimen/margin_s"
+                    android:layout_gravity="center_vertical"
+                    android:scaleType="fitXY"
+                    widget:isCircular="true"
                     />
 
                 <LinearLayout
@@ -36,7 +31,7 @@
                     <TextView
                         android:id="@+id/tvGroupTitle"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="수강신청 요령좀"
                         android:layout_weight="1"
                         android:textStyle="bold"
@@ -45,7 +40,7 @@
                     <TextView
                         android:id="@+id/tvGroupTime"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="2015.02.02 13:00"
                         android:textSize="@dimen/textsize_default"
@@ -56,7 +51,7 @@
                     <TextView
                         android:id="@+id/tvGroupId"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="choz@"
                         android:textSize="@dimen/textsize_default"
@@ -67,31 +62,33 @@
             <TextView
                 android:id="@+id/tvGroupContent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:text="수강신청 어떻게 해요?"
                 android:textSize="@dimen/textsize_l"
-                android:padding="@dimen/margin_xxl"
+                android:layout_marginRight="@dimen/margin_l"
+                android:layout_marginLeft="@dimen/margin_l"
+                android:layout_marginTop="@dimen/margin_l"
+                android:layout_marginBottom="@dimen/margin_s"
+                android:padding="@dimen/margin_default"
                 />
-
-            <ImageView
+            <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/ivContent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_launcher"
-                android:padding="@dimen/margin_xxl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_xl"
+                android:scaleType="fitXY"
+                android:layout_weight="1"
                 />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/margin_l"
-                android:paddingBottom="@dimen/margin_l">
+                android:padding="@dimen/margin_l">
                 <LinearLayout
-                    android:id="@+id/expandable_toggle_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_l"
                     android:baselineAligned="false"
                     android:gravity="center_vertical">
                     <TextView
@@ -107,23 +104,17 @@
                         android:layout_marginLeft="@dimen/margin_s"
                         android:layout_gravity="center_vertical"
                         android:text="8" />
-                    <ImageView
-                        android:id="@+id/expandable_arrow"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_action_expand" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:id="@+id/llButtonGroup">
+                    android:gravity="right">
                     <Button
                         android:id="@+id/btEdit"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:text="수정"
-                        android:layout_marginRight="@dimen/margin_xs"
+                        android:layout_marginRight="@dimen/margin_default"
                         android:background="@drawable/bg_maincolor_round_border"
                         android:textSize="13dip" />
 
@@ -133,65 +124,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_maincolor_round_border"
                         android:text="삭제"
-                        android:textSize="13dip"
-                        android:layout_marginRight="@dimen/margin_l" />
+                        android:textSize="13dip"/>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/expandable"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#FFE3E3E3"/>
-        <ListView
-            android:id="@+id/lvComment"
-            android:layout_width="match_parent"
-            android:scrollbars="none"
-            android:layout_height="wrap_content">
-        </ListView>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_default"
-            android:paddingBottom="@dimen/margin_default"
-            android:orientation="horizontal"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center_vertical">
-            <EditText
-                android:id="@+id/etComment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/margin_l"
-                android:background="@null"
-                android:textSize="13dip"
-                android:hint="댓글을 남겨보세요."
-                android:layout_gravity="left">
-            </EditText>
-            <Button
-                android:id="@+id/btEditComment"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:text="확인"
-                android:textSize="13dip"
-                android:background="@drawable/bg_maincolor_round_border"
-                android:layout_marginLeft="@dimen/margin_l"
-                android:layout_marginRight="@dimen/margin_l" />
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:background="@color/transparency"/>
-    </LinearLayout>
 </LinearLayout>

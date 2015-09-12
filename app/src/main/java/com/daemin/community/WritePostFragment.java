@@ -14,9 +14,6 @@ import com.daemin.common.BasicFragment;
 import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-
 /**
  * Created by Jun-yeong on 2015-08-09.
  */
@@ -37,12 +34,12 @@ public class WritePostFragment extends BasicFragment {
                 return;
             }
 
-            Post.setIsWritten(true);
+            /*Post.setIsWritten(true);
             Post.setTitle(etArticleTitle.getText().toString());
             Post.setContent(etArticleContent.getText().toString());
             Post.setDate(new SimpleDateFormat("yyyy/MM/dd").format(new Date(System.currentTimeMillis())));
             Post.setTime(new SimpleDateFormat("HH:mm").format(new Date(System.currentTimeMillis())));
-            Post.setUserId("joyyir");
+            Post.setUserId("joyyir");*/
 
             /*FreeBoard.Data data = new FreeBoard.Data();
             data.setWhen(new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())));
@@ -50,7 +47,7 @@ public class WritePostFragment extends BasicFragment {
             data.setTitle(etArticleTitle.getText().toString());
             data.setAccount_no(921111);
 
-            CommunityFragment2.getInstance().getData().add(0, data);*/
+            CommunityFragment.getInstance().getData().add(0, data);*/
 
             // 키보드 내리기
             InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -58,7 +55,7 @@ public class WritePostFragment extends BasicFragment {
             imm.hideSoftInputFromWindow(etArticleContent.getWindowToken(), 0);
 
             initEditText();
-            SubMainActivity.getInstance().changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
+            SubMainActivity.getInstance().changeFragment(CommunityFragment.class, "커뮤니티", R.color.orange);
         }
     }
 

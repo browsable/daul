@@ -52,7 +52,9 @@ import com.daemin.common.DialMonthPicker;
 import com.daemin.common.DialWeekPicker;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
-import com.daemin.community.CommunityFragment2;
+import com.daemin.common.MyVolley;
+import com.daemin.common.RoundedCornerNetworkImageView;
+import com.daemin.community.CommunityFragment;
 import com.daemin.data.BottomNormalData;
 import com.daemin.data.SubjectData;
 import com.daemin.enumclass.DayOfMonthPos;
@@ -84,9 +86,10 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class SubMainActivity extends FragmentActivity {
-
+	private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
 	InitSurfaceView InitSurfaceView;
 	DrawerLayout mDrawerLayout;
+	RoundedCornerNetworkImageView ivProfile;
 	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend,llTitle;
 	ImageButton ibMenu, ibBack, ibCalendar, ibfindSchedule, ibwriteSchedule;
 	TextView tvTitle,tvTitleYear,tvRecommendDummy;
@@ -161,6 +164,8 @@ public class SubMainActivity extends FragmentActivity {
 		hlvRecommend = (HorizontalListView) findViewById(R.id.hlvRecommend);
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 		mLayout.setTouchEnabled(true);
+		ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
+		ivProfile.setImageUrl(SAMPLE_IMAGE_URL,MyVolley.getImageLoader());
 		rlBar = (RelativeLayout) findViewById(R.id.rlBar);
 		switcher = (TextSwitcher) findViewById(R.id.switcher);
 		ViewGroup.LayoutParams params = llDialog.getLayoutParams();
@@ -211,6 +216,7 @@ public class SubMainActivity extends FragmentActivity {
 			tvTitleYear.setVisibility(View.GONE);
 		}
 		//Log.i("phone", User.USER.getPhoneNum());
+
 		backPressCloseHandler = new BackPressCloseHandler(this);
 	}
 	public void setTitle(){
@@ -406,7 +412,8 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				else {
 					mDrawerLayout.openDrawer(mLeftDrawer);
-					mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+					if(mLayout.getPanelState()==SlidingUpPanelLayout.PanelState.EXPANDED)
+						mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				}
 				break;
 			case R.id.ibCalendar:
@@ -532,7 +539,7 @@ public class SubMainActivity extends FragmentActivity {
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
-				changeFragment(CommunityFragment2.class, "커뮤니티", R.color.orange);
+				changeFragment(CommunityFragment.class, "커뮤니티", R.color.orange);
 				surfaceFlag = true;
 				BackKeyName = "";
 				break;
@@ -1051,8 +1058,6 @@ public class SubMainActivity extends FragmentActivity {
 		CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
 		indexForTitle = 0;
 		adapterFlag = false;
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(ibMenu.getWindowToken(), 0);
 	}
 
 

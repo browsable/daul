@@ -17,7 +17,7 @@ import com.navercorp.volleyextensions.view.ZoomableNetworkImageView;
 import com.navercorp.volleyextensions.view.ZoomableNetworkImageView.OnImageChangedListener;
 
 public class SingleTapZoomNetworkImageViewActivity extends Activity {
-    private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/image/test2.png";
+    private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test.png";
     private ZoomableNetworkImageView zoomableImageView;
     private ImageLoader imageLoader;
     private ProgressBar circleProgressBar;

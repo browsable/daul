@@ -67,5 +67,4 @@ public class MyRequest {
         });
         requestQueue.add(jackson2Request);
     }
-
 }
