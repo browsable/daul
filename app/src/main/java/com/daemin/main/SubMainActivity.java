@@ -95,7 +95,7 @@ public class SubMainActivity extends FragmentActivity {
 	TextView tvTitle,tvTitleYear,tvRecommendDummy;
 	Button btPlus,btNormal, btUniv, btRecommend, btColor, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
 	FrameLayout flSurface, frame_container;
-	RelativeLayout rlBar,bt_area;
+	RelativeLayout rlBar,rlArea;
 	Fragment mContent = null;
 	Boolean surfaceFlag = false, colorFlag = false;
 	BackPressCloseHandler backPressCloseHandler;
@@ -148,7 +148,7 @@ public class SubMainActivity extends FragmentActivity {
 		llIncludeUniv = (LinearLayout) findViewById(R.id.llIncludeUniv);
 		llIncludeDep = (LinearLayout) findViewById(R.id.llIncludeDep);
 		llTitle = (LinearLayout) findViewById(R.id.llTitle);
-		bt_area = (RelativeLayout) findViewById(R.id.bt_area);
+		rlArea = (RelativeLayout) findViewById(R.id.rlArea);
 		tvTitle = (TextView) findViewById(R.id.tvTitle);
 		tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
 		tvRecommendDummy = (TextView) findViewById(R.id.tvRecommendDummy);
@@ -465,7 +465,7 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btTimetable:
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
-				bt_area.setVisibility(View.GONE);
+				rlArea.setVisibility(View.GONE);
 				llTitle.setVisibility(View.VISIBLE);
 				tvTitle.setVisibility(View.GONE);
 				btPlus.setVisibility(View.VISIBLE);
@@ -484,7 +484,7 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btFriend:
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
-				bt_area.setVisibility(View.GONE);
+				rlArea.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
@@ -500,7 +500,7 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btArea:
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
-				bt_area.setVisibility(View.VISIBLE);
+				rlArea.setVisibility(View.VISIBLE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
@@ -514,23 +514,11 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 //			case R.id.ibwriteSchedule:
-//				bt_area.setVisibility(View.GONE);
-//				llTitle.setVisibility(View.GONE);
-//				tvTitle.setVisibility(View.VISIBLE);
-//				btPlus.setVisibility(View.GONE);
-//				ibCalendar.setVisibility(View.GONE);
-//				mLayout.setTouchEnabled(false);
-//				flSurface.setVisibility(View.GONE);
-//				frame_container.setVisibility(View.VISIBLE);
-//				changeFragment(AreaFragment.class, "주변시간표작성", R.color.maincolor);
-//				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-//				surfaceFlag = true;
-//				BackKeyName = "";
 //				break;
 			case R.id.btCommunity:
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
-				bt_area.setVisibility(View.GONE);
+				rlArea.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
@@ -546,7 +534,7 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btSetting:
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
-				bt_area.setVisibility(View.GONE);
+				rlArea.setVisibility(View.GONE);
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
@@ -560,7 +548,7 @@ public class SubMainActivity extends FragmentActivity {
 				BackKeyName = "";
 				break;
 			case R.id.btNormal:
-				bt_area.setVisibility(View.GONE);
+				rlArea.setVisibility(View.GONE);
 				DrawMode.CURRENT.setMode(0);
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
@@ -795,6 +783,10 @@ public class SubMainActivity extends FragmentActivity {
 						}
 						break;
 				}
+				break;
+			case R.id.btNew:
+				DialMonthPicker dmp = new DialMonthPicker(SubMainActivity.this);
+				dmp.show();
 				break;
 		}
 

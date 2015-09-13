@@ -103,7 +103,7 @@
             android:background="@drawable/bg_maincolor_round_border"
             android:visibility="gone"/>
         <RelativeLayout
-            android:id="@+id/bt_area"
+            android:id="@+id/rlArea"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"

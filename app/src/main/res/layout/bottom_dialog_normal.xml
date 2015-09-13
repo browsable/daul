@@ -2,6 +2,7 @@
     xmlns:widget="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:scrollbars="none"
     android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,19 +36,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="8"
+                android:layout_weight="5"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/bg_lightgray_border_right">
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:background="@drawable/iv_normal_time"/>
             </LinearLayout>
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/lightgray"
-                />
             <com.daemin.common.HorizontalListView
                 android:id="@+id/lvTime"
                 android:layout_width="match_parent"
@@ -58,6 +55,27 @@
                 android:layout_weight="1"
                 widget:dividerWidth="0dp"
                 />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray"
+                />
+            <LinearLayout
+                android:id="@+id/btNew"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:background="@color/whitesmoke"
+                android:onClick="mOnClick"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bt_new" />
+            </LinearLayout>
         </LinearLayout>
 
         <View
@@ -70,23 +88,48 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:padding="@dimen/margin_default"
             >
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="@dimen/margin_xxs"
-                android:scaleType="fitXY"
-                android:background="@drawable/iv_normal_place" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/iv_normal_place"/>
+            </LinearLayout>
             <EditText
                 android:id="@+id/etPlace"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:hint="@string/normal_place"
                 android:background="@color/transparency"
                 android:singleLine="true"
                 android:textSize="@dimen/textsize_default" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray"
+                />
+            <LinearLayout
+                android:id="@+id/btPlace"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:background="@color/whitesmoke"
+                android:onClick="mOnClick"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:background="@drawable/iv_normal_place" />
+            </LinearLayout>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -98,51 +141,97 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:padding="@dimen/margin_default"
             >
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="@dimen/margin_xxs"
-                android:scaleType="fitXY"
-                android:background="@drawable/iv_normal_alarm" />
-            <EditText
-                android:id="@+id/etAlarm"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/iv_normal_share"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tvShare"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:hint="@string/normal_share"
+                android:background="@color/transparency"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textSize="@dimen/textsize_default" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray"
+                />
+            <LinearLayout
+                android:id="@+id/btShare"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@color/whitesmoke"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/iv_normal_share"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/iv_normal_alarm"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tvAlarm"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:hint="@string/normal_alarm"
+                android:gravity="center_vertical"
                 android:background="@color/transparency"
                 android:singleLine="true"
                 android:textSize="@dimen/textsize_default" />
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray"
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:padding="@dimen/margin_default"
-            >
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="@dimen/margin_xxs"
-                android:scaleType="fitXY"
-                android:background="@drawable/iv_normal_repeat" />
-            <EditText
-                android:id="@+id/etRepeat"
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray"
+                />
+            <LinearLayout
+                android:id="@+id/btAlarm"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:hint="@string/normal_repeat"
-                android:background="@color/transparency"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_default" />
+                android:layout_weight="5"
+                android:background="@color/whitesmoke"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/iv_normal_alarm"/>
+            </LinearLayout>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -154,23 +243,85 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:padding="@dimen/margin_default"
             >
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="@dimen/margin_xxs"
-                android:scaleType="fitXY"
-                android:background="@drawable/iv_normal_memo" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/iv_normal_repeat"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tvRepeat"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:hint="@string/normal_repeat"
+                android:gravity="center_vertical"
+                android:background="@color/transparency"
+                android:singleLine="true"
+                android:textSize="@dimen/textsize_default" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray"
+                />
+            <LinearLayout
+                android:id="@+id/btRepeat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@color/whitesmoke"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/iv_normal_repeat"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/iv_normal_memo"/>
+            </LinearLayout>
             <EditText
                 android:id="@+id/etMemo"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:hint="@string/normal_memo"
                 android:background="@color/transparency"
                 android:singleLine="true"
                 android:textSize="@dimen/textsize_default" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:orientation="vertical">
+            </LinearLayout>
         </LinearLayout>
         <View
             android:layout_width="match_parent"

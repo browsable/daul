@@ -63,7 +63,12 @@ public class WritePostFragment extends BasicFragment {
         super(R.layout.fragment_write_article, "WritePostFragment");
         singleton = this;
     }
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(root.getWindowToken(), 0);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = super.onCreateView(inflater, container, savedInstanceState);

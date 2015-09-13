@@ -14,8 +14,8 @@
 
                 <com.daemin.common.RoundedCornerNetworkImageView
                     android:id="@+id/ivProfile"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginRight="@dimen/margin_s"
                     android:layout_gravity="center_vertical"
                     android:scaleType="fitXY"
@@ -24,8 +24,9 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
                     android:orientation="vertical">
 
                     <TextView
@@ -33,7 +34,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="수강신청 요령좀"
-                        android:layout_weight="1"
                         android:textStyle="bold"
                         android:gravity="center_vertical" />
 
@@ -41,7 +41,6 @@
                         android:id="@+id/tvGroupTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="2015.02.02 13:00"
                         android:textSize="@dimen/textsize_default"
                         android:textColor="@color/gray"
@@ -52,7 +51,6 @@
                         android:id="@+id/tvGroupId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="choz@"
                         android:textSize="@dimen/textsize_default"
                         android:textColor="@color/gray"
@@ -62,28 +60,24 @@
             <TextView
                 android:id="@+id/tvGroupContent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="수강신청 어떻게 해요?"
                 android:textSize="@dimen/textsize_l"
                 android:layout_marginRight="@dimen/margin_l"
                 android:layout_marginLeft="@dimen/margin_l"
                 android:layout_marginTop="@dimen/margin_l"
-                android:layout_marginBottom="@dimen/margin_s"
                 android:padding="@dimen/margin_default"
                 />
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/ivContent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="220dp"
                 android:layout_margin="@dimen/margin_xl"
                 android:scaleType="fitXY"
-                android:layout_weight="1"
                 />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="@dimen/margin_l">
                 <LinearLayout
