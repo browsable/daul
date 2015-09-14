@@ -48,6 +48,7 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.common.DatabaseHandler;
+import com.daemin.common.DialAddTimePicker;
 import com.daemin.common.DialMonthPicker;
 import com.daemin.common.DialWeekPicker;
 import com.daemin.common.HorizontalListView;
@@ -785,8 +786,8 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				break;
 			case R.id.btNew:
-				DialMonthPicker dmp = new DialMonthPicker(SubMainActivity.this);
-				dmp.show();
+				DialAddTimePicker datp = new DialAddTimePicker(SubMainActivity.this);
+				datp.show();
 				break;
 		}
 

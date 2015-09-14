@@ -34,9 +34,16 @@
             android:layout_marginLeft="24dp"
             android:layout_marginStart="24dp" />
     </RelativeLayout>
-    <ListView
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/event_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        />
+        android:cacheColorHint="#00000000"
+        android:divider="#19000000"
+        android:dividerHeight="4dp"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true" />
 </LinearLayout>
