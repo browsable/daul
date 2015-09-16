@@ -42,6 +42,7 @@
         android:divider="@color/lightgray"
         android:dividerHeight="1dp"
         android:fadingEdge="none"
+        android:scrollbars="none"
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"

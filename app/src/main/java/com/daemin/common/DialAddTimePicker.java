@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -62,6 +63,10 @@ public class DialAddTimePicker extends Dialog {
         this.context = context;
     }
     private void setNP() {
+        npMD.setMinValue(0);
+        npMD.setMaxValue(2);
+        npMD.setDisplayedValues(new String[]{"9/13", "9/13", "9/13", "9/13", "9/13"});
+        npMD.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         npStartHour.setMaxValue(22);
         npStartHour.setMinValue(8);
         npStartHour.setValue(8);
@@ -170,6 +175,7 @@ public class DialAddTimePicker extends Dialog {
     private void setLayout() {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
+        npMD = (NumberPicker) findViewById(R.id.npMD);
         npStartHour = (NumberPicker) findViewById(R.id.npStartHour);
         npStartMin = (NumberPicker) findViewById(R.id.npStartMin);
         npEndHour = (NumberPicker) findViewById(R.id.npEndHour);
@@ -177,6 +183,7 @@ public class DialAddTimePicker extends Dialog {
     }
     private Button btDialCancel;
     private Button btDialSetting;
+    private NumberPicker npMD;
     private NumberPicker npStartHour;
     private NumberPicker npStartMin;
     private NumberPicker npEndHour;

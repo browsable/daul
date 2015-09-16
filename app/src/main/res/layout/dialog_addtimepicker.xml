@@ -24,6 +24,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingLeft="@dimen/margin_xxs"
+            android:paddingRight="@dimen/margin_xxs"
+            >
+        <NumberPicker
+            android:id="@+id/npMD"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/margin_l"
