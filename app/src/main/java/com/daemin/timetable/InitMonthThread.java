@@ -70,7 +70,20 @@ public class InitMonthThread extends InitThread {
 	public void setRunning(boolean isLoop) {
 		this.isLoop = isLoop;
 	}
-
+	public String[] getMonthData() {
+		int cnt =0;
+		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+			++cnt;
+		}
+		String[] mData = new String[cnt];
+		int j =0;
+		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+			String str = SubMainActivity.getInstance().getBarText();
+			mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
+			j++;
+		}
+		return mData;
+	}
 	public int getWidth() {
 		return width;
 	}

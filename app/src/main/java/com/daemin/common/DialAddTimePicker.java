@@ -16,14 +16,32 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
+import com.daemin.enumclass.PosState;
+import com.daemin.enumclass.TimePos;
+import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
 
 /**
  * Created by hernia on 2015-09-08.
  */
 public class DialAddTimePicker extends Dialog {
-
+    Context context;
+    String[] MD;
+    private Button btDialCancel;
+    private Button btDialSetting;
+    private NumberPicker npMD;
+    private NumberPicker npStartHour;
+    private NumberPicker npStartMin;
+    private NumberPicker npEndHour;
+    private NumberPicker npEndMin;
+    public DialAddTimePicker(Context context, String[] MD) {
+        // Dialog 배경을 투명 처리 해준다.
+        super(context, android.R.style.Theme_Holo_Light_Dialog);
+        this.context = context;
+        this.MD = MD;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,20 +70,17 @@ public class DialAddTimePicker extends Dialog {
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancel();
+                //Toast.makeText(context, MD[npMD.getValue()], Toast.LENGTH_SHORT).show();
+                if(MD.length==7) weekSetting(npStartHour.getValue(),npEndHour.getValue());
+                else monthSetting();
             }
         });
     }
-    Context context;
-    public DialAddTimePicker(Context context) {
-        // Dialog 배경을 투명 처리 해준다.
-        super(context, android.R.style.Theme_Holo_Light_Dialog);
-        this.context = context;
-    }
+
     private void setNP() {
         npMD.setMinValue(0);
-        npMD.setMaxValue(2);
-        npMD.setDisplayedValues(new String[]{"9/13", "9/13", "9/13", "9/13", "9/13"});
+        npMD.setMaxValue(MD.length - 1);
+        npMD.setDisplayedValues(MD);
         npMD.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         npStartHour.setMaxValue(22);
         npStartHour.setMinValue(8);
@@ -115,27 +130,27 @@ public class DialAddTimePicker extends Dialog {
         npStartMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                if(npStartHour.getValue()==npEndHour.getValue()){
-                    if(newVal==59){
+                if (npStartHour.getValue() == npEndHour.getValue()) {
+                    if (newVal == 59) {
                         npEndHour.setMinValue(npStartHour.getValue() + 1);
                         npEndHour.setValue(npStartHour.getValue() + 1);
                         npEndMin.setMinValue(0);
                         npEndMin.setMaxValue(59);
                         npEndMin.setValue(0);
-                        if(npStartHour.getValue()+1==23){
+                        if (npStartHour.getValue() + 1 == 23) {
                             npEndMin.setMinValue(0);
                             npEndMin.setMaxValue(0);
                             npEndMin.setValue(0);
                         }
-                    }else {
-                        npEndMin.setMinValue(newVal+1);
+                    } else {
+                        npEndMin.setMinValue(newVal + 1);
                         npEndMin.setMaxValue(59);
-                        npEndMin.setValue(newVal+1);
+                        npEndMin.setValue(newVal + 1);
                     }
-                }else{
-                    if(newVal==59) {
+                } else {
+                    if (newVal == 59) {
                         npEndHour.setMinValue(npStartHour.getValue() + 1);
-                    }else{
+                    } else {
                         npEndHour.setMinValue(npStartHour.getValue());
                     }
                     npEndMin.setMinValue(0);
@@ -145,15 +160,15 @@ public class DialAddTimePicker extends Dialog {
         npEndHour.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                if(npStartHour.getValue()==newVal){
-                        npEndMin.setMinValue(npStartMin.getValue() + 1);
-                        npEndMin.setMaxValue(59);
-                }else{
+                if (npStartHour.getValue() == newVal) {
+                    npEndMin.setMinValue(npStartMin.getValue() + 1);
+                    npEndMin.setMaxValue(59);
+                } else {
                     npEndMin.setMinValue(0);
-                    if(newVal==23){
+                    if (newVal == 23) {
                         npEndMin.setValue(0);
                         npEndMin.setMaxValue(0);
-                    }else{
+                    } else {
                         npEndMin.setMaxValue(59);
                         npEndMin.setValue(npStartMin.getValue());
                     }
@@ -164,9 +179,9 @@ public class DialAddTimePicker extends Dialog {
         npEndMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                if(npStartHour.getValue()==npEndHour.getValue()){
-                    picker.setMinValue(npStartMin.getValue()+1);
-                }else{
+                if (npStartHour.getValue() == npEndHour.getValue()) {
+                    picker.setMinValue(npStartMin.getValue() + 1);
+                } else {
                     npEndMin.setMinValue(0);
                 }
             }
@@ -181,12 +196,35 @@ public class DialAddTimePicker extends Dialog {
         npEndHour = (NumberPicker) findViewById(R.id.npEndHour);
         npEndMin = (NumberPicker) findViewById(R.id.npEndMin);
     }
-    private Button btDialCancel;
-    private Button btDialSetting;
-    private NumberPicker npMD;
-    private NumberPicker npStartHour;
-    private NumberPicker npStartMin;
-    private NumberPicker npEndHour;
-    private NumberPicker npEndMin;
+    private void weekSetting(int start, int end){
+        TimePos[] tp = new TimePos[end-start];
+        int j=0;
+        boolean overlap = false;
+        for(int i=start; i<end; i++){
+            tp[j] = TimePos.valueOf(Convert.getxyMerge(2*npMD.getValue()+1, Convert.HourOfDayToYth(i)));
+            if (tp[j].getPosState() != PosState.NO_PAINT) {
+                overlap = true;
+            }
+            ++j;
+        }
+        if(overlap){
+            Toast.makeText(context, context.getResources().getString(R.string.Overlap), Toast.LENGTH_SHORT).show();
+        }else {
+            for (int i = 0; i < tp.length; i++) {
+                tp[i].setPosState(PosState.PAINT);
+                Common.getTempTimePos().add(tp[i].name());
+            }
+            SubMainActivity.getInstance()
+                    .updateWeekListByBtn(MD[npMD.getValue()],
+                            String.valueOf(npStartHour.getValue()),
+                            Convert.IntToString(npStartMin.getValue()),
+                            String.valueOf(npEndHour.getValue()),
+                            Convert.IntToString(npEndMin.getValue()),
+                            2*npMD.getValue()+1);
+            cancel();
+        }
+    }
+    private void monthSetting() {
 
+    }
 }

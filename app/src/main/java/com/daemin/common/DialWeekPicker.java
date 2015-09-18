@@ -19,7 +19,19 @@ import com.daemin.timetable.R;
  * Created by hernia on 2015-09-08.
  */
 public class DialWeekPicker extends Dialog {
+        private TextView tvDailStartTime;
+        private TextView tvDialEndTime;
+        private Button btDialCancel;
+        private Button btDialSetting;
+        private String startHour, startMin,endHour;
+        private NumberPicker npWeekPicker;
 
+        public DialWeekPicker(Context context, String startHour, String startMin, String endHour) {
+            super(context , android.R.style.Theme_Holo_Light_Dialog);
+            this.startHour = startHour;
+            this.startMin = startMin;
+            this.endHour = endHour;
+        }
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -37,8 +49,8 @@ public class DialWeekPicker extends Dialog {
             window.setAttributes(layoutParams);
             window.setGravity(Gravity.CENTER);
             setLayout();
-            tvDailStartTime.setText(startTime);
-            tvDialEndTime.setText(endTime.split(":")[0] + " : ");
+            tvDailStartTime.setText(startHour + " : " + startMin);
+            tvDialEndTime.setText(endHour.split(":")[0] + " : ");
             npWeekPicker.setMaxValue(59);
             npWeekPicker.setMinValue(0);
             npWeekPicker.setFormatter(new NumberPicker.Formatter() {
@@ -50,9 +62,9 @@ public class DialWeekPicker extends Dialog {
             npWeekPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                 @Override
                 public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    if (newVal == 0) tvDialEndTime.setText(endTime.split(":")[0] + " : ");
+                    if (newVal == 0) tvDialEndTime.setText(endHour.split(":")[0] + " : ");
                     else
-                        tvDialEndTime.setText(String.valueOf(Integer.parseInt(endTime.split(":")[0]) - 1) + " : ");
+                        tvDialEndTime.setText(String.valueOf(Integer.parseInt(endHour.split(":")[0]) - 1) + " : ");
                 }
             });
             btDialCancel.setOnClickListener(new View.OnClickListener() {
@@ -68,15 +80,7 @@ public class DialWeekPicker extends Dialog {
                 }
             });
         }
-        public DialWeekPicker(Context context) {
-            // Dialog 배경을 투명 처리 해준다.
-            super(context, android.R.style.Theme_Holo_Light_Dialog);
-        }
-        public DialWeekPicker(Context context , String startTime , String endTime) {
-            super(context , android.R.style.Theme_Holo_Light_Dialog);
-            this.startTime = startTime;
-            this.endTime = endTime;
-        }
+
         private void setLayout() {
             tvDailStartTime = (TextView) findViewById(R.id.tvDialStartTime);
             tvDialEndTime = (TextView) findViewById(R.id.tvDialEndTime);
@@ -84,11 +88,5 @@ public class DialWeekPicker extends Dialog {
             btDialSetting = (Button) findViewById(R.id.btDialSetting);
             npWeekPicker = (NumberPicker) findViewById(R.id.npWeekPicker);
         }
-        private TextView tvDailStartTime;
-        private TextView tvDialEndTime;
-        private Button btDialCancel;
-        private Button btDialSetting;
-        private String startTime;
-        private String endTime;
-        private NumberPicker npWeekPicker;
+
 }

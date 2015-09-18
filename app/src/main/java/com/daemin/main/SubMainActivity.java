@@ -100,7 +100,7 @@ public class SubMainActivity extends FragmentActivity {
 	Fragment mContent = null;
 	Boolean surfaceFlag = false, colorFlag = false;
 	BackPressCloseHandler backPressCloseHandler;
-	String BackKeyName="",colorName,korName,engName,viewMode;
+	String BackKeyName="",colorName,korName,engName,viewMode,barText;
 	HorizontalListAdapter adapter;
 	AutoCompleteTextView actvSelectUniv,actvSelectDep, actvSelectGrade;
 	Boolean clickFlag1=false;
@@ -117,14 +117,19 @@ public class SubMainActivity extends FragmentActivity {
 	}
 	public ImageButton getIbBack() {return ibBack;}
 	public ImageButton getIbMenu() {return ibMenu;}
+	public String getBarText() {
+		return barText;
+	}
 	public void setBackKeyName(String backKeyName) {
 		BackKeyName = backKeyName;
 	}
+
 	TextSwitcher switcher;
 	//bottom drawer
 	private SlidingUpPanelLayout mLayout;
 	ArrayList<BottomNormalData> normalList;
 	ArrayAdapter normalAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -211,9 +216,10 @@ public class SubMainActivity extends FragmentActivity {
 		});
 
 		if(viewMode.equals("month")){
+			barText = CurrentTime.getTitleYearMonth(this);
 			btUniv.setVisibility(View.INVISIBLE);
 			btRecommend.setVisibility(View.INVISIBLE);
-			switcher.setText(CurrentTime.getTitleYearMonth(this));
+			switcher.setText(barText);
 			tvTitleYear.setVisibility(View.GONE);
 		}
 		//Log.i("phone", User.USER.getPhoneNum());
@@ -247,11 +253,12 @@ public class SubMainActivity extends FragmentActivity {
 		lvTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				switch(viewMode){
+				switch (viewMode) {
 					case "week":
-						String startTime = ((TextView) view.findViewById(R.id.tvStartTime)).getText().toString();
-						String endTime = ((TextView) view.findViewById(R.id.tvEndTime)).getText().toString();
-						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this,startTime,endTime);
+						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
+						String startMin = ((TextView) view.findViewById(R.id.tvStartMin)).getText().toString();
+						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
+						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this, startHour,startMin, endHour);
 						dwp.show();
 						break;
 					case "month":
@@ -259,6 +266,24 @@ public class SubMainActivity extends FragmentActivity {
 						dmp.show();
 						break;
 				}
+			}
+		});
+		lvTime.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> arg0, View view,
+										   int pos, long id) {
+				switch (viewMode) {
+					case "week":
+						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
+						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
+						String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
+						Convert.removeNormal(Integer.parseInt(xth),Integer.parseInt(startHour),Integer.parseInt(endHour));
+						break;
+					case "month":
+						break;
+				}
+				normalList.remove(pos);
+				normalAdapter.notifyDataSetChanged();
+				return true;
 			}
 		});
 	}
@@ -278,23 +303,30 @@ public class SubMainActivity extends FragmentActivity {
 					normalList.remove(normalList.size()-1);
 					tmpYth = ETP.getYth();
 					endYth = tmpYth+2;
-					normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth) + ":00", Convert.YthToHourOfDay(endYth)+":00"));
+					normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),"00",Convert.YthToHourOfDay(endYth),"00",ETP.getXth()));
 				}else{
 					if(startYth==endYth) {
 						tmpYth = startYth = ETP.getYth();
 						endYth = startYth+2;
-						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth) + ":00", Convert.YthToHourOfDay(endYth)+":00"));
+						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),"00", Convert.YthToHourOfDay(endYth),"00",ETP.getXth()));
 					}
 					else {
 						tmpYth = startYth = ETP.getYth();
 						endYth = startYth+2;
-						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth) + ":00", Convert.YthToHourOfDay(endYth)+":00"));
+						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),"00", Convert.YthToHourOfDay(endYth),"00",ETP.getXth()));
 					}
 
 				}
 			}
 		}
 		normalAdapter.notifyDataSetChanged();
+
+	}
+	public void updateWeekListByBtn(String YMD, String startHour, String startMin, String endHour, String endMin, int xth) {
+		normalList.add(new BottomNormalData(YMD,startHour,startMin,endHour,endMin,xth));
+		normalAdapter.notifyDataSetChanged();
+	}
+	public void updateMonthListByBtn() {
 
 	}
 	public void updateMonthList(){
@@ -306,7 +338,7 @@ public class SubMainActivity extends FragmentActivity {
 				tmpXth = DOMP.getXth();
 				tmpYth = DOMP.getYth();
 				YMD = CurrentTime.getTitleMonth()+"/"+InitSurfaceView.getInitThread().getMonthAndDay(tmpXth - 1, 7 * (tmpYth - 1));
-				normalList.add(new BottomNormalData(YMD, "8:00","9:00"));
+				normalList.add(new BottomNormalData(YMD,"8","00","9","00",tmpXth));
 			}
 		}
 		normalAdapter.notifyDataSetChanged();
@@ -427,7 +459,8 @@ public class SubMainActivity extends FragmentActivity {
 					case "week":
 						//ibCalendar.setBackgroundResource(R.drawable.ic_month);
 						indexForTitle = 0;
-						switcher.setText(CurrentTime.getTitleYearMonth(this));
+						barText = CurrentTime.getTitleYearMonth(this);
+						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.GONE);
 						btUniv.setVisibility(View.INVISIBLE);
 						btRecommend.setVisibility(View.INVISIBLE);
@@ -445,8 +478,9 @@ public class SubMainActivity extends FragmentActivity {
 					case "month":
 						indexForTitle = 0;
 						//ibCalendar.setBackgroundResource(R.drawable.ic_week);
+						barText = CurrentTime.getTitleMonthWeek(this);
 						switcher.setText("");
-						switcher.setText(CurrentTime.getTitleMonthWeek(this));
+						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.VISIBLE);
 						btUniv.setVisibility(View.VISIBLE);
 						btRecommend.setVisibility(View.VISIBLE);
@@ -725,11 +759,13 @@ public class SubMainActivity extends FragmentActivity {
 						--indexForTitle;
 						if (indexForTitle < 0) {
 							tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
-							switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
+							barText = CurrentTime.backTitleMonthWeek(this, -indexForTitle);
+							switcher.setText(barText);
 							iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
 						} else {
 							tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
-							switcher.setText(CurrentTime.preTitleMonthWeek(this, indexForTitle));
+							barText = CurrentTime.preTitleMonthWeek(this, indexForTitle);
+							switcher.setText(barText);
 							iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
 						}
 						break;
@@ -737,12 +773,14 @@ public class SubMainActivity extends FragmentActivity {
 						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
 						--indexForTitle;
 						if (indexForTitle < 0) {
-							switcher.setText(CurrentTime.backTitleYearMonth(this, -indexForTitle));
+							barText = CurrentTime.backTitleYearMonth(this, -indexForTitle);
+							switcher.setText(barText);
 							im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
 									CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
 									CurrentTime.getBackDayNumOfMonth(-indexForTitle));
 						} else {
-							switcher.setText(CurrentTime.preTitleYearMonth(this, indexForTitle));
+							barText = CurrentTime.preTitleYearMonth(this, indexForTitle);
+							switcher.setText(barText);
 							im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
 									CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
 									CurrentTime.getPreDayNumOfMonth(indexForTitle));
@@ -760,11 +798,13 @@ public class SubMainActivity extends FragmentActivity {
 						++indexForTitle;
 						if (indexForTitle < 0) {
 							tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
-							switcher.setText(CurrentTime.backTitleMonthWeek(this, -indexForTitle));
+							barText = CurrentTime.backTitleMonthWeek(this, -indexForTitle);
+							switcher.setText(barText);
 							iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
 						} else {
 							tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
-							switcher.setText(CurrentTime.preTitleMonthWeek(this, indexForTitle));
+							barText = CurrentTime.preTitleMonthWeek(this, indexForTitle);
+							switcher.setText(barText);
 							iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
 						}
 						break;
@@ -772,12 +812,14 @@ public class SubMainActivity extends FragmentActivity {
 						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
 						++indexForTitle;
 						if (indexForTitle < 0) {
-							switcher.setText(CurrentTime.backTitleYearMonth(this, -indexForTitle));
+							barText = CurrentTime.backTitleYearMonth(this, -indexForTitle);
+							switcher.setText(barText);
 							im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
 									CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
 									CurrentTime.getBackDayNumOfMonth(-indexForTitle));
 						} else {
-							switcher.setText(CurrentTime.preTitleYearMonth(this, indexForTitle));
+							barText = CurrentTime.preTitleYearMonth(this, indexForTitle);
+							switcher.setText(barText);
 							im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
 									CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
 									CurrentTime.getPreDayNumOfMonth(indexForTitle));
@@ -786,8 +828,20 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				break;
 			case R.id.btNew:
-				DialAddTimePicker datp = new DialAddTimePicker(SubMainActivity.this);
+				String[] MD = null;
+				switch(viewMode) {
+					case "week":
+						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
+						MD = iw.getAllMonthAndDay();
+						break;
+					case "month":
+						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
+						MD = im.getMonthData();
+						break;
+				}
+				DialAddTimePicker datp = new DialAddTimePicker(SubMainActivity.this, MD);
 				datp.show();
+
 				break;
 		}
 

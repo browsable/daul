@@ -28,17 +28,6 @@
     <string name="am">오전</string>
     <string name="pm">오후</string>
     <string name="weekofmonth">째주</string>
-
-    <!-- Nav Drawer Menu Items -->
-    <string-array name="nav_drawer_items">
-        <item >시간표</item>
-        <item >친구시간표</item>
-        <item >커뮤니티</item>
-        <item >중고장터</item>
-        <item >분실물센터</item>
-        <item >주변전화번호</item>
-        <item >내프로필</item>
-    </string-array>
     <string name="appupdate">APP 업데이트 버전이 있습니다. 업데이트 하시겠습니까?</string>
     <string name="dbupdate">DB 업데이트 버전이 있습니다. 업데이트 하시겠습니까?</string>
     <!-- Nav Drawer List Item Icons -->

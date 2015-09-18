@@ -31,24 +31,33 @@ public class BottomNormalListAdapter extends ArrayAdapter<BottomNormalData> {
             holder = new Holder();
             convertView = mInflater.inflate(R.layout.listitem_normal, parent, false);
             holder.tvYMD = (TextView) convertView.findViewById(R.id.tvYMD);
-            holder.tvStartTime = (TextView) convertView.findViewById(R.id.tvStartTime);
-            holder.tvEndTime = (TextView) convertView.findViewById(R.id.tvEndTime);
+            holder.tvStartHour = (TextView) convertView.findViewById(R.id.tvStartHour);
+            holder.tvStartMin = (TextView) convertView.findViewById(R.id.tvStartMin);
+            holder.tvEndHour = (TextView) convertView.findViewById(R.id.tvEndHour);
+            holder.tvEndMin = (TextView) convertView.findViewById(R.id.tvEndMin);
+            holder.tvXth = (TextView) convertView.findViewById(R.id.tvXth);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
         }
         // Populate the text
         holder.tvYMD.setText(getItem(position).getYMD());
-        holder.tvStartTime.setText(getItem(position).getStartTime());
-        holder.tvEndTime.setText(getItem(position).getEndTime());
-    //holder = 재활용
+        holder.tvStartHour.setText(getItem(position).getStartHour());
+        holder.tvStartMin.setText(getItem(position).getStartMin());
+        holder.tvEndHour.setText(getItem(position).getEndHour());
+        holder.tvEndMin.setText(getItem(position).getEndMin());
+        holder.tvXth.setText(String.valueOf(getItem(position).getXth()));
+        //holder = 재활용
         return convertView;
     }
 
     /** View holder for the views we need access to */
     private static class Holder {
         public TextView tvYMD;
-        public TextView tvStartTime;
-        public TextView tvEndTime;
+        public TextView tvStartHour;
+        public TextView tvStartMin;
+        public TextView tvEndHour;
+        public TextView tvEndMin;
+        public TextView tvXth;
     }
 }
