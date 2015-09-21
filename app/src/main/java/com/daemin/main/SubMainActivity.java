@@ -634,8 +634,7 @@ public class SubMainActivity extends FragmentActivity {
 						R.color.white));
 				btRecommend.setTextColor(getResources().getColor(
 						R.color.gray));
-				ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-						R.layout.dropdown_search, MyRequest.getGroupListFomServer());
+				ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.dropdown_search, MyRequest.getGroupListFomServer());
 				actvSelectUniv = (AutoCompleteTextView) findViewById(R.id.actvSelectUniv);
 				actvSelectUniv.requestFocus();
 				actvSelectUniv.setThreshold(1);// will start working from first character

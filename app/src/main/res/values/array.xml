@@ -35,11 +35,10 @@
         <item>산경 | EBusiness</item>
     </string-array>
     <string-array name="area_distance">
-        <item>1km</item>
-        <item>5km</item>
-        <item>10km</item>
+        <item>@string/list_item_01</item>
+        <item>@string/list_item_02</item>
+        <item>@string/list_item_03</item>
     </string-array>
-    [출처] 스피너 구현 (spinner)|작성자 철학이좋아
 
 
 </resources>

@@ -25,7 +25,7 @@ public class AreaFragment extends BasicFragment {
 	private static AreaFragment singleton;
 	private View root;
 	private PullToRefreshListView listView;
-	LinkedList<EventlistData> eventList;
+	static LinkedList<EventlistData> eventList;
 	EventListAdapter event_adapter;
 	ImageButton ibfindSchedule, ibwriteSchedule;
 

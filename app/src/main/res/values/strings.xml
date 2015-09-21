@@ -79,4 +79,8 @@
 
     <string name="hello_world">Hello world!</string>
 
+    <string name="list_item_01">1km</string>
+    <string name="list_item_02">5km</string>
+    <string name="list_item_03">10km</string>
+
 </resources>

@@ -125,7 +125,7 @@
                 android:layout_alignParentLeft="true"
                 android:background="@color/transparency"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_area"
+                android:src="@drawable/ic_area_white"
                 android:visibility="gone"
                 android:onClick="mOnClick"
                 />
