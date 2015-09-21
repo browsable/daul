@@ -107,7 +107,7 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:padding="@dimen/margin_s"
+            android:padding="@dimen/margin_default"
             android:visibility="gone">
             <ImageButton
                 android:id="@+id/ibfindSchedule"
@@ -117,6 +117,17 @@
                 android:background="@color/transparency"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_area_find"
+                />
+            <ImageButton
+                android:id="@+id/ibareaSchedule"
+                android:layout_width="24dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@color/transparency"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_area"
+                android:visibility="gone"
+                android:onClick="mOnClick"
                 />
             <ImageButton
                 android:id="@+id/ibwriteSchedule"
