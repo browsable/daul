@@ -92,7 +92,7 @@ public class SubMainActivity extends FragmentActivity {
 	DrawerLayout mDrawerLayout;
 	RoundedCornerNetworkImageView ivProfile;
 	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend,llTitle;
-	ImageButton ibMenu, ibBack, ibCalendar, ibfindSchedule, ibwriteSchedule;
+	ImageButton ibMenu, ibBack, ibCalendar, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
 	TextView tvTitle,tvTitleYear,tvRecommendDummy;
 	Button btPlus,btNormal, btUniv, btRecommend, btColor, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
 	FrameLayout flSurface, frame_container;
@@ -166,6 +166,7 @@ public class SubMainActivity extends FragmentActivity {
 		btWriteArticle = (Button) findViewById(R.id.btWriteArticle);
 		ibfindSchedule = (ImageButton)findViewById(R.id.ibfindSchedule);
 		ibwriteSchedule = (ImageButton)findViewById(R.id.ibwriteSchedule);
+		ibareaSchedule = (ImageButton)findViewById(R.id.ibareaSchedule);
 		hlv = (HorizontalListView) findViewById(R.id.hlv);
 		hlvRecommend = (HorizontalListView) findViewById(R.id.hlvRecommend);
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
@@ -579,7 +580,9 @@ public class SubMainActivity extends FragmentActivity {
 				surfaceFlag = true;
 				BackKeyName = "";
 				break;
-			case R.id.btArea:
+			case R.id.btArea:case R.id.ibareaSchedule:
+				ibfindSchedule.setVisibility(View.VISIBLE);
+				ibareaSchedule.setVisibility(View.GONE);
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
 				rlArea.setVisibility(View.VISIBLE);
@@ -595,8 +598,6 @@ public class SubMainActivity extends FragmentActivity {
 				surfaceFlag = true;
 				BackKeyName = "";
 				break;
-//			case R.id.ibwriteSchedule:
-//				break;
 			case R.id.btCommunity:
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();

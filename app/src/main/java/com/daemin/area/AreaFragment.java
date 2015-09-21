@@ -31,7 +31,7 @@ public class AreaFragment extends BasicFragment {
 
 	//public static RequestQueue queue;
 	public AreaFragment() {
-		super(R.layout.fragment_area1, "AreaFragment");
+		super(R.layout.fragment_area_list, "AreaFragment");
 		singleton = this;
 	}
 
@@ -51,50 +51,54 @@ public class AreaFragment extends BasicFragment {
 
 		listView = (PullToRefreshListView)root.findViewById(R.id.event_list);
 
-			listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
-				@Override
-				public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-					String label = DateUtils.formatDateTime(getActivity(), System.currentTimeMillis(),
-							DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
-					// Update the LastUpdatedLabel
-					refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-					// Do work to refresh the list here.
-					new GetDataTask().execute();
-				}
-			});
+		listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				String label = DateUtils.formatDateTime(getActivity(), System.currentTimeMillis(),
+						DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
+				// Update the LastUpdatedLabel
+				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+				// Do work to refresh the list here.
+				new GetDataTask().execute();
+			}
+		});
 
-			// Add an end-of-list listener
-			listView.setOnLastItemVisibleListener(new PullToRefreshBase.OnLastItemVisibleListener() {
+		// Add an end-of-list listener
+		listView.setOnLastItemVisibleListener(new PullToRefreshBase.OnLastItemVisibleListener() {
+			@Override
+			public void onLastItemVisible() {
+				Toast.makeText(getActivity(), "End of List!", Toast.LENGTH_SHORT).show();
+			}
+		});
 
-				@Override
-				public void onLastItemVisible() {
-					Toast.makeText(getActivity(), "End of List!", Toast.LENGTH_SHORT).show();
-				}
-			});
-
-			ListView actualListView = listView.getRefreshableView();
-			// Need to use the Actual ListView when registering for Context Menu
-			registerForContextMenu(actualListView);
+		ListView actualListView = listView.getRefreshableView();
+		// Need to use the Actual ListView when registering for Context Menu
+		registerForContextMenu(actualListView);
 
 		eventList = new LinkedList<>();
 		eventList.addFirst(new EventlistData("소울관 정기공연", "2015.09.09", "posnopi13@gmail.com"));
-		eventList.add(new EventlistData("커피방울","2015.09.11","caff@gmail.com"));
+		eventList.add(new EventlistData("커피방울", "2015.09.11", "caff@gmail.com"));
 		eventList.add(new EventlistData("dazzle","2015.09.13","dazzle@gmail.com"));
 		eventList.add(new EventlistData("창업동아리 다울 회의","2015.09.14","daul@gmail.com"));
 		event_adapter = new EventListAdapter(getActivity().getApplicationContext(), eventList);
 		listView.setAdapter(event_adapter);
+		ibwriteSchedule.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				SubMainActivity.getInstance().changeFragment(AreaFragment_Write.class, "이벤트작성", R.color.maincolor);
+				ibfindSchedule.setVisibility(View.GONE);
+				ibwriteSchedule.setVisibility(View.GONE);
+
+			}
+		});
+		ibfindSchedule.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				SubMainActivity.getInstance().changeFragment(AreaFragment_Find.class, "주변이벤트찾검색", R.color.maincolor);
 
 
-
-			ibwriteSchedule.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					SubMainActivity.getInstance().changeFragment(AreaFragment2.class, "이벤트작성", R.color.maincolor);
-					ibfindSchedule.setVisibility(View.GONE);
-					ibwriteSchedule.setVisibility(View.GONE);
-
-				}
-			});
+			}
+		});
 		}
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
