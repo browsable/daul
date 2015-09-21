@@ -27,8 +27,7 @@
             android:layout_weight="1.1"
             android:orientation="horizontal"
             android:gravity="center"
-            android:paddingLeft="@dimen/margin_l"
-            android:paddingRight="@dimen/margin_xxs"
+            android:paddingLeft="@dimen/margin_default"
             >
         <NumberPicker
             android:id="@+id/npMD"
@@ -79,7 +78,7 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="center"
-            android:paddingRight="@dimen/margin_l"
+            android:paddingRight="@dimen/margin_default"
             >
         <NumberPicker
             android:id="@+id/npEndHour"

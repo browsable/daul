@@ -17,7 +17,6 @@ public enum TimePos {
     private PosState posState;
     private int xth;
     private int yth;
-
     TimePos() {
     }
 
@@ -26,7 +25,6 @@ public enum TimePos {
         this.yth = yth;
         this.posState = PosState.NO_PAINT;
     }
-
     public int getXth() {
         return xth;
     }

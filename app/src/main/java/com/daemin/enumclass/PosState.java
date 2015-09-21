@@ -18,15 +18,7 @@ public enum PosState {
         public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
         }
     },
-    TEMPORARY(){ //대학에서 과목 임시선택
-        @Override
-        public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
-            Common.checkTableStateIsNothing = false;
-            canvas.drawRect(width * xth / 15, height * yth / 32 + 18,
-                    width * (xth + 2) / 15, height * (yth + 1) / 32 + 18, rp);
-        }
-    },
-    RECOMMEND(){
+    HALFANHOUR(){
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
             Common.checkTableStateIsNothing = false;
@@ -34,14 +26,12 @@ public enum PosState {
                     width * (xth + 2) / 15, height * (yth + 1) / 32 + 18, rp);
         }
     };
-
     public Paint rp; // 사각형
     PosState() {
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
         rp.setColor(Color.parseColor(Common.MAIN_COLOR));
         rp.setAlpha(100);
     }
-
     public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
         Common.checkTableStateIsNothing = false;
             canvas.drawRect(width * xth / 15, height * yth / 32 + 18,

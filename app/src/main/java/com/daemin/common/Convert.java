@@ -1,8 +1,5 @@
 package com.daemin.common;
 
-import com.daemin.enumclass.PosState;
-import com.daemin.enumclass.TimePos;
-
 public class Convert {
 
 	public static String getxyMerge(int Xth, int Yth) {
@@ -112,17 +109,6 @@ public class Convert {
 				return 29;
 			default:
 				return 0;
-		}
-	}
-	public static void removeNormal(int xth, int start, int end){
-		TimePos[] tp = new TimePos[end-start];
-		int j=0;
-		for(int i=start; i<end; i++){
-			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
-			if (tp[j].getPosState() != PosState.NO_PAINT) {
-				tp[j].setPosState(PosState.NO_PAINT);
-			}
-			++j;
 		}
 	}
 }

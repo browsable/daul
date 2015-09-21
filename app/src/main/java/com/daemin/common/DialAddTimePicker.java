@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
+import com.daemin.enumclass.DayOfMonthPos;
+import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.main.SubMainActivity;
@@ -29,6 +31,7 @@ import com.daemin.timetable.R;
 public class DialAddTimePicker extends Dialog {
     Context context;
     String[] MD;
+    int dayOfWeekOfLastMonth;
     private Button btDialCancel;
     private Button btDialSetting;
     private NumberPicker npMD;
@@ -42,6 +45,14 @@ public class DialAddTimePicker extends Dialog {
         this.context = context;
         this.MD = MD;
     }
+
+    public DialAddTimePicker(Context context, String[] MD, int dayOfWeekOfLastMonth) {
+        super(context, android.R.style.Theme_Holo_Light_Dialog);
+        this.context = context;
+        this.MD = MD;
+        this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +82,8 @@ public class DialAddTimePicker extends Dialog {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(context, MD[npMD.getValue()], Toast.LENGTH_SHORT).show();
-                if(MD.length==7) weekSetting(npStartHour.getValue(),npEndHour.getValue());
-                else monthSetting();
+                if (MD.length == 7) weekSetting(npStartHour.getValue(), npEndHour.getValue());
+                else monthSetting(MD[npMD.getValue()]);
             }
         });
     }
@@ -215,16 +226,35 @@ public class DialAddTimePicker extends Dialog {
                 Common.getTempTimePos().add(tp[i].name());
             }
             SubMainActivity.getInstance()
-                    .updateWeekListByBtn(MD[npMD.getValue()],
+                    .updateListByBtn(MD[npMD.getValue()],
                             String.valueOf(npStartHour.getValue()),
                             Convert.IntToString(npStartMin.getValue()),
                             String.valueOf(npEndHour.getValue()),
                             Convert.IntToString(npEndMin.getValue()),
-                            2*npMD.getValue()+1);
+                            2 * npMD.getValue() + 1);
             cancel();
         }
     }
-    private void monthSetting() {
-
+    private void monthSetting(String day) {
+        String[] tmp = day.split("/");
+        int dayCnt = Integer.parseInt(tmp[1]) + dayOfWeekOfLastMonth;
+        int xth = (dayCnt+1)%7;
+        if(xth==0) xth=7;
+        int yth = dayCnt/7+1;
+        DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
+        if (DOMP.getPosState() == DayOfMonthPosState.NO_PAINT) {
+            DOMP.setPosState(DayOfMonthPosState.PAINT);
+            Common.getTempTimePos().add(DOMP.name());
+            SubMainActivity.getInstance()
+                    .updateListByBtn(MD[npMD.getValue()],
+                            String.valueOf(npStartHour.getValue()),
+                            Convert.IntToString(npStartMin.getValue()),
+                            String.valueOf(npEndHour.getValue()),
+                            Convert.IntToString(npEndMin.getValue()),
+                            xth);
+            cancel();
+        }else{
+            Toast.makeText(context, context.getResources().getString(R.string.Overlap), Toast.LENGTH_SHORT).show();
+        }
     }
 }

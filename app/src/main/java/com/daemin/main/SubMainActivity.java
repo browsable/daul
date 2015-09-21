@@ -258,7 +258,7 @@ public class SubMainActivity extends FragmentActivity {
 						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
 						String startMin = ((TextView) view.findViewById(R.id.tvStartMin)).getText().toString();
 						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
-						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this, startHour,startMin, endHour);
+						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this, startHour, startMin, endHour);
 						dwp.show();
 						break;
 					case "month":
@@ -276,9 +276,12 @@ public class SubMainActivity extends FragmentActivity {
 						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
 						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
 						String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-						Convert.removeNormal(Integer.parseInt(xth),Integer.parseInt(startHour),Integer.parseInt(endHour));
+						removeWeek(Integer.parseInt(xth), Integer.parseInt(startHour), Integer.parseInt(endHour));
 						break;
 					case "month":
+						String tvYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
+						String xth2 = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
+						removeMonth(Integer.parseInt(xth2),Integer.parseInt(tvYMD.split("/")[1]));
 						break;
 				}
 				normalList.remove(pos);
@@ -287,7 +290,25 @@ public class SubMainActivity extends FragmentActivity {
 			}
 		});
 	}
-
+	public void removeWeek(int xth, int start, int end){
+		TimePos[] tp = new TimePos[end-start];
+		int j=0;
+		for(int i=start; i<end; i++){
+			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+			if (tp[j].getPosState() != PosState.NO_PAINT) {
+				tp[j].setPosState(PosState.NO_PAINT);
+			}
+			++j;
+		}
+	}
+	public void removeMonth(int xth, int day){
+		InitMonthThread im = (InitMonthThread)InitSurfaceView.getInitThread();
+		int yth = (im.getDayOfWeekOfLastMonth()+day)/7+1;
+		DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
+		if (DOMP.getPosState() != DayOfMonthPosState.NO_PAINT) {
+			DOMP.setPosState(DayOfMonthPosState.NO_PAINT);
+		}
+	}
 	public void updateWeekList(){
 		normalList.clear();
 		int tmpXth=0,tmpYth=0,startYth=1,endYth=1;
@@ -322,12 +343,9 @@ public class SubMainActivity extends FragmentActivity {
 		normalAdapter.notifyDataSetChanged();
 
 	}
-	public void updateWeekListByBtn(String YMD, String startHour, String startMin, String endHour, String endMin, int xth) {
-		normalList.add(new BottomNormalData(YMD,startHour,startMin,endHour,endMin,xth));
+	public void updateListByBtn(String YMD, String startHour, String startMin, String endHour, String endMin, int xth) {
+		normalList.add(new BottomNormalData(YMD, startHour, startMin, endHour, endMin, xth));
 		normalAdapter.notifyDataSetChanged();
-	}
-	public void updateMonthListByBtn() {
-
 	}
 	public void updateMonthList(){
 		normalList.clear();
@@ -828,18 +846,17 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				break;
 			case R.id.btNew:
-				String[] MD = null;
+				DialAddTimePicker datp = null;
 				switch(viewMode) {
 					case "week":
 						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
-						MD = iw.getAllMonthAndDay();
+						datp = new DialAddTimePicker(SubMainActivity.this, iw.getAllMonthAndDay());
 						break;
 					case "month":
 						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
-						MD = im.getMonthData();
+						datp = new DialAddTimePicker(SubMainActivity.this, im.getMonthData(),im.getDayOfWeekOfLastMonth());
 						break;
 				}
-				DialAddTimePicker datp = new DialAddTimePicker(SubMainActivity.this, MD);
 				datp.show();
 
 				break;
@@ -874,7 +891,7 @@ public class SubMainActivity extends FragmentActivity {
 				for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
 						.toString())) {
 					tempTimePos.add(timePos);
-					TimePos.valueOf(timePos).setPosState(PosState.TEMPORARY);
+					TimePos.valueOf(timePos).setPosState(PosState.HALFANHOUR);
 				}
 				Common.setTempTimePos(tempTimePos);
 			}
@@ -983,7 +1000,7 @@ public class SubMainActivity extends FragmentActivity {
 						for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
 								.toString())) {
 							tempTimePos.add(timePos);
-							TimePos.valueOf(timePos).setPosState(PosState.TEMPORARY);
+							TimePos.valueOf(timePos).setPosState(PosState.HALFANHOUR);
 						}
 						Common.setTempTimePos(tempTimePos);
 					}
@@ -1106,6 +1123,5 @@ public class SubMainActivity extends FragmentActivity {
 		indexForTitle = 0;
 		adapterFlag = false;
 	}
-
 
 }

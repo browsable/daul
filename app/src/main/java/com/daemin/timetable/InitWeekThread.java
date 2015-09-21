@@ -180,7 +180,7 @@ public class InitWeekThread extends InitThread {
             case 2: //추천
                 if (ETP.getPosState() == PosState.NO_PAINT) {
                     Common.stateFilter(Common.getTempTimePos(), "week");
-                    ETP.setPosState(PosState.RECOMMEND);
+                    ETP.setPosState(PosState.HALFANHOUR);
                     Common.getTempTimePos().add(ETP.name());
                     SubMainActivity.getInstance().setupRecommendDatas(ETP.name());
                 } else {

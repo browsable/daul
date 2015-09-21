@@ -18,7 +18,13 @@ import com.daemin.main.SubMainActivity;
 public class InitMonthThread extends InitThread {
 	SurfaceHolder mholder;
 	private boolean isLoop = true;
-	private int width, height,dayOfWeekOfLastMonth,dayNumOfMonth,dayOfMonth,tmp,tx;//이전달의 마지막날 요일
+	private int width;
+	private int height;
+	private int dayOfWeekOfLastMonth;
+	private int dayNumOfMonth;
+	private int dayOfMonth;
+	private int tmp;
+	private int tx;//이전달의 마지막날 요일
 	private String[] monthData;
 	Context context;
 	private Paint hp; // 1시간 간격 수평선
@@ -61,6 +67,9 @@ public class InitMonthThread extends InitThread {
 			--tmp;
 			tx = 7;
 		}
+	}
+	public int getDayOfWeekOfLastMonth() {
+		return dayOfWeekOfLastMonth;
 	}
 	public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth){
 		this.monthData = monthData;
@@ -185,7 +194,7 @@ public class InitMonthThread extends InitThread {
 		canvas.drawText("SAT", width * 13 / 14, height * 2 / 62 - 1, tpblue);
 
 		for(int i = 0; i<dayOfWeekOfLastMonth+1; i++){
-			canvas.drawText(monthData[i], width * (4*(i%7)+1) / 28-6, height* (( 10 * (i/7)) + 4)/ 64, tpgray);
+			canvas.drawText(monthData[i], width * (4 * (i % 7) + 1) / 28 - 6, height * ((10 * (i / 7)) + 4) / 64, tpgray);
 		}
 		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
 			int j = i%7;
@@ -202,7 +211,7 @@ public class InitMonthThread extends InitThread {
 			}
 		}
 		for(int i = dayOfWeekOfLastMonth + dayNumOfMonth + 1; i < 42; i++) {
-			canvas.drawText(monthData[i], width * (4*(i%7)+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tpgray);
+			canvas.drawText(monthData[i], width * (4 * (i%7)+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tpgray);
 		}
 
 	}
