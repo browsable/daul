@@ -17,6 +17,8 @@ public enum TimePos {
     private PosState posState;
     private int xth;
     private int yth;
+    private int startMin;
+    private int endMin;
     TimePos() {
     }
 
@@ -24,24 +26,34 @@ public enum TimePos {
         this.xth = xth;
         this.yth = yth;
         this.posState = PosState.NO_PAINT;
+        startMin =0;
+        endMin = 60;
     }
     public int getXth() {
         return xth;
     }
-
     public int getYth() {
         return yth;
     }
-
+    public int getStartMin() {
+        return startMin;
+    }
+    public int getEndMin() {
+        if(endMin==60) return 0;
+        else return endMin;
+    }
+    public void setMin(int startMin,int endMin) {
+        this.startMin = startMin;
+        this.endMin = endMin;
+    }
     public void setPosState(PosState posState) {
         this.posState = posState;
     }
-
     public PosState getPosState() {
         return posState;
     }
 
     public void drawTimePos(Canvas canvas, int width, int height) {
-        posState.drawTimePos(canvas, width, height, xth, yth);
+        posState.drawTimePos(canvas, width, height, xth, yth, startMin , endMin);
     }
 }

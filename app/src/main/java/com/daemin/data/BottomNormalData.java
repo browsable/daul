@@ -7,6 +7,23 @@ public class BottomNormalData {
     private String YMD;
     private String startHour;
     private String startMin;
+
+    public void setEndMin(String endMin) {
+        this.endMin = endMin;
+    }
+
+    public void setEndHour(String endHour) {
+        this.endHour = endHour;
+    }
+
+    public void setStartMin(String startMin) {
+        this.startMin = startMin;
+    }
+
+    public void setStartHour(String startHour) {
+        this.startHour = startHour;
+    }
+
     private String endHour;
 
     public String getEndMin() {

@@ -15,12 +15,19 @@ public enum PosState {
     ENROLL(),
     NO_PAINT() {
         @Override
-        public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
+        public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth, int startMin, int endMin) {
+        }
+    },
+    ADJUST(){
+        public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth, int startMin, int endMin) {
+            Common.checkTableStateIsNothing = false;
+            canvas.drawRect(width * xth / 15, (height * yth / 32 + 18)+(2*height/32)*startMin/60,
+                    width * (xth + 2) / 15, (height * yth / 32 + 18)+(2*height/32)*endMin/60, rp);
         }
     },
     HALFANHOUR(){
         @Override
-        public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
+        public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth, int startMin, int endMin) {
             Common.checkTableStateIsNothing = false;
             canvas.drawRect(width * xth / 15, height * yth / 32 + 18,
                     width * (xth + 2) / 15, height * (yth + 1) / 32 + 18, rp);
@@ -32,10 +39,9 @@ public enum PosState {
         rp.setColor(Color.parseColor(Common.MAIN_COLOR));
         rp.setAlpha(100);
     }
-    public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
+    public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth, int startMin, int endMin) {
         Common.checkTableStateIsNothing = false;
-            canvas.drawRect(width * xth / 15, height * yth / 32 + 18,
-                    width * (xth + 2) / 15, height * (yth + 2) / 32 + 18, rp);
-
+        canvas.drawRect(width * xth / 15, height * yth / 32 + 18,
+                width * (xth + 2) / 15, height * (yth + 2) / 32 + 18, rp);
     }
 }
