@@ -226,7 +226,7 @@ public class DialAddTimePicker extends Dialog {
                 Common.getTempTimePos().add(tp[i].name());
             }
             SubMainActivity.getInstance()
-                    .updateListByBtn(MD[npMD.getValue()],
+                    .updateListByAdd(MD[npMD.getValue()],
                             String.valueOf(npStartHour.getValue()),
                             Convert.IntToString(npStartMin.getValue()),
                             String.valueOf(npEndHour.getValue()),
@@ -246,7 +246,7 @@ public class DialAddTimePicker extends Dialog {
             DOMP.setPosState(DayOfMonthPosState.PAINT);
             Common.getTempTimePos().add(DOMP.name());
             SubMainActivity.getInstance()
-                    .updateListByBtn(MD[npMD.getValue()],
+                    .updateListByAdd(MD[npMD.getValue()],
                             String.valueOf(npStartHour.getValue()),
                             Convert.IntToString(npStartMin.getValue()),
                             String.valueOf(npEndHour.getValue()),

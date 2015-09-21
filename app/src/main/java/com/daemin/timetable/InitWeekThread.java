@@ -140,14 +140,14 @@ public class InitWeekThread extends InitThread {
     }
 
     public void getDownXY(int xth, int yth) {
-        makeTimePos(xth, yth, "down");
+        makeTimePos(xth, yth);
         tempxth = xth;
         tempyth = yth;
     }
 
     public void getMoveXY(int xth, int yth) {
         if (tempxth != xth || tempyth != yth) {
-            makeTimePos(xth, yth, "move");
+            makeTimePos(xth, yth);
             tempxth = xth;
             tempyth = yth;
         }
@@ -157,7 +157,7 @@ public class InitWeekThread extends InitThread {
         SubMainActivity.getInstance().updateWeekList();
     }
 
-    public void makeTimePos(int xth, int yth, String touchType) {
+    public void makeTimePos(int xth, int yth) {
         TimePos ETP = TimePos.valueOf(Convert.getxyMerge(xth, yth));
         switch (DrawMode.CURRENT.getMode()) {
             case 0:

@@ -256,9 +256,10 @@ public class SubMainActivity extends FragmentActivity {
 				switch (viewMode) {
 					case "week":
 						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
-						String startMin = ((TextView) view.findViewById(R.id.tvStartMin)).getText().toString();
 						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
-						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this, startHour, startMin, endHour);
+						String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
+						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
+						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this, xth, startHour, endHour, iw.getAllMonthAndDay(),position);
 						dwp.show();
 						break;
 					case "month":
@@ -281,7 +282,7 @@ public class SubMainActivity extends FragmentActivity {
 					case "month":
 						String tvYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
 						String xth2 = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-						removeMonth(Integer.parseInt(xth2),Integer.parseInt(tvYMD.split("/")[1]));
+						removeMonth(Integer.parseInt(xth2), Integer.parseInt(tvYMD.split("/")[1]));
 						break;
 				}
 				normalList.remove(pos);
@@ -291,14 +292,19 @@ public class SubMainActivity extends FragmentActivity {
 		});
 	}
 	public void removeWeek(int xth, int start, int end){
-		TimePos[] tp = new TimePos[end-start];
-		int j=0;
-		for(int i=start; i<end; i++){
-			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
-			if (tp[j].getPosState() != PosState.NO_PAINT) {
-				tp[j].setPosState(PosState.NO_PAINT);
+		if(start!=end) {
+			TimePos[] tp = new TimePos[end - start];
+			int j = 0;
+			for (int i = start; i < end; i++) {
+				tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+				if (tp[j].getPosState() != PosState.NO_PAINT) {
+					tp[j].setPosState(PosState.NO_PAINT);
+				}
+				++j;
 			}
-			++j;
+		}else{
+			TimePos tp = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(start)));
+			tp.setPosState(PosState.NO_PAINT);
 		}
 	}
 	public void removeMonth(int xth, int day){
@@ -311,10 +317,10 @@ public class SubMainActivity extends FragmentActivity {
 	}
 	public void updateWeekList(){
 		normalList.clear();
-		int tmpXth=0,tmpYth=0,startYth=1,endYth=1;
+		int tmpXth=0,tmpYth=0,startYth=1,endYth=1, tmpEnd=0, tmp=0;
 		String YMD="";
 		for (TimePos ETP : TimePos.values()) {
-			if(ETP.getPosState()==PosState.PAINT){
+			if(ETP.getPosState()==PosState.PAINT||ETP.getPosState()==PosState.ADJUST){
 				if(tmpXth!=ETP.getXth()){
 					tmpXth = ETP.getXth();
 					YMD = InitSurfaceView.getInitThread().getMonthAndDay(tmpXth);
@@ -324,17 +330,35 @@ public class SubMainActivity extends FragmentActivity {
 					normalList.remove(normalList.size()-1);
 					tmpYth = ETP.getYth();
 					endYth = tmpYth+2;
-					normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),"00",Convert.YthToHourOfDay(endYth),"00",ETP.getXth()));
+					tmpEnd = ETP.getEndMin();
+					if(tmpEnd!=0) endYth-=2;
+					normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),
+							Convert.IntToString(ETP.getStartMin()),
+							Convert.YthToHourOfDay(tmp),
+							Convert.IntToString(tmpEnd),
+							ETP.getXth()));
 				}else{
 					if(startYth==endYth) {
 						tmpYth = startYth = ETP.getYth();
 						endYth = startYth+2;
-						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),"00", Convert.YthToHourOfDay(endYth),"00",ETP.getXth()));
+						tmpEnd = ETP.getEndMin();
+						if(tmpEnd!=0) endYth-=2;
+						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),
+								Convert.IntToString(ETP.getStartMin()),
+								Convert.YthToHourOfDay(tmp),
+								Convert.IntToString(tmpEnd),
+								ETP.getXth()));
 					}
 					else {
 						tmpYth = startYth = ETP.getYth();
 						endYth = startYth+2;
-						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),"00", Convert.YthToHourOfDay(endYth),"00",ETP.getXth()));
+						tmpEnd = ETP.getEndMin();
+						if(tmpEnd!=0) endYth-=2;
+						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),
+								Convert.IntToString(ETP.getStartMin()),
+								Convert.YthToHourOfDay(tmp),
+								Convert.IntToString(tmpEnd),
+								ETP.getXth()));
 					}
 
 				}
@@ -342,10 +366,6 @@ public class SubMainActivity extends FragmentActivity {
 		}
 		normalAdapter.notifyDataSetChanged();
 
-	}
-	public void updateListByBtn(String YMD, String startHour, String startMin, String endHour, String endMin, int xth) {
-		normalList.add(new BottomNormalData(YMD, startHour, startMin, endHour, endMin, xth));
-		normalAdapter.notifyDataSetChanged();
 	}
 	public void updateMonthList(){
 		normalList.clear();
@@ -359,6 +379,15 @@ public class SubMainActivity extends FragmentActivity {
 				normalList.add(new BottomNormalData(YMD,"8","00","9","00",tmpXth));
 			}
 		}
+		normalAdapter.notifyDataSetChanged();
+	}
+	public void updateListByAdd(String YMD, String startHour, String startMin, String endHour, String endMin, int xth) {
+		normalList.add(new BottomNormalData(YMD, startHour, startMin, endHour, endMin, xth));
+		normalAdapter.notifyDataSetChanged();
+	}
+	public void updateListByDial(String YMD, String startHour, String startMin, String endHour, String endMin, int xth,int position) {
+		normalList.remove(position);
+		normalList.add(position, new BottomNormalData(YMD, startHour, startMin, endHour, endMin, xth));
 		normalAdapter.notifyDataSetChanged();
 	}
 	public void colorButtonSetting(){
