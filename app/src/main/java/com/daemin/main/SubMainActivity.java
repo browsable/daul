@@ -318,7 +318,7 @@ public class SubMainActivity extends FragmentActivity {
 	}
 	public void updateWeekList(){
 		normalList.clear();
-		int tmpXth=0,tmpYth=0,startYth=1,endYth=1, tmpEnd=0, tmp=0;
+		int tmpXth=0,tmpYth=0,startYth=1,endYth=1, tmpEnd=0;
 		String YMD="";
 		for (TimePos ETP : TimePos.values()) {
 			if(ETP.getPosState()==PosState.PAINT||ETP.getPosState()==PosState.ADJUST){
@@ -335,9 +335,10 @@ public class SubMainActivity extends FragmentActivity {
 					if(tmpEnd!=0) endYth-=2;
 					normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),
 							Convert.IntToString(ETP.getStartMin()),
-							Convert.YthToHourOfDay(tmp),
+							Convert.YthToHourOfDay(endYth),
 							Convert.IntToString(tmpEnd),
 							ETP.getXth()));
+					endYth = tmpYth+2;
 				}else{
 					if(startYth==endYth) {
 						tmpYth = startYth = ETP.getYth();
@@ -346,9 +347,10 @@ public class SubMainActivity extends FragmentActivity {
 						if(tmpEnd!=0) endYth-=2;
 						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),
 								Convert.IntToString(ETP.getStartMin()),
-								Convert.YthToHourOfDay(tmp),
+								Convert.YthToHourOfDay(endYth),
 								Convert.IntToString(tmpEnd),
 								ETP.getXth()));
+						endYth = startYth+2;
 					}
 					else {
 						tmpYth = startYth = ETP.getYth();
@@ -357,9 +359,10 @@ public class SubMainActivity extends FragmentActivity {
 						if(tmpEnd!=0) endYth-=2;
 						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),
 								Convert.IntToString(ETP.getStartMin()),
-								Convert.YthToHourOfDay(tmp),
+								Convert.YthToHourOfDay(endYth),
 								Convert.IntToString(tmpEnd),
 								ETP.getXth()));
+						endYth = startYth+2;
 					}
 
 				}
