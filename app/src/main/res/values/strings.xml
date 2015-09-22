@@ -4,8 +4,6 @@
     <string name="app_name">TimeDAO</string>
     <string name="app_menu"> 메뉴</string>
     <string name="action_settings">Settings</string>
-    <string name="drawer_open">Slider Menu Opened</string>
-    <string name="drawer_close">Slider Menu Closed</string>
     <string name="Initialization">초기화 하시겠습니까?</string>
     <string name="Overlap">중복되는 시간을 확인하세요</string>
     <string name="Dbwarning">해당되는 학교의 DB가 존재하지 않습니다 hernia@koreatech.ac.kr로 문의 바랍니다.</string>

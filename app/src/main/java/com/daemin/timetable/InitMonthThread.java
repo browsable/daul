@@ -153,6 +153,7 @@ public class InitMonthThread extends InitThread {
 		DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
 		if (DOMP.getPosState() == DayOfMonthPosState.NO_PAINT) {
 			DOMP.setPosState(DayOfMonthPosState.PAINT);
+			if(!Common.getTempTimePos().contains(DOMP.name()))
 			Common.getTempTimePos().add(DOMP.name());
 		} else {
 			DOMP.setPosState(DayOfMonthPosState.NO_PAINT);

@@ -125,10 +125,14 @@ public class InitWeekThread extends InitThread {
                     initScreen(dayOfWeek);
                     Common.checkTableStateIsNothing = true;
 
-                    // 사각형 그리기
+                    for(String name: Common.getTempTimePos()){
+                        TimePos tp = TimePos.valueOf(name);
+                        tp.drawTimePos(canvas, width, height);
+                    }
+                    /*// 사각형 그리기
                     for (TimePos ETP : TimePos.values()) {
                         ETP.drawTimePos(canvas, width, height);
-                    }
+                    }*/
                 }
             } catch (Exception e) {
 
@@ -158,15 +162,21 @@ public class InitWeekThread extends InitThread {
     }
 
     public void makeTimePos(int xth, int yth) {
-        TimePos ETP = TimePos.valueOf(Convert.getxyMerge(xth, yth));
+        int tmpYth, ryth = yth%2;
+        if(ryth==0) tmpYth=yth-1;
+        else tmpYth = yth;
+        TimePos ETP = TimePos.valueOf(Convert.getxyMerge(xth, tmpYth));
         switch (DrawMode.CURRENT.getMode()) {
             case 0:
             case 3://일반
                 if (ETP.getPosState() == PosState.NO_PAINT) {
                     ETP.setPosState(PosState.PAINT);
+                    if(!Common.getTempTimePos().contains(ETP.name()))
                     Common.getTempTimePos().add(ETP.name());
                 } else {
+                    ETP.setMin(0,60);
                     ETP.setPosState(PosState.NO_PAINT);
+                    Common.getTempTimePos().remove(ETP.name());
                 }
                 break;
             case 1: //대학
@@ -178,12 +188,15 @@ public class InitWeekThread extends InitThread {
                 }
                 break;
             case 2: //추천
-                if (ETP.getPosState() == PosState.NO_PAINT) {
+                if (ETP.getPosState() == PosState.NO_PAINT||ETP.getPosState() == PosState.ADJUST) {
                     Common.stateFilter(Common.getTempTimePos(), "week");
-                    ETP.setPosState(PosState.HALFANHOUR);
+                    if (ryth == 0) ETP.setMin(30, 60);
+                    else ETP.setMin(0, 30);
+                    ETP.setPosState(PosState.ADJUST);
+                    if(!Common.getTempTimePos().contains(ETP.name()))
                     Common.getTempTimePos().add(ETP.name());
                     SubMainActivity.getInstance().setupRecommendDatas(ETP.name());
-                } else {
+                }else {
                     Common.stateFilter(Common.getTempTimePos(), "week");
                 }
                 break;

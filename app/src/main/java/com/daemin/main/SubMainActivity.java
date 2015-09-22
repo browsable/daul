@@ -256,11 +256,12 @@ public class SubMainActivity extends FragmentActivity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				switch (viewMode) {
 					case "week":
-						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
-						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
 						String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
-						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this, xth, startHour, endHour, iw.getAllMonthAndDay(),position);
+						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
+						String startMin = ((TextView) view.findViewById(R.id.tvStartMin)).getText().toString();
+						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
+						String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
+						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this, position, xth, startHour, startMin, endHour, endMin);
 						dwp.show();
 						break;
 					case "month":
@@ -277,8 +278,9 @@ public class SubMainActivity extends FragmentActivity {
 					case "week":
 						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
 						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
+						String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
 						String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-						removeWeek(Integer.parseInt(xth), Integer.parseInt(startHour), Integer.parseInt(endHour));
+						removeWeek(Integer.parseInt(xth), Integer.parseInt(startHour), Integer.parseInt(endHour),Integer.parseInt(endMin));
 						break;
 					case "month":
 						String tvYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
@@ -292,19 +294,22 @@ public class SubMainActivity extends FragmentActivity {
 			}
 		});
 	}
-	public void removeWeek(int xth, int start, int end){
-		if(start!=end) {
-			TimePos[] tp = new TimePos[end - start];
+	public void removeWeek(int xth, int startHour, int endHour, int endMin){
+		if(startHour!=endHour) {
+			if(endMin!=0)++endHour;
+			TimePos[] tp = new TimePos[endHour - startHour];
 			int j = 0;
-			for (int i = start; i < end; i++) {
+			for (int i = startHour; i < endHour; i++) {
 				tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
 				if (tp[j].getPosState() != PosState.NO_PAINT) {
+					tp[j].setMin(0, 60);
 					tp[j].setPosState(PosState.NO_PAINT);
 				}
 				++j;
 			}
 		}else{
-			TimePos tp = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(start)));
+			TimePos tp = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
+			tp.setMin(0, 60);
 			tp.setPosState(PosState.NO_PAINT);
 		}
 	}
@@ -318,53 +323,41 @@ public class SubMainActivity extends FragmentActivity {
 	}
 	public void updateWeekList(){
 		normalList.clear();
-		int tmpXth=0,tmpYth=0,startYth=1,endYth=1, tmpEnd=0;
-		String YMD="";
+		int startYth=0,startMin=0,endYth=0,endMin=0,xth;
+		int tmpStartYth=0, tmpStartMin=0, tmpEndYth=0, tmpEndMin=0;
+		String YMD;
 		for (TimePos ETP : TimePos.values()) {
 			if(ETP.getPosState()==PosState.PAINT||ETP.getPosState()==PosState.ADJUST){
-				if(tmpXth!=ETP.getXth()){
-					tmpXth = ETP.getXth();
-					YMD = InitSurfaceView.getInitThread().getMonthAndDay(tmpXth);
-					tmpYth=0;startYth=1;endYth=1;
-				}
-				if(ETP.getYth()==tmpYth+2){
-					normalList.remove(normalList.size()-1);
-					tmpYth = ETP.getYth();
-					endYth = tmpYth+2;
-					tmpEnd = ETP.getEndMin();
-					if(tmpEnd!=0) endYth-=2;
-					normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),
-							Convert.IntToString(ETP.getStartMin()),
+				xth = ETP.getXth();
+				if(tmpEndYth!=ETP.getYth()) {
+					tmpStartYth = startYth = ETP.getYth();
+					tmpStartMin = startMin = ETP.getStartMin();
+					tmpEndMin = endMin = ETP.getEndMin();
+					if(endMin!=0) tmpEndYth = endYth = startYth;
+					else tmpEndYth = endYth = startYth + 2;
+					YMD = InitSurfaceView.getInitThread().getMonthAndDay(xth);
+					normalList.add(new BottomNormalData(YMD,
+							Convert.YthToHourOfDay(startYth),
+							Convert.IntToString(startMin),
 							Convert.YthToHourOfDay(endYth),
-							Convert.IntToString(tmpEnd),
-							ETP.getXth()));
-					endYth = tmpYth+2;
-				}else{
-					if(startYth==endYth) {
-						tmpYth = startYth = ETP.getYth();
-						endYth = startYth+2;
-						tmpEnd = ETP.getEndMin();
-						if(tmpEnd!=0) endYth-=2;
-						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),
-								Convert.IntToString(ETP.getStartMin()),
-								Convert.YthToHourOfDay(endYth),
-								Convert.IntToString(tmpEnd),
-								ETP.getXth()));
-						endYth = startYth+2;
-					}
-					else {
-						tmpYth = startYth = ETP.getYth();
-						endYth = startYth+2;
-						tmpEnd = ETP.getEndMin();
-						if(tmpEnd!=0) endYth-=2;
-						normalList.add(new BottomNormalData(YMD, Convert.YthToHourOfDay(startYth),
-								Convert.IntToString(ETP.getStartMin()),
-								Convert.YthToHourOfDay(endYth),
-								Convert.IntToString(tmpEnd),
-								ETP.getXth()));
-						endYth = startYth+2;
-					}
-
+							Convert.IntToString(endMin),
+							xth
+					));
+				}else if(tmpEndYth== ETP.getYth()&&tmpEndMin==ETP.getStartMin()){ //
+					normalList.remove(normalList.size()-1);
+					startYth = tmpStartYth;
+					startMin = tmpStartMin;
+					tmpEndMin = endMin = ETP.getEndMin();
+					if(endMin!=0) tmpEndYth = endYth = ETP.getYth();
+					else tmpEndYth = endYth = ETP.getYth() + 2;
+					YMD = InitSurfaceView.getInitThread().getMonthAndDay(xth);
+					normalList.add(new BottomNormalData(YMD,
+							Convert.YthToHourOfDay(startYth),
+							Convert.IntToString(startMin),
+							Convert.YthToHourOfDay(endYth),
+							Convert.IntToString(endMin),
+							xth
+					));
 				}
 			}
 		}
@@ -385,13 +378,18 @@ public class SubMainActivity extends FragmentActivity {
 		}
 		normalAdapter.notifyDataSetChanged();
 	}
+	public void clearView(){
+		normalList.clear();
+		normalAdapter.notifyDataSetChanged();
+		Common.stateFilter(Common.getTempTimePos(), viewMode);
+	}
 	public void updateListByAdd(String YMD, String startHour, String startMin, String endHour, String endMin, int xth) {
 		normalList.add(new BottomNormalData(YMD, startHour, startMin, endHour, endMin, xth));
 		normalAdapter.notifyDataSetChanged();
 	}
-	public void updateListByDial(String YMD, String startHour, String startMin, String endHour, String endMin, int xth,int position) {
+	public void updateListByDial(String startHour, String startMin, String endHour, String endMin, int xth,int position) {
 		normalList.remove(position);
-		normalList.add(position, new BottomNormalData(YMD, startHour, startMin, endHour, endMin, xth));
+		normalList.add(position, new BottomNormalData(InitSurfaceView.getInitThread().getMonthAndDay(xth), startHour, startMin, endHour, endMin, xth));
 		normalAdapter.notifyDataSetChanged();
 	}
 	public void colorButtonSetting(){
@@ -771,8 +769,6 @@ public class SubMainActivity extends FragmentActivity {
 					colorFlag = false;
 				}
 				break;
-			case R.id.btAddTime:
-				break;
 			case R.id.btPlus:
 				/*switch(viewMode) {
 					case "week":
@@ -923,7 +919,7 @@ public class SubMainActivity extends FragmentActivity {
 				for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
 						.toString())) {
 					tempTimePos.add(timePos);
-					TimePos.valueOf(timePos).setPosState(PosState.HALFANHOUR);
+					//TimePos.valueOf(timePos).setPosState(PosState.HALFANHOUR);
 				}
 				Common.setTempTimePos(tempTimePos);
 			}
@@ -1032,7 +1028,7 @@ public class SubMainActivity extends FragmentActivity {
 						for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
 								.toString())) {
 							tempTimePos.add(timePos);
-							TimePos.valueOf(timePos).setPosState(PosState.HALFANHOUR);
+							//TimePos.valueOf(timePos).setPosState(PosState.HALFANHOUR);
 						}
 						Common.setTempTimePos(tempTimePos);
 					}

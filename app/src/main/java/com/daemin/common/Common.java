@@ -23,7 +23,7 @@ public class Common {
 
 	/* BroadCastReceiver Filter */
 	//public static final String ACTION_EVENT 			= "com.daemin.widget.widget.ACTION_EVENT";
-	public static final String ACTION_CALL_ACTIVITY 	= "com.daemin.widget.widget.ACTION_CALL_ACTIVITY";
+	public static final String ACTION_CALL_ACTIVITY = "com.daemin.widget.widget.ACTION_CALL_ACTIVITY";
 	public static final String ACTION_UPDATE = "com.daemin.widget.widget.ACTION_UPDATE";
 	//public static final String ACTION_DIALOG 			= "com.daemin.widget.widget.ACTION_DIALOG";
 
@@ -63,13 +63,12 @@ public class Common {
 	public static void setTempTimePos(ArrayList<String> tempTimePos) {
 		Common.tempTimePos = tempTimePos;
 	}
-
-	//원하는 상태의 TimePos 객체를 반환
 	public static void stateFilter(ArrayList<String> tempTimePos,String viewMode){
 		if(tempTimePos!=null) {
 			switch(viewMode){
 				case "week":
 					for(String t : tempTimePos){
+						TimePos.valueOf(t).setMin(0,60);
 						TimePos.valueOf(t).setPosState(PosState.NO_PAINT);
 					}
 					break;

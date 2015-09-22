@@ -82,7 +82,8 @@ public class DialAddTimePicker extends Dialog {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(context, MD[npMD.getValue()], Toast.LENGTH_SHORT).show();
-                if (MD.length == 7) weekSetting(npStartHour.getValue(), npEndHour.getValue());
+                if (MD.length == 7) weekSetting(npStartHour.getValue(),npStartMin.getValue(),
+                        npEndHour.getValue(),npEndMin.getValue());
                 else monthSetting(MD[npMD.getValue()]);
             }
         });
@@ -207,33 +208,43 @@ public class DialAddTimePicker extends Dialog {
         npEndHour = (NumberPicker) findViewById(R.id.npEndHour);
         npEndMin = (NumberPicker) findViewById(R.id.npEndMin);
     }
-    private void weekSetting(int start, int end){
-        TimePos[] tp = new TimePos[end-start];
-        int j=0;
-        boolean overlap = false;
-        for(int i=start; i<end; i++){
-            tp[j] = TimePos.valueOf(Convert.getxyMerge(2*npMD.getValue()+1, Convert.HourOfDayToYth(i)));
-            if (tp[j].getPosState() != PosState.NO_PAINT) {
-                overlap = true;
+    private void weekSetting(int startHour, int startMin, int endHour, int endMin){
+        if(startHour!=endHour) {
+            if(endMin==0) endMin=60;
+            else ++endHour;
+            TimePos[] tp = new TimePos[endHour - startHour];
+            int j = 0;
+            for (int i = startHour; i < endHour; i++) {
+                tp[j] = TimePos.valueOf(Convert.getxyMerge(2 * npMD.getValue() + 1, Convert.HourOfDayToYth(i)));
+                ++j;
             }
-            ++j;
-        }
-        if(overlap){
-            Toast.makeText(context, context.getResources().getString(R.string.Overlap), Toast.LENGTH_SHORT).show();
-        }else {
-            for (int i = 0; i < tp.length; i++) {
-                tp[i].setPosState(PosState.PAINT);
-                Common.getTempTimePos().add(tp[i].name());
+            int tpSize = tp.length;
+            for (int i = 0; i < tpSize; i++) {
+                if (i == 0) {
+                    tp[i].setMin(startMin, 60);
+                    tp[i].setPosState(PosState.ADJUST);
+                } else if (i == tpSize - 1) {
+                    tp[i].setMin(0, endMin);
+                    tp[i].setPosState(PosState.ADJUST);
+                } else {
+                    tp[i].setPosState(PosState.PAINT);
+                }
+                if(!Common.getTempTimePos().contains(tp[i].name()))
+                    Common.getTempTimePos().add(tp[i].name());
             }
-            SubMainActivity.getInstance()
-                    .updateListByAdd(MD[npMD.getValue()],
-                            String.valueOf(npStartHour.getValue()),
-                            Convert.IntToString(npStartMin.getValue()),
-                            String.valueOf(npEndHour.getValue()),
-                            Convert.IntToString(npEndMin.getValue()),
-                            2 * npMD.getValue() + 1);
-            cancel();
+        }else{
+            TimePos tp = TimePos.valueOf(Convert.getxyMerge(2 * npMD.getValue() + 1, Convert.HourOfDayToYth(startHour)));
+            tp.setMin(startMin, endMin);
+            tp.setPosState(PosState.ADJUST);
         }
+        SubMainActivity.getInstance()
+                .updateListByAdd(MD[npMD.getValue()],
+                        String.valueOf(npStartHour.getValue()),
+                        Convert.IntToString(npStartMin.getValue()),
+                        String.valueOf(npEndHour.getValue()),
+                        Convert.IntToString(npEndMin.getValue()),
+                        2 * npMD.getValue() + 1);
+        cancel();
     }
     private void monthSetting(String day) {
         String[] tmp = day.split("/");
@@ -244,6 +255,7 @@ public class DialAddTimePicker extends Dialog {
         DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
         if (DOMP.getPosState() == DayOfMonthPosState.NO_PAINT) {
             DOMP.setPosState(DayOfMonthPosState.PAINT);
+            if(!Common.getTempTimePos().contains(DOMP.name()))
             Common.getTempTimePos().add(DOMP.name());
             SubMainActivity.getInstance()
                     .updateListByAdd(MD[npMD.getValue()],

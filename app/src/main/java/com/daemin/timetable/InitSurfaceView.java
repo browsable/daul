@@ -10,6 +10,7 @@ import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.SerialNumberGenerator;
 import com.daemin.enumclass.TimePos;
+import com.daemin.main.SubMainActivity;
 
 
 public class InitSurfaceView extends SurfaceView implements
@@ -107,6 +108,8 @@ public class InitSurfaceView extends SurfaceView implements
 							calXthYth(event);
 							if (xth > 0 && yth > 0 && yth < 30) {
 								initThread.getMoveXY(xth, yth);
+							}else{
+								SubMainActivity.getInstance().clearView();
 							}
 						}
 						break;
@@ -115,6 +118,8 @@ public class InitSurfaceView extends SurfaceView implements
 							calXthYth(event);
 							if (xth > 0 && yth > 0 && yth < 30) {
 								initThread.getActionUp();
+							}else{
+								SubMainActivity.getInstance().clearView();
 							}
 						}
 						break;
@@ -136,6 +141,8 @@ public class InitSurfaceView extends SurfaceView implements
 							calXthYth(event);
 							if (xth > 0 && yth > 0 && yth < 7) {
 								initThread.getMoveXY(xth, yth);
+							}else{
+								SubMainActivity.getInstance().clearView();
 							}
 						}
 						break;
@@ -144,6 +151,8 @@ public class InitSurfaceView extends SurfaceView implements
 							calXthYth(event);
 							if (xth > 0 && yth > 0 && yth < 7) {
 								initThread.getActionUp();
+							}else{
+								SubMainActivity.getInstance().clearView();
 							}
 						}
 						break;

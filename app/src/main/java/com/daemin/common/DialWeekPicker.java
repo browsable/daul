@@ -26,17 +26,16 @@ public class DialWeekPicker extends Dialog {
     private TextView tvDialEndTime;
     private Button btDialCancel;
     private Button btDialSetting;
-    private String xth, startHour, endHour;
+    private String xth, startHour, startMin, endHour, endMin;
     private NumberPicker npStartMin, npEndMin;
     private int position;
-    String[] MD;
-    public DialWeekPicker(Context context, String xth, String startHour, String endHour, String[] MD, int position) {
+    public DialWeekPicker(Context context, int position, String xth, String startHour,String startMin, String endHour, String endMin) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.xth = xth;
         this.startHour = startHour;
-        if(startHour.equals(endHour)) this.endHour = String.valueOf(Integer.parseInt(endHour)+1);
-        else this.endHour = endHour;
-        this.MD = MD;
+        this.startMin = startMin;
+        this.endHour = endHour;
+        this.endMin = endMin;
         this.position = position;
     }
 
@@ -53,7 +52,6 @@ public class DialWeekPicker extends Dialog {
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels * 2 / 3;
-        ;
         layoutParams.height = dm.heightPixels / 3;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
@@ -62,6 +60,7 @@ public class DialWeekPicker extends Dialog {
         tvDialEndTime.setText(endHour);
         npStartMin.setMaxValue(59);
         npStartMin.setMinValue(0);
+        npStartMin.setValue(Integer.parseInt(startMin));
         npStartMin.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int i) {
@@ -70,6 +69,7 @@ public class DialWeekPicker extends Dialog {
         });
         npEndMin.setMaxValue(59);
         npEndMin.setMinValue(0);
+        npEndMin.setValue(Integer.parseInt(endMin));
         npEndMin.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int i) {
@@ -114,7 +114,8 @@ public class DialWeekPicker extends Dialog {
 
     private void weekSetting(int xth, int startHour, int startMin, int endHour, int endMin) {
             if(startHour!=endHour) {
-                if (endMin != 0) ++endHour;
+                if(endMin==0) endMin=60;
+                else ++endHour;
                 TimePos[] tp = new TimePos[endHour - startHour];
                 int j = 0;
                 for (int i = startHour; i < endHour; i++) {
@@ -132,16 +133,16 @@ public class DialWeekPicker extends Dialog {
                     } else {
                         tp[i].setPosState(PosState.PAINT);
                     }
-                    Common.getTempTimePos().add(tp[i].name());
+                    if(!Common.getTempTimePos().contains(tp[i].name()))
+                        Common.getTempTimePos().add(tp[i].name());
                 }
             }else{
                 TimePos tp = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
-                tp.setMin(startMin,endMin);
+                tp.setMin(startMin, endMin);
                 tp.setPosState(PosState.ADJUST);
             }
             SubMainActivity.getInstance()
-                .updateListByDial(MD[(xth - 1) / 2],
-                        tvDailStartTime.getText().toString(),
+                .updateListByDial(tvDailStartTime.getText().toString(),
                         Convert.IntToString(npStartMin.getValue()),
                         tvDialEndTime.getText().toString(),
                         Convert.IntToString(npEndMin.getValue()),
