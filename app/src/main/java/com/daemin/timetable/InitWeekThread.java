@@ -125,14 +125,14 @@ public class InitWeekThread extends InitThread {
                     initScreen(dayOfWeek);
                     Common.checkTableStateIsNothing = true;
 
-                    for(String name: Common.getTempTimePos()){
+                    /*for(String name: Common.getTempTimePos()){
                         TimePos tp = TimePos.valueOf(name);
                         tp.drawTimePos(canvas, width, height);
-                    }
-                    /*// 사각형 그리기
+                    }*/
+                    // 사각형 그리기
                     for (TimePos ETP : TimePos.values()) {
                         ETP.drawTimePos(canvas, width, height);
-                    }*/
+                    }
                 }
             } catch (Exception e) {
 

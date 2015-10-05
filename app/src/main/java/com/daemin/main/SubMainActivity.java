@@ -137,95 +137,12 @@ public class SubMainActivity extends FragmentActivity {
 		//getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
 		setContentView(R.layout.activity_main);
-		if (User.USER.isSubjectDownloadState()) db = new DatabaseHandler(this);
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-		viewMode = MyPreferences.USERINFO.getPref().getString("viewMode","week");
-		DrawMode.CURRENT.setMode(0);
-		ibMenu = (ImageButton) findViewById(R.id.ibMenu);
-		ibBack = (ImageButton) findViewById(R.id.ibBack);
-		ibCalendar = (ImageButton) findViewById(R.id.ibCalendar);
-		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
-		llDialog = (LinearLayout) findViewById(R.id.llDialog);
-		llColor = (LinearLayout) findViewById(R.id.llColor);
-		llNormal = (LinearLayout) findViewById(R.id.llNormal);
-		llUniv = (LinearLayout) findViewById(R.id.llUniv);
-		llRecommend = (LinearLayout) findViewById(R.id.llRecommend);
-		llIncludeUniv = (LinearLayout) findViewById(R.id.llIncludeUniv);
-		llIncludeDep = (LinearLayout) findViewById(R.id.llIncludeDep);
-		llTitle = (LinearLayout) findViewById(R.id.llTitle);
-		rlArea = (RelativeLayout) findViewById(R.id.rlArea);
-		tvTitle = (TextView) findViewById(R.id.tvTitle);
-		tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
-		tvRecommendDummy = (TextView) findViewById(R.id.tvRecommendDummy);
-		btPlus = (Button) findViewById(R.id.btPlus);
-		btNormal = (Button) findViewById(R.id.btNormal);
-		btUniv = (Button) findViewById(R.id.btUniv);
-		btRecommend = (Button) findViewById(R.id.btRecommend);
-		btColor = (Button) findViewById(R.id.btColor);
-		btWriteArticle = (Button) findViewById(R.id.btWriteArticle);
-		ibfindSchedule = (ImageButton)findViewById(R.id.ibfindSchedule);
-		ibwriteSchedule = (ImageButton)findViewById(R.id.ibwriteSchedule);
-		ibareaSchedule = (ImageButton)findViewById(R.id.ibareaSchedule);
-		hlv = (HorizontalListView) findViewById(R.id.hlv);
-		hlvRecommend = (HorizontalListView) findViewById(R.id.hlvRecommend);
-		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-		mLayout.setTouchEnabled(true);
-		ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
-		ivProfile.setImageUrl(SAMPLE_IMAGE_URL,MyVolley.getImageLoader());
-		rlBar = (RelativeLayout) findViewById(R.id.rlBar);
-		switcher = (TextSwitcher) findViewById(R.id.switcher);
-		ViewGroup.LayoutParams params = llDialog.getLayoutParams();
-		DisplayMetrics dm = getResources().getDisplayMetrics();
-		params.height = dm.heightPixels/3 - 10;
-		llDialog.setLayoutParams(params);
-		flSurface = (FrameLayout) findViewById(R.id.flSurface);
-		frame_container = (FrameLayout) findViewById(R.id.frame_container);
-		params = flSurface.getLayoutParams();
-		params.height = dm.heightPixels * 7 / 8;
-		flSurface.setLayoutParams(params);
-		InitSurfaceView = new InitSurfaceView(this,viewMode);
-		flSurface.addView(InitSurfaceView);
-		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-				GravityCompat.START);
-		colorName = Common.MAIN_COLOR;
+		initUI();
+		if (savedInstanceState != null)
+			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
 		setTitle();
 		colorButtonSetting();
 		makeNormalList();
-
-		if (savedInstanceState != null)
-			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
-		mLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-			@Override
-			public void onPanelSlide(View panel, float slideOffset) {
-				btPlus.setVisibility(View.GONE);
-			}
-			@Override
-				public void onPanelExpanded(View panel) {
-			}
-			@Override
-			public void onPanelCollapsed(View panel) {
-				btPlus.setVisibility(View.VISIBLE);
-			}
-			@Override
-			public void onPanelAnchored(View panel) {
-			}
-			@Override
-			public void onPanelHidden(View panel) {
-
-			}
-		});
-
-		if(viewMode.equals("month")){
-			barText = CurrentTime.getTitleYearMonth(this);
-			btUniv.setVisibility(View.INVISIBLE);
-			btRecommend.setVisibility(View.INVISIBLE);
-			switcher.setText(barText);
-			tvTitleYear.setVisibility(View.GONE);
-		}
-		//Log.i("phone", User.USER.getPhoneNum());
-
-		backPressCloseHandler = new BackPressCloseHandler(this);
 	}
 	public void setTitle(){
 		tvTitleYear.setText(CurrentTime.getYear() + getString(R.string.year));
@@ -1150,6 +1067,93 @@ public class SubMainActivity extends FragmentActivity {
 		CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
 		indexForTitle = 0;
 		adapterFlag = false;
+	}
+
+	private void initUI(){
+		if (User.USER.isSubjectDownloadState()) db = new DatabaseHandler(this);
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		viewMode = MyPreferences.USERINFO.getPref().getString("viewMode","week");
+		DrawMode.CURRENT.setMode(0);
+		ibMenu = (ImageButton) findViewById(R.id.ibMenu);
+		ibBack = (ImageButton) findViewById(R.id.ibBack);
+		ibCalendar = (ImageButton) findViewById(R.id.ibCalendar);
+		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
+		llDialog = (LinearLayout) findViewById(R.id.llDialog);
+		llColor = (LinearLayout) findViewById(R.id.llColor);
+		llNormal = (LinearLayout) findViewById(R.id.llNormal);
+		llUniv = (LinearLayout) findViewById(R.id.llUniv);
+		llRecommend = (LinearLayout) findViewById(R.id.llRecommend);
+		llIncludeUniv = (LinearLayout) findViewById(R.id.llIncludeUniv);
+		llIncludeDep = (LinearLayout) findViewById(R.id.llIncludeDep);
+		llTitle = (LinearLayout) findViewById(R.id.llTitle);
+		rlArea = (RelativeLayout) findViewById(R.id.rlArea);
+		tvTitle = (TextView) findViewById(R.id.tvTitle);
+		tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
+		tvRecommendDummy = (TextView) findViewById(R.id.tvRecommendDummy);
+		btPlus = (Button) findViewById(R.id.btPlus);
+		btNormal = (Button) findViewById(R.id.btNormal);
+		btUniv = (Button) findViewById(R.id.btUniv);
+		btRecommend = (Button) findViewById(R.id.btRecommend);
+		btColor = (Button) findViewById(R.id.btColor);
+		btWriteArticle = (Button) findViewById(R.id.btWriteArticle);
+		ibfindSchedule = (ImageButton)findViewById(R.id.ibfindSchedule);
+		ibwriteSchedule = (ImageButton)findViewById(R.id.ibwriteSchedule);
+		ibareaSchedule = (ImageButton)findViewById(R.id.ibareaSchedule);
+		hlv = (HorizontalListView) findViewById(R.id.hlv);
+		hlvRecommend = (HorizontalListView) findViewById(R.id.hlvRecommend);
+		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+		mLayout.setTouchEnabled(true);
+		ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
+		ivProfile.setImageUrl(SAMPLE_IMAGE_URL,MyVolley.getImageLoader());
+		rlBar = (RelativeLayout) findViewById(R.id.rlBar);
+		switcher = (TextSwitcher) findViewById(R.id.switcher);
+		ViewGroup.LayoutParams params = llDialog.getLayoutParams();
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		params.height = dm.heightPixels/3 - 10;
+		llDialog.setLayoutParams(params);
+		flSurface = (FrameLayout) findViewById(R.id.flSurface);
+		frame_container = (FrameLayout) findViewById(R.id.frame_container);
+		params = flSurface.getLayoutParams();
+		params.height = dm.heightPixels * 7 / 8;
+		flSurface.setLayoutParams(params);
+		InitSurfaceView = new InitSurfaceView(this,viewMode);
+		flSurface.addView(InitSurfaceView);
+		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
+				GravityCompat.START);
+		colorName = Common.MAIN_COLOR;
+
+		mLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+			@Override
+			public void onPanelSlide(View panel, float slideOffset) {
+				btPlus.setVisibility(View.GONE);
+			}
+			@Override
+			public void onPanelExpanded(View panel) {
+			}
+			@Override
+			public void onPanelCollapsed(View panel) {
+				btPlus.setVisibility(View.VISIBLE);
+			}
+			@Override
+			public void onPanelAnchored(View panel) {
+			}
+			@Override
+			public void onPanelHidden(View panel) {
+
+			}
+		});
+
+		if(viewMode.equals("month")){
+			barText = CurrentTime.getTitleYearMonth(this);
+			btUniv.setVisibility(View.INVISIBLE);
+			btRecommend.setVisibility(View.INVISIBLE);
+			switcher.setText(barText);
+			tvTitleYear.setVisibility(View.GONE);
+		}
+		//Log.i("phone", User.USER.getPhoneNum());
+
+		backPressCloseHandler = new BackPressCloseHandler(this);
 	}
 
 }

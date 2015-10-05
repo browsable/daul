@@ -3,6 +3,7 @@ package com.daemin.common;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.View;
@@ -16,7 +17,10 @@ import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.timetable.R;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 
 public class Common {
@@ -123,5 +127,43 @@ public class Common {
 			}
 		}while(endValue > 0);
 		return sb.toString().substring(0, sb.length()-1);  // 마지막 "\n"를 제거
+	}
+
+	private static Hashtable<String, Typeface> fontCache = new Hashtable<String, Typeface>();
+	//폰트 사용 예시 title.setTypeface(Utils.getFont("nexa-bold.ttf", getApplicationContext()));
+	public static Typeface getFont(String name, Context context) {
+		Typeface tf = fontCache.get(name);
+		if(tf == null) {
+			try {
+				tf = Typeface.createFromAsset(context.getAssets(), name);
+			}
+			catch (Exception e) {
+				return null;
+			}
+			fontCache.put(name, tf);
+		}
+		return tf;
+	}
+
+	public static final String md5(final String password) {
+		try {
+
+			MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+			digest.update(password.getBytes());
+			byte messageDigest[] = digest.digest();
+
+			StringBuffer hexString = new StringBuffer();
+			for (int i = 0; i < messageDigest.length; i++) {
+				String h = Integer.toHexString(0xFF & messageDigest[i]);
+				while (h.length() < 2)
+					h = "0" + h;
+				hexString.append(h);
+			}
+			return hexString.toString();
+
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 }

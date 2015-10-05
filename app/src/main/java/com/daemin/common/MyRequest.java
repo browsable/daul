@@ -2,9 +2,11 @@ package com.daemin.common;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,7 +18,12 @@ import com.daemin.repository.GroupListFromServerRepository;
 import com.daemin.timetable.R;
 import com.navercorp.volleyextensions.request.Jackson2Request;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import timedao_group.GroupListFromServer;
 
@@ -66,5 +73,61 @@ public class MyRequest {
 
         });
         requestQueue.add(jackson2Request);
+    }
+
+    public static final String POST_TEST = "http://54.64.223.92/users/register";
+    private static String KEY_SUCCESS = "success";
+    public static void test(final Context context){
+        CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.POST, POST_TEST, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString(KEY_SUCCESS) != null) {
+                                int success = Integer.parseInt(response.getString(KEY_SUCCESS));
+                                if (success == 1) {
+                                    Toast.makeText(context, response.getString("message"), Toast.LENGTH_LONG).show();
+                                    /*Toast.makeText(context, response.getString("tag"), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, response.getString("username"), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, response.getString("email"), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, response.getString("password"), Toast.LENGTH_LONG).show();*/
+                                } else if (success == 0) {
+                                    Toast.makeText(context, "Invalid email or password..", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Response Error", error.toString());
+                Toast.makeText(context, "network error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("tag", "register");
+                params.put("email", "hernia@koreatech.ac.kr");
+                params.put("username", "daemin");
+                params.put("password", Common.md5("qlalfqjsgh"));
+                return params;
+            }
+
+        };
+        requestQueue.add(rq);
     }
 }

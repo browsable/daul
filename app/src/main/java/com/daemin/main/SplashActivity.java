@@ -23,7 +23,9 @@ public class SplashActivity extends Activity {
 			super.onCreate(savedInstanceState);
 			singleton = this;
 			setContentView(R.layout.activity_splash);
+			//git 소스 반영
 			initialize();
+			MyRequest.test(singleton);
 			if(Common.isOnline()) {
 				if (User.USER.isGroupListDownloadState()) {
 					Toast.makeText(this, "그룹리스트다운로드되있는상태", Toast.LENGTH_SHORT).show();
