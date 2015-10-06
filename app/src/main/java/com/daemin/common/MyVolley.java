@@ -49,7 +49,6 @@ public class MyVolley {
             throw new IllegalStateException("ImageLoader is not initialized.");
         return imageLoader;
     }
-
     private static ImageCache getDefaultImageCache(Context context) {
         return new UniversalLimitedAgeMemoryCache(new UniversalLruMemoryCache(
                 DEFAULT_CACHE_SIZE), DEFAULT_MAX_AGE);

@@ -1,7 +1,7 @@
 package com.daemin.main;
 
 import android.annotation.TargetApi;
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -66,7 +65,7 @@ import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.friend.FriendFragment;
-import com.daemin.repository.GroupListFromServerRepository;
+import com.daemin.map.MapActivity;
 import com.daemin.setting.SettingFragment;
 import com.daemin.timetable.InitMonthThread;
 import com.daemin.timetable.InitSurfaceView;
@@ -240,25 +239,28 @@ public class SubMainActivity extends FragmentActivity {
 	}
 	public void updateWeekList(){
 		normalList.clear();
-		int startYth=0,startMin=0,endYth=0,endMin=0,xth;
+		int startYth=0,startMin=0,endYth=0,endMin=0,tmpXth=0;
 		int tmpStartYth=0, tmpStartMin=0, tmpEndYth=0, tmpEndMin=0;
-		String YMD;
+		String YMD="";
 		for (TimePos ETP : TimePos.values()) {
 			if(ETP.getPosState()==PosState.PAINT||ETP.getPosState()==PosState.ADJUST){
-				xth = ETP.getXth();
+				if(tmpXth!=ETP.getXth()){
+					tmpXth = ETP.getXth();
+					YMD = InitSurfaceView.getInitThread().getMonthAndDay(tmpXth);
+					tmpStartYth=tmpStartMin=tmpEndYth=tmpEndMin=0;
+				}
 				if(tmpEndYth!=ETP.getYth()) {
 					tmpStartYth = startYth = ETP.getYth();
 					tmpStartMin = startMin = ETP.getStartMin();
 					tmpEndMin = endMin = ETP.getEndMin();
 					if(endMin!=0) tmpEndYth = endYth = startYth;
 					else tmpEndYth = endYth = startYth + 2;
-					YMD = InitSurfaceView.getInitThread().getMonthAndDay(xth);
 					normalList.add(new BottomNormalData(YMD,
 							Convert.YthToHourOfDay(startYth),
 							Convert.IntToString(startMin),
 							Convert.YthToHourOfDay(endYth),
 							Convert.IntToString(endMin),
-							xth
+							tmpXth
 					));
 				}else if(tmpEndYth== ETP.getYth()&&tmpEndMin==ETP.getStartMin()){ //
 					normalList.remove(normalList.size()-1);
@@ -267,13 +269,12 @@ public class SubMainActivity extends FragmentActivity {
 					tmpEndMin = endMin = ETP.getEndMin();
 					if(endMin!=0) tmpEndYth = endYth = ETP.getYth();
 					else tmpEndYth = endYth = ETP.getYth() + 2;
-					YMD = InitSurfaceView.getInitThread().getMonthAndDay(xth);
 					normalList.add(new BottomNormalData(YMD,
 							Convert.YthToHourOfDay(startYth),
 							Convert.IntToString(startMin),
 							Convert.YthToHourOfDay(endYth),
 							Convert.IntToString(endMin),
-							xth
+							tmpXth
 					));
 				}
 			}
@@ -571,7 +572,7 @@ public class SubMainActivity extends FragmentActivity {
 
 				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(1);
-				Common.stateFilter(Common.getTempTimePos(),viewMode);
+				Common.stateFilter(Common.getTempTimePos(), viewMode);
 				llNormal.setVisibility(View.GONE);
 				llUniv.setVisibility(View.VISIBLE);
 				llRecommend.setVisibility(View.GONE);
@@ -591,7 +592,9 @@ public class SubMainActivity extends FragmentActivity {
 				actvSelectUniv.setDropDownVerticalOffset(10);
 				btEnter = (Button) findViewById(R.id.btEnter);
 				btShowUniv = (Button) findViewById(R.id.btShowUniv);
-				actvSelectUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				btShowUniv.setVisibility(View.GONE);
+				btEnter.setVisibility(View.VISIBLE);
+				/*actvSelectUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 					public void onItemClick(AdapterView<?> parent, View v,
 											int position, long id) {
@@ -617,7 +620,7 @@ public class SubMainActivity extends FragmentActivity {
 										setupSubjectDatas();
 									} else {
 										Toast.makeText(SubMainActivity.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
-										DownloadSqlite(engName);
+										DownloadSqlite("koreatech");
 									}
 								} else {
 									if (User.USER.isSubjectDownloadState()) {
@@ -629,6 +632,27 @@ public class SubMainActivity extends FragmentActivity {
 								}
 							}
 						});
+					}
+				});*/
+				btEnter.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (Common.isOnline()) {
+							if (User.USER.isSubjectDownloadState()) {
+								Toast.makeText(SubMainActivity.this, "이미 다운로드된 상태이므로 과목셋팅만", Toast.LENGTH_SHORT).show();
+								setupSubjectDatas();
+							} else {
+								Toast.makeText(SubMainActivity.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
+								DownloadSqlite("koreatech");
+							}
+						} else {
+							if (User.USER.isSubjectDownloadState()) {
+								Toast.makeText(SubMainActivity.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
+								setupSubjectDatas();
+							} else {
+								Toast.makeText(SubMainActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+							}
+						}
 					}
 				});
 				btShowUniv.setOnClickListener(new View.OnClickListener() {
@@ -805,18 +829,13 @@ public class SubMainActivity extends FragmentActivity {
 				datp.show();
 
 				break;
+			case R.id.btPlace:
+				Intent i = new Intent(SubMainActivity.this, MapActivity.class);
+				startActivity(i);
+				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+				break;
 		}
 
-	}
-
-	public void onBackPressed() {
-		//super.onBackPressed();
-		if (mLayout != null &&
-				(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-			mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-		} else {
-			backPressCloseHandler.onBackPressed(BackKeyName);
-		}
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -979,14 +998,14 @@ public class SubMainActivity extends FragmentActivity {
 			public Void call() throws Exception {
 				int count;
 				try {
-					URL url = new URL("http://hernia.cafe24.com/android/db/"+univName+".sqlite");
+					URL url = new URL("http://hernia.cafe24.com/android/db/"+univName+"/subject.sqlite");
 					URLConnection conection = url.openConnection();
 					conection.connect();
 
 					// input stream to read file - with 8k buffer
 					createFolder();
 					InputStream input = new BufferedInputStream(url.openStream(), 8192);
-					OutputStream output = new FileOutputStream("/sdcard/.TimeDAO/"+univName+".sqlite");
+					OutputStream output = new FileOutputStream("/sdcard/.TimeDAO/subject.sqlite");
 
 					///data/data/com.daemin.timetable/databases
 					byte data[] = new byte[2048];
@@ -1050,6 +1069,15 @@ public class SubMainActivity extends FragmentActivity {
 			}else{
 			}
 		}catch(Exception e){
+		}
+	}
+	public void onBackPressed() {
+		//super.onBackPressed();
+		if (mLayout != null &&
+				(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+			mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+		} else {
+			backPressCloseHandler.onBackPressed(BackKeyName);
 		}
 	}
 	@Override

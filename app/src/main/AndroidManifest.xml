@@ -21,6 +21,15 @@
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <permission
+        android:name="com.webnautes.googlemaps.locationapi.maps.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.webnautes.googlemaps.locationapi.maps.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
     <application
         android:name="com.daemin.common.AppController"
@@ -51,6 +60,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name="com.daemin.map.MapActivity" />
         <activity android:name="com.daemin.community.github.GithubActivity" />
         <activity android:name="com.daemin.community.amazon.AmazonActivity" />
         <activity android:name="com.daemin.community.lib.DoubleTapZoomNetworkImageViewActivity" />
@@ -82,7 +92,10 @@
         <service
             android:name="com.daemin.widget.MyCustomWidget$UpdateService"
             android:enabled="true"></service>
+        <meta-data
 
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyD-Z1E0xalbR8VYjJ_W2xMzZwLUQU8tJCg" />
     </application>
 
 </manifest>

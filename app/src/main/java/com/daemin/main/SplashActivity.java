@@ -37,6 +37,7 @@ public class SplashActivity extends Activity {
 			else{
 				Toast.makeText(this, this.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
 			}
+			MyRequest.test(singleton);
 		}
 
 	

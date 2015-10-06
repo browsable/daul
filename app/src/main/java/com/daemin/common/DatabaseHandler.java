@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.daemin.data.SubjectData;
-import com.daemin.enumclass.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	SQLiteDatabase db;
 	private String filePath;
 	public DatabaseHandler(Context context) {
-		super(context, DATABASE_NAME+ User.USER.getEngUnivName()+".sqlite", null, DATABASE_VERSION);
+		//super(context, DATABASE_NAME+ User.USER.getEngUnivName()+".sqlite", null, DATABASE_VERSION);
+		super(context, DATABASE_NAME+"subject.sqlite", null, DATABASE_VERSION);
 	}
 	
 
