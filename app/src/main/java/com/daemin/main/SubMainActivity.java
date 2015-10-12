@@ -137,11 +137,22 @@ public class SubMainActivity extends FragmentActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
 		setContentView(R.layout.activity_main);
 		initUI();
-		if (savedInstanceState != null)
-			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
 		setTitle();
 		colorButtonSetting();
 		makeNormalList();
+		if (savedInstanceState != null)
+			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
+		if(viewMode.equals("month")){
+			barText = CurrentTime.getTitleYearMonth(this);
+			btUniv.setVisibility(View.INVISIBLE);
+			btRecommend.setVisibility(View.INVISIBLE);
+			switcher.setText(barText);
+			tvTitleYear.setVisibility(View.GONE);
+		}
+		//Log.i("phone", User.USER.getPhoneNum());
+
+		backPressCloseHandler = new BackPressCloseHandler(this);
+
 	}
 	public void setTitle(){
 		tvTitleYear.setText(CurrentTime.getYear() + getString(R.string.year));
@@ -1171,17 +1182,6 @@ public class SubMainActivity extends FragmentActivity {
 
 			}
 		});
-
-		if(viewMode.equals("month")){
-			barText = CurrentTime.getTitleYearMonth(this);
-			btUniv.setVisibility(View.INVISIBLE);
-			btRecommend.setVisibility(View.INVISIBLE);
-			switcher.setText(barText);
-			tvTitleYear.setVisibility(View.GONE);
-		}
-		//Log.i("phone", User.USER.getPhoneNum());
-
-		backPressCloseHandler = new BackPressCloseHandler(this);
 	}
 
 }

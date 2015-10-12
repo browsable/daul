@@ -60,4 +60,5 @@ dependencies {
     compile 'joda-time:joda-time:2.8.1'
     compile 'com.navercorp.pulltorefresh:library:3.2.0@aar'
     compile 'com.google.android.gms:play-services-maps:8.1.0'
+    compile 'com.google.android.gms:play-services-location:8.1.0'
 }
