@@ -91,11 +91,11 @@ public class SubMainActivity extends FragmentActivity {
 	InitSurfaceView InitSurfaceView;
 	DrawerLayout mDrawerLayout;
 	RoundedCornerNetworkImageView ivProfile;
-	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend,llTitle;
+	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep,llTitle;
 	ImageButton ibMenu, ibBack, ibCalendar, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
-	TextView tvTitle,tvTitleYear,tvRecommendDummy;
+	TextView tvTitle,tvTitleYear;
 	EditText etPlace;
-	Button btPlus,btNormal, btUniv, btRecommend, btColor, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
+	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
 	FrameLayout flSurface, frame_container;
 	RelativeLayout rlBar,rlArea;
 	Fragment mContent = null;
@@ -110,7 +110,7 @@ public class SubMainActivity extends FragmentActivity {
 	GradientDrawable gd;
 	Boolean adapterFlag=false;
 	static int indexForTitle=0;
-	private HorizontalListView hlv, hlvRecommend;
+	private HorizontalListView hlv;
 	DatabaseHandler db;
 	static SubMainActivity singleton;
 	public static SubMainActivity getInstance() {
@@ -147,7 +147,6 @@ public class SubMainActivity extends FragmentActivity {
 		if(viewMode.equals("month")){
 			barText = CurrentTime.getTitleYearMonth(this);
 			btUniv.setVisibility(View.INVISIBLE);
-			btRecommend.setVisibility(View.INVISIBLE);
 			switcher.setText(barText);
 			tvTitleYear.setVisibility(View.GONE);
 		}
@@ -443,12 +442,10 @@ public class SubMainActivity extends FragmentActivity {
 						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.GONE);
 						btUniv.setVisibility(View.INVISIBLE);
-						btRecommend.setVisibility(View.INVISIBLE);
 						DrawMode.CURRENT.setMode(0);
 						Common.stateFilter(Common.getTempTimePos(), viewMode);
 						llNormal.setVisibility(View.VISIBLE);
 						llUniv.setVisibility(View.GONE);
-						llRecommend.setVisibility(View.GONE);
 						btNormal.setTextColor(getResources().getColor(
 								R.color.white));
 						viewMode = "month";
@@ -463,11 +460,8 @@ public class SubMainActivity extends FragmentActivity {
 						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.VISIBLE);
 						btUniv.setVisibility(View.VISIBLE);
-						btRecommend.setVisibility(View.VISIBLE);
 						Common.stateFilter(Common.getTempTimePos(), viewMode);
 						btUniv.setTextColor(getResources().getColor(
-								R.color.gray));
-						btRecommend.setTextColor(getResources().getColor(
 								R.color.gray));
 						viewMode = "week";
 						InitSurfaceView.setMode(viewMode);
@@ -571,12 +565,9 @@ public class SubMainActivity extends FragmentActivity {
 				Common.stateFilter(Common.getTempTimePos(),viewMode);
 				llNormal.setVisibility(View.VISIBLE);
 				llUniv.setVisibility(View.GONE);
-				llRecommend.setVisibility(View.GONE);
 				btNormal.setTextColor(getResources().getColor(
 						R.color.white));
 				btUniv.setTextColor(getResources().getColor(
-						R.color.gray));
-				btRecommend.setTextColor(getResources().getColor(
 						R.color.gray));
 				break;
 			case R.id.btUniv:
@@ -588,13 +579,10 @@ public class SubMainActivity extends FragmentActivity {
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
 				llNormal.setVisibility(View.GONE);
 				llUniv.setVisibility(View.VISIBLE);
-				llRecommend.setVisibility(View.GONE);
 				btNormal.setTextColor(getResources().getColor(
 						R.color.gray));
 				btUniv.setTextColor(getResources().getColor(
 						R.color.white));
-				btRecommend.setTextColor(getResources().getColor(
-						R.color.gray));
 				ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.dropdown_search, MyRequest.getGroupListFomServer());
 				actvSelectUniv = (AutoCompleteTextView) findViewById(R.id.actvSelectUniv);
 				actvSelectUniv.requestFocus();
@@ -695,25 +683,6 @@ public class SubMainActivity extends FragmentActivity {
 					}
 				});
 				break;
-			case R.id.btRecommend:
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
-				//getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-				DrawMode.CURRENT.setMode(2);
-				hlvRecommend.setVisibility(View.GONE);
-				tvRecommendDummy.setVisibility(View.VISIBLE);
-				tvRecommendDummy.setText(getResources().getString(R.string.select_time));
-				Common.stateFilter(Common.getTempTimePos(),viewMode);
-				llNormal.setVisibility(View.GONE);
-				llUniv.setVisibility(View.GONE);
-				llRecommend.setVisibility(View.VISIBLE);
-				btNormal.setTextColor(getResources().getColor(
-						R.color.gray));
-				btUniv.setTextColor(getResources().getColor(
-						R.color.gray));
-				btRecommend.setTextColor(getResources().getColor(
-						R.color.white));
-				break;
 			case R.id.btColor:
 				if (!colorFlag) {
 					llColor.setVisibility(View.VISIBLE);
@@ -743,9 +712,6 @@ public class SubMainActivity extends FragmentActivity {
 						Common.stateFilter(Common.getTempTimePos(),viewMode);
 						DrawMode.CURRENT.setMode(3);
 						adapterFlag=false;
-						break;
-					case 2:
-						DrawMode.CURRENT.setMode(2);
 						break;
 				}
 				break;
@@ -965,43 +931,7 @@ public class SubMainActivity extends FragmentActivity {
 		});
 	}
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-	public void setupRecommendDatas(String time) {
-		if(User.USER.isSubjectDownloadState()) {
-			//if(db.equals(null)) db = new DatabaseHandler(context);
-			List<SubjectData> recommends = db.getRecommendSubjectDatas(time);
-			if(recommends.size()==0){
-				hlvRecommend.setVisibility(View.GONE);
-				tvRecommendDummy.setVisibility(View.VISIBLE);
-				tvRecommendDummy.setText(getResources().getString(R.string.nothing_schedule));
-			}else{
-				hlvRecommend.setVisibility(View.VISIBLE);
-				tvRecommendDummy.setVisibility(View.GONE);
-			}
-			if(!adapterFlag) {
-				adapter = new HorizontalListAdapter(this, recommends);
-				hlvRecommend.setAdapter(adapter);
-				hlvRecommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-						ArrayList<String> tempTimePos = new ArrayList<>();
-						Common.stateFilter(Common.getTempTimePos(),viewMode);
-						for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
-								.toString())) {
-							tempTimePos.add(timePos);
-							//TimePos.valueOf(timePos).setPosState(PosState.HALFANHOUR);
-						}
-						Common.setTempTimePos(tempTimePos);
-					}
-				});
-				adapterFlag=true;
-			}else{
-				adapter.notifyDataSetChanged();
-			}
-		}else{
-			Toast.makeText(SubMainActivity.this,"먼저 대학을 선택하세요", Toast.LENGTH_SHORT).show();
-		}
-	}
+
 
 	private String[] getTimeList(String time){
 		String[] timeList=null;
@@ -1015,7 +945,6 @@ public class SubMainActivity extends FragmentActivity {
 		}
 		return timeList;
 	}
-
 	public void DownloadSqlite(final String univName) {
 		// 비동기로 실행될 코드
 		Callable<Void> callable = new Callable<Void>() {
@@ -1136,7 +1065,6 @@ public class SubMainActivity extends FragmentActivity {
 		llColor = (LinearLayout) findViewById(R.id.llColor);
 		llNormal = (LinearLayout) findViewById(R.id.llNormal);
 		llUniv = (LinearLayout) findViewById(R.id.llUniv);
-		llRecommend = (LinearLayout) findViewById(R.id.llRecommend);
 		llIncludeUniv = (LinearLayout) findViewById(R.id.llIncludeUniv);
 		llIncludeDep = (LinearLayout) findViewById(R.id.llIncludeDep);
 		llTitle = (LinearLayout) findViewById(R.id.llTitle);
@@ -1144,18 +1072,15 @@ public class SubMainActivity extends FragmentActivity {
 		etPlace = (EditText) findViewById(R.id.etPlace);
 		tvTitle = (TextView) findViewById(R.id.tvTitle);
 		tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
-		tvRecommendDummy = (TextView) findViewById(R.id.tvRecommendDummy);
 		btPlus = (Button) findViewById(R.id.btPlus);
 		btNormal = (Button) findViewById(R.id.btNormal);
 		btUniv = (Button) findViewById(R.id.btUniv);
-		btRecommend = (Button) findViewById(R.id.btRecommend);
 		btColor = (Button) findViewById(R.id.btColor);
 		btWriteArticle = (Button) findViewById(R.id.btWriteArticle);
 		ibfindSchedule = (ImageButton)findViewById(R.id.ibfindSchedule);
 		ibwriteSchedule = (ImageButton)findViewById(R.id.ibwriteSchedule);
 		ibareaSchedule = (ImageButton)findViewById(R.id.ibareaSchedule);
 		hlv = (HorizontalListView) findViewById(R.id.hlv);
-		hlvRecommend = (HorizontalListView) findViewById(R.id.hlvRecommend);
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 		mLayout.setTouchEnabled(true);
 		ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);

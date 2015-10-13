@@ -112,26 +112,17 @@
             android:onClick="mOnClick"
             />
 
-        <Button
-            android:id="@+id/btRecommend"
+        <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/transparency"
-            android:text="추천"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/textsize_l"
-            android:textStyle="bold"
-            android:onClick="mOnClick"
             />
-        <Button
+        <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.8"
-            android:background="@color/transparency"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/textsize_l"
-            android:textStyle="bold" />
+            android:background="@color/transparency" />
 
 
         <Button
@@ -185,18 +176,6 @@
         <include
             layout="@layout/bottom_dialog_dep" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/llRecommend"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.8"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:visibility="gone" >
-        <include
-            layout="@layout/bottom_dialog_recommend"
-            />
     </LinearLayout>
 
 </LinearLayout>

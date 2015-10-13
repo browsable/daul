@@ -9,6 +9,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -55,7 +57,7 @@ public class MapActivity extends SampleActivityBase
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     private Location mLastLocation;
     private GoogleMap map;
-    private Button btSavePlace;
+    private Button btSavePlace,btClear,btSearch;
     // boolean flag to toggle periodic location updates
     private boolean mRequestingLocationUpdates = false;
     private LocationRequest mLocationRequest;
@@ -79,11 +81,28 @@ public class MapActivity extends SampleActivityBase
         mAutocompleteView = (AutoCompleteTextView)
                 findViewById(R.id.autocomplete_places);
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,
                 null);
         mAutocompleteView.setAdapter(mAdapter);
-
         initSetting();
+        mAutocompleteView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    btClear.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(mAutocompleteView.getText().toString().equals(""))
+                    btClear.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     /**
@@ -212,43 +231,6 @@ public class MapActivity extends SampleActivityBase
         stopLocationUpdates();
     }
 
-    /**
-     * Method to display the location on UI
-     * */
-    private void initSetting() {
-
-        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-                .getMap();
-        markerOptions = new MarkerOptions();
-        // Enable Zoom
-        map.getUiSettings().setZoomGesturesEnabled(true);
-        map.getUiSettings().setZoomControlsEnabled(true);
-        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon01));
-                findAddress(latLng.latitude, latLng.longitude);
-                markerOptions.position(latLng);
-                map.clear();
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
-                map.addMarker(markerOptions);
-            }
-        });
-        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        btSavePlace = (Button) findViewById(R.id.btSavePlace);
-        btSavePlace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String place = mAutocompleteView.getText().toString();
-                if(!place.equals(null)) {
-                    Intent intent = new Intent();
-                    intent.putExtra("place", place);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
-            }
-        });
-    }
     private void displayLocation() {
 
         // Get the button view
@@ -314,6 +296,7 @@ public class MapActivity extends SampleActivityBase
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
         map.addMarker(markerOptions);
     }
+    //역지오코딩
     private void findAddress(double lat, double lng) {
         StringBuffer bf = new StringBuffer();
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -367,4 +350,53 @@ public class MapActivity extends SampleActivityBase
         displayLocation();
     }
 
+    private void initSetting() {
+
+        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+                .getMap();
+        markerOptions = new MarkerOptions();
+        // Enable Zoom
+        map.getUiSettings().setZoomGesturesEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon01));
+                findAddress(latLng.latitude, latLng.longitude);
+                markerOptions.position(latLng);
+                map.clear();
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
+                map.addMarker(markerOptions);
+            }
+        });
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        btSavePlace = (Button) findViewById(R.id.btSavePlace);
+        btSavePlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String place = mAutocompleteView.getText().toString();
+                if (!place.equals(null)) {
+                    Intent intent = new Intent();
+                    intent.putExtra("place", place);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            }
+        });
+        btClear = (Button) findViewById(R.id.btClear);
+        btClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAutocompleteView.setText("");
+                btClear.setVisibility(View.INVISIBLE);
+            }
+        });
+        btSearch = (Button) findViewById(R.id.btSearch);
+        btSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
 }

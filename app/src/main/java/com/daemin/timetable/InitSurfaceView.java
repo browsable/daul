@@ -6,7 +6,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.SerialNumberGenerator;
 import com.daemin.enumclass.TimePos;
@@ -172,8 +171,8 @@ public class InitSurfaceView extends SurfaceView implements
 					//화면에 y축으로 32등분 중 몇번째에 위치하는지
 					yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * 32 / initThread.getHeight();
 					if (yth % 2 == 0) {
-						if (DrawMode.CURRENT.getMode() == 0 || DrawMode.CURRENT.getMode() == 3)
-							yth -= 1;
+						//if (DrawMode.CURRENT.getMode() == 0 || DrawMode.CURRENT.getMode() == 3)
+						yth -= 1;
 					}
 				break;
 			case "month":

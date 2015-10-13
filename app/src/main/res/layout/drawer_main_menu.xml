@@ -142,34 +142,6 @@
                     android:textStyle="bold" />
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/btSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginBottom="@dimen/margin_xl"
-                android:gravity="center_vertical"
-                android:onClick="mOnClick"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginRight="@dimen/margin_default"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_community" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:text="스케쥴검색"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/textsize_l"
-                    android:textStyle="bold" />
-            </LinearLayout>
-            <LinearLayout
                 android:id="@+id/btCommunity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

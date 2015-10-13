@@ -187,7 +187,7 @@ public class InitWeekThread extends InitThread {
                     Common.stateFilter(Common.getTempTimePos(), "week");
                 }
                 break;
-            case 2: //추천
+           /* case 2: //추천
                 if (ETP.getPosState() == PosState.NO_PAINT||ETP.getPosState() == PosState.ADJUST) {
                     Common.stateFilter(Common.getTempTimePos(), "week");
                     if (ryth == 0) ETP.setMin(30, 60);
@@ -199,7 +199,7 @@ public class InitWeekThread extends InitThread {
                 }else {
                     Common.stateFilter(Common.getTempTimePos(), "week");
                 }
-                break;
+                break;*/
         }
         return;
     }
