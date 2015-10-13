@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_maincolor_border"
+        android:padding="@dimen/margin_xxs"
+        android:layout_margin="@dimen/margin_xxs"
+        >
+    <AutoCompleteTextView
+        android:id="@+id/autocomplete_places"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:ems="10"
+        android:hint="@string/autocomplete_hint"
+        android:textSize="@dimen/textsize_xl"
+        android:layout_weight="1"
+        android:singleLine="true"
+        android:scrollbars="none"
+        android:paddingLeft="@dimen/margin_s"
+        android:background="@color/white"
+        />
+    <Button
+        android:id="@+id/btSavePlace"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/bt_accept"
+        />
+    </LinearLayout>
+</RelativeLayout>

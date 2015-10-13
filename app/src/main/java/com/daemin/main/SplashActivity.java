@@ -25,7 +25,6 @@ public class SplashActivity extends Activity {
 			setContentView(R.layout.activity_splash);
 			//git 소스 반영
 			initialize();
-			MyRequest.test(singleton);
 			if(Common.isOnline()) {
 				if (User.USER.isGroupListDownloadState()) {
 					Toast.makeText(this, "그룹리스트다운로드되있는상태", Toast.LENGTH_SHORT).show();
@@ -37,7 +36,7 @@ public class SplashActivity extends Activity {
 			else{
 				Toast.makeText(this, this.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
 			}
-			MyRequest.test(singleton);
+			//MyRequest.test(singleton);
 		}
 
 	

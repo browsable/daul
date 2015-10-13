@@ -1,44 +1,67 @@
 package com.daemin.map;
 
-import android.app.Activity;
+/**
+ * Created by hernia on 2015-10-12.
+ */
+
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.daemin.map.activities.SampleActivityBase;
+import com.daemin.map.logger.Log;
 import com.daemin.timetable.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
-public class MapActivity extends Activity implements ConnectionCallbacks,
-        OnConnectionFailedListener, LocationListener {
+public class MapActivity extends SampleActivityBase
+        implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks
+        , LocationListener {
 
-    // LogCat tag
-    private static final String TAG = MapActivity.class.getSimpleName();
-
+    /**
+     * GoogleApiClient wraps our service connection to Google Play Services and provides access
+     * to the user's sign in state as well as the Google's APIs.
+     */
+    protected GoogleApiClient mGoogleApiClient;
+    private PlaceAutocompleteAdapter mAdapter;
+    private AutoCompleteTextView mAutocompleteView;
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
-
     private Location mLastLocation;
     private GoogleMap map;
-    // Google client to interact with Google API
-    private GoogleApiClient mGoogleApiClient;
-
+    private Button btSavePlace;
     // boolean flag to toggle periodic location updates
     private boolean mRequestingLocationUpdates = false;
-
     private LocationRequest mLocationRequest;
-
+    private MarkerOptions markerOptions;
+    private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
+            new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
     // Location updates intervals in sec
     private static int UPDATE_INTERVAL = 10000; // 10 sec
     private static int FATEST_INTERVAL = 5000; // 5 sec
@@ -46,16 +69,115 @@ public class MapActivity extends Activity implements ConnectionCallbacks,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
 
-        // First we need to check availability of play services
+        setContentView(R.layout.activity_map);
         if (checkPlayServices()) {
             // Building the GoogleApi client
             buildGoogleApiClient();
             createLocationRequest();
         }
+        mAutocompleteView = (AutoCompleteTextView)
+                findViewById(R.id.autocomplete_places);
+        mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,
+                null);
+        mAutocompleteView.setAdapter(mAdapter);
 
+        initSetting();
     }
+
+    /**
+     * Listener that handles selections from suggestions from the AutoCompleteTextView that
+     * displays Place suggestions.
+     * Gets the place id of the selected item and issues a request to the Places Geo Data API
+     * to retrieve more details about the place.
+     *
+     * @see com.google.android.gms.location.places.GeoDataApi#getPlaceById(com.google.android.gms.common.api.GoogleApiClient,
+     * String...)
+     */
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            /*
+             Retrieve the place ID of the selected item from the Adapter.
+             The adapter stores each Place suggestion in a AutocompletePrediction from which we
+             read the place ID and title.
+              */
+            final AutocompletePrediction item = mAdapter.getItem(position);
+            final String placeId = item.getPlaceId();
+            final CharSequence primaryText = item.getPrimaryText(null);
+
+            Log.i(TAG, "Autocomplete item selected: " + primaryText);
+
+            /*
+             Issue a request to the Places Geo Data API to retrieve a Place object with additional
+             details about the place.
+              */
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClient, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+            Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
+        }
+    };
+
+    /**
+     * Callback for results from a Places Geo Data API query that shows the first place result in
+     * the details view on screen.
+     */
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                // Request did not complete successfully
+                Log.e(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
+                places.release();
+                return;
+            }
+            // Get the Place object from the buffer.
+            final Place place = places.get(0);
+
+            // Format details of the place for display and show it in a TextView.
+            /*mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
+                    place.getId(), place.getAddress(), place.getPhoneNumber(),
+                    place.getWebsiteUri()));*/
+
+            //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon01));
+            marking(place.getLatLng());
+            places.release();
+        }
+    };
+    @Override
+    public void onConnected(Bundle arg0) {
+
+        // Once connected with google api, get the location
+        displayLocation();
+
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int arg0) {
+        mGoogleApiClient.connect();
+    }
+
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        Log.e(TAG, "onConnectionFailed: ConnectionResult.getErrorCode() = "
+                + connectionResult.getErrorCode());
+
+        // TODO(Developer): Check error code and notify the user of error state and resolution.
+        Toast.makeText(this,
+                "Could not connect to Google API Client: Error " + connectionResult.getErrorCode(),
+                Toast.LENGTH_SHORT).show();
+    }
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -93,25 +215,53 @@ public class MapActivity extends Activity implements ConnectionCallbacks,
     /**
      * Method to display the location on UI
      * */
-    private void displayLocation() {
+    private void initSetting() {
+
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();
+        markerOptions = new MarkerOptions();
         // Enable Zoom
         map.getUiSettings().setZoomGesturesEnabled(true);
-        //set Map TYPE
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon01));
+                findAddress(latLng.latitude, latLng.longitude);
+                markerOptions.position(latLng);
+                map.clear();
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
+                map.addMarker(markerOptions);
+            }
+        });
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        //enable Current location Button
-        map.setMyLocationEnabled(true);
+        btSavePlace = (Button) findViewById(R.id.btSavePlace);
+        btSavePlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String place = mAutocompleteView.getText().toString();
+                if(!place.equals(null)) {
+                    Intent intent = new Intent();
+                    intent.putExtra("place", place);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            }
+        });
+    }
+    private void displayLocation() {
 
+        // Get the button view
+        // and next place it, for exemple, on bottom right (as Google Maps app)
         mLastLocation = LocationServices.FusedLocationApi
                 .getLastLocation(mGoogleApiClient);
 
         if (mLastLocation != null) {
             LatLng loc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15.0f));
-        } /*else {
+            marking(loc);
+        }else {
             Toast.makeText(this, "Couldn't get the location. Make sure location is enabled on the device", Toast.LENGTH_SHORT).show();
-        }*/
+        }
     }
     /**
      * Creating google api client object
@@ -120,7 +270,11 @@ public class MapActivity extends Activity implements ConnectionCallbacks,
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API).build();
+                .addApi(LocationServices.API)
+                .enableAutoManage(this, 0 /* clientId */, this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
+
     }
 
     /**
@@ -154,7 +308,38 @@ public class MapActivity extends Activity implements ConnectionCallbacks,
         }
         return true;
     }
+    private void marking(LatLng latLng){
+        markerOptions.position(latLng);
+        map.clear();
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
+        map.addMarker(markerOptions);
+    }
+    private void findAddress(double lat, double lng) {
+        StringBuffer bf = new StringBuffer();
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> address;
+        try {
+            if (geocoder != null) {
+                // 세번째 인수는 최대결과값인데 하나만 리턴받도록 설정했다
+                address = geocoder.getFromLocation(lat, lng, 1);
+                // 설정한 데이터로 주소가 리턴된 데이터가 있으면
+                if (address != null && address.size() > 0) {
+                    // 주소
+                    String currentLocationAddress = address.get(0).getAddressLine(0).toString();
+                    // 전송할 주소 데이터
+                    bf.append(currentLocationAddress);
+                }
+            }
 
+        } catch (IOException e) {
+            Toast.makeText(this, "주소취득 실패"
+                    , Toast.LENGTH_LONG).show();
+
+            e.printStackTrace();
+        }
+        mAutocompleteView.setText("");
+        mAutocompleteView.setText(bf.toString());
+    }
     /**
      * Starting the location updates
      * */
@@ -173,39 +358,11 @@ public class MapActivity extends Activity implements ConnectionCallbacks,
                 mGoogleApiClient, this);
     }
 
-    /**
-     * Google api callback methods
-     */
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = "
-                + result.getErrorCode());
-    }
-
-    @Override
-    public void onConnected(Bundle arg0) {
-
-        // Once connected with google api, get the location
-        displayLocation();
-
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int arg0) {
-        mGoogleApiClient.connect();
-    }
 
     @Override
     public void onLocationChanged(Location location) {
         // Assign the new location
         mLastLocation = location;
-
-        Toast.makeText(getApplicationContext(), "Location changed!",
-                Toast.LENGTH_SHORT).show();
-
         // Displaying the new location on UI
         displayLocation();
     }

@@ -81,4 +81,8 @@
     <string name="list_item_02">5km</string>
     <string name="list_item_03">10km</string>
 
+
+
+    <string name="autocomplete_hint">Enter place name or address</string>
+
 </resources>

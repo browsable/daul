@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -93,6 +94,7 @@ public class SubMainActivity extends FragmentActivity {
 	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep, llRecommend,llTitle;
 	ImageButton ibMenu, ibBack, ibCalendar, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
 	TextView tvTitle,tvTitleYear,tvRecommendDummy;
+	EditText etPlace;
 	Button btPlus,btNormal, btUniv, btRecommend, btColor, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
 	FrameLayout flSurface, frame_container;
 	RelativeLayout rlBar,rlArea;
@@ -207,7 +209,7 @@ public class SubMainActivity extends FragmentActivity {
 						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
 						String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
 						String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-						removeWeek(Integer.parseInt(xth), Integer.parseInt(startHour), Integer.parseInt(endHour),Integer.parseInt(endMin));
+						removeWeek(Integer.parseInt(xth), Integer.parseInt(startHour), Integer.parseInt(endHour), Integer.parseInt(endMin));
 						break;
 					case "month":
 						String tvYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
@@ -842,13 +844,25 @@ public class SubMainActivity extends FragmentActivity {
 				break;
 			case R.id.btPlace:
 				Intent i = new Intent(SubMainActivity.this, MapActivity.class);
-				startActivity(i);
+				startActivityForResult(i, 0);
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
 		}
 
 	}
-
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode==RESULT_OK) {
+			switch (requestCode) {
+				case 0: //MapActivity
+					String place = data.getStringExtra("place");
+					etPlace.setText(place);
+					break;
+				default:
+					break;
+			}
+		}//else if(resultCode==RESULT_CANCELED
+	}
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private void setupSubjectDatas() {
 		llIncludeDep.setVisibility(View.VISIBLE);
@@ -1127,6 +1141,7 @@ public class SubMainActivity extends FragmentActivity {
 		llIncludeDep = (LinearLayout) findViewById(R.id.llIncludeDep);
 		llTitle = (LinearLayout) findViewById(R.id.llTitle);
 		rlArea = (RelativeLayout) findViewById(R.id.rlArea);
+		etPlace = (EditText) findViewById(R.id.etPlace);
 		tvTitle = (TextView) findViewById(R.id.tvTitle);
 		tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
 		tvRecommendDummy = (TextView) findViewById(R.id.tvRecommendDummy);

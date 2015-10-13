@@ -11,7 +11,7 @@
         android:textSize="@dimen/textsize_xxl"
         android:text="@string/tvDailTitle"
         android:textStyle="bold"
-        android:layout_weight="2"/>
+        android:layout_weight="1.9"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
