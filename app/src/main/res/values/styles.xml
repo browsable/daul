@@ -3,8 +3,6 @@
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-
-
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
@@ -14,4 +12,16 @@
 
         -->
     </style>
+    <style name="spinnerItemStyle" parent="android:Widget.Holo.TextView.SpinnerItem">
+        <item name="android:textSize">@dimen/textsize_l</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textSize">@dimen/textsize_l</item>
+        <item name="android:textColor">@color/dimgray</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

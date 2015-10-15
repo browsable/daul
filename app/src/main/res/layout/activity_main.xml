@@ -139,17 +139,16 @@
                 android:src="@drawable/ic_area_write"
                 />
         </RelativeLayout>
-        <ImageButton
-            android:id="@+id/ibCalendar"
-            android:layout_width="46dp"
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:layout_marginRight="@dimen/margin_xs"
             android:background="@color/transparency"
-            android:padding="@dimen/margin_s"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_action_event"
-            android:onClick="mOnClick"
+            android:spinnerMode="dropdown"
+            android:dropDownVerticalOffset="0.3dp"
             />
     </RelativeLayout>
 

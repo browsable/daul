@@ -39,6 +39,10 @@
         <item>@string/list_item_02</item>
         <item>@string/list_item_03</item>
     </string-array>
-
+    <string-array name="wdm">
+        <item>주</item>
+        <item>일</item>
+        <item>월</item>
+    </string-array>
 
 </resources>

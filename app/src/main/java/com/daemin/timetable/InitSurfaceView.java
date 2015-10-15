@@ -21,19 +21,19 @@ public class InitSurfaceView extends SurfaceView implements
 	Context context;
 	private int xth, yth;
 	private boolean outOfTouchArea;
-	private String mode;
+	private int mode;
 
-	public InitSurfaceView(Context context, String mode) {
+	public InitSurfaceView(Context context, int mode) {
 		super(context);
 		this.context = context;
 		this.mode = mode;
 		holder = getHolder();
 		holder.addCallback(this);
 		switch (mode){
-			case "week":
+			case 0:
 				initThread = new InitWeekThread(holder, context);
 				break;
-			case "month":
+			case 2:
 				initThread = new InitMonthThread(holder, context);
 				break;
 		}
@@ -42,17 +42,17 @@ public class InitSurfaceView extends SurfaceView implements
 		return initThread;
 	}
 	//week or month mode
-	public void setMode(String mode) {
+	public void setMode(int mode) {
 		this.mode = mode;
 	}
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		if (!initThread.isAlive()) {
 			switch (mode){
-				case "week":
+				case 0:
 					initThread = new InitWeekThread(holder, context);
 					break;
-				case "month":
+				case 2:
 					initThread = new InitMonthThread(holder, context);
 					break;
 			}
@@ -91,7 +91,7 @@ public class InitSurfaceView extends SurfaceView implements
 	@SuppressLint({ "ClickableViewAccessibility", "DefaultLocale" })
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (mode) {
-			case "week":
+			case 0:
 				switch (event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
 						calXthYth(event);
@@ -124,7 +124,7 @@ public class InitSurfaceView extends SurfaceView implements
 						break;
 				}
 				break;
-			case "month":
+			case 2:
 				switch (event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
 						calXthYth(event);
@@ -162,7 +162,7 @@ public class InitSurfaceView extends SurfaceView implements
 	}
 	public void calXthYth(MotionEvent event) {
 		switch (mode) {
-			case "week":
+			case 0:
 					//화면에 x축으로 15등분 중 몇번째에 위치하는지
 					xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 15 / initThread.getWidth();
 					if (xth % 2 == 0) {
@@ -175,7 +175,7 @@ public class InitSurfaceView extends SurfaceView implements
 						yth -= 1;
 					}
 				break;
-			case "month":
+			case 2:
 				//화면에 x축으로 7등분 중 몇번째에 위치하는지
 				xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 7 / initThread.getWidth()+1;
 				//화면에 y축으로 6등분 중 몇번째에 위치하는지

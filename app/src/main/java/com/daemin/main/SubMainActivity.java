@@ -33,6 +33,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,7 +93,7 @@ public class SubMainActivity extends FragmentActivity {
 	DrawerLayout mDrawerLayout;
 	RoundedCornerNetworkImageView ivProfile;
 	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep,llTitle;
-	ImageButton ibMenu, ibBack, ibCalendar, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
+	ImageButton ibMenu, ibBack, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
 	TextView tvTitle,tvTitleYear;
 	EditText etPlace;
 	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
@@ -101,7 +102,7 @@ public class SubMainActivity extends FragmentActivity {
 	Fragment mContent = null;
 	Boolean surfaceFlag = false, colorFlag = false;
 	BackPressCloseHandler backPressCloseHandler;
-	String BackKeyName="",colorName,korName,engName,viewMode,barText;
+	String BackKeyName="",colorName,korName,engName,barText;
 	HorizontalListAdapter adapter;
 	AutoCompleteTextView actvSelectUniv,actvSelectDep, actvSelectGrade;
 	Boolean clickFlag1=false;
@@ -110,6 +111,7 @@ public class SubMainActivity extends FragmentActivity {
 	GradientDrawable gd;
 	Boolean adapterFlag=false;
 	static int indexForTitle=0;
+	int viewMode;
 	private HorizontalListView hlv;
 	DatabaseHandler db;
 	static SubMainActivity singleton;
@@ -124,7 +126,8 @@ public class SubMainActivity extends FragmentActivity {
 	public void setBackKeyName(String backKeyName) {
 		BackKeyName = backKeyName;
 	}
-
+	Spinner spinner;
+	ArrayAdapter<CharSequence> spinnerAdapter;
 	TextSwitcher switcher;
 	//bottom drawer
 	private SlidingUpPanelLayout mLayout;
@@ -144,7 +147,7 @@ public class SubMainActivity extends FragmentActivity {
 		makeNormalList();
 		if (savedInstanceState != null)
 			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
-		if(viewMode.equals("month")){
+		if(viewMode == 2){
 			barText = CurrentTime.getTitleYearMonth(this);
 			btUniv.setVisibility(View.INVISIBLE);
 			switcher.setText(barText);
@@ -183,7 +186,7 @@ public class SubMainActivity extends FragmentActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				switch (viewMode) {
-					case "week":
+					case 0:
 						String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
 						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
 						String startMin = ((TextView) view.findViewById(R.id.tvStartMin)).getText().toString();
@@ -192,7 +195,7 @@ public class SubMainActivity extends FragmentActivity {
 						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this, position, xth, startHour, startMin, endHour, endMin);
 						dwp.show();
 						break;
-					case "month":
+					case 2:
 						DialMonthPicker dmp = new DialMonthPicker(SubMainActivity.this);
 						dmp.show();
 						break;
@@ -203,14 +206,14 @@ public class SubMainActivity extends FragmentActivity {
 			public boolean onItemLongClick(AdapterView<?> arg0, View view,
 										   int pos, long id) {
 				switch (viewMode) {
-					case "week":
+					case 0:
 						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
 						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
 						String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
 						String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
 						removeWeek(Integer.parseInt(xth), Integer.parseInt(startHour), Integer.parseInt(endHour), Integer.parseInt(endMin));
 						break;
-					case "month":
+					case 2:
 						String tvYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
 						String xth2 = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
 						removeMonth(Integer.parseInt(xth2), Integer.parseInt(tvYMD.split("/")[1]));
@@ -221,6 +224,25 @@ public class SubMainActivity extends FragmentActivity {
 				return true;
 			}
 		});
+	}
+	//3:9:00:10:00 , 3:9:00:11:00 3:9:00:11:30
+	public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin){
+		if(endMin!=0) ++endHour;
+		else endMin=60;
+
+		TimePos[] tp = new TimePos[endHour - startHour];
+		int j = 0;
+		for (int i = startHour; i < endHour; i++) {
+			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+			if (tp[j].getPosState() == PosState.NO_PAINT) {
+				if(i==startHour && startMin!=0) tp[j].setMin(startMin, 60);
+				if(i==endHour-1) tp[j].setMin(0, endMin);
+				tp[j].setPosState(PosState.ADJUST);
+				Common.getTempTimePos().add(tp[j].name());
+				Log.d("hi",tp[j].name());
+			}
+			++j;
+		}
 	}
 	public void removeWeek(int xth, int startHour, int endHour, int endMin){
 		if(startHour!=endHour) {
@@ -428,49 +450,6 @@ public class SubMainActivity extends FragmentActivity {
 						mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				}
 				break;
-			case R.id.ibCalendar:
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
-				llTitle.setVisibility(View.VISIBLE);
-				frame_container.setVisibility(View.GONE);
-				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-				switch(viewMode){
-					case "week":
-						//ibCalendar.setBackgroundResource(R.drawable.ic_month);
-						indexForTitle = 0;
-						barText = CurrentTime.getTitleYearMonth(this);
-						switcher.setText(barText);
-						tvTitleYear.setVisibility(View.GONE);
-						btUniv.setVisibility(View.INVISIBLE);
-						DrawMode.CURRENT.setMode(0);
-						Common.stateFilter(Common.getTempTimePos(), viewMode);
-						llNormal.setVisibility(View.VISIBLE);
-						llUniv.setVisibility(View.GONE);
-						btNormal.setTextColor(getResources().getColor(
-								R.color.white));
-						viewMode = "month";
-						InitSurfaceView.setMode(viewMode);
-						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
-						break;
-					case "month":
-						indexForTitle = 0;
-						//ibCalendar.setBackgroundResource(R.drawable.ic_week);
-						barText = CurrentTime.getTitleMonthWeek(this);
-						switcher.setText("");
-						switcher.setText(barText);
-						tvTitleYear.setVisibility(View.VISIBLE);
-						btUniv.setVisibility(View.VISIBLE);
-						Common.stateFilter(Common.getTempTimePos(), viewMode);
-						btUniv.setTextColor(getResources().getColor(
-								R.color.gray));
-						viewMode = "week";
-						InitSurfaceView.setMode(viewMode);
-						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
-						break;
-				}
-				surfaceFlag = false;
-				BackKeyName = "";
-				break;
 			case R.id.btTimetable:
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
@@ -478,7 +457,6 @@ public class SubMainActivity extends FragmentActivity {
 				llTitle.setVisibility(View.VISIBLE);
 				tvTitle.setVisibility(View.GONE);
 				btPlus.setVisibility(View.VISIBLE);
-				ibCalendar.setVisibility(View.VISIBLE);
 				mLayout.setVisibility(View.VISIBLE);
 				mLayout.setTouchEnabled(true);
 				changeFragment(TimetableFragment.class, "", R.color.maincolor);
@@ -497,7 +475,6 @@ public class SubMainActivity extends FragmentActivity {
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
-				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
@@ -515,7 +492,6 @@ public class SubMainActivity extends FragmentActivity {
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
-				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
@@ -531,7 +507,6 @@ public class SubMainActivity extends FragmentActivity {
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
-				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				flSurface.setVisibility(View.GONE);
@@ -547,7 +522,6 @@ public class SubMainActivity extends FragmentActivity {
 				llTitle.setVisibility(View.GONE);
 				tvTitle.setVisibility(View.VISIBLE);
 				btPlus.setVisibility(View.GONE);
-				ibCalendar.setVisibility(View.GONE);
 				mLayout.setTouchEnabled(false);
 				flSurface.setVisibility(View.GONE);
 				frame_container.setVisibility(View.VISIBLE);
@@ -720,7 +694,7 @@ public class SubMainActivity extends FragmentActivity {
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
 				switch(viewMode) {
-					case "week":
+					case 0:
 						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
 						--indexForTitle;
 						if (indexForTitle < 0) {
@@ -735,7 +709,7 @@ public class SubMainActivity extends FragmentActivity {
 							iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
 						}
 						break;
-					case "month":
+					case 2:
 						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
 						--indexForTitle;
 						if (indexForTitle < 0) {
@@ -759,7 +733,7 @@ public class SubMainActivity extends FragmentActivity {
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
 				switch(viewMode) {
-					case "week":
+					case 0:
 						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
 						++indexForTitle;
 						if (indexForTitle < 0) {
@@ -774,7 +748,7 @@ public class SubMainActivity extends FragmentActivity {
 							iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
 						}
 						break;
-					case "month":
+					case 2:
 						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
 						++indexForTitle;
 						if (indexForTitle < 0) {
@@ -796,11 +770,11 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btNew:
 				DialAddTimePicker datp = null;
 				switch(viewMode) {
-					case "week":
+					case 0:
 						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
 						datp = new DialAddTimePicker(SubMainActivity.this, iw.getAllMonthAndDay());
 						break;
-					case "month":
+					case 2:
 						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
 						datp = new DialAddTimePicker(SubMainActivity.this, im.getMonthData(),im.getDayOfWeekOfLastMonth());
 						break;
@@ -812,6 +786,21 @@ public class SubMainActivity extends FragmentActivity {
 				Intent i = new Intent(SubMainActivity.this, MapActivity.class);
 				startActivityForResult(i, 0);
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+				break;
+			case R.id.btShare:
+				InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
+				datp = new DialAddTimePicker(SubMainActivity.this, iw.getAllMonthAndDay());
+				datp.show();
+				break;
+			case R.id.btAlarm:
+				InitWeekThread iws = (InitWeekThread) InitSurfaceView.getInitThread();
+				datp = new DialAddTimePicker(SubMainActivity.this, iws.getAllMonthAndDay());
+				datp.show();
+				break;
+			case R.id.btRepeat:
+				InitWeekThread iwss = (InitWeekThread) InitSurfaceView.getInitThread();
+				datp = new DialAddTimePicker(SubMainActivity.this, iwss.getAllMonthAndDay());
+				datp.show();
 				break;
 		}
 
@@ -840,15 +829,17 @@ public class SubMainActivity extends FragmentActivity {
 		hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-				ArrayList<String> tempTimePos = new ArrayList<>();
-				Common.stateFilter(Common.getTempTimePos(),viewMode);
+				String[] temps = null;
+				Common.stateFilter(Common.getTempTimePos(), viewMode);
 				for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
 						.toString())) {
-					tempTimePos.add(timePos);
-					//TimePos.valueOf(timePos).setPosState(PosState.HALFANHOUR);
+					temps = timePos.split(":");
+					addWeek(Integer.parseInt(temps[0])
+							,Integer.parseInt(temps[1])
+							,Integer.parseInt(temps[2])
+							,Integer.parseInt(temps[3])
+							,Integer.parseInt(temps[4]));
 				}
-				Common.setTempTimePos(tempTimePos);
 			}
 		});
 		btShowDep = (Button) findViewById(R.id.btShowDep);
@@ -930,11 +921,8 @@ public class SubMainActivity extends FragmentActivity {
 			}
 		});
 	}
-
-
-
 	private String[] getTimeList(String time){
-		String[] timeList=null;
+		String[] timeList=null; //요일 인덱스와 이벤트에 따른 시간(시작~끝)으로 자름, 예)3:9:00:10:00/3:14:00:15:00을 분리
 		try {
 			if(!time.equals(null))
 				timeList = time.split("/");
@@ -1039,10 +1027,10 @@ public class SubMainActivity extends FragmentActivity {
 		super.onDestroy();
 		//appcontroller에서 앱 실행시 초기에 불러오게될 정보를 저장함
 		SharedPreferences.Editor editor = MyPreferences.USERINFO.getEditor();
-		editor.putBoolean("GroupListDownloadState",User.USER.isGroupListDownloadState());
+		editor.putBoolean("GroupListDownloadState", User.USER.isGroupListDownloadState());
 		editor.putBoolean("SubjectDownloadState", User.USER.isSubjectDownloadState());
 		editor.putString("EngUnivName", User.USER.getEngUnivName());
-		editor.putString("viewMode", viewMode);
+		editor.putInt("viewMode", viewMode);
 		editor.commit();
 		Common.setLlIncludeDepIn(false);
 		Common.stateFilter(Common.getTempTimePos(), viewMode);
@@ -1055,11 +1043,10 @@ public class SubMainActivity extends FragmentActivity {
 		if (User.USER.isSubjectDownloadState()) db = new DatabaseHandler(this);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-		viewMode = MyPreferences.USERINFO.getPref().getString("viewMode","week");
+		viewMode = MyPreferences.USERINFO.getPref().getInt("viewMode",0);
 		DrawMode.CURRENT.setMode(0);
 		ibMenu = (ImageButton) findViewById(R.id.ibMenu);
 		ibBack = (ImageButton) findViewById(R.id.ibBack);
-		ibCalendar = (ImageButton) findViewById(R.id.ibCalendar);
 		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
 		llDialog = (LinearLayout) findViewById(R.id.llDialog);
 		llColor = (LinearLayout) findViewById(R.id.llColor);
@@ -1101,6 +1088,71 @@ public class SubMainActivity extends FragmentActivity {
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
 		colorName = Common.MAIN_COLOR;
+		spinner = (Spinner) findViewById(R.id.spinner);
+
+		// Create an ArrayAdapter using the string array and a default spinner
+		spinnerAdapter = ArrayAdapter
+				.createFromResource(this, R.array.wdm,
+						R.layout.simple_spinner_item);
+
+		// Specify the layout to use when the list of choices appears
+		spinnerAdapter
+				.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+		// Apply the adapter to the spinner
+		spinner.setAdapter(spinnerAdapter);
+		spinner.setSelection(viewMode);
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+									   int position, long id) {
+				normalList.clear();
+				normalAdapter.notifyDataSetChanged();
+				llTitle.setVisibility(View.VISIBLE);
+				frame_container.setVisibility(View.GONE);
+				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+				switch(position){
+					case 0: //주
+						indexForTitle = 0;
+						barText = CurrentTime.getTitleMonthWeek(SubMainActivity.this);
+						switcher.setText("");
+						switcher.setText(barText);
+						tvTitleYear.setVisibility(View.VISIBLE);
+						btUniv.setVisibility(View.VISIBLE);
+						Common.stateFilter(Common.getTempTimePos(), viewMode);
+						btUniv.setTextColor(getResources().getColor(
+								R.color.gray));
+						viewMode = 0;
+						InitSurfaceView.setMode(viewMode);
+						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
+						break;
+					case 1: // 일
+						break;
+					case 2: // 월
+						indexForTitle = 0;
+						barText = CurrentTime.getTitleYearMonth(SubMainActivity.this);
+						switcher.setText(barText);
+						tvTitleYear.setVisibility(View.GONE);
+						btUniv.setVisibility(View.INVISIBLE);
+						DrawMode.CURRENT.setMode(0);
+						Common.stateFilter(Common.getTempTimePos(), viewMode);
+						llNormal.setVisibility(View.VISIBLE);
+						llUniv.setVisibility(View.GONE);
+						btNormal.setTextColor(getResources().getColor(
+								R.color.white));
+						viewMode = 2;
+						InitSurfaceView.setMode(viewMode);
+						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
+						break;
+				}
+				surfaceFlag = false;
+				BackKeyName = "";
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}
+		});
 
 		mLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 			@Override

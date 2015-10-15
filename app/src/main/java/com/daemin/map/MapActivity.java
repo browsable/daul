@@ -296,6 +296,21 @@ public class MapActivity extends SampleActivityBase
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
         map.addMarker(markerOptions);
     }
+    //지오코딩
+    private void findGeoPoint(String address) {
+        Geocoder geocoder = new Geocoder(this);
+        Address addr;
+        try {
+            List<Address> listAddress = geocoder.getFromLocationName(address, 1);
+            if (listAddress.size() > 0) { // 주소값이 존재 하면
+                addr = listAddress.get(0); // Address형태로
+                marking(new LatLng(addr.getLatitude(),addr.getLongitude()));
+                //Log.d("Response", "주소로부터 취득한 위도 : " + lat + ", 경도 : " + lng);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     //역지오코딩
     private void findAddress(double lat, double lng) {
         StringBuffer bf = new StringBuffer();
@@ -395,7 +410,7 @@ public class MapActivity extends SampleActivityBase
         btSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                findGeoPoint(mAutocompleteView.getText().toString());
             }
         });
     }

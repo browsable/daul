@@ -184,7 +184,7 @@ public class InitWeekThread extends InitThread {
                 if (Common.checkTableStateIsNothing && Common.isLlIncludeDepIn()) {
                     Toast.makeText(context, "과목을 선택하세요", Toast.LENGTH_SHORT).show();
                 } else {
-                    Common.stateFilter(Common.getTempTimePos(), "week");
+                    Common.stateFilter(Common.getTempTimePos(), 0);
                 }
                 break;
            /* case 2: //추천

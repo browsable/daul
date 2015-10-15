@@ -68,10 +68,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SubjectData.setCredit(cursor.getString(3));
 				SubjectData.setClassnum(cursor.getString(4));
 				SubjectData.setLimitnum(cursor.getString(5));
+				SubjectData.setDep(cursor.getString(6));
 				SubjectData.setDep_grade(cursor.getString(7));
 				SubjectData.setDep_detail(cursor.getString(8));
-				SubjectData.setTime(cursor.getString(30));
-				SubjectData.setProf(cursor.getString(31));
+				SubjectData.setTime(cursor.getString(9));
+				SubjectData.setProf(cursor.getString(10));
 				SubjectDataList.add(SubjectData);
 			} while (cursor.moveToNext());
 		}

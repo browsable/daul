@@ -1,4 +1,4 @@
-package com.daemin.search;
+package com.daemin.searchtime;
 
 /**
  * Created by hernia on 2015-10-13.

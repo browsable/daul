@@ -67,16 +67,16 @@ public class Common {
 	public static void setTempTimePos(ArrayList<String> tempTimePos) {
 		Common.tempTimePos = tempTimePos;
 	}
-	public static void stateFilter(ArrayList<String> tempTimePos,String viewMode){
+	public static void stateFilter(ArrayList<String> tempTimePos,int viewMode){
 		if(tempTimePos!=null) {
 			switch(viewMode){
-				case "week":
+				case 0:
 					for(String t : tempTimePos){
 						TimePos.valueOf(t).setMin(0,60);
 						TimePos.valueOf(t).setPosState(PosState.NO_PAINT);
 					}
 					break;
-				case "month":
+				case 2:
 					for(String t : tempTimePos){
 						DayOfMonthPos.valueOf(t).setPosState(DayOfMonthPosState.NO_PAINT);
 					}
