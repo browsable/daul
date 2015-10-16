@@ -239,7 +239,6 @@ public class SubMainActivity extends FragmentActivity {
 				if(i==endHour-1) tp[j].setMin(0, endMin);
 				tp[j].setPosState(PosState.ADJUST);
 				Common.getTempTimePos().add(tp[j].name());
-				Log.d("hi",tp[j].name());
 			}
 			++j;
 		}
