@@ -4,7 +4,6 @@ package com.daemin.map;
  * Created by hernia on 2015-10-12.
  */
 
-import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -17,6 +16,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.daemin.event.SendPlaceEvent;
 import com.daemin.map.activities.SampleActivityBase;
 import com.daemin.map.logger.Log;
 import com.daemin.timetable.R;
@@ -42,6 +42,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import de.greenrobot.event.EventBus;
 
 public class MapActivity extends SampleActivityBase
         implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks
@@ -391,9 +393,7 @@ public class MapActivity extends SampleActivityBase
             public void onClick(View v) {
                 String place = mAutocompleteView.getText().toString();
                 if (!place.equals(null)) {
-                    Intent intent = new Intent();
-                    intent.putExtra("place", place);
-                    setResult(RESULT_OK, intent);
+                    EventBus.getDefault().post(new SendPlaceEvent(place));
                     finish();
                 }
             }

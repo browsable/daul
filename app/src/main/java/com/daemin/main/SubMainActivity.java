@@ -3,9 +3,11 @@ package com.daemin.main;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,8 +44,6 @@ import android.widget.ViewSwitcher;
 import com.daemin.adapter.BottomNormalListAdapter;
 import com.daemin.adapter.HorizontalListAdapter;
 import com.daemin.area.AreaFragment;
-import com.daemin.common.AsyncCallback;
-import com.daemin.common.AsyncExecutor;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
@@ -66,6 +66,7 @@ import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
+import com.daemin.event.SendPlaceEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.map.MapActivity;
 import com.daemin.setting.SettingFragment;
@@ -78,6 +79,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -85,7 +87,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
+
+import de.greenrobot.event.EventBus;
 
 public class SubMainActivity extends FragmentActivity {
 	private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
@@ -114,6 +117,7 @@ public class SubMainActivity extends FragmentActivity {
 	int viewMode;
 	private HorizontalListView hlv;
 	DatabaseHandler db;
+	Bitmap capture = null;
 	static SubMainActivity singleton;
 	public static SubMainActivity getInstance() {
 		return singleton;
@@ -138,6 +142,7 @@ public class SubMainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		singleton = this;
+		EventBus.getDefault().register(this);
 		//getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
 		setContentView(R.layout.activity_main);
@@ -333,10 +338,6 @@ public class SubMainActivity extends FragmentActivity {
 		normalList.clear();
 		normalAdapter.notifyDataSetChanged();
 		Common.stateFilter(Common.getTempTimePos(), viewMode);
-	}
-	public void updateListByAdd(String YMD, String startHour, String startMin, String endHour, String endMin, int xth) {
-		normalList.add(new BottomNormalData(YMD, startHour, startMin, endHour, endMin, xth));
-		normalAdapter.notifyDataSetChanged();
 	}
 	public void updateListByDial(String startHour, String startMin, String endHour, String endMin, int xth,int position) {
 		normalList.remove(position);
@@ -617,7 +618,10 @@ public class SubMainActivity extends FragmentActivity {
 								setupSubjectDatas();
 							} else {
 								Toast.makeText(SubMainActivity.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
-								DownloadSqlite("koreatech");
+
+								new DownloadFileFromURL().execute("koreatech");
+								//DownloadSqlite("koreatech");
+								//EventBus.getDefault().post(new DownloadSqliteEvent("koreatech"));
 							}
 						} else {
 							if (User.USER.isSubjectDownloadState()) {
@@ -804,19 +808,7 @@ public class SubMainActivity extends FragmentActivity {
 		}
 
 	}
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode==RESULT_OK) {
-			switch (requestCode) {
-				case 0: //MapActivity
-					String place = data.getStringExtra("place");
-					etPlace.setText(place);
-					break;
-				default:
-					break;
-			}
-		}//else if(resultCode==RESULT_CANCELED
-	}
+
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private void setupSubjectDatas() {
 		llIncludeDep.setVisibility(View.VISIBLE);
@@ -932,69 +924,62 @@ public class SubMainActivity extends FragmentActivity {
 		}
 		return timeList;
 	}
-	public void DownloadSqlite(final String univName) {
-		// 비동기로 실행될 코드
-		Callable<Void> callable = new Callable<Void>() {
-			@Override
-			public Void call() throws Exception {
-				int count;
-				try {
-					URL url = new URL("http://hernia.cafe24.com/android/db/"+univName+"/subject.sqlite");
-					URLConnection conection = url.openConnection();
-					conection.connect();
+	public void onBackPressed() {
+		//super.onBackPressed();
+		if (mLayout != null &&
+				(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+			mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+		} else {
+			backPressCloseHandler.onBackPressed(BackKeyName);
+		}
+	}
+	class DownloadFileFromURL extends AsyncTask<String, String, String> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+		@Override
+		protected String doInBackground(String ...univName) {
+			int count;
+			try {
+				URL url = new URL("http://hernia.cafe24.com/android/db/"+univName[0]+"/subject.sqlite");
+				URLConnection conection = url.openConnection();
+				conection.connect();
 
-					// input stream to read file - with 8k buffer
-					createFolder();
-					InputStream input = new BufferedInputStream(url.openStream(), 8192);
-					OutputStream output = new FileOutputStream("/sdcard/.TimeDAO/subject.sqlite");
+				// input stream to read file - with 8k buffer
+				createFolder();
+				InputStream input = new BufferedInputStream(url.openStream(), 8192);
+				OutputStream output = new FileOutputStream("/sdcard/.TimeDAO/subject.sqlite");
 
-					///data/data/com.daemin.timetable/databases
-					byte data[] = new byte[2048];
+				///data/data/com.daemin.timetable/databases
+				byte data[] = new byte[2048];
 
 
-					while ((count = input.read(data)) != -1) {
-						// writing data to file
-						output.write(data, 0, count);
-					}
-
-					// flushing output
-					output.flush();
-
-					// closing streams
-					output.close();
-					input.close();
-
-				} catch (Exception e) {
-					Log.e("Error: ", e.getMessage());
+				while ((count = input.read(data)) != -1) {
+					// writing data to file
+					output.write(data, 0, count);
 				}
 
-				return null;
+				// flushing output
+				output.flush();
+
+				// closing streams
+				output.close();
+				input.close();
+
+			} catch (Exception e) {
+				Log.e("Error: ", e.getMessage());
 			}
 
-		};
-
-		new AsyncExecutor<Void>()
-				.setCallable(callable)
-				.setCallback(callback)
-				.execute();
-	}
-
-	// 비동기로 실행된 결과를 받아 처리하는 코드
-	private AsyncCallback<Void> callback = new AsyncCallback<Void>() {
+			return null;
+		}
 		@Override
-		public void onResult(Void result) {
+		protected void onPostExecute(String param) {
 			User.USER.setSubjectDownloadState(true);
 			setupSubjectDatas();
 		}
 
-		@Override
-		public void exceptionOccured(Exception e) {
-		}
-
-		@Override
-		public void cancelled() {
-		}
-	};
+	}
 	public static void createFolder(){
 		try{
 			//check sdcard mount state
@@ -1012,14 +997,25 @@ public class SubMainActivity extends FragmentActivity {
 		}catch(Exception e){
 		}
 	}
-	public void onBackPressed() {
-		//super.onBackPressed();
-		if (mLayout != null &&
-				(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-			mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-		} else {
-			backPressCloseHandler.onBackPressed(BackKeyName);
-		}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		screenshot();
+		Intent intent = new Intent();
+		//intent.setAction(android.appwidget.action.APPWIDGET_UPDATE);
+		intent.setAction(Common.ACTION_UPDATE);
+		sendBroadcast(intent);
+	}
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		screenshot();
+		Intent intent = new Intent();
+		//intent.setAction(android.appwidget.action.APPWIDGET_UPDATE);
+		intent.setAction(Common.ACTION_UPDATE);
+		sendBroadcast(intent);
+
 	}
 	@Override
 	protected void onDestroy() {
@@ -1031,11 +1027,34 @@ public class SubMainActivity extends FragmentActivity {
 		editor.putString("EngUnivName", User.USER.getEngUnivName());
 		editor.putInt("viewMode", viewMode);
 		editor.commit();
+		EventBus.getDefault().unregister(this);
 		Common.setLlIncludeDepIn(false);
 		Common.stateFilter(Common.getTempTimePos(), viewMode);
 		CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
 		indexForTitle = 0;
 		adapterFlag = false;
+	}
+
+	private void screenshot() {
+//캡처
+		flSurface.buildDrawingCache();
+		flSurface.setDrawingCacheEnabled(true);
+		capture = flSurface.getDrawingCache();
+
+		try {
+			File path = new File(Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/");
+
+			if (!path.isDirectory()) {
+				path.mkdirs();
+			}
+
+			FileOutputStream out = new FileOutputStream(
+					Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg");
+			capture.compress(Bitmap.CompressFormat.JPEG, 100, out);
+
+		} catch (FileNotFoundException e) {
+			Log.d("FileNotFoundException:", e.getMessage());
+		}
 	}
 
 	private void initUI(){
@@ -1175,4 +1194,11 @@ public class SubMainActivity extends FragmentActivity {
 		});
 	}
 
+	public void onEventMainThread(SendPlaceEvent e){
+				etPlace.setText(e.getPlace());
+	}
+	public void onEventMainThread(BottomNormalData e){
+		normalList.add(e);
+		normalAdapter.notifyDataSetChanged();
+	}
 }

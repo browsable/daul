@@ -9,7 +9,7 @@
         android:id="@+id/rlBar"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:background="@color/maincolor" >
+        android:background="@color/whitesmoke" >
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
@@ -138,6 +138,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_area_write"
                 />
+
         </RelativeLayout>
         <Spinner
             android:id="@+id/spinner"
@@ -146,12 +147,18 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="@dimen/margin_xs"
-            android:background="@color/transparency"
+            android:background="@drawable/ic_trian"
             android:spinnerMode="dropdown"
             android:dropDownVerticalOffset="0.3dp"
             />
-    </RelativeLayout>
 
+    </RelativeLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_alignParentBottom="@+id/rlBar"
+        android:background="@color/maincolor"
+        />
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -169,6 +176,7 @@
             sothree:umanoFadeColor="@color/transparency"
             sothree:umanoShadowHeight="0dp">
             <LinearLayout
+                android:id="@+id/llS"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -207,7 +215,7 @@
                 android:id="@+id/btPlus"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:background="@drawable/bt_plus"
+                android:background="@drawable/ic_plus_off"
                 android:layout_marginRight="@dimen/margin_default"
                 android:layout_marginBottom="@dimen/margin_default"
                 android:scaleType="fitXY"

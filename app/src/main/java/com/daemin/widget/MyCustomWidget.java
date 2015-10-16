@@ -32,8 +32,7 @@ public class MyCustomWidget extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
 		
-		Log.d("WordWidget.UpdateService", "onUpdate()");
-        
+
 		this.context = context;
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		
@@ -51,17 +50,14 @@ public class MyCustomWidget extends AppWidgetProvider {
 	public static class UpdateService extends Service {
 		 @Override
 	        public void onStart(Intent intent, int startId) {
-	            Log.d("MyCustomWidget.UpdateService", "onStart()");
 
 	            // Build the widget update for today
 	            RemoteViews updateViews = buildUpdate(this);
-	            Log.d("MyCustomWidget.UpdateService", "update built");
-	            
+
 	            // Push update for this widget to the home screen
 	            ComponentName thisWidget = new ComponentName(this, MyCustomWidget.class);
 	            AppWidgetManager manager = AppWidgetManager.getInstance(this);
 	            manager.updateAppWidget(thisWidget, updateViews);
-	            Log.d("MyCustomWidget.UpdateService", "widget updated");
 	        }
 		 	
 		 @Override
@@ -74,7 +70,7 @@ public class MyCustomWidget extends AppWidgetProvider {
 	            RemoteViews views = null;
 	
 	            views = new RemoteViews(context.getPackageName(), R.layout.mycustomwidget);
-	            String imgFile = Environment.getExternalStorageDirectory().toString() + "/timenuri/timetable.jpg";
+	            String imgFile = Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg";
 
 	            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile);
 	      
@@ -104,7 +100,7 @@ public class MyCustomWidget extends AppWidgetProvider {
 	public void initUI(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		Log.i(TAG, "======================= initUI() =======================");
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mycustomwidget);
-		 String imgFile = Environment.getExternalStorageDirectory().toString() + "/timenuri/timetable.jpg";
+		 String imgFile = Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg";
 
          Bitmap myBitmap = BitmapFactory.decodeFile(imgFile);
    

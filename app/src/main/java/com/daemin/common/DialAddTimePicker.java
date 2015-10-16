@@ -18,12 +18,14 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
+import com.daemin.data.BottomNormalData;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
-import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-09-08.
@@ -237,13 +239,12 @@ public class DialAddTimePicker extends Dialog {
             tp.setMin(startMin, endMin);
             tp.setPosState(PosState.ADJUST);
         }
-        SubMainActivity.getInstance()
-                .updateListByAdd(MD[npMD.getValue()],
-                        String.valueOf(npStartHour.getValue()),
-                        Convert.IntToString(npStartMin.getValue()),
-                        String.valueOf(npEndHour.getValue()),
-                        Convert.IntToString(npEndMin.getValue()),
-                        2 * npMD.getValue() + 1);
+        EventBus.getDefault().post(new BottomNormalData(MD[npMD.getValue()],
+                String.valueOf(npStartHour.getValue()),
+                Convert.IntToString(npStartMin.getValue()),
+                String.valueOf(npEndHour.getValue()),
+                Convert.IntToString(npEndMin.getValue()),
+                2 * npMD.getValue() + 1));
         cancel();
     }
     private void monthSetting(String day) {
@@ -257,13 +258,12 @@ public class DialAddTimePicker extends Dialog {
             DOMP.setPosState(DayOfMonthPosState.PAINT);
             if(!Common.getTempTimePos().contains(DOMP.name()))
             Common.getTempTimePos().add(DOMP.name());
-            SubMainActivity.getInstance()
-                    .updateListByAdd(MD[npMD.getValue()],
-                            String.valueOf(npStartHour.getValue()),
-                            Convert.IntToString(npStartMin.getValue()),
-                            String.valueOf(npEndHour.getValue()),
-                            Convert.IntToString(npEndMin.getValue()),
-                            xth);
+            EventBus.getDefault().post(new BottomNormalData(MD[npMD.getValue()],
+                    String.valueOf(npStartHour.getValue()),
+                    Convert.IntToString(npStartMin.getValue()),
+                    String.valueOf(npEndHour.getValue()),
+                    Convert.IntToString(npEndMin.getValue()),
+                    xth));
             cancel();
         }else{
             Toast.makeText(context, context.getResources().getString(R.string.Overlap), Toast.LENGTH_SHORT).show();
