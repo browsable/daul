@@ -15,8 +15,12 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.daemin.common.BasicFragment;
+import com.daemin.event.BackKeyEvent;
+import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 public class SettingCustomerFragment extends BasicFragment {
     private LinearLayout btSettingLockActivity;
@@ -34,21 +38,19 @@ public class SettingCustomerFragment extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
+        ibMenu = SubMainActivity.getInstance().getIbMenu();
+        ibBack = SubMainActivity.getInstance().getIbBack();
         if (layoutId > 0) {
-            ibMenu = SubMainActivity.getInstance().getIbMenu();
-            ibBack = SubMainActivity.getInstance().getIbBack();
             ibMenu.setVisibility(View.GONE);
             ibBack.setVisibility(View.VISIBLE);
-            SubMainActivity.getInstance().setBackKeyName("SettingCustomerFragment");
-
             btSettingLockActivity = (LinearLayout)root.findViewById(R.id.btSettingLockActivity);
             btSettingWithdrawlActivity = (LinearLayout)root.findViewById(R.id.btSettingWithdrawlActivity);
         }
         ibBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        SubMainActivity.getInstance().changeFragment(SettingFragment.class, "설정",R.color.maincolor);
-                        SubMainActivity.getInstance().setBackKeyName("");
+                        EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
+                        EventBus.getDefault().post(new BackKeyEvent(""));
                 ibMenu.setVisibility(View.VISIBLE);
                 ibBack.setVisibility(View.GONE);
             }
@@ -57,18 +59,15 @@ public class SettingCustomerFragment extends BasicFragment {
         btSettingLockActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
-                SubMainActivity.getInstance().changeFragment(SettingLockFragment.class, "암호잠금", R.color.maincolor);
+                EventBus.getDefault().post(new ChangeFragEvent(SettingLockFragment.class, "암호잠금"));
             }
         });
 
         btSettingWithdrawlActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
-                SubMainActivity.getInstance().changeFragment(SettingWithdrawlFragment.class,"TimeDAO 탈퇴",R.color.maincolor);
+                EventBus.getDefault().post(new ChangeFragEvent(SettingWithdrawlFragment.class, "TimeDAO 탈퇴"));
+
             }
         });
 

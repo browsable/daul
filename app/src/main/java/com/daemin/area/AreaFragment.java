@@ -14,12 +14,14 @@ import android.widget.Toast;
 import com.daemin.adapter.EventListAdapter;
 import com.daemin.common.BasicFragment;
 import com.daemin.data.EventlistData;
-import com.daemin.main.SubMainActivity;
+import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import java.util.LinkedList;
+
+import de.greenrobot.event.EventBus;
 
 public class AreaFragment extends BasicFragment {
 	private static AreaFragment singleton;
@@ -31,7 +33,7 @@ public class AreaFragment extends BasicFragment {
 
 	//public static RequestQueue queue;
 	public AreaFragment() {
-		super(R.layout.fragment_area_list, "AreaFragment");
+		super(R.layout.fragment_area, "AreaFragment");
 		singleton = this;
 	}
 
@@ -85,7 +87,7 @@ public class AreaFragment extends BasicFragment {
 		ibwriteSchedule.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				SubMainActivity.getInstance().changeFragment(AreaFragment_Write.class, "이벤트작성", R.color.maincolor);
+				EventBus.getDefault().post(new ChangeFragEvent(AreaFragment_Write.class,"이벤트작성"));
 				ibfindSchedule.setVisibility(View.GONE);
 				ibwriteSchedule.setVisibility(View.GONE);
 
@@ -94,9 +96,7 @@ public class AreaFragment extends BasicFragment {
 		ibfindSchedule.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				SubMainActivity.getInstance().changeFragment(AreaFragment_Find.class, "주변이벤트찾검색", R.color.maincolor);
-
-
+				EventBus.getDefault().post(new ChangeFragEvent(AreaFragment_Find.class, "주변이벤트찾검색"));
 			}
 		});
 		}

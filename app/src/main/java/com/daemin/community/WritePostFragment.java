@@ -11,8 +11,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.daemin.common.BasicFragment;
-import com.daemin.main.SubMainActivity;
+import com.daemin.event.BackKeyEvent;
+import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Jun-yeong on 2015-08-09.
@@ -55,7 +58,7 @@ public class WritePostFragment extends BasicFragment {
             imm.hideSoftInputFromWindow(etArticleContent.getWindowToken(), 0);
 
             initEditText();
-            SubMainActivity.getInstance().changeFragment(CommunityFragment.class, "커뮤니티", R.color.orange);
+            EventBus.getDefault().post(new ChangeFragEvent(CommunityFragment.class, "커뮤니티"));
         }
     }
 
@@ -74,7 +77,7 @@ public class WritePostFragment extends BasicFragment {
         root = super.onCreateView(inflater, container, savedInstanceState);
 
         if (layoutId > 0) {
-            SubMainActivity.getInstance().setBackKeyName("WritePostFragment");
+            EventBus.getDefault().post(new BackKeyEvent("WritePostFragment"));
 
             etArticleTitle = (EditText) root.findViewById(R.id.etArticleTitle);
             etArticleContent = (EditText) root.findViewById(R.id.etArticleContent);

@@ -17,8 +17,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.daemin.common.BasicFragment;
+import com.daemin.event.BackKeyEvent;
+import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-06-20.
@@ -39,20 +43,20 @@ public class SettingUnivFragment extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
+        ibMenu = SubMainActivity.getInstance().getIbMenu();
+        ibBack = SubMainActivity.getInstance().getIbBack();
         if (layoutId > 0) {
-            ibMenu = SubMainActivity.getInstance().getIbMenu();
-            ibBack = SubMainActivity.getInstance().getIbBack();
             ibMenu.setVisibility(View.GONE);
             ibBack.setVisibility(View.VISIBLE);
-            SubMainActivity.getInstance().setBackKeyName("SettingUnivFragment");
+            EventBus.getDefault().post(new BackKeyEvent("SettingUnivFragment"));
             btShowDropDown1 = (Button) root.findViewById(R.id.btShowDropDown1);
             btShowDropDown2 = (Button) root.findViewById(R.id.btShowDropDown2);
         }
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SubMainActivity.getInstance().changeFragment(SettingFragment.class, "설정",R.color.maincolor);
-                SubMainActivity.getInstance().setBackKeyName("");
+                EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
+                EventBus.getDefault().post(new BackKeyEvent(""));
                 ibMenu.setVisibility(View.VISIBLE);
                 ibBack.setVisibility(View.GONE);
 
@@ -109,11 +113,11 @@ public class SettingUnivFragment extends BasicFragment {
             public void onClick(View v) {
                 if (clickFlag1) {
                     actvSelectUniv.dismissDropDown();
-                    btShowDropDown1.setBackgroundResource(R.drawable.ic_action_expand);
+                    btShowDropDown1.setBackgroundResource(R.drawable.ic_expand);
                     clickFlag1 = false;
                 } else {
                     actvSelectUniv.showDropDown();
-                    btShowDropDown1.setBackgroundResource(R.drawable.ic_action_collapse);
+                    btShowDropDown1.setBackgroundResource(R.drawable.ic_collapse);
                     clickFlag1 = true;
                 }
             }
@@ -122,7 +126,7 @@ public class SettingUnivFragment extends BasicFragment {
         actvSelectUniv.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
             @Override
             public void onDismiss() {
-                btShowDropDown1.setBackgroundResource(R.drawable.ic_action_expand);
+                btShowDropDown1.setBackgroundResource(R.drawable.ic_expand);
             }
         });
 
@@ -132,11 +136,11 @@ public class SettingUnivFragment extends BasicFragment {
             public void onClick(View v) {
                 if (clickFlag2) {
                     actvSelectDep.dismissDropDown();
-                    btShowDropDown2.setBackgroundResource(R.drawable.ic_action_expand);
+                    btShowDropDown2.setBackgroundResource(R.drawable.ic_expand);
                     clickFlag2 = false;
                 } else {
                     actvSelectDep.showDropDown();
-                    btShowDropDown2.setBackgroundResource(R.drawable.ic_action_collapse);
+                    btShowDropDown2.setBackgroundResource(R.drawable.ic_collapse);
                     clickFlag2 = true;
                 }
             }
@@ -145,7 +149,7 @@ public class SettingUnivFragment extends BasicFragment {
         actvSelectDep.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
             @Override
             public void onDismiss() {
-                btShowDropDown2.setBackgroundResource(R.drawable.ic_action_expand);
+                btShowDropDown2.setBackgroundResource(R.drawable.ic_expand);
             }
         });
 

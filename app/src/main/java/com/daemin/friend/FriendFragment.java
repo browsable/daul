@@ -16,8 +16,7 @@ import com.daemin.timetable.R;
 import java.util.ArrayList;
 
 public class FriendFragment extends BasicFragment {
-    
-	
+
 	public FriendFragment() {
 		super(R.layout.fragment_friend, "AreaFragment");
 	}
@@ -27,7 +26,9 @@ public class FriendFragment extends BasicFragment {
 			Bundle savedInstanceState) {
 
 		View root = super.onCreateView(inflater, container, savedInstanceState);
+
 		if (layoutId > 0) {
+
             // * 데이터 원본 준비
 	        ArrayList<ContactEntity> arContactList = new ArrayList<ContactEntity>();        
 	        arContactList = getContactList();

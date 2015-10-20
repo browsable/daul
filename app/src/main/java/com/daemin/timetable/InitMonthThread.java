@@ -12,7 +12,9 @@ import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
-import com.daemin.main.SubMainActivity;
+import com.daemin.event.ExcuteMethodEvent;
+
+import de.greenrobot.event.EventBus;
 
 @SuppressLint("DefaultLocale")
 public class InitMonthThread extends InitThread {
@@ -87,7 +89,7 @@ public class InitMonthThread extends InitThread {
 		String[] mData = new String[cnt];
 		int j =0;
 		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
-			String str = SubMainActivity.getInstance().getBarText();
+			String str = "9";//SubMainActivity.getInstance().getBarText();
 			mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
 			j++;
 		}
@@ -146,7 +148,7 @@ public class InitMonthThread extends InitThread {
 		}
 	}
 	public void getActionUp() {
-		SubMainActivity.getInstance().updateMonthList();
+		EventBus.getDefault().post(new ExcuteMethodEvent("updateMonthList"));
 	}
 
 	public void makeTimePos(int xth, int yth) {

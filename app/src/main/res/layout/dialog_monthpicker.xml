@@ -41,7 +41,7 @@
             android:layout_height="match_parent"
             android:text=":"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/margin_xl"
             />
         <NumberPicker
@@ -79,7 +79,7 @@
                 android:layout_height="match_parent"
                 android:text=":"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/margin_xl"
                 />
         <NumberPicker
@@ -109,7 +109,7 @@
             android:layout_weight="1"
             android:text="@string/btDailCancel"
             android:background="@drawable/bt_click"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/margin_l"
             android:textStyle="bold" />
 
@@ -125,7 +125,7 @@
             android:layout_weight="1"
             android:text="@string/btDailSetting"
             android:background="@drawable/bt_click"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/margin_l"
             android:textStyle="bold" />
     </LinearLayout>

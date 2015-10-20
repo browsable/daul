@@ -14,8 +14,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 
 import com.daemin.common.BasicFragment;
+import com.daemin.event.BackKeyEvent;
+import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 public class SettingIdFragment extends BasicFragment {
     ImageButton ibMenu, ibBack;
@@ -30,20 +34,20 @@ public class SettingIdFragment extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
+        ibMenu = SubMainActivity.getInstance().getIbMenu();
+        ibBack = SubMainActivity.getInstance().getIbBack();
         if (layoutId > 0) {
-            ibMenu = SubMainActivity.getInstance().getIbMenu();
-            ibBack = SubMainActivity.getInstance().getIbBack();
             ibMenu.setVisibility(View.GONE);
             ibBack.setVisibility(View.VISIBLE);
-            SubMainActivity.getInstance().setBackKeyName("SettingIdFragment");
+            EventBus.getDefault().post(new BackKeyEvent("SettingIdFragment"));
         }
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SubMainActivity.getInstance().changeFragment(SettingFragment.class, "설정",R.color.maincolor);
-                SubMainActivity.getInstance().setBackKeyName("");
                 ibMenu.setVisibility(View.VISIBLE);
                 ibBack.setVisibility(View.GONE);
+                EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
+                EventBus.getDefault().post(new BackKeyEvent(""));
             }
         });
 

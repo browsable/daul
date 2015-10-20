@@ -15,7 +15,9 @@ import com.daemin.data.DayOfWeekData;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
-import com.daemin.main.SubMainActivity;
+import com.daemin.event.ExcuteMethodEvent;
+
+import de.greenrobot.event.EventBus;
 
 @SuppressLint("DefaultLocale")
 public class InitWeekThread extends InitThread {
@@ -158,7 +160,7 @@ public class InitWeekThread extends InitThread {
     }
 
     public void getActionUp() {
-        SubMainActivity.getInstance().updateWeekList();
+        EventBus.getDefault().post(new ExcuteMethodEvent("updateWeekList"));
     }
 
     public void makeTimePos(int xth, int yth) {

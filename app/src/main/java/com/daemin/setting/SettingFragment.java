@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.daemin.common.BasicFragment;
-import com.daemin.main.SubMainActivity;
+import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 
 import java.io.File;
@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import de.greenrobot.event.EventBus;
 
 public class SettingFragment extends BasicFragment {
 
@@ -74,27 +76,22 @@ public class SettingFragment extends BasicFragment {
         btSettingUnivActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
-                SubMainActivity.getInstance().changeFragment(SettingUnivFragment.class,"학교/학과 변경",R.color.maincolor);
+                EventBus.getDefault().post(new ChangeFragEvent(SettingUnivFragment.class, "학교/학과 변경"));
             }
         });
 
         btSettingIdActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
-                SubMainActivity.getInstance().changeFragment(SettingIdFragment.class,"메일주소 변경",R.color.maincolor);
+
+                EventBus.getDefault().post(new ChangeFragEvent(SettingIdFragment.class, "메일주소 변경"));
             }
         });
 
         btSettingCustomerActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_container, new SettingUnivFragment()).commit();*/
-                SubMainActivity.getInstance().changeFragment(SettingCustomerFragment.class,"고객센터",R.color.maincolor);
+                EventBus.getDefault().post(new ChangeFragEvent(SettingCustomerFragment.class, "고객센터"));
             }
         });
 

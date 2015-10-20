@@ -14,8 +14,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 
 import com.daemin.common.BasicFragment;
+import com.daemin.event.BackKeyEvent;
+import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.SubMainActivity;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 public class SettingLockFragment extends BasicFragment {
 
@@ -31,18 +35,18 @@ public class SettingLockFragment extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
+        ibMenu = SubMainActivity.getInstance().getIbMenu();
+        ibBack = SubMainActivity.getInstance().getIbBack();
         if (layoutId > 0) {
-            ibMenu = SubMainActivity.getInstance().getIbMenu();
-            ibBack = SubMainActivity.getInstance().getIbBack();
             ibMenu.setVisibility(View.GONE);
             ibBack.setVisibility(View.VISIBLE);
-            SubMainActivity.getInstance().setBackKeyName("SettingLockFragment");
+            EventBus.getDefault().post(new BackKeyEvent("SettingLockFragment"));
         }
         ibBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        SubMainActivity.getInstance().changeFragment(SettingCustomerFragment.class, "고객센터",R.color.maincolor);
-                        SubMainActivity.getInstance().setBackKeyName("");
+                        EventBus.getDefault().post(new ChangeFragEvent(SettingCustomerFragment.class, "고객센터"));
+                        EventBus.getDefault().post(new BackKeyEvent(""));
                 ibMenu.setVisibility(View.VISIBLE);
                 ibBack.setVisibility(View.GONE);
             }

@@ -43,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:text="2015.02.02 13:00"
                         android:textSize="@dimen/textsize_default"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/darkgray"
                         android:gravity="center_vertical"
                         />
 
@@ -53,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:text="choz@"
                         android:textSize="@dimen/textsize_default"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/darkgray"
                         android:gravity="center_vertical" />
                 </LinearLayout>
             </LinearLayout>
@@ -93,7 +93,7 @@
                         android:id="@+id/tvCountComment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/darkgray"
                         android:layout_marginRight="@dimen/margin_s"
                         android:layout_marginLeft="@dimen/margin_s"
                         android:layout_gravity="center_vertical"

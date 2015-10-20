@@ -1,24 +1,22 @@
 package com.daemin.area;
 
 import android.graphics.Color;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.daemin.common.BasicFragment;
-import com.daemin.common.MyRequest;
-import com.daemin.main.SubMainActivity;
+import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by HOME on 2015-09-21.
@@ -72,7 +70,7 @@ public class AreaFragment_Find extends BasicFragment {
         ibwriteSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SubMainActivity.getInstance().changeFragment(AreaFragment_Write.class, "이벤트작성", R.color.maincolor);
+                EventBus.getDefault().post(new ChangeFragEvent(AreaFragment_Write.class, "이벤트작성"));
                 ibfindSchedule.setVisibility(View.GONE);
                 ibwriteSchedule.setVisibility(View.GONE);
                 ibareaSchedule.setVisibility(View.GONE);

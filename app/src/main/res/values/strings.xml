@@ -12,6 +12,12 @@
     <string name="e_learning">이러닝 혹은 시간정보가 없습니다</string>
     <string name="select_time">시간대를 선택하세요</string>
     <string name="nothing_schedule">해당 시간에 등록된 일정이 없습니다</string>
+    <!--drawer menu-->
+    <string name="timetable">시간표</string>
+    <string name="friend">친구시간표</string>
+    <string name="area">주변시간표</string>
+    <string name="community">커뮤니티</string>
+    <string name="setting">설정</string>
     <!--normal menu-->
     <string name="normal_name">이름</string>
     <string name="normal_place">장소 : 직접입력</string>
@@ -87,6 +93,6 @@
 
 
 
-    <string name="autocomplete_hint">Enter place name or address</string>
+    <string name="autocomplete_hint">장소 검색</string>
 
 </resources>

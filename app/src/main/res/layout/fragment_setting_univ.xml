@@ -29,7 +29,7 @@
                 android:textSize="@dimen/textsize_s"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/margin_xs"
-                android:background="@color/white"
+                android:background="@android:color/white"
                 />
 
             <requestFocus />
@@ -37,7 +37,7 @@
                 android:id="@+id/btShowDropDown1"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/ic_action_expand"
+                android:background="@drawable/ic_expand"
                 />
         </LinearLayout>
         <View
@@ -62,14 +62,14 @@
                 android:textSize="@dimen/textsize_s"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/margin_xs"
-                android:background="@color/white"
+                android:background="@android:color/white"
                 />
             <requestFocus />
             <Button
                 android:id="@+id/btShowDropDown2"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/ic_action_expand"
+                android:background="@drawable/ic_expand"
                 />
         </LinearLayout>
         <View

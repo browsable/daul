@@ -15,8 +15,10 @@ import android.widget.TextView;
 
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
-import com.daemin.main.SubMainActivity;
+import com.daemin.event.UpdateByDialEvent;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-09-08.
@@ -141,12 +143,11 @@ public class DialWeekPicker extends Dialog {
                 tp.setMin(startMin, endMin);
                 tp.setPosState(PosState.ADJUST);
             }
-            SubMainActivity.getInstance()
-                .updateListByDial(tvDailStartTime.getText().toString(),
-                        Convert.IntToString(npStartMin.getValue()),
-                        tvDialEndTime.getText().toString(),
-                        Convert.IntToString(npEndMin.getValue()),
-                        xth,position);
+            EventBus.getDefault().post(new UpdateByDialEvent(tvDailStartTime.getText().toString(),
+                Convert.IntToString(npStartMin.getValue()),
+                tvDialEndTime.getText().toString(),
+                Convert.IntToString(npEndMin.getValue()),
+                xth,position));
             cancel();
     }
 

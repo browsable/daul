@@ -30,7 +30,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_action_expand"
+                    android:src="@drawable/ic_expand"
                     android:layout_marginRight="@dimen/margin_l" />
             </LinearLayout>
 
@@ -39,7 +39,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:src="@color/gray"/>
+        android:src="@color/darkgray"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:src="@color/gray"/>
+        android:src="@color/darkgray"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

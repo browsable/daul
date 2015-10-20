@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@android:color/white"
     android:visibility="gone"
     >
 
@@ -33,7 +33,7 @@
                 android:textSize="@dimen/textsize_default"
                 android:singleLine="true"
                 android:layout_margin="@dimen/margin_xxs"
-                android:background="@color/white"
+                android:background="@android:color/white"
                 />
 
             <requestFocus />
@@ -41,7 +41,7 @@
                 android:id="@+id/btShowDep"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:background="@drawable/ic_action_expand"
+                android:background="@drawable/ic_expand"
                 />
         </LinearLayout>
         <EditText
@@ -73,7 +73,7 @@
                 android:textSize="@dimen/textsize_default"
                 android:singleLine="true"
                 android:layout_margin="@dimen/margin_xxs"
-                android:background="@color/white"
+                android:background="@android:color/white"
                 />
 
             <requestFocus />
@@ -81,7 +81,7 @@
                 android:id="@+id/btShowGrade"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:background="@drawable/ic_action_expand"
+                android:background="@drawable/ic_expand"
                 />
         </LinearLayout>
     </LinearLayout>

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:scrollbars="none"
-    android:background="@color/white">
+    android:background="@android:color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,7 +42,7 @@
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:background="@drawable/iv_normal_time"/>
+                    android:background="@drawable/ic_time"/>
             </LinearLayout>
             <com.daemin.common.HorizontalListView
                 android:id="@+id/lvTime"
@@ -96,7 +96,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/iv_normal_place"/>
+                    android:background="@drawable/ic_place"/>
             </LinearLayout>
             <EditText
                 android:id="@+id/etPlace"
@@ -122,11 +122,11 @@
                 android:onClick="mOnClick"
                 android:orientation="vertical">
                 <View
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:scaleType="fitXY"
                     android:layout_gravity="center"
-                    android:background="@drawable/iv_normal_place" />
+                    android:background="@drawable/ic_map" />
             </LinearLayout>
         </LinearLayout>
         <View
@@ -183,7 +183,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/iv_normal_alarm"/>
+                    android:background="@drawable/ic_alarm"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/tvAlarm"
@@ -216,7 +216,7 @@
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/iv_normal_repeat"/>
+                    android:background="@drawable/ic_repeat"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/tvRepeat"
@@ -247,7 +247,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/iv_normal_memo"/>
+                    android:background="@drawable/ic_memo"/>
             </LinearLayout>
             <EditText
                 android:id="@+id/etMemo"

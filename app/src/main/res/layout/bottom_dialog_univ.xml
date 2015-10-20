@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@android:color/white"
     android:layout_weight="1"
     android:padding="@dimen/margin_l"
     >
@@ -26,7 +26,7 @@
             android:layout_weight="1"
             android:singleLine="true"
             android:paddingLeft="@dimen/margin_xs"
-            android:background="@color/white"
+            android:background="@android:color/white"
             android:dropDownHeight="100dp"
             />
 
@@ -35,7 +35,7 @@
             android:id="@+id/btShowUniv"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/ic_action_expand"
+            android:background="@drawable/ic_expand"
             />
         <Button
             android:id="@+id/btEnter"

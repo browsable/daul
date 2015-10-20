@@ -3,14 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fadeScrollbars="false">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,8 +20,8 @@
 
             <ImageView
                 android:id="@+id/ivProfile"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="@dimen/margin_l"
@@ -66,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="choz00@naver.com"
-                android:textColor="@color/gray"
+                android:textColor="@color/dimgray"
                 android:textSize="@dimen/textsize_l" />
 
         </LinearLayout>
@@ -98,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="한국기술교육대학교 디자인공학과"
-                android:textColor="@color/gray"
+                android:textColor="@color/dimgray"
                 android:textSize="@dimen/textsize_l" />
 
         </LinearLayout>
@@ -129,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="과목명, 교수명, 장소"
-                android:textColor="@color/gray"
+                android:textColor="@color/dimgray"
                 android:textSize="@dimen/textsize_l" />
 
         </LinearLayout>

@@ -18,7 +18,7 @@
             android:textSize="@dimen/textsize_l"
             android:singleLine="true"
             android:paddingLeft="@dimen/margin_xs"
-            android:background="@color/white"
+            android:background="@android:color/white"
             android:dropDownHeight="100dp"
             android:layout_weight="0.85" />
 
@@ -27,7 +27,7 @@
             android:id="@+id/btShowevent"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/ic_area_find_black"
+            android:background="@drawable/ic_search"
             />
         <Button
             android:id="@+id/btEnter"

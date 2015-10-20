@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:orientation="vertical" >
-
+    android:orientation="vertical"
+    >
     <RelativeLayout
         android:id="@+id/rlBar"
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:singleLine="true"
-            android:textColor="@color/white"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/textsize_xl"
             android:textStyle="bold"
             android:visibility="gone"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:layout_gravity="bottom"
-                android:textColor="@color/white"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/textsize_s"
                 android:textStyle="bold" />
             <TextSwitcher
@@ -75,7 +75,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:background="@color/transparency"
-            android:padding="@dimen/margin_l"
+            android:padding="@dimen/margin_s"
             android:scaleType="fitXY"
             android:src="@drawable/bt_menu"
             android:onClick="mOnClick"
@@ -89,7 +89,7 @@
             android:background="@color/transparency"
             android:padding="@dimen/margin_default"
             android:scaleType="fitXY"
-            android:src="@drawable/bt_back"
+            android:src="@drawable/ic_back"
             android:visibility="gone"/>
         <Button
             android:id="@+id/btWriteArticle"
@@ -116,7 +116,7 @@
                 android:layout_alignParentLeft="true"
                 android:background="@color/transparency"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_area_find"
+                android:src="@drawable/ic_circlesearch"
                 />
             <ImageButton
                 android:id="@+id/ibareaSchedule"
@@ -125,7 +125,7 @@
                 android:layout_alignParentLeft="true"
                 android:background="@color/transparency"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_area_white"
+                android:src="@drawable/ic_write"
                 android:visibility="gone"
                 android:onClick="mOnClick"
                 />
@@ -136,21 +136,31 @@
                 android:layout_alignParentRight="true"
                 android:background="@color/transparency"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_area_write"
+                android:src="@drawable/ic_write"
                 />
 
         </RelativeLayout>
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:id="@+id/llSpinner"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="@dimen/margin_xs"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/margin_xxxs"
             android:background="@drawable/ic_trian"
-            android:spinnerMode="dropdown"
-            android:dropDownVerticalOffset="0.3dp"
-            />
+            android:orientation="vertical"
+            android:scaleType="fitXY"
+            android:gravity="top|left"
+            >
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@color/transparency"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="0.45dp"
+                />
+        </LinearLayout>
 
     </RelativeLayout>
     <View
@@ -230,26 +240,49 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:background="@color/black"
+            android:background="@android:color/black"
             android:orientation="vertical" >
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:background="@color/white">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-            <include
-                android:id="@+id/home_menu"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                layout="@layout/drawer_main_menu"
-                />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scrollbars="none"
+                android:background="@color/drawercolor">
+                <include
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    layout="@layout/drawer_main_menu"
+                    />
             </ScrollView>
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btSetting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/profilecolor"
+                android:gravity="center"
+                android:onClick="mOnClick"
+                android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_marginBottom="@dimen/margin_xxs"
+                    android:layout_marginRight="@dimen/margin_xs"
+                    android:layout_marginTop="@dimen/margin_xxs"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_setting" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/setting"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textsize_default"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

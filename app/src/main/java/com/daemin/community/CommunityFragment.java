@@ -23,7 +23,7 @@ import com.daemin.common.BasicFragment;
 import com.daemin.common.MyVolley;
 import com.daemin.community.github.FreeBoard;
 import com.daemin.community.github.GithubActivity;
-import com.daemin.main.SubMainActivity;
+import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-07-07.
@@ -76,7 +78,7 @@ public class CommunityFragment extends BasicFragment {
             btWriteArticle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SubMainActivity.getInstance().changeFragment(WritePostFragment.class, "커뮤니티", R.color.orange);
+                    EventBus.getDefault().post(new ChangeFragEvent(WritePostFragment.class, "커뮤니티"));
                 }
             });
             loadingProgress = (ProgressBar) root.findViewById(R.id.loadingProgress);

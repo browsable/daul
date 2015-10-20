@@ -66,10 +66,15 @@ import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
+import com.daemin.event.BackKeyEvent;
+import com.daemin.event.ChangeFragEvent;
+import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.event.SendPlaceEvent;
+import com.daemin.event.UpdateByDialEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.map.MapActivity;
 import com.daemin.setting.SettingFragment;
+import com.daemin.timetable.InitDayFragment;
 import com.daemin.timetable.InitMonthThread;
 import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.InitWeekThread;
@@ -83,6 +88,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -95,17 +101,17 @@ public class SubMainActivity extends FragmentActivity {
 	InitSurfaceView InitSurfaceView;
 	DrawerLayout mDrawerLayout;
 	RoundedCornerNetworkImageView ivProfile;
-	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep,llTitle;
+	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep,llTitle,llSpinner;
 	ImageButton ibMenu, ibBack, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
 	TextView tvTitle,tvTitleYear;
 	EditText etPlace;
 	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
 	FrameLayout flSurface, frame_container;
-	RelativeLayout rlBar,rlArea;
+	RelativeLayout rlArea;
 	Fragment mContent = null;
 	Boolean surfaceFlag = false, colorFlag = false;
 	BackPressCloseHandler backPressCloseHandler;
-	String BackKeyName="",colorName,korName,engName,barText;
+	String backKeyName,colorName,korName,engName,barText;
 	HorizontalListAdapter adapter;
 	AutoCompleteTextView actvSelectUniv,actvSelectDep, actvSelectGrade;
 	Boolean clickFlag1=false;
@@ -119,25 +125,21 @@ public class SubMainActivity extends FragmentActivity {
 	DatabaseHandler db;
 	Bitmap capture = null;
 	static SubMainActivity singleton;
-	public static SubMainActivity getInstance() {
-		return singleton;
-	}
 	public ImageButton getIbBack() {return ibBack;}
 	public ImageButton getIbMenu() {return ibMenu;}
 	public String getBarText() {
 		return barText;
 	}
-	public void setBackKeyName(String backKeyName) {
-		BackKeyName = backKeyName;
+	public static SubMainActivity getInstance() {
+		return singleton;
 	}
 	Spinner spinner;
 	ArrayAdapter<CharSequence> spinnerAdapter;
 	TextSwitcher switcher;
 	//bottom drawer
 	private SlidingUpPanelLayout mLayout;
-	ArrayList<BottomNormalData> normalList;
+    ArrayList<BottomNormalData> normalList;
 	ArrayAdapter normalAdapter;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -172,7 +174,7 @@ public class SubMainActivity extends FragmentActivity {
 				myText.setGravity(Gravity.BOTTOM);
 				myText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 				myText.setTypeface(Typeface.DEFAULT_BOLD);
-				myText.setTextColor(Color.WHITE);
+				myText.setTextColor(Color.BLACK);
 				return myText;
 			}
 		});
@@ -339,11 +341,6 @@ public class SubMainActivity extends FragmentActivity {
 		normalAdapter.notifyDataSetChanged();
 		Common.stateFilter(Common.getTempTimePos(), viewMode);
 	}
-	public void updateListByDial(String startHour, String startMin, String endHour, String endMin, int xth,int position) {
-		normalList.remove(position);
-		normalList.add(position, new BottomNormalData(InitSurfaceView.getInitThread().getMonthAndDay(xth), startHour, startMin, endHour, endMin, xth));
-		normalAdapter.notifyDataSetChanged();
-	}
 	public void colorButtonSetting(){
 		gd = (GradientDrawable) btColor.getBackground().mutate();
 		String[] dialogColorBtn = getResources().getStringArray(R.array.dialogColorBtn);
@@ -371,7 +368,7 @@ public class SubMainActivity extends FragmentActivity {
 					mContent);
 	}
 
-	public void changeFragment(Class cl, String title, int barcolor) {
+	public void changeFragment(Class cl, String title) {
 		final FragmentManager fm = getSupportFragmentManager();
 		final FragmentTransaction ft = fm.beginTransaction();
 
@@ -383,7 +380,7 @@ public class SubMainActivity extends FragmentActivity {
 				// toggle();
 				if (mDrawerLayout.isDrawerOpen(mLeftDrawer))
 					mDrawerLayout.closeDrawer(mLeftDrawer);
-				onChangedFragment(title, barcolor);
+				if(!title.equals("")) tvTitle.setText(title);
 
 				return;
 			}
@@ -406,6 +403,7 @@ public class SubMainActivity extends FragmentActivity {
 			if (newFragment != null) {
 				if (fragmentTag != "TimetableFragment")
 					ft.add(R.id.frame_container, newFragment, fragmentTag);
+
 			}
 		} else
 			ft.attach(newFragment);
@@ -416,18 +414,7 @@ public class SubMainActivity extends FragmentActivity {
 				mDrawerLayout.closeDrawer(mLeftDrawer);
 			mContent = newFragment;
 			ft.commit();
-			onChangedFragment(title, barcolor);
-		}
-	}
-	private void onChangedFragment(String title, int barcolor) {
-		if(!title.equals("")) tvTitle.setText(title);
-		switch (barcolor) {
-		case R.color.maincolor:
-			rlBar.setBackgroundResource(R.color.maincolor);
-			break;
-			case R.color.orange:
-			rlBar.setBackgroundResource(R.color.orange);
-			break;
+			if(!title.equals("")) tvTitle.setText(title);
 		}
 	}
 	// 드로어 메뉴 버튼 클릭 리스너
@@ -454,81 +441,38 @@ public class SubMainActivity extends FragmentActivity {
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
 				rlArea.setVisibility(View.GONE);
+				llSpinner.setVisibility(View.VISIBLE);
 				llTitle.setVisibility(View.VISIBLE);
 				tvTitle.setVisibility(View.GONE);
 				btPlus.setVisibility(View.VISIBLE);
 				mLayout.setVisibility(View.VISIBLE);
 				mLayout.setTouchEnabled(true);
-				changeFragment(TimetableFragment.class, "", R.color.maincolor);
+				changeFragment(TimetableFragment.class, "");
 				flSurface.setVisibility(View.VISIBLE);
 				frame_container.setVisibility(View.GONE);
 				if (surfaceFlag) {
 					InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
 					surfaceFlag = false;
 				}
-				BackKeyName = "";
 				break;
 			case R.id.btFriend:
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
-				rlArea.setVisibility(View.GONE);
-				llTitle.setVisibility(View.GONE);
-				tvTitle.setVisibility(View.VISIBLE);
-				btPlus.setVisibility(View.GONE);
-				mLayout.setTouchEnabled(false);
-				flSurface.setVisibility(View.GONE);
-				frame_container.setVisibility(View.VISIBLE);
-				changeFragment(FriendFragment.class, "친구시간표", R.color.orange);
-				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-				surfaceFlag = true;
-				BackKeyName = "";
+				changeSetting();
+				changeFragment(FriendFragment.class, "친구시간표");
+
 				break;
-			case R.id.btArea:case R.id.ibareaSchedule:
+			case R.id.btArea: case R.id.ibareaSchedule:
 				ibfindSchedule.setVisibility(View.VISIBLE);
 				ibareaSchedule.setVisibility(View.GONE);
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
-				rlArea.setVisibility(View.VISIBLE);
-				llTitle.setVisibility(View.GONE);
-				tvTitle.setVisibility(View.VISIBLE);
-				btPlus.setVisibility(View.GONE);
-				mLayout.setTouchEnabled(false);
-				flSurface.setVisibility(View.GONE);
-				frame_container.setVisibility(View.VISIBLE);
-				changeFragment(AreaFragment.class, "주변시간표", R.color.maincolor);
-				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-				surfaceFlag = true;
-				BackKeyName = "";
+				changeSetting();
+				changeFragment(AreaFragment.class, "주변시간표");
 				break;
 			case R.id.btCommunity:
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
-				rlArea.setVisibility(View.GONE);
-				llTitle.setVisibility(View.GONE);
-				tvTitle.setVisibility(View.VISIBLE);
-				btPlus.setVisibility(View.GONE);
-				mLayout.setTouchEnabled(false);
-				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-				flSurface.setVisibility(View.GONE);
-				frame_container.setVisibility(View.VISIBLE);
-				changeFragment(CommunityFragment.class, "커뮤니티", R.color.orange);
-				surfaceFlag = true;
-				BackKeyName = "";
+				changeSetting();
+				changeFragment(CommunityFragment.class, "커뮤니티");
 				break;
 			case R.id.btSetting:
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
-				rlArea.setVisibility(View.GONE);
-				llTitle.setVisibility(View.GONE);
-				tvTitle.setVisibility(View.VISIBLE);
-				btPlus.setVisibility(View.GONE);
-				mLayout.setTouchEnabled(false);
-				flSurface.setVisibility(View.GONE);
-				frame_container.setVisibility(View.VISIBLE);
-				changeFragment(SettingFragment.class, "설정", R.color.maincolor);
-				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
-				surfaceFlag = true;
-				BackKeyName = "";
+				changeSetting();
+				changeFragment(SettingFragment.class, "설정");
 				break;
 			case R.id.btNormal:
 				rlArea.setVisibility(View.GONE);
@@ -540,7 +484,7 @@ public class SubMainActivity extends FragmentActivity {
 				llNormal.setVisibility(View.VISIBLE);
 				llUniv.setVisibility(View.GONE);
 				btNormal.setTextColor(getResources().getColor(
-						R.color.white));
+						android.R.color.white));
 				btUniv.setTextColor(getResources().getColor(
 						R.color.gray));
 				break;
@@ -556,7 +500,7 @@ public class SubMainActivity extends FragmentActivity {
 				btNormal.setTextColor(getResources().getColor(
 						R.color.gray));
 				btUniv.setTextColor(getResources().getColor(
-						R.color.white));
+						android.R.color.white));
 				ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.dropdown_search, MyRequest.getGroupListFomServer());
 				actvSelectUniv = (AutoCompleteTextView) findViewById(R.id.actvSelectUniv);
 				actvSelectUniv.requestFocus();
@@ -638,7 +582,7 @@ public class SubMainActivity extends FragmentActivity {
 					public void onClick(View v) {
 						if (clickFlag1) {
 							actvSelectUniv.dismissDropDown();
-							btShowUniv.setBackgroundResource(R.drawable.ic_action_expand);
+							btShowUniv.setBackgroundResource(R.drawable.ic_expand);
 							clickFlag1 = false;
 
 						} else {
@@ -646,7 +590,7 @@ public class SubMainActivity extends FragmentActivity {
 								MyRequest.getGroupList();
 							}
 							actvSelectUniv.showDropDown();
-							btShowUniv.setBackgroundResource(R.drawable.ic_action_collapse);
+							btShowUniv.setBackgroundResource(R.drawable.ic_collapse);
 							clickFlag1 = true;
 
 						}
@@ -656,7 +600,7 @@ public class SubMainActivity extends FragmentActivity {
 				actvSelectUniv.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
 					@Override
 					public void onDismiss() {
-						btShowUniv.setBackgroundResource(R.drawable.ic_action_expand);
+						btShowUniv.setBackgroundResource(R.drawable.ic_expand);
 					}
 				});
 				break;
@@ -855,14 +799,14 @@ public class SubMainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				if (clickFlag2) {
 					actvSelectDep.dismissDropDown();
-					btShowDep.setBackgroundResource(R.drawable.ic_action_expand);
+					btShowDep.setBackgroundResource(R.drawable.ic_expand);
 					clickFlag2 = false;
 					if (!User.USER.isGroupListDownloadState()) {
 						MyRequest.getGroupList();
 					}
 				} else {
 					actvSelectDep.showDropDown();
-					btShowDep.setBackgroundResource(R.drawable.ic_action_collapse);
+					btShowDep.setBackgroundResource(R.drawable.ic_collapse);
 					clickFlag2 = true;
 				}
 			}
@@ -870,7 +814,7 @@ public class SubMainActivity extends FragmentActivity {
 		actvSelectDep.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
 			@Override
 			public void onDismiss() {
-				btShowDep.setBackgroundResource(R.drawable.ic_action_expand);
+				btShowDep.setBackgroundResource(R.drawable.ic_expand);
 			}
 		});
 		ArrayAdapter<String> adapter3 = new ArrayAdapter<>(this,
@@ -893,14 +837,14 @@ public class SubMainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				if (clickFlag3) {
 					actvSelectGrade.dismissDropDown();
-					btShowGrade.setBackgroundResource(R.drawable.ic_action_expand);
+					btShowGrade.setBackgroundResource(R.drawable.ic_expand);
 					clickFlag3 = false;
 					if (!User.USER.isGroupListDownloadState()) {
 						MyRequest.getGroupList();
 					}
 				} else {
 					actvSelectGrade.showDropDown();
-					btShowGrade.setBackgroundResource(R.drawable.ic_action_collapse);
+					btShowGrade.setBackgroundResource(R.drawable.ic_collapse);
 					clickFlag3 = true;
 				}
 			}
@@ -908,7 +852,7 @@ public class SubMainActivity extends FragmentActivity {
 		actvSelectGrade.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
 			@Override
 			public void onDismiss() {
-				btShowGrade.setBackgroundResource(R.drawable.ic_action_expand);
+				btShowGrade.setBackgroundResource(R.drawable.ic_expand);
 			}
 		});
 	}
@@ -930,7 +874,7 @@ public class SubMainActivity extends FragmentActivity {
 				(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
 			mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 		} else {
-			backPressCloseHandler.onBackPressed(BackKeyName);
+			backPressCloseHandler.onBackPressed(backKeyName);
 		}
 	}
 	class DownloadFileFromURL extends AsyncTask<String, String, String> {
@@ -1000,7 +944,7 @@ public class SubMainActivity extends FragmentActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		screenshot();
+		//screenshot();
 		Intent intent = new Intent();
 		//intent.setAction(android.appwidget.action.APPWIDGET_UPDATE);
 		intent.setAction(Common.ACTION_UPDATE);
@@ -1010,7 +954,7 @@ public class SubMainActivity extends FragmentActivity {
 	public void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		screenshot();
+		//screenshot();
 		Intent intent = new Intent();
 		//intent.setAction(android.appwidget.action.APPWIDGET_UPDATE);
 		intent.setAction(Common.ACTION_UPDATE);
@@ -1056,8 +1000,22 @@ public class SubMainActivity extends FragmentActivity {
 			Log.d("FileNotFoundException:", e.getMessage());
 		}
 	}
-
+	private void changeSetting(){
+		normalList.clear();
+		normalAdapter.notifyDataSetChanged();
+		rlArea.setVisibility(View.GONE);
+		llTitle.setVisibility(View.GONE);
+		tvTitle.setVisibility(View.VISIBLE);
+		btPlus.setVisibility(View.GONE);
+		llSpinner.setVisibility(View.GONE);
+		flSurface.setVisibility(View.GONE);
+		mLayout.setTouchEnabled(false);
+		frame_container.setVisibility(View.VISIBLE);
+		surfaceFlag = true;
+		InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+	}
 	private void initUI(){
+		backKeyName="";
 		if (User.USER.isSubjectDownloadState()) db = new DatabaseHandler(this);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -1065,6 +1023,9 @@ public class SubMainActivity extends FragmentActivity {
 		DrawMode.CURRENT.setMode(0);
 		ibMenu = (ImageButton) findViewById(R.id.ibMenu);
 		ibBack = (ImageButton) findViewById(R.id.ibBack);
+		ibfindSchedule = (ImageButton)findViewById(R.id.ibfindSchedule);
+		ibwriteSchedule = (ImageButton)findViewById(R.id.ibwriteSchedule);
+		ibareaSchedule = (ImageButton)findViewById(R.id.ibareaSchedule);
 		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
 		llDialog = (LinearLayout) findViewById(R.id.llDialog);
 		llColor = (LinearLayout) findViewById(R.id.llColor);
@@ -1072,6 +1033,7 @@ public class SubMainActivity extends FragmentActivity {
 		llUniv = (LinearLayout) findViewById(R.id.llUniv);
 		llIncludeUniv = (LinearLayout) findViewById(R.id.llIncludeUniv);
 		llIncludeDep = (LinearLayout) findViewById(R.id.llIncludeDep);
+		llSpinner = (LinearLayout) findViewById(R.id.llSpinner);
 		llTitle = (LinearLayout) findViewById(R.id.llTitle);
 		rlArea = (RelativeLayout) findViewById(R.id.rlArea);
 		etPlace = (EditText) findViewById(R.id.etPlace);
@@ -1082,15 +1044,11 @@ public class SubMainActivity extends FragmentActivity {
 		btUniv = (Button) findViewById(R.id.btUniv);
 		btColor = (Button) findViewById(R.id.btColor);
 		btWriteArticle = (Button) findViewById(R.id.btWriteArticle);
-		ibfindSchedule = (ImageButton)findViewById(R.id.ibfindSchedule);
-		ibwriteSchedule = (ImageButton)findViewById(R.id.ibwriteSchedule);
-		ibareaSchedule = (ImageButton)findViewById(R.id.ibareaSchedule);
 		hlv = (HorizontalListView) findViewById(R.id.hlv);
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 		mLayout.setTouchEnabled(true);
 		ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
 		ivProfile.setImageUrl(SAMPLE_IMAGE_URL,MyVolley.getImageLoader());
-		rlBar = (RelativeLayout) findViewById(R.id.rlBar);
 		switcher = (TextSwitcher) findViewById(R.id.switcher);
 		ViewGroup.LayoutParams params = llDialog.getLayoutParams();
 		DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -1126,7 +1084,6 @@ public class SubMainActivity extends FragmentActivity {
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
 				llTitle.setVisibility(View.VISIBLE);
-				frame_container.setVisibility(View.GONE);
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				switch(position){
 					case 0: //주
@@ -1140,10 +1097,34 @@ public class SubMainActivity extends FragmentActivity {
 						btUniv.setTextColor(getResources().getColor(
 								R.color.gray));
 						viewMode = 0;
+						normalList.clear();
+						normalAdapter.notifyDataSetChanged();
+						changeFragment(TimetableFragment.class, "");
+						flSurface.setVisibility(View.VISIBLE);
+						frame_container.setVisibility(View.GONE);
 						InitSurfaceView.setMode(viewMode);
 						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
 						break;
 					case 1: // 일
+						indexForTitle = 0;
+						barText = CurrentTime.getTitleYearMonth(SubMainActivity.this);
+						switcher.setText(barText);
+						tvTitleYear.setVisibility(View.GONE);
+						btUniv.setVisibility(View.INVISIBLE);
+						DrawMode.CURRENT.setMode(0);
+						Common.stateFilter(Common.getTempTimePos(), viewMode);
+						llNormal.setVisibility(View.VISIBLE);
+						llUniv.setVisibility(View.GONE);
+						btNormal.setTextColor(getResources().getColor(
+								android.R.color.white));
+						btUniv.setVisibility(View.VISIBLE);
+						Common.stateFilter(Common.getTempTimePos(), viewMode);
+						btUniv.setTextColor(getResources().getColor(
+								R.color.gray));
+						flSurface.setVisibility(View.GONE);
+						frame_container.setVisibility(View.VISIBLE);
+						changeFragment(InitDayFragment.class, "일");
+						InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 						break;
 					case 2: // 월
 						indexForTitle = 0;
@@ -1156,14 +1137,18 @@ public class SubMainActivity extends FragmentActivity {
 						llNormal.setVisibility(View.VISIBLE);
 						llUniv.setVisibility(View.GONE);
 						btNormal.setTextColor(getResources().getColor(
-								R.color.white));
+								android.R.color.white));
 						viewMode = 2;
+						normalList.clear();
+						normalAdapter.notifyDataSetChanged();
+						changeFragment(TimetableFragment.class, "");
+						flSurface.setVisibility(View.VISIBLE);
+						frame_container.setVisibility(View.GONE);
 						InitSurfaceView.setMode(viewMode);
 						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
 						break;
 				}
 				surfaceFlag = false;
-				BackKeyName = "";
 			}
 
 			@Override
@@ -1193,12 +1178,33 @@ public class SubMainActivity extends FragmentActivity {
 			}
 		});
 	}
-
 	public void onEventMainThread(SendPlaceEvent e){
 				etPlace.setText(e.getPlace());
 	}
 	public void onEventMainThread(BottomNormalData e){
 		normalList.add(e);
 		normalAdapter.notifyDataSetChanged();
+	}
+	public void onEventMainThread(UpdateByDialEvent e){
+		normalList.remove(e.getPosition());
+		normalList.add(e.getPosition(), new BottomNormalData(
+				InitSurfaceView.getInitThread().getMonthAndDay(e.getXth()), e.getStartHour(), e.getStartMin(),
+				e.getEndHour(), e.getEndMin(), e.getXth()));
+		normalAdapter.notifyDataSetChanged();
+	}
+	public void onEventMainThread(BackKeyEvent e){
+		backKeyName = e.getFragName();
+	}
+
+	public void onEventMainThread(ChangeFragEvent e){
+		changeFragment(e.getCl(),e.getTitleName());
+	}
+	public void onEventMainThread(ExcuteMethodEvent e){
+		try {
+			Method m = SubMainActivity.this.getClass().getDeclaredMethod(e.getMethodName());
+			m.invoke(SubMainActivity.this);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 }

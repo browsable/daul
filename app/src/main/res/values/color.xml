@@ -1,34 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="list_item_title">#fff</color>
-    <color name="list_background">#303030</color>
-    <color name="list_background_pressed">#80FFFFFF</color>
-    <color name="list_divider">#272727</color>
-    <color name="counter_text_bg">#626262</color>
-    <color name="counter_text_color">#c5c4c4</color>
-    
     <color name="transparency">#00000000</color>
-    <color name="maincolor">#4EC7B3</color>
-    <color name="white">#FFFFFF</color>
-    <color name="whitesmoke">#F5F5F5</color>
-    <color name="black">#000000</color>
+    <color name="maincolor">#73C8BA</color>
+    <color name="drawercolor">#339DA8</color>
+    <color name="profilecolor">#2A858E</color>
+    <color name="whitesmoke">#F2F2F2</color>
+    <color name="darkgray">#4E4E4F</color>
+    <color name="dimgray">#636363</color>
+    <color name="gray">#808080</color>
     <color name="lightgray">#20000000</color>
     <color name="middlegray">#50000000</color>
-    <color name="dimgray">#696969</color>
-    <color name="gray">#808080</color>
     <color name="red">#FF0000</color>
     <color name="blue">#0000FF</color>
-    <color name="darkgray">#80000000</color>
-    <color name="orange">#FF8878</color>
     <!-- 시간표 입력 시 선택 색상 -->
     <color name="btcolor1">#FFF1A6</color>
-    <color name="btcolor2">#FEDB7B</color>
-    <color name="btcolor3">#F8AE9A</color>
-    <color name="btcolor4">#F4877A</color>
-    <color name="btcolor5">#84CDC2</color>
-    <color name="btcolor6">#A6DCE1</color>
-    <color name="btcolor7">#AFEEEE</color>
-    <color name="btcolor8">#AFD9AE</color>
-    <color name="btcolor9">#C7BBDC</color>
+    <color name="btcolor2">#FDDA7B</color>
+    <color name="btcolor3">#FBC392</color>
+    <color name="btcolor4">#F8AE99</color>
+    <color name="btcolor5">#F4877A</color>
+    <color name="btcolor6">#83CDC2</color>
+    <color name="btcolor7">#A6DBE1</color>
+    <color name="btcolor8">#AED8AD</color>
+    <color name="btcolor9">#C6BBDC</color>
 
 </resources>

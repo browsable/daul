@@ -10,7 +10,7 @@
     <!-- This is the main color -->
     <item>
         <shape>
-            <solid android:color="@color/white" />
+            <solid android:color="@android:color/white" />
         </shape>
     </item>
 </layer-list>

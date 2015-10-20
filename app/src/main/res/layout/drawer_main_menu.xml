@@ -1,203 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:widget="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:layout_weight="1"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/drawercolor"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/margin_xxxl">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_xxxl"
-            android:layout_marginBottom="@dimen/margin_l"
-            android:layout_weight="3"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
-            <com.daemin.common.RoundedCornerNetworkImageView
-                android:id="@+id/ivProfile"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:scaleType="fitXY"
-                widget:radius="10"
-                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@drawable/bg_profilecolor_round_border"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.daemin.common.RoundedCornerNetworkImageView
+                    android:id="@+id/ivProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_profile"
+                    android:scaleType="fitXY"
+                    widget:radius="10" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_default"
+                android:layout_margin="@dimen/margin_default"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="choz@"
-                android:textColor="@color/black"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/textsize_l"
                 android:textStyle="bold" />
-        </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="@dimen/margin_xxl">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black" />
 
             <LinearLayout
-                android:id="@+id/btTimetable"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginBottom="@dimen/margin_xl"
-                android:gravity="center_vertical"
-                android:onClick="mOnClick"
-                android:orientation="horizontal" >
+                android:layout_marginTop="@dimen/margin_xl"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_xxl">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginRight="@dimen/margin_default"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_timetable" />
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/btTimetable"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="시간표"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/textsize_l"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/btFriend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginBottom="@dimen/margin_xl"
-                android:gravity="center_vertical"
-                android:onClick="mOnClick"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginRight="@dimen/margin_default"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_friend" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="친구시간표"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/textsize_l"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/btArea"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginBottom="@dimen/margin_xl"
-                android:gravity="center_vertical"
-                android:onClick="mOnClick"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginRight="@dimen/margin_default"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_area" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="주변시간표"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/textsize_l"
-                    android:textStyle="bold" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/btCommunity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginBottom="@dimen/margin_xl"
-                android:gravity="center_vertical"
-                android:onClick="mOnClick"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginRight="@dimen/margin_default"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_community" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="@dimen/margin_xl"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:text="커뮤니티"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/textsize_l"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:onClick="mOnClick"
+                    android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/btSetting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:onClick="mOnClick"
-                android:orientation="horizontal" >
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_marginRight="@dimen/margin_default"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_timetable" />
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginRight="@dimen/margin_default"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_timetable" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="@string/timetable"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textsize_default"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/btFriend"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="설정"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/textsize_l"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="@dimen/margin_xl"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:onClick="mOnClick"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_marginRight="@dimen/margin_default"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_friend" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="@string/friend"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textsize_default"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_xl"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:onClick="mOnClick"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_marginRight="@dimen/margin_default"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_area" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="@string/area"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textsize_default"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btCommunity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_xl"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:onClick="mOnClick"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_marginRight="@dimen/margin_default"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_community" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/community"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textsize_default"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

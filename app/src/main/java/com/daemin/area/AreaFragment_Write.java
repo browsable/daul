@@ -7,8 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.daemin.common.BasicFragment;
-import com.daemin.main.SubMainActivity;
+import com.daemin.event.BackKeyEvent;
+import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 public class AreaFragment_Write extends BasicFragment {
     private static AreaFragment_Write singleton;
@@ -29,11 +32,9 @@ public class AreaFragment_Write extends BasicFragment {
         if (layoutId > 0) {
             ibfindSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibfindSchedule);
             ibwriteSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibwriteSchedule);
-           ibMenu = SubMainActivity.getInstance().getIbMenu();
-           ibBack = SubMainActivity.getInstance().getIbBack();
-           ibMenu.setVisibility(View.GONE);
-           ibBack.setVisibility(View.VISIBLE);
-           SubMainActivity.getInstance().setBackKeyName("AreaFragment");
+            //EventBus.getDefault().post(new ViewGoneEvent(new String[]{"ibMenu"}));
+            //EventBus.getDefault().post(new ViewVisibleEvent(new String[]{"ibBack"}));
+            EventBus.getDefault().post(new BackKeyEvent("AreaFragment"));
 
         }
 
@@ -46,8 +47,8 @@ public class AreaFragment_Write extends BasicFragment {
                 ibBack.setVisibility(View.GONE);
                 ibfindSchedule.setVisibility(View.VISIBLE);
                 ibwriteSchedule.setVisibility(View.VISIBLE);
-                SubMainActivity.getInstance().changeFragment(AreaFragment.class, "주변시간표", R.color.maincolor);
-                SubMainActivity.getInstance().setBackKeyName("");
+                EventBus.getDefault().post(new ChangeFragEvent(AreaFragment.class, "주변시간표"));
+                EventBus.getDefault().post(new BackKeyEvent(""));
 
             }
         });
