@@ -28,7 +28,7 @@
                 android:background="@color/transparency"
                 android:ems="10"
                 android:hint="@string/autocomplete_hint"
-                android:paddingLeft="@dimen/margin_s"
+                android:paddingLeft="@dimen/margin_l"
                 android:scrollbars="none"
                 android:singleLine="true"
                 android:dropDownWidth="match_parent"

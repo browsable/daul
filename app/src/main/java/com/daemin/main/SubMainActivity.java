@@ -50,11 +50,12 @@ import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.common.DatabaseHandler;
 import com.daemin.common.DialAddTimePicker;
+import com.daemin.common.DialAlarm;
 import com.daemin.common.DialMonthPicker;
+import com.daemin.common.DialRepeat;
 import com.daemin.common.DialWeekPicker;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
-import com.daemin.common.MyVolley;
 import com.daemin.common.RoundedCornerNetworkImageView;
 import com.daemin.community.CommunityFragment;
 import com.daemin.data.BottomNormalData;
@@ -735,19 +736,14 @@ public class SubMainActivity extends FragmentActivity {
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
 			case R.id.btShare:
-				InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
-				datp = new DialAddTimePicker(SubMainActivity.this, iw.getAllMonthAndDay());
-				datp.show();
 				break;
 			case R.id.btAlarm:
-				InitWeekThread iws = (InitWeekThread) InitSurfaceView.getInitThread();
-				datp = new DialAddTimePicker(SubMainActivity.this, iws.getAllMonthAndDay());
-				datp.show();
+				DialAlarm da = new DialAlarm(SubMainActivity.this);
+				da.show();
 				break;
 			case R.id.btRepeat:
-				InitWeekThread iwss = (InitWeekThread) InitSurfaceView.getInitThread();
-				datp = new DialAddTimePicker(SubMainActivity.this, iwss.getAllMonthAndDay());
-				datp.show();
+				DialRepeat dr = new DialRepeat(SubMainActivity.this);
+				dr.show();
 				break;
 		}
 
@@ -1048,7 +1044,7 @@ public class SubMainActivity extends FragmentActivity {
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 		mLayout.setTouchEnabled(true);
 		ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
-		ivProfile.setImageUrl(SAMPLE_IMAGE_URL,MyVolley.getImageLoader());
+		//ivProfile.setImageUrl(SAMPLE_IMAGE_URL,MyVolley.getImageLoader());
 		switcher = (TextSwitcher) findViewById(R.id.switcher);
 		ViewGroup.LayoutParams params = llDialog.getLayoutParams();
 		DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -1085,69 +1081,54 @@ public class SubMainActivity extends FragmentActivity {
 				normalAdapter.notifyDataSetChanged();
 				llTitle.setVisibility(View.VISIBLE);
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+				indexForTitle = 0;
+				barText = CurrentTime.getTitleMonthWeek(SubMainActivity.this);
+				switcher.setText("");
+				switcher.setText(barText);
+				Common.stateFilter(Common.getTempTimePos(), viewMode);
 				switch(position){
 					case 0: //주
-						indexForTitle = 0;
-						barText = CurrentTime.getTitleMonthWeek(SubMainActivity.this);
-						switcher.setText("");
-						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.VISIBLE);
 						btUniv.setVisibility(View.VISIBLE);
-						Common.stateFilter(Common.getTempTimePos(), viewMode);
 						btUniv.setTextColor(getResources().getColor(
 								R.color.gray));
 						viewMode = 0;
-						normalList.clear();
-						normalAdapter.notifyDataSetChanged();
 						changeFragment(TimetableFragment.class, "");
 						flSurface.setVisibility(View.VISIBLE);
 						frame_container.setVisibility(View.GONE);
 						InitSurfaceView.setMode(viewMode);
-						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
 						break;
 					case 1: // 일
-						indexForTitle = 0;
-						barText = CurrentTime.getTitleYearMonth(SubMainActivity.this);
-						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.GONE);
 						btUniv.setVisibility(View.INVISIBLE);
 						DrawMode.CURRENT.setMode(0);
-						Common.stateFilter(Common.getTempTimePos(), viewMode);
 						llNormal.setVisibility(View.VISIBLE);
 						llUniv.setVisibility(View.GONE);
 						btNormal.setTextColor(getResources().getColor(
 								android.R.color.white));
 						btUniv.setVisibility(View.VISIBLE);
-						Common.stateFilter(Common.getTempTimePos(), viewMode);
 						btUniv.setTextColor(getResources().getColor(
 								R.color.gray));
 						flSurface.setVisibility(View.GONE);
 						frame_container.setVisibility(View.VISIBLE);
 						changeFragment(InitDayFragment.class, "일");
-						InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 						break;
 					case 2: // 월
-						indexForTitle = 0;
-						barText = CurrentTime.getTitleYearMonth(SubMainActivity.this);
-						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.GONE);
 						btUniv.setVisibility(View.INVISIBLE);
 						DrawMode.CURRENT.setMode(0);
-						Common.stateFilter(Common.getTempTimePos(), viewMode);
 						llNormal.setVisibility(View.VISIBLE);
 						llUniv.setVisibility(View.GONE);
 						btNormal.setTextColor(getResources().getColor(
 								android.R.color.white));
 						viewMode = 2;
-						normalList.clear();
-						normalAdapter.notifyDataSetChanged();
 						changeFragment(TimetableFragment.class, "");
 						flSurface.setVisibility(View.VISIBLE);
 						frame_container.setVisibility(View.GONE);
 						InitSurfaceView.setMode(viewMode);
-						InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
 						break;
 				}
+				InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
 				surfaceFlag = false;
 			}
 

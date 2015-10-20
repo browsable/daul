@@ -9,7 +9,7 @@
         android:gravity="center_vertical"
         android:layout_marginLeft="@dimen/margin_default"
         android:textSize="@dimen/textsize_xxl"
-        android:text="@string/tvDailTitle"
+        android:text="@string/tvDialTimeTitle"
         android:textStyle="bold"
         android:layout_weight="1.9"/>
     <View
@@ -107,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/btDailCancel"
+            android:text="@string/btDialCancel"
             android:background="@drawable/bt_click"
             android:textColor="@android:color/black"
             android:textSize="@dimen/margin_l"
@@ -123,7 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/btDailSetting"
+            android:text="@string/btDialSetting"
             android:background="@drawable/bt_click"
             android:textColor="@android:color/black"
             android:textSize="@dimen/margin_l"
