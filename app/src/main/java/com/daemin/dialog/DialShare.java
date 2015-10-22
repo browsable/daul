@@ -10,8 +10,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
+import com.daemin.event.SetShareEvent;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-09-08.
@@ -34,7 +39,7 @@ public class DialShare extends Dialog {
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels * 2 / 3;
-        layoutParams.height = dm.heightPixels * 3 / 5;
+        layoutParams.height = dm.heightPixels / 3;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();
@@ -43,10 +48,20 @@ public class DialShare extends Dialog {
     private void setLayout() {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
+        shareGroup = (RadioGroup)findViewById(R.id.shareGroup);
+        shareGroup.check((shareGroup.getChildAt(0)).getId());
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancel();
+                if(shareGroup.getCheckedRadioButtonId()!=-1){
+                    int id= shareGroup.getCheckedRadioButtonId();
+                    View radioButton = shareGroup.findViewById(id);
+                    int radioId = shareGroup.indexOfChild(radioButton);
+                    RadioButton btn = (RadioButton) shareGroup.getChildAt(radioId);
+                    String selection = (String) btn.getText();
+                    EventBus.getDefault().post(new SetShareEvent(selection));
+                    cancel();
+                }
             }
         });
         btDialCancel.setOnClickListener(new View.OnClickListener() {
@@ -58,5 +73,5 @@ public class DialShare extends Dialog {
     }
     private Button btDialCancel;
     private Button btDialSetting;
-
+    private RadioGroup shareGroup;
 }

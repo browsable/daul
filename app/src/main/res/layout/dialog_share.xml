@@ -15,10 +15,39 @@
         android:textSize="@dimen/textsize_l"
         android:textStyle="bold" />
 
-    <ListView
+    <RadioGroup
+        android:id="@+id/shareGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/margin_l"
+        >
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/share_radio0"
+            android:textSize="@dimen/textsize_default"/>
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/share_radio1"
+            android:textSize="@dimen/textsize_default"/>
+        <RadioButton
+            android:id="@+id/radio2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/share_radio2"
+            android:textSize="@dimen/textsize_default"/>
+    </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"

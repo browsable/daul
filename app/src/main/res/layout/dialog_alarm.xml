@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="true"
-            android:text="@string/radio0"
+            android:text="@string/alram_radio0"
             android:textSize="@dimen/textsize_default"/>
 
         <RadioButton
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/radio1"
+            android:text="@string/alram_radio1"
             android:textSize="@dimen/textsize_default"/>
         <RadioButton
             android:id="@+id/radio2"
@@ -45,7 +45,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="true"
-            android:text="@string/radio2"
+            android:text="@string/alram_radio2"
             android:textSize="@dimen/textsize_default"/>
 
         <RadioButton
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/radio3"
+            android:text="@string/alram_radio3"
             android:textSize="@dimen/textsize_default"/>
         <RadioButton
             android:id="@+id/radio4"
@@ -61,7 +61,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="true"
-            android:text="@string/radio4"
+            android:text="@string/alram_radio4"
             android:textSize="@dimen/textsize_default"/>
 
         <RadioButton
@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/radio5"
+            android:text="@string/alram_radio5"
             android:textSize="@dimen/textsize_default"/>
         <RadioButton
             android:id="@+id/radio6"
@@ -77,14 +77,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="true"
-            android:text="@string/radio6"
+            android:text="@string/alram_radio6"
             android:textSize="@dimen/textsize_default"/>
         <RadioButton
             android:id="@+id/radio7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/radio7"
+            android:text="@string/alram_radio7"
             android:textSize="@dimen/textsize_default"/>
         <RadioButton
             android:id="@+id/radio8"
@@ -92,7 +92,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="true"
-            android:text="@string/radio8"
+            android:text="@string/alram_radio8"
             android:textSize="@dimen/textsize_default"/>
     </RadioGroup>
 

@@ -73,6 +73,7 @@ import com.daemin.event.ChangeFragEvent;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.event.SendPlaceEvent;
 import com.daemin.event.SetAlarmEvent;
+import com.daemin.event.SetShareEvent;
 import com.daemin.event.UpdateByDialEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.map.MapActivity;
@@ -1192,6 +1193,9 @@ public class SubMainActivity extends FragmentActivity {
 	}
 	public void onEventMainThread(SetAlarmEvent e){
 		tvAlarm.setText(e.getTime());
+	}
+	public void onEventMainThread(SetShareEvent e){
+		tvShare.setText(e.getShare());
 	}
 	public void onEventMainThread(ChangeFragEvent e){
 		changeFragment(e.getCl(),e.getTitleName());

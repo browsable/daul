@@ -46,16 +46,20 @@
         <string name="btDialSetting">확인</string>
         <!--지도-->
         <string name="search_place">장소 검색</string>
+        <!--공유 -->
+        <string name="share_radio0">비공개</string>
+        <string name="share_radio1">친구공개</string>
+        <string name="share_radio2">전체공개</string>
         <!--알람 -->
-        <string name="radio0">알람 없음</string>
-        <string name="radio1">3분 전</string>
-        <string name="radio2">5분 전</string>
-        <string name="radio3">10분 전</string>
-        <string name="radio4">15분 전</string>
-        <string name="radio5">20분 전</string>
-        <string name="radio6">30분 전</string>
-        <string name="radio7">1시간 전</string>
-        <string name="radio8">1일 전</string>
+        <string name="alram_radio0">알람 없음</string>
+        <string name="alram_radio1">3분 전</string>
+        <string name="alram_radio2">5분 전</string>
+        <string name="alram_radio3">10분 전</string>
+        <string name="alram_radio4">15분 전</string>
+        <string name="alram_radio5">20분 전</string>
+        <string name="alram_radio6">30분 전</string>
+        <string name="alram_radio7">1시간 전</string>
+        <string name="alram_radio8">1일 전</string>
         <string-array name="depgrade">
             <item>전체</item>
             <item>1학년</item>
