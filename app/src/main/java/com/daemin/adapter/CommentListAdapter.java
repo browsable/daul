@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.daemin.common.Common;
-import com.daemin.community.Comment;
+import com.daemin.data.Comment;
 import com.daemin.timetable.R;
 
 import java.util.List;
@@ -159,4 +159,5 @@ class CommentListAdapter extends BaseAdapter{
         public Button btChildEdit;
         public Button btChildRemove;
     }
-}*/
+}
+*/

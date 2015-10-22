@@ -1,4 +1,4 @@
-package com.daemin.common;
+package com.daemin.dialog;
 
 /**
  * Created by hernia on 2015-09-08.
@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
+import com.daemin.common.Common;
+import com.daemin.common.Convert;
 import com.daemin.data.BottomNormalData;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
@@ -68,7 +70,7 @@ public class DialAddTimePicker extends Dialog {
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels*2/3;;
-        layoutParams.height = dm.heightPixels/3;
+        layoutParams.height = dm.heightPixels*4/9;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();
@@ -266,7 +268,7 @@ public class DialAddTimePicker extends Dialog {
                     xth));
             cancel();
         }else{
-            Toast.makeText(context, context.getResources().getString(R.string.Overlap), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getResources().getString(R.string.overlap), Toast.LENGTH_SHORT).show();
         }
     }
 }

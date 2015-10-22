@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,14 +11,90 @@
         android:layout_marginLeft="@dimen/margin_xl"
         android:layout_weight="3"
         android:gravity="center_vertical"
-        android:text="@string/tvDialAlarmTitle"
+        android:text="@string/tvDialAlarm"
         android:textSize="@dimen/textsize_l"
         android:textStyle="bold" />
 
-    <ListView
+    <RadioGroup
+        android:id="@+id/alarmGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/margin_l"
+        >
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/radio0"
+            android:textSize="@dimen/textsize_default"/>
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/radio1"
+            android:textSize="@dimen/textsize_default"/>
+        <RadioButton
+            android:id="@+id/radio2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/radio2"
+            android:textSize="@dimen/textsize_default"/>
+
+        <RadioButton
+            android:id="@+id/radio3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/radio3"
+            android:textSize="@dimen/textsize_default"/>
+        <RadioButton
+            android:id="@+id/radio4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/radio4"
+            android:textSize="@dimen/textsize_default"/>
+
+        <RadioButton
+            android:id="@+id/radio5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/radio5"
+            android:textSize="@dimen/textsize_default"/>
+        <RadioButton
+            android:id="@+id/radio6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/radio6"
+            android:textSize="@dimen/textsize_default"/>
+        <RadioButton
+            android:id="@+id/radio7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/radio7"
+            android:textSize="@dimen/textsize_default"/>
+        <RadioButton
+            android:id="@+id/radio8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/radio8"
+            android:textSize="@dimen/textsize_default"/>
+    </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"

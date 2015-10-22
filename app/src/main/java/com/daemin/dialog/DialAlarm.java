@@ -1,4 +1,4 @@
-package com.daemin.common;
+package com.daemin.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,8 +10,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
+import com.daemin.event.SetAlarmEvent;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-09-08.
@@ -43,10 +48,20 @@ public class DialAlarm extends Dialog {
     private void setLayout() {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
+        alarmGroup = (RadioGroup)findViewById(R.id.alarmGroup);
+        alarmGroup.check((alarmGroup.getChildAt(0)).getId());
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(alarmGroup.getCheckedRadioButtonId()!=-1){
+                    int id= alarmGroup.getCheckedRadioButtonId();
+                    View radioButton = alarmGroup.findViewById(id);
+                    int radioId = alarmGroup.indexOfChild(radioButton);
+                    RadioButton btn = (RadioButton) alarmGroup.getChildAt(radioId);
+                    String selection = (String) btn.getText();
+                    EventBus.getDefault().post(new SetAlarmEvent(selection));
+                    cancel();
+                }
             }
         });
         btDialCancel.setOnClickListener(new View.OnClickListener() {
@@ -58,4 +73,5 @@ public class DialAlarm extends Dialog {
     }
     private Button btDialCancel;
     private Button btDialSetting;
+    private RadioGroup alarmGroup;
 }

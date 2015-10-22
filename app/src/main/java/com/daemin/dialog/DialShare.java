@@ -1,4 +1,4 @@
-package com.daemin.common;
+package com.daemin.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -16,8 +16,8 @@ import com.daemin.timetable.R;
 /**
  * Created by hernia on 2015-09-08.
  */
-public class DialRepeat extends Dialog {
-    public DialRepeat(Context context) {
+public class DialShare extends Dialog {
+    public DialShare(Context context) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
     }
 
@@ -25,7 +25,7 @@ public class DialRepeat extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_repeat);
+        setContentView(R.layout.dialog_share);
         setCancelable(true);
         Window window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(
@@ -46,7 +46,7 @@ public class DialRepeat extends Dialog {
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                cancel();
             }
         });
         btDialCancel.setOnClickListener(new View.OnClickListener() {

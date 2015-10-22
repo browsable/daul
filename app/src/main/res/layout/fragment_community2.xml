@@ -21,7 +21,7 @@
             android:dropDownVerticalOffset="@dimen/margin_default"
             android:dropDownWidth="match_parent"
             android:ems="10"
-            android:hint="@string/friend_search"
+            android:hint="@string/community_search"
             android:paddingLeft="@dimen/margin_l"
             android:scrollbars="none"
             android:singleLine="true"
@@ -57,8 +57,7 @@
         android:divider="@color/lightgray"
         android:childDivider="@color/lightgray"
         android:dividerHeight="1dp"
-        android:layout_marginLeft="@dimen/margin_default"
-        android:layout_marginRight="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
         android:listSelector="@drawable/bt_click"
         android:overScrollMode="never"
         />

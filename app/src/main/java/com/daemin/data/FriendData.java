@@ -1,10 +1,17 @@
-package com.daemin.friend;
+package com.daemin.data;
 
-public class ContactEntity {
+public class FriendData {
     long photoid;
     String phonenum;
     String name;
-     
+
+    public FriendData() {
+    }
+    public FriendData(long photoid, String phonenum, String name) {
+        this.photoid = photoid;
+        this.phonenum = phonenum;
+        this.name = name;
+    }
     public long getPhotoid() {
         return photoid;
     }

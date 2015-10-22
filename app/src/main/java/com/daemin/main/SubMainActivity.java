@@ -49,17 +49,18 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.common.DatabaseHandler;
-import com.daemin.common.DialAddTimePicker;
-import com.daemin.common.DialAlarm;
-import com.daemin.common.DialMonthPicker;
-import com.daemin.common.DialRepeat;
-import com.daemin.common.DialWeekPicker;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
 import com.daemin.common.RoundedCornerNetworkImageView;
-import com.daemin.community.CommunityFragment;
+import com.daemin.community.CommunityFragment2;
 import com.daemin.data.BottomNormalData;
 import com.daemin.data.SubjectData;
+import com.daemin.dialog.DialAddTimePicker;
+import com.daemin.dialog.DialAlarm;
+import com.daemin.dialog.DialMonthPicker;
+import com.daemin.dialog.DialRepeat;
+import com.daemin.dialog.DialShare;
+import com.daemin.dialog.DialWeekPicker;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.DrawMode;
@@ -71,6 +72,7 @@ import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.event.SendPlaceEvent;
+import com.daemin.event.SetAlarmEvent;
 import com.daemin.event.UpdateByDialEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.map.MapActivity;
@@ -104,8 +106,8 @@ public class SubMainActivity extends FragmentActivity {
 	RoundedCornerNetworkImageView ivProfile;
 	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep,llTitle,llSpinner;
 	ImageButton ibMenu, ibBack, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
-	TextView tvTitle,tvTitleYear;
-	EditText etPlace;
+	TextView tvTitle,tvTitleYear,tvShare,tvAlarm,tvRepeat;
+	EditText etPlace,etMemo;
 	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
 	FrameLayout flSurface, frame_container;
 	RelativeLayout rlArea;
@@ -469,7 +471,7 @@ public class SubMainActivity extends FragmentActivity {
 				break;
 			case R.id.btCommunity:
 				changeSetting();
-				changeFragment(CommunityFragment.class, "커뮤니티");
+				changeFragment(CommunityFragment2.class, "커뮤니티");
 				break;
 			case R.id.btSetting:
 				changeSetting();
@@ -715,7 +717,7 @@ public class SubMainActivity extends FragmentActivity {
 						break;
 				}
 				break;
-			case R.id.btNew:
+			case R.id.btNew1:case R.id.btNew2:
 				DialAddTimePicker datp = null;
 				switch(viewMode) {
 					case 0:
@@ -736,6 +738,8 @@ public class SubMainActivity extends FragmentActivity {
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
 			case R.id.btShare:
+				DialShare ds = new DialShare(SubMainActivity.this);
+				ds.show();
 				break;
 			case R.id.btAlarm:
 				DialAlarm da = new DialAlarm(SubMainActivity.this);
@@ -1033,6 +1037,10 @@ public class SubMainActivity extends FragmentActivity {
 		llTitle = (LinearLayout) findViewById(R.id.llTitle);
 		rlArea = (RelativeLayout) findViewById(R.id.rlArea);
 		etPlace = (EditText) findViewById(R.id.etPlace);
+		etMemo = (EditText) findViewById(R.id.etMemo);
+		tvShare = (TextView) findViewById(R.id.tvShare);
+		tvAlarm = (TextView) findViewById(R.id.tvAlarm);
+		tvRepeat = (TextView) findViewById(R.id.tvRepeat);
 		tvTitle = (TextView) findViewById(R.id.tvTitle);
 		tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
 		btPlus = (Button) findViewById(R.id.btPlus);
@@ -1082,12 +1090,12 @@ public class SubMainActivity extends FragmentActivity {
 				llTitle.setVisibility(View.VISIBLE);
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				indexForTitle = 0;
-				barText = CurrentTime.getTitleMonthWeek(SubMainActivity.this);
-				switcher.setText("");
-				switcher.setText(barText);
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
 				switch(position){
 					case 0: //주
+						barText = CurrentTime.getTitleMonthWeek(SubMainActivity.this);
+						switcher.setText("");
+						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.VISIBLE);
 						btUniv.setVisibility(View.VISIBLE);
 						btUniv.setTextColor(getResources().getColor(
@@ -1099,6 +1107,9 @@ public class SubMainActivity extends FragmentActivity {
 						InitSurfaceView.setMode(viewMode);
 						break;
 					case 1: // 일
+						barText = CurrentTime.getTitleMonthWeek(SubMainActivity.this);
+						switcher.setText("");
+						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.GONE);
 						btUniv.setVisibility(View.INVISIBLE);
 						DrawMode.CURRENT.setMode(0);
@@ -1114,6 +1125,9 @@ public class SubMainActivity extends FragmentActivity {
 						changeFragment(InitDayFragment.class, "일");
 						break;
 					case 2: // 월
+						barText = CurrentTime.getTitleYearMonth(SubMainActivity.this);
+						switcher.setText("");
+						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.GONE);
 						btUniv.setVisibility(View.INVISIBLE);
 						DrawMode.CURRENT.setMode(0);
@@ -1176,7 +1190,9 @@ public class SubMainActivity extends FragmentActivity {
 	public void onEventMainThread(BackKeyEvent e){
 		backKeyName = e.getFragName();
 	}
-
+	public void onEventMainThread(SetAlarmEvent e){
+		tvAlarm.setText(e.getTime());
+	}
 	public void onEventMainThread(ChangeFragEvent e){
 		changeFragment(e.getCl(),e.getTitleName());
 	}

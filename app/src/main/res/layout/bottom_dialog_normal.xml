@@ -29,16 +29,18 @@
             android:background="@color/lightgray"
             />
         <LinearLayout
+            android:id="@+id/btNew1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:onClick="mOnClick"
+            >
             <LinearLayout
                 android:layout_width="36dp"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:background="@drawable/bg_lightgray_border_right">
+                android:orientation="vertical">
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
@@ -60,7 +62,7 @@
                 android:background="@color/lightgray"
                 />
             <LinearLayout
-                android:id="@+id/btNew"
+                android:id="@+id/btNew2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5"

@@ -15,7 +15,7 @@
         <LinearLayout
             android:id="@+id/llAutocomplete"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="38dp"
             android:background="@android:color/white"
             android:orientation="horizontal">
 
@@ -27,7 +27,7 @@
                 android:layout_weight="1"
                 android:background="@color/transparency"
                 android:ems="10"
-                android:hint="@string/autocomplete_hint"
+                android:hint="@string/search_place"
                 android:paddingLeft="@dimen/margin_l"
                 android:scrollbars="none"
                 android:singleLine="true"
@@ -48,8 +48,8 @@
 
             <Button
                 android:id="@+id/btSearch"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/margin_default"
                 android:background="@drawable/ic_search" />
@@ -59,8 +59,8 @@
                 android:background="@color/lightgray"/>
             <Button
                 android:id="@+id/btSavePlace"
-                android:layout_width="22dp"
-                android:layout_height="16dp"
+                android:layout_width="18dp"
+                android:layout_height="12dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/margin_s"
                 android:layout_marginLeft="@dimen/margin_s"

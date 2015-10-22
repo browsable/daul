@@ -1,4 +1,4 @@
-package com.daemin.common;
+package com.daemin.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.daemin.common.Common;
+import com.daemin.common.Convert;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.event.UpdateByDialEvent;
@@ -54,7 +56,7 @@ public class DialWeekPicker extends Dialog {
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels * 2 / 3;
-        layoutParams.height = dm.heightPixels / 3;
+        layoutParams.height = dm.heightPixels*4/9;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();

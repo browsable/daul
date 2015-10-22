@@ -29,7 +29,6 @@
             android:text="02.02 18:00"
             android:textColor="@color/darkgray"
             android:paddingTop="@dimen/margin_default"
-            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
             android:paddingRight="@dimen/margin_l"/>
     </LinearLayout>
     <EditText

@@ -223,11 +223,11 @@
             android:gravity="right|bottom">
             <Button
                 android:id="@+id/btPlus"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/ic_plus_off"
-                android:layout_marginRight="@dimen/margin_default"
-                android:layout_marginBottom="@dimen/margin_default"
+                android:layout_marginRight="@dimen/margin_xl"
+                android:layout_marginBottom="@dimen/margin_xl"
                 android:scaleType="fitXY"
                 android:onClick="mOnClick"
                 />

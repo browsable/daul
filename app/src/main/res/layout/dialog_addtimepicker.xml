@@ -1,26 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@drawable/bg_black_border"
+android:orientation="vertical">
+
+<TextView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_maincolor_border"
-    android:orientation="vertical" >
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="@dimen/margin_default"
-        android:textSize="@dimen/textsize_xxl"
-        android:text="@string/tvDialTimeTitle"
-        android:textStyle="bold"
-        android:layout_weight="1.9"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/maincolor" />
+    android:layout_marginLeft="@dimen/margin_s"
+    android:layout_weight="3"
+    android:gravity="center_vertical"
+    android:text="@string/tvDialTime"
+    android:textSize="@dimen/textsize_l"
+    android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/margin_l">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,12 +29,12 @@
             android:gravity="center"
             android:paddingLeft="@dimen/margin_default"
             >
-        <NumberPicker
-            android:id="@+id/npMD"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            />
+            <NumberPicker
+                android:id="@+id/npMD"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,29 +43,29 @@
             android:orientation="horizontal"
             android:paddingLeft="@dimen/margin_l"
             android:gravity="center">
-        <NumberPicker
-            android:id="@+id/npStartHour"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text=":"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/margin_xl"
-            />
-        <NumberPicker
-            android:id="@+id/npStartMin"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
-            />
-            </LinearLayout>
+            <NumberPicker
+                android:id="@+id/npStartHour"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=":"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/margin_l"
+                />
+            <NumberPicker
+                android:id="@+id/npStartMin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -80,67 +80,66 @@
             android:gravity="center"
             android:paddingRight="@dimen/margin_default"
             >
-        <NumberPicker
-            android:id="@+id/npEndHour"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
-            />
+            <NumberPicker
+                android:id="@+id/npEndHour"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text=":"
                 android:gravity="center"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/margin_xl"
+                android:textSize="@dimen/margin_l"
                 />
-        <NumberPicker
-            android:id="@+id/npEndMin"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
-            />
-            </LinearLayout>
+            <NumberPicker
+                android:id="@+id/npEndMin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
     </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="3"
+    android:orientation="horizontal"
+    android:layout_marginRight="@dimen/margin_default"
+    android:layout_marginBottom="@dimen/margin_s"
+    >
+
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/maincolor" />
+        android:layout_height="match_parent"
+        android:layout_weight="2.5" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/btDialCancel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:orientation="horizontal" >
+        android:layout_weight="5"
+        android:background="@android:color/white"
+        android:text="@string/btDialCancel"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/textsize_l"
+        android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btDialCancel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/btDialCancel"
-            android:background="@drawable/bt_click"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/margin_l"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/maincolor" />
-
-        <Button
-            android:id="@+id/btDialSetting"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/btDialSetting"
-            android:background="@drawable/bt_click"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/margin_l"
-            android:textStyle="bold" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/btDialSetting"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:background="@android:color/white"
+        android:text="@string/btDialSetting"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/textsize_l"
+        android:textStyle="bold" />
+</LinearLayout>
 
 </LinearLayout>

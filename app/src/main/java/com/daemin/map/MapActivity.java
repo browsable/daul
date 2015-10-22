@@ -8,6 +8,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -17,8 +18,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.daemin.event.SendPlaceEvent;
-import com.daemin.map.activities.SampleActivityBase;
-import com.daemin.map.logger.Log;
 import com.daemin.timetable.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -45,7 +44,7 @@ import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
 
-public class MapActivity extends SampleActivityBase
+public class MapActivity extends FragmentActivity
         implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks
         , LocationListener {
 
@@ -129,7 +128,6 @@ public class MapActivity extends SampleActivityBase
             final String placeId = item.getPlaceId();
             final CharSequence primaryText = item.getPrimaryText(null);
 
-            Log.i(TAG, "Autocomplete item selected: " + primaryText);
 
             /*
              Issue a request to the Places Geo Data API to retrieve a Place object with additional
@@ -138,7 +136,6 @@ public class MapActivity extends SampleActivityBase
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-            Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
         }
     };
 
@@ -152,7 +149,6 @@ public class MapActivity extends SampleActivityBase
         public void onResult(PlaceBuffer places) {
             if (!places.getStatus().isSuccess()) {
                 // Request did not complete successfully
-                Log.e(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
                 places.release();
                 return;
             }
@@ -188,9 +184,6 @@ public class MapActivity extends SampleActivityBase
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
-        Log.e(TAG, "onConnectionFailed: ConnectionResult.getErrorCode() = "
-                + connectionResult.getErrorCode());
 
         // TODO(Developer): Check error code and notify the user of error state and resolution.
         Toast.makeText(this,

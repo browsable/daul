@@ -79,11 +79,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:padding="@dimen/margin_l">
+                >
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btIndicator"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:baselineAligned="false"
+                    android:padding="@dimen/margin_l"
                     android:gravity="center_vertical">
                     <TextView
                         android:layout_width="wrap_content"
@@ -93,7 +96,7 @@
                         android:id="@+id/tvCountComment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/maincolor"
                         android:layout_marginRight="@dimen/margin_s"
                         android:layout_marginLeft="@dimen/margin_s"
                         android:layout_gravity="center_vertical"
@@ -102,6 +105,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:gravity="right">
                     <Button
                         android:id="@+id/btEdit"
