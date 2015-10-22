@@ -943,6 +943,11 @@ public class SubMainActivity extends FragmentActivity {
 		}
 	}
 	@Override
+	public void onResume() {
+		super.onResume();
+		if(!EventBus.getDefault().isRegistered(this))EventBus.getDefault().register(this);
+	}
+	@Override
 	protected void onPause() {
 		super.onPause();
 		//screenshot();
@@ -1163,6 +1168,8 @@ public class SubMainActivity extends FragmentActivity {
 			}
 			@Override
 			public void onPanelCollapsed(View panel) {
+				llColor.setVisibility(View.INVISIBLE);
+				colorFlag = false;
 				btPlus.setVisibility(View.VISIBLE);
 			}
 			@Override

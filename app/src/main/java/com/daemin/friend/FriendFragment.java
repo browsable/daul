@@ -34,11 +34,21 @@ public class FriendFragment extends BasicFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!EventBus.getDefault().isRegistered(this))EventBus.getDefault().register(this);
+    }
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        EventBus.getDefault().register(this);
         // get the listview
         expListView = (ExpandableListView) root.findViewById(R.id.lvExp);
         expListView.setGroupIndicator(null);

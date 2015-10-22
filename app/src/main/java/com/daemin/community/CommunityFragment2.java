@@ -31,11 +31,21 @@ public class CommunityFragment2 extends BasicFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!EventBus.getDefault().isRegistered(this))EventBus.getDefault().register(this);
+    }
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        EventBus.getDefault().register(this);
         // get the listview
         expListView = (ExpandableListView) root.findViewById(R.id.lvExp);
         //expListView.setGroupIndicator(null);
@@ -102,10 +112,11 @@ public class CommunityFragment2 extends BasicFragment {
         EventBus.getDefault().unregister(this);
     }
 
-    public void onEventMainThread(SetExpandableEvent e){
-        if(expListView.isGroupExpanded(e.getGroupPosition()))
+    public void onEventMainThread(SetExpandableEvent e) {
+        if (expListView.isGroupExpanded(e.getGroupPosition()))
             expListView.collapseGroup(e.getGroupPosition());
         else
             expListView.expandGroup(e.getGroupPosition());
+        if(e.isLastItem()) expListView.setTranscriptMode(expListView.TRANSCRIPT_MODE_NORMAL);
     }
 }

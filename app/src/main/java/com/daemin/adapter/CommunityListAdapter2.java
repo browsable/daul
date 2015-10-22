@@ -150,7 +150,10 @@ public class CommunityListAdapter2 extends BaseExpandableListAdapter {
         btIndicator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new SetExpandableEvent(groupPosition));
+                if(groupPosition==getGroupCount()-1)
+                    EventBus.getDefault().post(new SetExpandableEvent(groupPosition,true));
+                else
+                    EventBus.getDefault().post(new SetExpandableEvent(groupPosition,false));
             }
         });
         return convertView;
