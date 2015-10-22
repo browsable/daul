@@ -141,9 +141,9 @@ public class FriendFragment extends BasicFragment {
         EventBus.getDefault().unregister(this);
     }
     public void onEventMainThread(SetExpandableEvent e){
-        if(expListView.isGroupExpanded(e.getGroupPosition()))
-            expListView.collapseGroup(e.getGroupPosition());
+        if(expListView.isGroupExpanded(1))
+            expListView.collapseGroup(1);
         else
-            expListView.expandGroup(e.getGroupPosition());
+            expListView.expandGroup(1);
     }
 }

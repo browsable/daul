@@ -126,7 +126,7 @@ public class CommunityListAdapter2 extends BaseExpandableListAdapter {
             holder.tvCountComment = (TextView) convertView.findViewById(R.id.tvCountComment);
             holder.btEdit = (Button) convertView.findViewById(R.id.btEdit);
             holder.btRemove = (Button) convertView.findViewById(R.id.btRemove);
-            holder.btIndicator = (LinearLayout) convertView.findViewById(R.id.btIndicator);
+
             holder.ivContent = (NetworkImageView) convertView.findViewById(R.id.ivContent);
             holder.ivProfile = (RoundedCornerNetworkImageView) convertView.findViewById(R.id.ivProfile);
             convertView.setTag(holder);
@@ -146,7 +146,8 @@ public class CommunityListAdapter2 extends BaseExpandableListAdapter {
         holder.tvGroupId.setText(String.valueOf((getGroup(groupPosition)).getNickname()));
         holder.tvCountComment.setText(String.valueOf(getChildrenCount(groupPosition)));
         holder.tvGroupContent.setText((getGroup(groupPosition)).getBody_t());
-        holder.btIndicator.setOnClickListener(new View.OnClickListener() {
+        LinearLayout btIndicator = (LinearLayout) convertView.findViewById(R.id.btIndicator);
+        btIndicator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new SetExpandableEvent(groupPosition));
@@ -162,7 +163,6 @@ public class CommunityListAdapter2 extends BaseExpandableListAdapter {
         public TextView tvCountComment;
         public Button btEdit;
         public Button btRemove;
-        public LinearLayout btIndicator;
         public NetworkImageView ivContent;
         public RoundedCornerNetworkImageView ivProfile;
     }

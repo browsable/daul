@@ -103,9 +103,9 @@ public class CommunityFragment2 extends BasicFragment {
     }
 
     public void onEventMainThread(SetExpandableEvent e){
-        if(expListView.isGroupExpanded(1))
-            expListView.collapseGroup(1);
+        if(expListView.isGroupExpanded(e.getGroupPosition()))
+            expListView.collapseGroup(e.getGroupPosition());
         else
-            expListView.expandGroup(1);
+            expListView.expandGroup(e.getGroupPosition());
     }
 }
