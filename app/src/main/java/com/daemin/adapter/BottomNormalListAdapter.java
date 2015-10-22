@@ -36,10 +36,12 @@ public class BottomNormalListAdapter extends ArrayAdapter<BottomNormalData> {
             holder.tvEndHour = (TextView) convertView.findViewById(R.id.tvEndHour);
             holder.tvEndMin = (TextView) convertView.findViewById(R.id.tvEndMin);
             holder.tvXth = (TextView) convertView.findViewById(R.id.tvXth);
+            holder.headLine = convertView.findViewById(R.id.headLine);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
         }
+        if(position==0) holder.headLine.setVisibility(View.VISIBLE);
         // Populate the text
         holder.tvYMD.setText(getItem(position).getYMD());
         holder.tvStartHour.setText(getItem(position).getStartHour());
@@ -59,5 +61,6 @@ public class BottomNormalListAdapter extends ArrayAdapter<BottomNormalData> {
         public TextView tvEndHour;
         public TextView tvEndMin;
         public TextView tvXth;
+        public View headLine;
     }
 }

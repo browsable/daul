@@ -226,8 +226,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/ic_plus_off"
-                android:layout_marginRight="@dimen/margin_xl"
-                android:layout_marginBottom="@dimen/margin_xl"
+                android:layout_marginRight="@dimen/margin_l"
+                android:layout_marginBottom="@dimen/margin_l"
                 android:scaleType="fitXY"
                 android:onClick="mOnClick"
                 />
