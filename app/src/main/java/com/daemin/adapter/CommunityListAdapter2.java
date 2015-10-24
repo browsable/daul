@@ -23,7 +23,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class CommunityListAdapter2 extends BaseExpandableListAdapter {
+public class CommunityListAdapter2 extends BaseExpandableListAdapter{
 
     private Context _context;
     private List<PostData.Data> _listDataHeader;
@@ -50,6 +50,11 @@ public class CommunityListAdapter2 extends BaseExpandableListAdapter {
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         return childPosition;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
     }
 
     @Override
@@ -87,6 +92,11 @@ public class CommunityListAdapter2 extends BaseExpandableListAdapter {
             }
         });
         return convertView;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return false;
     }
 
     @Override
@@ -176,14 +186,5 @@ public class CommunityListAdapter2 extends BaseExpandableListAdapter {
         public LinearLayout llCommentBts;
         public Button btChildEdit;
         public Button btChildRemove;
-    }
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
     }
 }

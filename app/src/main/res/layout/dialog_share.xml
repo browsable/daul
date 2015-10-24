@@ -44,7 +44,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:checked="true"
             android:text="@string/share_radio2"
             android:textSize="@dimen/textsize_default"/>
     </RadioGroup>
@@ -55,7 +54,7 @@
         android:layout_weight="2"
         android:orientation="horizontal"
         android:layout_marginRight="@dimen/margin_default"
-        android:layout_marginBottom="@dimen/margin_s"
+        android:layout_marginBottom="@dimen/margin_xxxs"
         >
 
         <View

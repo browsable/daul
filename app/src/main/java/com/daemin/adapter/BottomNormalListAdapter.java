@@ -26,7 +26,6 @@ public class BottomNormalListAdapter extends ArrayAdapter<BottomNormalData> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
-
         if (convertView == null) {
             holder = new Holder();
             convertView = mInflater.inflate(R.layout.listitem_normal, parent, false);

@@ -29,12 +29,13 @@
             android:background="@color/lightgray"
             />
         <LinearLayout
-            android:id="@+id/btNew1"
+            android:id="@+id/btNew"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:onClick="mOnClick"
+            android:background="@drawable/bt_click"
             >
             <LinearLayout
                 android:layout_width="36dp"
@@ -53,30 +54,8 @@
                 android:divider="@color/lightgray"
                 android:fadingEdgeLength="1dp"
                 android:requiresFadingEdge="horizontal"
-                android:layout_weight="1"
                 widget:dividerWidth="0dp"
                 />
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/lightgray"
-                />
-            <LinearLayout
-                android:id="@+id/btNew2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:gravity="center"
-                android:background="@color/whitesmoke"
-                android:onClick="mOnClick"
-                android:orientation="vertical">
-                <View
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:scaleType="fitXY"
-                    android:layout_gravity="center"
-                    android:background="@drawable/bt_new" />
-            </LinearLayout>
         </LinearLayout>
 
         <View
@@ -143,6 +122,7 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             android:onClick="mOnClick"
+            android:background="@drawable/bt_click"
             >
             <LinearLayout
                 android:layout_width="36dp"
@@ -176,6 +156,7 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             android:onClick="mOnClick"
+            android:background="@drawable/bt_click"
             >
             <LinearLayout
                 android:layout_width="36dp"
@@ -209,6 +190,7 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             android:onClick="mOnClick"
+            android:background="@drawable/bt_click"
             >
             <LinearLayout
                 android:layout_width="36dp"

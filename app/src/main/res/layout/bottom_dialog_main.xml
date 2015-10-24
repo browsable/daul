@@ -130,7 +130,7 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginRight="@dimen/margin_l"
-            android:background="@drawable/bg_circle"
+            android:background="@drawable/bg_circle_maincolor"
             android:onClick="mOnClick"
             />
 

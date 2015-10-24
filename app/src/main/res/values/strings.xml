@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<!--시스템관련-->
+<!--시스템전반-->
     <string name="app_name">TimeDAO</string>
     <string name="app_menu">메뉴</string>
     <string name="action_settings">Settings</string>
@@ -11,6 +11,7 @@
     <string name="overlap">중복되는 시간을 확인하세요</string>
     <string name="year">년</string>
     <string name="month">월</string>
+    <string name="week">주</string>
     <string name="day">일</string>
     <string name="am">오전</string>
     <string name="pm">오후</string>
@@ -67,6 +68,25 @@
             <item>3학년</item>
             <item>4학년</item>
         </string-array>
+        <!--반복-->
+        <string name="sun">일</string>
+        <string name="mon">월</string>
+        <string name="tue">화</string>
+        <string name="wed">수</string>
+        <string name="thr">목</string>
+        <string name="fri">금</string>
+        <string name="sat">토</string>
+        <string name="repeat_radio0">반복 없음</string>
+        <string name="repeat_radio1">주간 반복</string>
+        <string name="repeat_radio2">월간 반복</string>
+        <string name="repeat_radio3">년간 반복</string>
+        <string name="period">반복 기간</string>
+        <string name="term_month">개월</string>
+        <string name="everyweek">주마다</string>
+        <string name="everymonth">개월마다</string>
+        <string name="everyyear">년마다</string>
+        <string name="term">동안</string>
+
 
 <!--친구-->
     <string name="friend_favorite">즐겨찾기</string>

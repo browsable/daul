@@ -64,8 +64,7 @@ public class MyVolley {
     }
 
     private static File getCacheDir(Context context) {
-        File file = new File(context.getCacheDir().getPath()
-                + "/test-universal");
+        File file = new File(context.getCacheDir().getPath());
         return file;
     }
 }

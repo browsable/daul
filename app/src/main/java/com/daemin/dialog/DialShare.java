@@ -49,7 +49,6 @@ public class DialShare extends Dialog {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
         shareGroup = (RadioGroup)findViewById(R.id.shareGroup);
-        shareGroup.check((shareGroup.getChildAt(0)).getId());
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -73,7 +73,9 @@ import com.daemin.event.ChangeFragEvent;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.event.SendPlaceEvent;
 import com.daemin.event.SetAlarmEvent;
+import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
+import com.daemin.event.SetTitleTImeEvent;
 import com.daemin.event.UpdateByDialEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.map.MapActivity;
@@ -109,14 +111,14 @@ public class SubMainActivity extends FragmentActivity {
 	ImageButton ibMenu, ibBack, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
 	TextView tvTitle,tvTitleYear,tvShare,tvAlarm,tvRepeat;
 	EditText etPlace,etMemo;
-	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btShowDep,btShowGrade,btEnter, btWriteArticle;
+	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btShowDep,btShowGrade,btEnter;
 	FrameLayout flSurface, frame_container;
 	RelativeLayout rlArea;
 	Fragment mContent = null;
 	Boolean surfaceFlag = false, colorFlag = false;
 	BackPressCloseHandler backPressCloseHandler;
 	String backKeyName,colorName,korName,engName,barText;
-	HorizontalListAdapter adapter;
+	HorizontalListView lvTime;
 	AutoCompleteTextView actvSelectUniv,actvSelectDep, actvSelectGrade;
 	Boolean clickFlag1=false;
 	Boolean clickFlag2=false;
@@ -186,11 +188,17 @@ public class SubMainActivity extends FragmentActivity {
 		Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
 		switcher.setInAnimation(in);
 		switcher.setOutAnimation(out);
-		switcher.setText(CurrentTime.getTitleMonthWeek(this));
+		SetTitleTImeEvent stickyEvent = EventBus.getDefault()
+				.getStickyEvent(SetTitleTImeEvent.class);
+		if (stickyEvent != null) {
+			EventBus.getDefault().removeStickyEvent(stickyEvent);
+			switcher.setText(stickyEvent.getTitleTime());
+		}
+
 	}
 	public void makeNormalList(){
 		normalList = new ArrayList<>();
-		HorizontalListView lvTime = (HorizontalListView) findViewById(R.id.lvTime);
+		lvTime = (HorizontalListView) findViewById(R.id.lvTime);
 		normalAdapter = new BottomNormalListAdapter(this, normalList);
 		lvTime.setAdapter(normalAdapter);
 		lvTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -425,9 +433,6 @@ public class SubMainActivity extends FragmentActivity {
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public void mOnClick(View v) {
 
-		// "글쓰기" 버튼은 메뉴를 펼칠 때를 제외하고 언제나 숨김
-		if(v.getId() != R.id.ibMenu )
-			btWriteArticle.setVisibility(View.GONE);
 
 		switch (v.getId()) {
 			case R.id.ibMenu:
@@ -718,7 +723,7 @@ public class SubMainActivity extends FragmentActivity {
 						break;
 				}
 				break;
-			case R.id.btNew1:case R.id.btNew2:
+			case R.id.btNew:
 				DialAddTimePicker datp = null;
 				switch(viewMode) {
 					case 0:
@@ -735,7 +740,7 @@ public class SubMainActivity extends FragmentActivity {
 				break;
 			case R.id.btPlace:
 				Intent i = new Intent(SubMainActivity.this, MapActivity.class);
-				startActivityForResult(i, 0);
+				startActivity(i);
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
 			case R.id.btShare:
@@ -983,8 +988,25 @@ public class SubMainActivity extends FragmentActivity {
 		CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
 		indexForTitle = 0;
 		adapterFlag = false;
+		clearApplicationCache(getExternalCacheDir());
 	}
 
+	private void clearApplicationCache(java.io.File dir){
+		if(dir==null)
+			dir = getCacheDir();
+		else;
+		if(dir==null)
+			return;
+		else;
+		java.io.File[] children = dir.listFiles();
+		try{
+			for(int i=0;i<children.length;i++)
+				if(children[i].isDirectory())
+					clearApplicationCache(children[i]);
+				else children[i].delete();
+		}
+		catch(Exception e){}
+	}
 	private void screenshot() {
 //캡처
 		flSurface.buildDrawingCache();
@@ -1053,7 +1075,6 @@ public class SubMainActivity extends FragmentActivity {
 		btNormal = (Button) findViewById(R.id.btNormal);
 		btUniv = (Button) findViewById(R.id.btUniv);
 		btColor = (Button) findViewById(R.id.btColor);
-		btWriteArticle = (Button) findViewById(R.id.btWriteArticle);
 		hlv = (HorizontalListView) findViewById(R.id.hlv);
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 		mLayout.setTouchEnabled(true);
@@ -1203,6 +1224,9 @@ public class SubMainActivity extends FragmentActivity {
 	}
 	public void onEventMainThread(SetShareEvent e){
 		tvShare.setText(e.getShare());
+	}
+	public void onEventMainThread(SetRepeatEvent e){
+		tvRepeat.setText(e.getRepeatType());
 	}
 	public void onEventMainThread(ChangeFragEvent e){
 		changeFragment(e.getCl(),e.getTitleName());

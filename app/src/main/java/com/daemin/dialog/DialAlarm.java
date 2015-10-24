@@ -49,7 +49,6 @@ public class DialAlarm extends Dialog {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
         alarmGroup = (RadioGroup)findViewById(R.id.alarmGroup);
-        alarmGroup.check((alarmGroup.getChildAt(0)).getId());
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

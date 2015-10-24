@@ -9,9 +9,13 @@ import android.os.Message;
 import android.widget.Toast;
 
 import com.daemin.common.Common;
+import com.daemin.common.CurrentTime;
 import com.daemin.common.MyRequest;
 import com.daemin.enumclass.User;
+import com.daemin.event.SetTitleTImeEvent;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 public class SplashActivity extends Activity {
 	static SplashActivity singleton;
@@ -23,7 +27,7 @@ public class SplashActivity extends Activity {
 			super.onCreate(savedInstanceState);
 			singleton = this;
 			setContentView(R.layout.activity_splash);
-			//git 소스 반영
+			EventBus.getDefault().postSticky(new SetTitleTImeEvent(CurrentTime.getTitleMonthWeek(this)));
 			initialize();
 			if(Common.isOnline()) {
 				if (User.USER.isGroupListDownloadState()) {

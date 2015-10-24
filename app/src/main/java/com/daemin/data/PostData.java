@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PostData {
+public class PostData{
 
     @JsonProperty("status")
     private String status;
@@ -18,8 +18,24 @@ public class PostData {
     private List<Data> data;
     @JsonProperty("message")
     private String message;
+    public static class Data extends BoardData{
+        public Data(int type, Integer no, Integer account_no, String nickname, String a_img, String title, Integer good, Integer bad, Integer read, String date, String time, Integer cmt, String body_t, String img_t) {
+            super(type);
+            this.no = no;
+            this.account_no = account_no;
+            this.nickname = nickname;
+            this.a_img = a_img;
+            this.title = title;
+            this.good = good;
+            this.bad = bad;
+            this.read = read;
+            this.date = date;
+            this.time = time;
+            this.cmt = cmt;
+            this.body_t = body_t;
+            this.img_t = img_t;
+        }
 
-    public static class Data {
         public Data(Integer no, Integer account_no, String nickname, String a_img,
                     String title, Integer good, Integer bad, Integer read, String date,
                     String time, Integer cmt, String body_t, String img_t) {
@@ -64,6 +80,8 @@ public class PostData {
         private String body_t;
         @JsonProperty("img_t")
         private String img_t;
+        @JsonProperty("commentlist")
+        public List<BoardData> commentList;
         public void setNo(Integer no) {
             this.no = no;
         }

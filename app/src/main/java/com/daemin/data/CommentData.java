@@ -3,13 +3,21 @@ package com.daemin.data;
 /**
  * Created by Jun-yeong on 2015-07-06.
  */
-public class CommentData {
+public class CommentData extends BoardData{
     private int article_id;
     private String body;
     private String date;
     private String userId;
 
     public CommentData(int article_id, String body, String date, String userId) {
+        this.article_id = article_id;
+        this.body = body;
+        this.date = date;
+        this.userId = userId;
+    }
+
+    public CommentData(int type, int article_id, String body, String date, String userId) {
+        super(type);
         this.article_id = article_id;
         this.body = body;
         this.date = date;

@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="@color/drawercolor"
+        android:background="@color/whitesmoke"
         android:layout_weight="1"
         android:orientation="vertical"
         android:paddingTop="@dimen/margin_xxxl">
@@ -24,7 +24,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:background="@drawable/bg_profilecolor_round_border"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -47,14 +46,14 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="choz@"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/textsize_l"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/black" />
+                android:background="@color/lightgray" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -87,7 +86,7 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="@string/timetable"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/textsize_default"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -116,7 +115,7 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="@string/friend"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/textsize_default"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -145,7 +144,7 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="@string/area"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/textsize_default"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -174,7 +173,7 @@
                         android:gravity="center_vertical"
                         android:singleLine="true"
                         android:text="@string/community"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/textsize_default"
                         android:textStyle="bold" />
                 </LinearLayout>

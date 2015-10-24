@@ -182,7 +182,7 @@
             android:gravity="bottom"
             sothree:umanoDragView="@+id/dragView"
             sothree:umanoOverlay="true"
-            sothree:umanoPanelHeight="20dp"
+            sothree:umanoPanelHeight="0dp"
             sothree:umanoFadeColor="@color/transparency"
             sothree:umanoShadowHeight="0dp">
             <LinearLayout
@@ -226,8 +226,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/ic_plus_off"
-                android:layout_marginRight="@dimen/margin_l"
-                android:layout_marginBottom="@dimen/margin_l"
+                android:layout_marginRight="@dimen/margin_xxl"
+                android:layout_marginBottom="@dimen/margin_xxl"
                 android:scaleType="fitXY"
                 android:onClick="mOnClick"
                 />
@@ -244,7 +244,7 @@
             android:orientation="vertical" >
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scrollbars="none"
                 android:background="@color/drawercolor">
