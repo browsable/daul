@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.timetable.R;
 
+import java.util.HashMap;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -29,9 +31,11 @@ import de.greenrobot.event.EventBus;
  */
 public class DialRepeat extends Dialog {
     Context context;
-    public DialRepeat(Context context) {
+    HashMap<Integer, Integer> dayIndex;
+    public DialRepeat(Context context, HashMap<Integer, Integer> dayIndex) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
+        this.dayIndex = dayIndex;
     }
 
     @Override
@@ -65,7 +69,39 @@ public class DialRepeat extends Dialog {
         llWeek = (LinearLayout)findViewById(R.id.llWeek);
         llMonth = (LinearLayout)findViewById(R.id.llMonth);
         llYear = (LinearLayout)findViewById(R.id.llYear);
-        tvTerm = (TextView)findViewById(R.id.tvTerm);
+        tvSun = (TextView) findViewById(R.id.tvSun);
+        tvMon = (TextView) findViewById(R.id.tvMon);
+        tvTue = (TextView) findViewById(R.id.tvTue);
+        tvWed = (TextView) findViewById(R.id.tvWed);
+        tvThr = (TextView) findViewById(R.id.tvThr);
+        tvFri = (TextView) findViewById(R.id.tvFri);
+        tvSat = (TextView) findViewById(R.id.tvSat);
+        for(int i : dayIndex.keySet()){
+            switch (i){
+                case 1:
+                    tvSun.setBackgroundResource(R.drawable.bg_circle_maincolor);
+                    break;
+                case 3:
+                    tvMon.setBackgroundResource(R.drawable.bg_circle_maincolor);
+                    break;
+                case 5:
+                    tvTue.setBackgroundResource(R.drawable.bg_circle_maincolor);
+                    break;
+                case 7:
+                    tvWed.setBackgroundResource(R.drawable.bg_circle_maincolor);
+                    break;
+                case 9:
+                    tvThr.setBackgroundResource(R.drawable.bg_circle_maincolor);
+                    break;
+                case 11:
+                    tvFri.setBackgroundResource(R.drawable.bg_circle_maincolor);
+                    break;
+                case 13:
+                    tvSat.setBackgroundResource(R.drawable.bg_circle_maincolor);
+                    break;
+            }
+        }
+
         etWeek.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -108,10 +144,10 @@ public class DialRepeat extends Dialog {
         repeatGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton rb=(RadioButton)findViewById(checkedId);
+                etTerm.setText("");
+                RadioButton rb = (RadioButton) findViewById(checkedId);
                 repeatType = rb.getText().toString();
-
-                switch(group.getCheckedRadioButtonId()){
+                switch (group.getCheckedRadioButtonId()) {
                     case R.id.repeat_radio0:
                         llTerm.setVisibility(View.INVISIBLE);
                         llWeek.setVisibility(View.INVISIBLE);
@@ -121,7 +157,6 @@ public class DialRepeat extends Dialog {
                     case R.id.repeat_radio1:
                         etWeek.setText("");
                         etWeek.setFocusable(true);
-                        tvTerm.setText(context.getResources().getString(R.string.week));
                         llWeek.setVisibility(View.VISIBLE);
                         llTerm.setVisibility(View.INVISIBLE);
                         llMonth.setVisibility(View.INVISIBLE);
@@ -130,7 +165,6 @@ public class DialRepeat extends Dialog {
                     case R.id.repeat_radio2:
                         etMonth.setText("");
                         etMonth.setFocusable(true);
-                        tvTerm.setText(context.getResources().getString(R.string.term_month));
                         llTerm.setVisibility(View.INVISIBLE);
                         llWeek.setVisibility(View.INVISIBLE);
                         llYear.setVisibility(View.INVISIBLE);
@@ -139,7 +173,6 @@ public class DialRepeat extends Dialog {
                     case R.id.repeat_radio3:
                         etYear.setText("");
                         etYear.setFocusable(true);
-                        tvTerm.setText(context.getResources().getString(R.string.year));
                         llTerm.setVisibility(View.INVISIBLE);
                         llWeek.setVisibility(View.INVISIBLE);
                         llMonth.setVisibility(View.INVISIBLE);
@@ -151,50 +184,44 @@ public class DialRepeat extends Dialog {
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(repeatGroup.getCheckedRadioButtonId()!=-1){
-                    int id= repeatGroup.getCheckedRadioButtonId();
+                if (repeatGroup.getCheckedRadioButtonId() != -1) {
+                    int id = repeatGroup.getCheckedRadioButtonId();
                     View radioButton = repeatGroup.findViewById(id);
                     int radioId = repeatGroup.indexOfChild(radioButton);
-                    RadioButton btn = (RadioButton) repeatGroup.getChildAt(radioId);
-                    repeatType = (String) btn.getText();
-                    switch(radioId){
+                    switch (radioId) {
                         case 0:
+                            RadioButton btn = (RadioButton) repeatGroup.getChildAt(radioId);
+                            repeatType = (String) btn.getText();
+                            repeatPeriod = "";
+                            repeatNumber = "";
                             break;
                         case 1:
-                            String week = etWeek.getText().toString();
-                            String wterm = etTerm.getText().toString();
-                            if(week.equals("")||wterm.equals(""))
-                                Toast.makeText(context,"단위를 입력하세요",Toast.LENGTH_SHORT).show();
-                            else {
-                                repeatPeriod = Integer.parseInt(week);
-                                repeatNumber = Integer.parseInt(wterm);
-                            }
+                            repeatPeriod = etWeek.getText().toString();
+                            repeatType = context.getResources().getString(R.string.everyweek);
 
                             break;
                         case 2:
-                            String month = etMonth.getText().toString();
-                            String mterm = etTerm.getText().toString();
-                            if(month.equals("")||mterm.equals(""))
-                                Toast.makeText(context,"단위를 입력하세요",Toast.LENGTH_SHORT).show();
-                            else {
-                                repeatPeriod = Integer.parseInt(month);
-                                repeatNumber = Integer.parseInt(mterm);
-                            }
-
+                            repeatPeriod = etMonth.getText().toString();
+                            repeatType = context.getResources().getString(R.string.everymonth);
                             break;
                         case 3:
-                            String year = etYear.getText().toString();
-                            String yterm = etTerm.getText().toString();
-                            if(year.equals("")||yterm.equals(""))
-                                Toast.makeText(context,"단위를 입력하세요",Toast.LENGTH_SHORT).show();
-                            else{
-                                repeatPeriod = Integer.parseInt(year);
-                                repeatNumber = Integer.parseInt(yterm);
-                            }
+                            repeatPeriod = etYear.getText().toString();
+                            repeatType = context.getResources().getString(R.string.everyyear);
                             break;
                     }
-                    EventBus.getDefault().post(new SetRepeatEvent(repeatType,repeatPeriod,repeatNumber));
-                    cancel();
+                    String term = etTerm.getText().toString();
+                    repeatNumber = term;
+                    if(Integer.parseInt(repeatNumber)<50) {
+                        if (repeatPeriod.equals("") || repeatNumber.equals(""))
+                            Toast.makeText(context, "단위를 입력하세요", Toast.LENGTH_SHORT).show();
+                        else {
+                            EventBus.getDefault().post(new SetRepeatEvent(repeatType, repeatPeriod, repeatNumber));
+                            cancel();
+                        }
+                    }else{
+                        Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
@@ -205,19 +232,10 @@ public class DialRepeat extends Dialog {
             }
         });
     }
-    private Button btDialCancel;
-    private Button btDialSetting;
+    private Button btDialCancel,btDialSetting;
     private RadioGroup repeatGroup;
-    private LinearLayout llTerm;
-    private LinearLayout llWeek;
-    private LinearLayout llMonth;
-    private LinearLayout llYear;
-    private TextView tvTerm;
-    private EditText etTerm;
-    private EditText etWeek;
-    private EditText etMonth;
-    private EditText etYear;
-    private String repeatType;
-    private int repeatPeriod;
-    private int repeatNumber;
+    private LinearLayout llTerm,llWeek,llMonth,llYear;
+    private EditText etTerm,etWeek,etMonth,etYear;
+    private TextView tvSun,tvMon,tvTue,tvWed,tvThr,tvFri,tvSat;
+    private String repeatType,repeatPeriod,repeatNumber;
 }

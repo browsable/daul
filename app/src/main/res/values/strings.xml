@@ -80,12 +80,12 @@
         <string name="repeat_radio1">주간 반복</string>
         <string name="repeat_radio2">월간 반복</string>
         <string name="repeat_radio3">년간 반복</string>
-        <string name="period">반복 기간</string>
+        <string name="repeat_number">반복 횟수</string>
         <string name="term_month">개월</string>
         <string name="everyweek">주마다</string>
         <string name="everymonth">개월마다</string>
         <string name="everyyear">년마다</string>
-        <string name="term">동안</string>
+        <string name="term">회</string>
 
 
 <!--친구-->

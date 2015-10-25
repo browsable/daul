@@ -51,14 +51,14 @@ public class InitWeekThread extends InitThread {
         hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
         hpvp.setAlpha(70);
         tp = new Paint(Paint.ANTI_ALIAS_FLAG);
-        tp.setTextSize(24);
+        tp.setTextSize(30);
         tp.setTextAlign(Paint.Align.CENTER);
         tpred = new Paint(Paint.ANTI_ALIAS_FLAG);
-        tpred.setTextSize(24);
+        tpred.setTextSize(30);
         tpred.setTextAlign(Paint.Align.CENTER);
         tpred.setColor(context.getResources().getColor(R.color.red));
         tpblue = new Paint(Paint.ANTI_ALIAS_FLAG);
-        tpblue.setTextSize(24);
+        tpblue.setTextSize(30);
         tpblue.setTextAlign(Paint.Align.CENTER);
         tpblue.setColor(context.getResources().getColor(R.color.blue));
     }

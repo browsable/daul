@@ -7,21 +7,22 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="@color/whitesmoke"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/margin_xxxl">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/drawercolor"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="@dimen/margin_xxl"
+            >
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/llProfile"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="center"
@@ -29,37 +30,35 @@
 
                 <com.daemin.common.RoundedCornerNetworkImageView
                     android:id="@+id/ivProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="@dimen/margin_xxl"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_profile"
                     android:scaleType="fitXY"
                     widget:radius="10" />
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_default"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="choz@"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textsize_l"
+                    android:textStyle="bold" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/lightgray" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_default"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="choz@"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/textsize_l"
-                android:textStyle="bold" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/lightgray" />
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_xl"
                 android:orientation="vertical"
+                android:layout_marginTop="@dimen/margin_l"
                 android:padding="@dimen/margin_xxl">
 
                 <LinearLayout
@@ -86,7 +85,7 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="@string/timetable"
-                        android:textColor="@android:color/black"
+                        android:textColor="@android:color/white"
                         android:textSize="@dimen/textsize_default"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -115,7 +114,7 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="@string/friend"
-                        android:textColor="@android:color/black"
+                        android:textColor="@android:color/white"
                         android:textSize="@dimen/textsize_default"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -144,7 +143,7 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="@string/area"
-                        android:textColor="@android:color/black"
+                        android:textColor="@android:color/white"
                         android:textSize="@dimen/textsize_default"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -173,7 +172,7 @@
                         android:gravity="center_vertical"
                         android:singleLine="true"
                         android:text="@string/community"
-                        android:textColor="@android:color/black"
+                        android:textColor="@android:color/white"
                         android:textSize="@dimen/textsize_default"
                         android:textStyle="bold" />
                 </LinearLayout>

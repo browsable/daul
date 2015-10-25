@@ -242,47 +242,47 @@
             android:layout_gravity="left"
             android:background="@android:color/black"
             android:orientation="vertical" >
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scrollbars="none"
-                android:background="@color/drawercolor">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
                 <include
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     layout="@layout/drawer_main_menu"
                     />
-            </ScrollView>
-            <LinearLayout
-                android:id="@+id/btSetting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/profilecolor"
-                android:gravity="center"
-                android:onClick="mOnClick"
-                android:orientation="horizontal">
+                    <LinearLayout
+                        android:id="@+id/btSetting"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="13"
+                        android:background="@color/profilecolor"
+                        android:onClick="mOnClick"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_marginBottom="@dimen/margin_xxs"
-                    android:layout_marginRight="@dimen/margin_xs"
-                    android:layout_marginTop="@dimen/margin_xxs"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_setting" />
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_marginBottom="@dimen/margin_xxs"
+                            android:layout_marginRight="@dimen/margin_xs"
+                            android:layout_marginTop="@dimen/margin_xxs"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_setting" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="@string/setting"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/textsize_default"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="@string/setting"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/textsize_default"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

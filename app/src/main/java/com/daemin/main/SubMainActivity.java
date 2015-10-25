@@ -1,6 +1,7 @@
 package com.daemin.main;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -26,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -98,54 +100,12 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
 public class SubMainActivity extends FragmentActivity {
-	private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
-	InitSurfaceView InitSurfaceView;
-	DrawerLayout mDrawerLayout;
-	RoundedCornerNetworkImageView ivProfile;
-	LinearLayout mLeftDrawer, llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep,llTitle,llSpinner;
-	ImageButton ibMenu, ibBack, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
-	TextView tvTitle,tvTitleYear,tvShare,tvAlarm,tvRepeat;
-	EditText etPlace,etMemo;
-	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btShowDep,btShowGrade,btEnter;
-	FrameLayout flSurface, frame_container;
-	RelativeLayout rlArea;
-	Fragment mContent = null;
-	Boolean surfaceFlag = false, colorFlag = false;
-	BackPressCloseHandler backPressCloseHandler;
-	String backKeyName,colorName,korName,engName,barText;
-	HorizontalListView lvTime;
-	AutoCompleteTextView actvSelectUniv,actvSelectDep, actvSelectGrade;
-	Boolean clickFlag1=false;
-	Boolean clickFlag2=false;
-	Boolean clickFlag3=false;
-	GradientDrawable gd;
-	Boolean adapterFlag=false;
-	static int indexForTitle=0;
-	int viewMode;
-	private HorizontalListView hlv;
-	DatabaseHandler db;
-	Bitmap capture = null;
-	static SubMainActivity singleton;
-	public ImageButton getIbBack() {return ibBack;}
-	public ImageButton getIbMenu() {return ibMenu;}
-	public String getBarText() {
-		return barText;
-	}
-	public static SubMainActivity getInstance() {
-		return singleton;
-	}
-	Spinner spinner;
-	ArrayAdapter<CharSequence> spinnerAdapter;
-	TextSwitcher switcher;
-	//bottom drawer
-	private SlidingUpPanelLayout mLayout;
-    ArrayList<BottomNormalData> normalList;
-	ArrayAdapter normalAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -436,6 +396,12 @@ public class SubMainActivity extends FragmentActivity {
 
 		switch (v.getId()) {
 			case R.id.ibMenu:
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				if (imm.isAcceptingText()) {
+					llProfile.setVisibility(View.VISIBLE);
+				} else {
+					llProfile.setVisibility(View.GONE);
+				}
 				boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLeftDrawer);
 				if (drawerOpen) {
 					mDrawerLayout.closeDrawer(mLeftDrawer);
@@ -623,12 +589,7 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				break;
 			case R.id.btPlus:
-				/*switch(viewMode) {
-					case "week":
-						break;
-					case "month":
-						break;
-				}*/
+					llColor.setVisibility(View.INVISIBLE);
 					mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 					if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);
 				break;
@@ -723,7 +684,7 @@ public class SubMainActivity extends FragmentActivity {
 						break;
 				}
 				break;
-			case R.id.btNew:
+			case R.id.btNew1:case R.id.btNew2:
 				DialAddTimePicker datp = null;
 				switch(viewMode) {
 					case 0:
@@ -752,7 +713,12 @@ public class SubMainActivity extends FragmentActivity {
 				da.show();
 				break;
 			case R.id.btRepeat:
-				DialRepeat dr = new DialRepeat(SubMainActivity.this);
+				dayIndex.clear();
+				for(BottomNormalData d : normalList){
+					if(!dayIndex.containsKey(d.getXth()))
+						dayIndex.put(d.getXth(),d.getXth());
+				}
+				DialRepeat dr = new DialRepeat(SubMainActivity.this,dayIndex);
 				dr.show();
 				break;
 		}
@@ -1042,6 +1008,43 @@ public class SubMainActivity extends FragmentActivity {
 		surfaceFlag = true;
 		InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 	}
+	public void onEventMainThread(SendPlaceEvent e){
+				etPlace.setText(e.getPlace());
+	}
+	public void onEventMainThread(BottomNormalData e){
+		normalList.add(e);
+		normalAdapter.notifyDataSetChanged();
+	}
+	public void onEventMainThread(UpdateByDialEvent e){
+		normalList.remove(e.getPosition());
+		normalList.add(e.getPosition(), new BottomNormalData(
+				InitSurfaceView.getInitThread().getMonthAndDay(e.getXth()), e.getStartHour(), e.getStartMin(),
+				e.getEndHour(), e.getEndMin(), e.getXth()));
+		normalAdapter.notifyDataSetChanged();
+	}
+	public void onEventMainThread(BackKeyEvent e){
+		backKeyName = e.getFragName();
+	}
+	public void onEventMainThread(SetAlarmEvent e){
+		tvAlarm.setText(e.getTime());
+	}
+	public void onEventMainThread(SetShareEvent e){
+		tvShare.setText(e.getShare());
+	}
+	public void onEventMainThread(SetRepeatEvent e){
+		tvRepeat.setText(e.toString());
+	}
+	public void onEventMainThread(ChangeFragEvent e){
+		changeFragment(e.getCl(), e.getTitleName());
+	}
+	public void onEventMainThread(ExcuteMethodEvent e){
+		try {
+			Method m = SubMainActivity.this.getClass().getDeclaredMethod(e.getMethodName());
+			m.invoke(SubMainActivity.this);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 	private void initUI(){
 		backKeyName="";
 		if (User.USER.isSubjectDownloadState()) db = new DatabaseHandler(this);
@@ -1056,6 +1059,7 @@ public class SubMainActivity extends FragmentActivity {
 		ibareaSchedule = (ImageButton)findViewById(R.id.ibareaSchedule);
 		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
 		llDialog = (LinearLayout) findViewById(R.id.llDialog);
+		llProfile = (LinearLayout) findViewById(R.id.llProfile);
 		llColor = (LinearLayout) findViewById(R.id.llColor);
 		llNormal = (LinearLayout) findViewById(R.id.llNormal);
 		llUniv = (LinearLayout) findViewById(R.id.llUniv);
@@ -1095,6 +1099,7 @@ public class SubMainActivity extends FragmentActivity {
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
 		colorName = Common.MAIN_COLOR;
+		dayIndex = new HashMap<>();
 		spinner = (Spinner) findViewById(R.id.spinner);
 
 		// Create an ArrayAdapter using the string array and a default spinner
@@ -1189,8 +1194,7 @@ public class SubMainActivity extends FragmentActivity {
 			}
 			@Override
 			public void onPanelCollapsed(View panel) {
-				llColor.setVisibility(View.INVISIBLE);
-				colorFlag = false;
+				llColor.setVisibility(View.GONE);
 				btPlus.setVisibility(View.VISIBLE);
 			}
 			@Override
@@ -1202,41 +1206,48 @@ public class SubMainActivity extends FragmentActivity {
 			}
 		});
 	}
-	public void onEventMainThread(SendPlaceEvent e){
-				etPlace.setText(e.getPlace());
+	private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
+	InitSurfaceView InitSurfaceView;
+	DrawerLayout mDrawerLayout;
+	RoundedCornerNetworkImageView ivProfile;
+	LinearLayout mLeftDrawer,llProfile,llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep,llTitle,llSpinner;
+	ImageButton ibMenu, ibBack, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
+	TextView tvTitle,tvTitleYear,tvShare,tvAlarm,tvRepeat;
+	EditText etPlace,etMemo;
+	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btShowDep,btShowGrade,btEnter;
+	FrameLayout flSurface, frame_container;
+	RelativeLayout rlArea;
+	Fragment mContent = null;
+	Boolean surfaceFlag = false, colorFlag = false;
+	BackPressCloseHandler backPressCloseHandler;
+	String backKeyName,colorName,korName,engName,barText;
+	HorizontalListView lvTime;
+	HashMap<Integer,Integer> dayIndex;//어느 요일이 선택됬는지
+	AutoCompleteTextView actvSelectUniv,actvSelectDep, actvSelectGrade;
+	Boolean clickFlag1=false;
+	Boolean clickFlag2=false;
+	Boolean clickFlag3=false;
+	GradientDrawable gd;
+	Boolean adapterFlag=false;
+	static int indexForTitle=0;
+	int viewMode;
+	private HorizontalListView hlv;
+	DatabaseHandler db;
+	Bitmap capture = null;
+	static SubMainActivity singleton;
+	public ImageButton getIbBack() {return ibBack;}
+	public ImageButton getIbMenu() {return ibMenu;}
+	public String getBarText() {
+		return barText;
 	}
-	public void onEventMainThread(BottomNormalData e){
-		normalList.add(e);
-		normalAdapter.notifyDataSetChanged();
+	public static SubMainActivity getInstance() {
+		return singleton;
 	}
-	public void onEventMainThread(UpdateByDialEvent e){
-		normalList.remove(e.getPosition());
-		normalList.add(e.getPosition(), new BottomNormalData(
-				InitSurfaceView.getInitThread().getMonthAndDay(e.getXth()), e.getStartHour(), e.getStartMin(),
-				e.getEndHour(), e.getEndMin(), e.getXth()));
-		normalAdapter.notifyDataSetChanged();
-	}
-	public void onEventMainThread(BackKeyEvent e){
-		backKeyName = e.getFragName();
-	}
-	public void onEventMainThread(SetAlarmEvent e){
-		tvAlarm.setText(e.getTime());
-	}
-	public void onEventMainThread(SetShareEvent e){
-		tvShare.setText(e.getShare());
-	}
-	public void onEventMainThread(SetRepeatEvent e){
-		tvRepeat.setText(e.getRepeatType());
-	}
-	public void onEventMainThread(ChangeFragEvent e){
-		changeFragment(e.getCl(),e.getTitleName());
-	}
-	public void onEventMainThread(ExcuteMethodEvent e){
-		try {
-			Method m = SubMainActivity.this.getClass().getDeclaredMethod(e.getMethodName());
-			m.invoke(SubMainActivity.this);
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}
+	Spinner spinner;
+	ArrayAdapter<CharSequence> spinnerAdapter;
+	TextSwitcher switcher;
+	//bottom drawer
+	private SlidingUpPanelLayout mLayout;
+	ArrayList<BottomNormalData> normalList;
+	ArrayAdapter normalAdapter;
 }

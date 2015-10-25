@@ -211,6 +211,11 @@ public class DialAddTimePicker extends Dialog {
         npStartMin = (NumberPicker) findViewById(R.id.npStartMin);
         npEndHour = (NumberPicker) findViewById(R.id.npEndHour);
         npEndMin = (NumberPicker) findViewById(R.id.npEndMin);
+        npMD.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npStartHour.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npEndHour.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
     }
     private void weekSetting(int startHour, int startMin, int endHour, int endMin){
         if(startHour!=endHour) {

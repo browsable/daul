@@ -174,6 +174,10 @@ public class DialMonthPicker extends Dialog {
         npStartMin = (NumberPicker) findViewById(R.id.npStartMin);
         npEndHour = (NumberPicker) findViewById(R.id.npEndHour);
         npEndMin = (NumberPicker) findViewById(R.id.npEndMin);
+        npStartHour.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npEndHour.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
     }
     private Button btDialCancel;
     private Button btDialSetting;
