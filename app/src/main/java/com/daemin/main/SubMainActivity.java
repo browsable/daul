@@ -753,11 +753,10 @@ public class SubMainActivity extends FragmentActivity {
 			}
 		});
 		final AutoCompleteTextView actvSub,actvDep;
-		ArrayList<String> subject = new ArrayList<>();
-		subject.add("C프로그래밍");
-		subject.add("중국어");
+		ArrayList<String> subOrProf = new ArrayList<>();
+		subOrProf.addAll(db.getSubOrProfList());
 		ArrayAdapter<String> subAdapter = new ArrayAdapter<>(this,
-				R.layout.dropdown_search,subject);
+				R.layout.dropdown_search,subOrProf);
 		actvSub = (AutoCompleteTextView) findViewById(R.id.actvSub);
 		actvSub.requestFocus();
 		actvSub.setThreshold(1);// will start working from first character
@@ -770,7 +769,7 @@ public class SubMainActivity extends FragmentActivity {
 									int position, long id) {
 				//actvSub.getText().toString();
 				subjects.clear();
-				//subjects = db.getAllSubjectDatas();
+				subjects.addAll(db.getAllWithSubOrProf(actvSub.getText().toString()));
 				hoAdapter.notifyDataSetChanged();
 			}
 		});
@@ -789,11 +788,11 @@ public class SubMainActivity extends FragmentActivity {
 		actvDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 									int position, long id) {
-					Toast.makeText(SubMainActivity.this,actvDep.getText().toString().substring(0,2),Toast.LENGTH_SHORT).show();
 					subjects.clear();
-					subjects = db.getAllWithDep(actvDep.getText().toString().substring(0, 2));
+					subjects.addAll(db.getAllWithDep(actvDep.getText().toString().substring(0, 2)));
+					hoAdapter.notifyDataSetChanged();
 					//hoAdapter = new HorizontalListAdapter(SubMainActivity.this, subjects);
-				SubMainActivity.this.hoAdapter.notifyDataSetChanged();
+					//SubMainActivity.this.hoAdapter.notifyDataSetChanged();
 			}
 		});
 		Spinner depGradeSpinner = (Spinner) findViewById(R.id.depGradeSpinner);
@@ -1243,11 +1242,12 @@ public class SubMainActivity extends FragmentActivity {
 	}
 	Spinner spinner;
 	ArrayAdapter<CharSequence> spinnerAdapter;
-	List<SubjectData> subjects;
+
 	HorizontalListAdapter hoAdapter;
 	TextSwitcher switcher;
 	//bottom drawer
 	private SlidingUpPanelLayout mLayout;
 	ArrayList<BottomNormalData> normalList;
 	ArrayAdapter normalAdapter;
+	List<SubjectData> subjects;
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.daemin.data.SubjectData;
 
@@ -141,11 +140,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		return SubjectDataList;
 	}
-	/*public List<SubjectData> getSearchDepgrade() {
+	public List<String> getSubOrProfList() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		List<String> SubOrProfList = new ArrayList<>();
+		// Select All Query
+		String selectQuery = "SELECT DISTINCT subtitle,prof FROM " + TABLE_SCHEDULE;
+		//SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				SubOrProfList.add(cursor.getString(0));
+				SubOrProfList.add(cursor.getString(1));
+			} while (cursor.moveToNext());
+		}
+
+		// return SubjectData list
+		return SubOrProfList;
+	}
+	public List<SubjectData> getAllWithSubOrProf(String subOrProf) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		List<SubjectData> SubjectDataList = new ArrayList<>();
 		// Select All Query
-		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + "where (dep_grade LIKE '%"+depgradenum+"%' and dep_grade LIKE '%\"+kordepname+\"%') or dep_grade LIKE ' 전체%'";
+		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE (subtitle LIKE '%"+subOrProf+"%' or prof LIKE '%"+subOrProf+"%')";
 		//SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -170,7 +188,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		// return SubjectData list
 		return SubjectDataList;
-	}*/
+	}
 /*
 	// Adding new SubjectData
 	public void addSubjectData(SubjectData SubjectData) {
