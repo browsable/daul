@@ -34,7 +34,7 @@ public class MyRequest {
 
     public static Context context = AppController.getInstance();
     public static final String GET_GROUPLIST_URL = "http://timedao.heeguchi.me/app/getGroupList";
-    public static ArrayList<String> getGroupListFomServer() {
+    public static ArrayList<String> getGroupListFromLocal() {
         ArrayList<String> groupListFomServer = new ArrayList<>();
         for( GroupListFromServer GLFS : GroupListFromServerRepository.getAllGroupListFromServer(context)){
             groupListFomServer.add(GLFS.getKorname());

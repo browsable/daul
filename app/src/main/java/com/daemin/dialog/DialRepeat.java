@@ -133,10 +133,12 @@ public class DialRepeat extends Dialog {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 llTerm.setVisibility(View.VISIBLE);
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -184,6 +186,7 @@ public class DialRepeat extends Dialog {
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int limitNum=0;//횟수제한
                 if (repeatGroup.getCheckedRadioButtonId() != -1) {
                     int id = repeatGroup.getCheckedRadioButtonId();
                     View radioButton = repeatGroup.findViewById(id);
@@ -198,30 +201,32 @@ public class DialRepeat extends Dialog {
                         case 1:
                             repeatPeriod = etWeek.getText().toString();
                             repeatType = context.getResources().getString(R.string.everyweek);
-
+                            limitNum = 7*Integer.parseInt(repeatPeriod);
                             break;
                         case 2:
                             repeatPeriod = etMonth.getText().toString();
                             repeatType = context.getResources().getString(R.string.everymonth);
+                            limitNum = 7*4*Integer.parseInt(repeatPeriod);
                             break;
                         case 3:
                             repeatPeriod = etYear.getText().toString();
                             repeatType = context.getResources().getString(R.string.everyyear);
+                            limitNum = 7*4*12*Integer.parseInt(repeatPeriod);
                             break;
                     }
                     String term = etTerm.getText().toString();
                     repeatNumber = term;
-                    if(Integer.parseInt(repeatNumber)<50) {
-                        if (repeatPeriod.equals("") || repeatNumber.equals(""))
-                            Toast.makeText(context, "단위를 입력하세요", Toast.LENGTH_SHORT).show();
-                        else {
+                    if (repeatPeriod.equals("") || repeatNumber.equals(""))
+                        Toast.makeText(context, "단위를 입력하세요", Toast.LENGTH_SHORT).show();
+                    else {
+                        if (Integer.parseInt(repeatNumber)*limitNum <= 365*10) {
                             EventBus.getDefault().post(new SetRepeatEvent(repeatType, repeatPeriod, repeatNumber));
                             cancel();
+                        } else {
+                            Toast.makeText(context, "반복기한은 10년 이하로 가능합니다", Toast.LENGTH_SHORT).show();
                         }
-                    }else{
-                        Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
-                    }
 
+                    }
                 }
             }
         });

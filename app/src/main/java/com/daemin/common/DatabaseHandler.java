@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.daemin.data.SubjectData;
 
@@ -111,6 +112,65 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return SubjectDataList;
 	}
 
+	public List<SubjectData> getAllWithDep(String depName) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		List<SubjectData> SubjectDataList = new ArrayList<>();
+		// Select All Query
+		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE dep_grade LIKE '%"+depName+"%' or dep_grade LIKE ' 전체%'";
+		//SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				SubjectData SubjectData = new SubjectData();
+				SubjectData.set_id(cursor.getInt(0));
+				SubjectData.setSubnum(cursor.getString(1));
+				SubjectData.setSubtitle(cursor.getString(2));
+				SubjectData.setCredit(cursor.getString(3));
+				SubjectData.setClassnum(cursor.getString(4));
+				SubjectData.setLimitnum(cursor.getString(5));
+				SubjectData.setDep(cursor.getString(6));
+				SubjectData.setDep_grade(cursor.getString(7));
+				SubjectData.setDep_detail(cursor.getString(8));
+				SubjectData.setTime(cursor.getString(9));
+				SubjectData.setProf(cursor.getString(10));
+				SubjectDataList.add(SubjectData);
+			} while (cursor.moveToNext());
+		}
+
+		return SubjectDataList;
+	}
+	/*public List<SubjectData> getSearchDepgrade() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		List<SubjectData> SubjectDataList = new ArrayList<>();
+		// Select All Query
+		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + "where (dep_grade LIKE '%"+depgradenum+"%' and dep_grade LIKE '%\"+kordepname+\"%') or dep_grade LIKE ' 전체%'";
+		//SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				SubjectData SubjectData = new SubjectData();
+				SubjectData.set_id(cursor.getInt(0));
+				SubjectData.setSubnum(cursor.getString(1));
+				SubjectData.setSubtitle(cursor.getString(2));
+				SubjectData.setCredit(cursor.getString(3));
+				SubjectData.setClassnum(cursor.getString(4));
+				SubjectData.setLimitnum(cursor.getString(5));
+				SubjectData.setDep(cursor.getString(6));
+				SubjectData.setDep_grade(cursor.getString(7));
+				SubjectData.setDep_detail(cursor.getString(8));
+				SubjectData.setTime(cursor.getString(9));
+				SubjectData.setProf(cursor.getString(10));
+				SubjectDataList.add(SubjectData);
+			} while (cursor.moveToNext());
+		}
+
+		// return SubjectData list
+		return SubjectDataList;
+	}*/
 /*
 	// Adding new SubjectData
 	public void addSubjectData(SubjectData SubjectData) {

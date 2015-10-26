@@ -204,7 +204,7 @@ public class SubMainActivity extends FragmentActivity {
 			}
 		});
 	}
-	//3:9:00:10:00 , 3:9:00:11:00 3:9:00:11:30
+	//3:9:00:10:00 , 3:9:00:11:00, 3:9:00:11:30
 	public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin){
 		if(endMin!=0) ++endHour;
 		else endMin=60;
@@ -466,7 +466,6 @@ public class SubMainActivity extends FragmentActivity {
 			case R.id.btUniv:
 				normalList.clear();
 				normalAdapter.notifyDataSetChanged();
-
 				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(1);
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
@@ -476,7 +475,10 @@ public class SubMainActivity extends FragmentActivity {
 						R.color.gray));
 				btUniv.setTextColor(getResources().getColor(
 						android.R.color.white));
-				ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.dropdown_search, MyRequest.getGroupListFomServer());
+				//ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.dropdown_search, MyRequest.getGroupListFromLocal());
+				ArrayList<String> univname = new ArrayList<>();
+				univname.add("한국기술교육대학교");
+				ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.dropdown_search, univname);
 				actvSelectUniv = (AutoCompleteTextView) findViewById(R.id.actvSelectUniv);
 				actvSelectUniv.requestFocus();
 				actvSelectUniv.setThreshold(1);// will start working from first character
@@ -486,17 +488,15 @@ public class SubMainActivity extends FragmentActivity {
 				actvSelectUniv.setDropDownVerticalOffset(10);
 				btEnter = (Button) findViewById(R.id.btEnter);
 				btShowUniv = (Button) findViewById(R.id.btShowUniv);
-				btShowUniv.setVisibility(View.GONE);
-				btEnter.setVisibility(View.VISIBLE);
-				/*actvSelectUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				actvSelectUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 					public void onItemClick(AdapterView<?> parent, View v,
 											int position, long id) {
-						korName = actvSelectUniv.getText().toString();
+						/*korName = actvSelectUniv.getText().toString();
 						User.USER.setKorUnivName(korName);
 						engName = GroupListFromServerRepository
 								.getEngByKor(SubMainActivity.this, korName);
-						User.USER.setEngUnivName(engName);
+						User.USER.setEngUnivName(engName);*/
 
 
 						// 열려있는 키패드 닫기
@@ -514,7 +514,8 @@ public class SubMainActivity extends FragmentActivity {
 										setupSubjectDatas();
 									} else {
 										Toast.makeText(SubMainActivity.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
-										DownloadSqlite("koreatech");
+										new DownloadFileFromURL().execute("koreatech");
+										//DownloadSqlite("koreatech");
 									}
 								} else {
 									if (User.USER.isSubjectDownloadState()) {
@@ -527,7 +528,7 @@ public class SubMainActivity extends FragmentActivity {
 							}
 						});
 					}
-				});*/
+				});
 				btEnter.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -721,6 +722,8 @@ public class SubMainActivity extends FragmentActivity {
 				DialRepeat dr = new DialRepeat(SubMainActivity.this,dayIndex);
 				dr.show();
 				break;
+			case R.id.left_drawer://드로어 뒤 터치를 막기위한 dummy event
+				break;
 		}
 
 	}
@@ -730,9 +733,9 @@ public class SubMainActivity extends FragmentActivity {
 		llIncludeDep.setVisibility(View.VISIBLE);
 		Common.setLlIncludeDepIn(true);
 		db = new DatabaseHandler(this);
-		List<SubjectData> subjects = db.getAllSubjectDatas();
-		HorizontalListAdapter adapter = new HorizontalListAdapter(this, subjects);
-		hlv.setAdapter(adapter);
+		subjects = db.getAllSubjectDatas();
+		hoAdapter = new HorizontalListAdapter(this, subjects);
+		hlv.setAdapter(hoAdapter);
 		hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -742,91 +745,93 @@ public class SubMainActivity extends FragmentActivity {
 						.toString())) {
 					temps = timePos.split(":");
 					addWeek(Integer.parseInt(temps[0])
-							,Integer.parseInt(temps[1])
-							,Integer.parseInt(temps[2])
-							,Integer.parseInt(temps[3])
-							,Integer.parseInt(temps[4]));
+							, Integer.parseInt(temps[1])
+							, Integer.parseInt(temps[2])
+							, Integer.parseInt(temps[3])
+							, Integer.parseInt(temps[4]));
 				}
 			}
 		});
-		btShowDep = (Button) findViewById(R.id.btShowDep);
-		btShowGrade = (Button) findViewById(R.id.btShowGrade);
-		ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this,
-				R.layout.dropdown_search, MyRequest.getGroupListFomServer());
-		actvSelectDep = (AutoCompleteTextView) findViewById(R.id.actvSelectDep);
-		actvSelectDep.requestFocus();
-		actvSelectDep.setThreshold(1);// will start working from first character
-		actvSelectDep.setAdapter(adapter2);// setting the adapter data into the
-		actvSelectDep.setTextColor(Color.DKGRAY);
-		actvSelectDep.setDropDownVerticalOffset(10);
-		actvSelectDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		final AutoCompleteTextView actvSub,actvDep;
+		ArrayList<String> subject = new ArrayList<>();
+		subject.add("C프로그래밍");
+		subject.add("중국어");
+		ArrayAdapter<String> subAdapter = new ArrayAdapter<>(this,
+				R.layout.dropdown_search,subject);
+		actvSub = (AutoCompleteTextView) findViewById(R.id.actvSub);
+		actvSub.requestFocus();
+		actvSub.setThreshold(1);// will start working from first character
+		actvSub.setAdapter(subAdapter);// setting the adapter data into the
+		actvSub.setTextColor(Color.DKGRAY);
+		actvSub.setDropDownVerticalOffset(10);
+		actvSub.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View v,
 									int position, long id) {
-
+				//actvSub.getText().toString();
+				subjects.clear();
+				//subjects = db.getAllSubjectDatas();
+				hoAdapter.notifyDataSetChanged();
 			}
 		});
-		btShowDep.setOnClickListener(new View.OnClickListener() {
+
+		ArrayList<String> dep = new ArrayList<>();
+		dep.add("기계공학부");
+		dep.add("메카트로닉스공학부");
+		ArrayAdapter<String> depAdapter = new ArrayAdapter<>(this,
+				R.layout.dropdown_search,dep);
+		actvDep = (AutoCompleteTextView) findViewById(R.id.actvDep);
+		actvDep.requestFocus();
+		actvDep.setThreshold(1);// will start working from first character
+		actvDep.setAdapter(depAdapter);// setting the adapter data into the
+		actvDep.setTextColor(Color.DKGRAY);
+		actvDep.setDropDownVerticalOffset(10);
+		actvDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v,
+									int position, long id) {
+					Toast.makeText(SubMainActivity.this,actvDep.getText().toString().substring(0,2),Toast.LENGTH_SHORT).show();
+					subjects.clear();
+					subjects = db.getAllWithDep(actvDep.getText().toString().substring(0, 2));
+					//hoAdapter = new HorizontalListAdapter(SubMainActivity.this, subjects);
+				SubMainActivity.this.hoAdapter.notifyDataSetChanged();
+			}
+		});
+		Spinner depGradeSpinner = (Spinner) findViewById(R.id.depGradeSpinner);
+		ArrayAdapter depGradeAdapter = ArrayAdapter
+				.createFromResource(this, R.array.univ_depgrade,
+						R.layout.univ_spinner_item);
+		depGradeAdapter
+				.setDropDownViewResource(R.layout.univ_spinner_dropdown_item);
+		// Apply the adapter to the spinner
+		depGradeSpinner.setAdapter(depGradeAdapter);
+		depGradeSpinner.setSelection(viewMode);
+		depGradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+									   int position, long id) {
+				switch (position) {
+					default:
+						break;
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}
+		});
+		/*llShowGrade.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (clickFlag2) {
-					actvSelectDep.dismissDropDown();
-					btShowDep.setBackgroundResource(R.drawable.ic_expand);
+					btShowGrade.setBackgroundResource(R.drawable.ic_expand);
 					clickFlag2 = false;
-					if (!User.USER.isGroupListDownloadState()) {
-						MyRequest.getGroupList();
-					}
 				} else {
-					actvSelectDep.showDropDown();
-					btShowDep.setBackgroundResource(R.drawable.ic_collapse);
+					btShowGrade.setBackgroundResource(R.drawable.ic_collapse);
 					clickFlag2 = true;
 				}
 			}
-		});
-		actvSelectDep.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-			@Override
-			public void onDismiss() {
-				btShowDep.setBackgroundResource(R.drawable.ic_expand);
-			}
-		});
-		ArrayAdapter<String> adapter3 = new ArrayAdapter<>(this,
-				R.layout.dropdown_search, MyRequest.getGroupListFomServer());
-		actvSelectGrade = (AutoCompleteTextView) findViewById(R.id.actvSelectGrade);
-		actvSelectGrade.requestFocus();
-		actvSelectGrade.setThreshold(1);// will start working from first character
-		actvSelectGrade.setAdapter(adapter3);// setting the adapter data into the
-		actvSelectGrade.setTextColor(Color.DKGRAY);
-		actvSelectGrade.setDropDownVerticalOffset(10);
-		actvSelectGrade.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> parent, View v,
-									int position, long id) {
-
-			}
-		});
-		btShowGrade.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (clickFlag3) {
-					actvSelectGrade.dismissDropDown();
-					btShowGrade.setBackgroundResource(R.drawable.ic_expand);
-					clickFlag3 = false;
-					if (!User.USER.isGroupListDownloadState()) {
-						MyRequest.getGroupList();
-					}
-				} else {
-					actvSelectGrade.showDropDown();
-					btShowGrade.setBackgroundResource(R.drawable.ic_collapse);
-					clickFlag3 = true;
-				}
-			}
-		});
-		actvSelectGrade.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-			@Override
-			public void onDismiss() {
-				btShowGrade.setBackgroundResource(R.drawable.ic_expand);
-			}
-		});
+		});*/
 	}
 	private String[] getTimeList(String time){
 		String[] timeList=null; //요일 인덱스와 이벤트에 따른 시간(시작~끝)으로 자름, 예)3:9:00:10:00/3:14:00:15:00을 분리
@@ -1081,7 +1086,7 @@ public class SubMainActivity extends FragmentActivity {
 		btColor = (Button) findViewById(R.id.btColor);
 		hlv = (HorizontalListView) findViewById(R.id.hlv);
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-		mLayout.setTouchEnabled(true);
+		mLayout.setTouchEnabled(false);
 		ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
 		//ivProfile.setImageUrl(SAMPLE_IMAGE_URL,MyVolley.getImageLoader());
 		switcher = (TextSwitcher) findViewById(R.id.switcher);
@@ -1101,13 +1106,9 @@ public class SubMainActivity extends FragmentActivity {
 		colorName = Common.MAIN_COLOR;
 		dayIndex = new HashMap<>();
 		spinner = (Spinner) findViewById(R.id.spinner);
-
-		// Create an ArrayAdapter using the string array and a default spinner
 		spinnerAdapter = ArrayAdapter
 				.createFromResource(this, R.array.wdm,
 						R.layout.simple_spinner_item);
-
-		// Specify the layout to use when the list of choices appears
 		spinnerAdapter
 				.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
@@ -1177,13 +1178,11 @@ public class SubMainActivity extends FragmentActivity {
 				InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
 				surfaceFlag = false;
 			}
-
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				// TODO Auto-generated method stub
 			}
 		});
-
 		mLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 			@Override
 			public void onPanelSlide(View panel, float slideOffset) {
@@ -1214,7 +1213,7 @@ public class SubMainActivity extends FragmentActivity {
 	ImageButton ibMenu, ibBack, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
 	TextView tvTitle,tvTitleYear,tvShare,tvAlarm,tvRepeat;
 	EditText etPlace,etMemo;
-	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btShowDep,btShowGrade,btEnter;
+	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btEnter;
 	FrameLayout flSurface, frame_container;
 	RelativeLayout rlArea;
 	Fragment mContent = null;
@@ -1223,10 +1222,9 @@ public class SubMainActivity extends FragmentActivity {
 	String backKeyName,colorName,korName,engName,barText;
 	HorizontalListView lvTime;
 	HashMap<Integer,Integer> dayIndex;//어느 요일이 선택됬는지
-	AutoCompleteTextView actvSelectUniv,actvSelectDep, actvSelectGrade;
+	AutoCompleteTextView actvSelectUniv;
 	Boolean clickFlag1=false;
 	Boolean clickFlag2=false;
-	Boolean clickFlag3=false;
 	GradientDrawable gd;
 	Boolean adapterFlag=false;
 	static int indexForTitle=0;
@@ -1245,6 +1243,8 @@ public class SubMainActivity extends FragmentActivity {
 	}
 	Spinner spinner;
 	ArrayAdapter<CharSequence> spinnerAdapter;
+	List<SubjectData> subjects;
+	HorizontalListAdapter hoAdapter;
 	TextSwitcher switcher;
 	//bottom drawer
 	private SlidingUpPanelLayout mLayout;

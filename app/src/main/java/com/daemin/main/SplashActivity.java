@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
-import com.daemin.common.MyRequest;
 import com.daemin.enumclass.User;
 import com.daemin.event.SetTitleTImeEvent;
 import com.daemin.timetable.R;
@@ -34,7 +33,7 @@ public class SplashActivity extends Activity {
 					Toast.makeText(this, "그룹리스트다운로드되있는상태", Toast.LENGTH_SHORT).show();
 				}else{
 					Toast.makeText(this, "그룹리스트다운로드해야함", Toast.LENGTH_SHORT).show();
-					MyRequest.getGroupList();
+					//MyRequest.getGroupList();
 				}
 			}
 			else{

@@ -17,7 +17,6 @@ import java.util.List;
  */
 public class HorizontalListAdapter extends ArrayAdapter<SubjectData> {
     private LayoutInflater mInflater;
-
     public HorizontalListAdapter(Context context, List<SubjectData> values) {
         super(context, R.layout.listitem_subject, values);
         mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

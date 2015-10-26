@@ -1,88 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:widget="http://schemas.android.com/apk/res-auto"
     android:id="@+id/llIncludeDep"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:visibility="gone"
-    >
+    android:orientation="vertical"
+    android:visibility="gone">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        >
+        android:layout_height="32dp"
+        android:orientation="horizontal">
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/bg_lightgray_bottomline"
             android:gravity="center"
-            android:background="@drawable/bg_dimgray_border_right_bottom"
-            >
+            android:orientation="horizontal">
+
             <AutoCompleteTextView
-                android:id="@+id/actvSelectDep"
+                android:id="@+id/actvDep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="학과 선택"
-                android:layout_weight="1"
-                android:textSize="@dimen/textsize_default"
-                android:singleLine="true"
                 android:layout_margin="@dimen/margin_xxs"
+                android:layout_weight="2"
                 android:background="@android:color/white"
+                android:ems="10"
+                android:hint="@string/univ_searchdep"
+                android:textColorHint="@color/gray"
+                android:paddingLeft="@dimen/margin_xxs"
+                android:singleLine="true"
+                android:textSize="@dimen/textsize_default" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray"
                 />
-
-            <requestFocus />
-            <Button
-                android:id="@+id/btShowDep"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:background="@drawable/ic_expand"
-                />
-        </LinearLayout>
-        <EditText
-            android:id="@+id/etSearch"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:singleLine="true"
-            android:hint="강의/교수명 검색"
-            android:padding="@dimen/margin_xxs"
-            android:textSize="@dimen/textsize_default"
-            android:background="@drawable/bg_dimgray_border_right_bottom"
-            />
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.1"
-            android:gravity="center"
-            android:background="@drawable/bg_dimgray_border_right_bottom"
-            >
             <AutoCompleteTextView
-                android:id="@+id/actvSelectGrade"
+                android:id="@+id/actvSub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="1~4학년"
-                android:layout_weight="1"
-                android:textSize="@dimen/textsize_default"
-                android:singleLine="true"
                 android:layout_margin="@dimen/margin_xxs"
+                android:layout_weight="1.5"
                 android:background="@android:color/white"
+                android:ems="10"
+                android:hint="@string/univ_search"
+                android:textColorHint="@color/gray"
+                android:paddingLeft="@dimen/margin_xxs"
+                android:singleLine="true"
+                android:textSize="@dimen/textsize_default" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray"
                 />
-
-            <requestFocus />
-            <Button
-                android:id="@+id/btShowGrade"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:background="@drawable/ic_expand"
-                />
+            <LinearLayout
+                android:id="@+id/llShowGrade"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="2.3"
+                android:orientation="horizontal"
+                android:scaleType="fitXY">
+                <Spinner
+                    android:id="@+id/depGradeSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparency"
+                    android:dropDownVerticalOffset="0.45dp"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     <com.daemin.common.HorizontalListView
@@ -92,6 +83,5 @@
         android:divider="@color/transparency"
         android:fadingEdgeLength="1dp"
         android:requiresFadingEdge="horizontal"
-        widget:dividerWidth="1dp"
-        />
+        widget:dividerWidth="1dp" />
 </LinearLayout>

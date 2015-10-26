@@ -3,14 +3,14 @@
     <!-- This is the line -->
     <item>
         <shape>
-            <padding android:left="0px" android:top="0px" android:right="1px" android:bottom="1px"/>
-            <solid android:color="@color/dimgray" />
+            <padding android:left="0px" android:top="0px" android:right="0px" android:bottom="1px"/>
+            <solid android:color="@color/lightgray" />
         </shape>
     </item>
     <!-- This is the main color -->
     <item>
         <shape>
-            <solid android:color="@android:color/white" />
+            <solid android:color="#ffffff" />
         </shape>
     </item>
 </layer-list>
