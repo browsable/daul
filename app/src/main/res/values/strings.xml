@@ -83,16 +83,8 @@
     <!--대학-->
     <string name="univ_search">강의 또는 교수명 검색</string>
     <string name="univ_searchdep">학과 검색</string>
-    <string-array name="univ_dep">
-        <item>학부 : 전체</item>
-        <item>기계공학부</item>
-        <item>메카트로닉스공학부</item>
-        <item>2학년</item>
-        <item>3학년</item>
-        <item>4학년</item>
-    </string-array>
     <string-array name="univ_depgrade">
-        <item>학년 : 전체</item>
+        <item>전체</item>
         <item>1학년</item>
         <item>2학년</item>
         <item>3학년</item>

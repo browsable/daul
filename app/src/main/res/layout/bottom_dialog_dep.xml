@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_xxs"
-                android:layout_weight="2"
+                android:layout_weight="2.5"
                 android:background="@android:color/white"
                 android:ems="10"
                 android:hint="@string/univ_searchdep"
@@ -36,25 +36,11 @@
                 android:textSize="@dimen/textsize_default"
                 android:textColor="@color/dimgray"
                 />
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/lightgray"
-                />
-            <AutoCompleteTextView
-                android:id="@+id/actvSub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_xxs"
-                android:layout_weight="1.5"
-                android:background="@android:color/white"
-                android:ems="10"
-                android:hint="@string/univ_search"
-                android:textColorHint="@color/gray"
-                android:paddingLeft="@dimen/margin_xxs"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_default"
-                android:textColor="@color/dimgray"
+            <Button
+                android:id="@+id/btShowDep"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_expand"
                 />
             <View
                 android:layout_width="1dp"
@@ -66,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_weight="2.3"
+                android:layout_weight="3"
                 android:orientation="horizontal"
                 android:scaleType="fitXY">
                 <Spinner
@@ -78,6 +64,26 @@
                     android:layout_weight="1"
                     android:spinnerMode="dropdown" />
             </LinearLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray"
+                />
+            <AutoCompleteTextView
+                android:id="@+id/actvSub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_xxs"
+                android:layout_weight="1.8"
+                android:background="@android:color/white"
+                android:ems="10"
+                android:hint="@string/univ_search"
+                android:textColorHint="@color/gray"
+                android:paddingLeft="@dimen/margin_xxs"
+                android:singleLine="true"
+                android:textSize="@dimen/textsize_default"
+                android:textColor="@color/dimgray"
+                />
         </LinearLayout>
     </LinearLayout>
     <com.daemin.common.HorizontalListView

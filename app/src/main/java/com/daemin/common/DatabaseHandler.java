@@ -85,7 +85,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		List<SubjectData> SubjectDataList = new ArrayList<>();
 		// Select All Query
 		String selectQuery;
-		if(depName.equals("")) {
+		if(depName.equals("")||depName.equals("전체")) {
 			if(depgrade.equals("0")) {
 				selectQuery = "SELECT * FROM " + TABLE_SCHEDULE;
 			}else{
@@ -125,6 +125,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public List<String> getDepList() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		List<String> depList = new ArrayList<>();
+		depList.add("전체");
 		String selectSub = "SELECT DISTINCT dep FROM " + TABLE_SCHEDULE;
 		Cursor subCursor = db.rawQuery(selectSub, null);
 		if (subCursor.moveToFirst()) {

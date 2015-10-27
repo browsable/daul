@@ -781,8 +781,24 @@ public class SubMainActivity extends FragmentActivity {
 				subjects.clear();
 				subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(), String.valueOf(depGradeSpinner.getSelectedItemPosition())));
 				hoAdapter.notifyDataSetChanged();
+				btShowDep.setBackgroundResource(R.drawable.ic_expand);
+				actvDepFlag = false;
 				//hoAdapter = new HorizontalListAdapter(SubMainActivity.this, subjects);
 				//SubMainActivity.this.hoAdapter.notifyDataSetChanged();
+			}
+		});
+		btShowDep.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (actvDepFlag) {
+					btShowDep.setBackgroundResource(R.drawable.ic_expand);
+					actvDep.dismissDropDown();
+					actvDepFlag = false;
+				} else {
+					btShowDep.setBackgroundResource(R.drawable.ic_collapse);
+					actvDep.showDropDown();
+					actvDepFlag = true;
+				}
 			}
 		});
 		actvSub.requestFocus();
@@ -794,8 +810,9 @@ public class SubMainActivity extends FragmentActivity {
 
 			public void onItemClick(AdapterView<?> parent, View v,
 									int position, long id) {
-				//actvSub.getText().toString();
 				actvDep.setText("");
+				selected = true;
+				depGradeSpinner.setSelection(0, false);
 				subjects.clear();
 				subjects.addAll(db.getAllWithSubOrProf(actvSub.getText().toString()));
 				hoAdapter.notifyDataSetChanged();
@@ -805,14 +822,17 @@ public class SubMainActivity extends FragmentActivity {
 		depGradeAdapter
 				.setDropDownViewResource(R.layout.univ_spinner_dropdown_item);
 		depGradeSpinner.setAdapter(depGradeAdapter);
-		depGradeSpinner.setSelection(viewMode);
 		depGradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 									   int position, long id) {
-				subjects.clear();
-				subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(), String.valueOf(position)));
-				hoAdapter.notifyDataSetChanged();
+				if(!selected) {
+					actvSub.setText("");
+					subjects.clear();
+					subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(), String.valueOf(position)));
+					hoAdapter.notifyDataSetChanged();
+				}
+				selected = false;
 			}
 
 			@Override
@@ -820,18 +840,6 @@ public class SubMainActivity extends FragmentActivity {
 				// TODO Auto-generated method stub
 			}
 		});
-		/*llShowGrade.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (clickFlag2) {
-					btShowGrade.setBackgroundResource(R.drawable.ic_expand);
-					clickFlag2 = false;
-				} else {
-					btShowGrade.setBackgroundResource(R.drawable.ic_collapse);
-					clickFlag2 = true;
-				}
-			}
-		});*/
 	}
 	private String[] getTimeList(String time){
 		String[] timeList=null; //요일 인덱스와 이벤트에 따른 시간(시작~끝)으로 자름, 예)3:9:00:10:00/3:14:00:15:00을 분리
@@ -1083,6 +1091,7 @@ public class SubMainActivity extends FragmentActivity {
 		btPlus = (Button) findViewById(R.id.btPlus);
 		btNormal = (Button) findViewById(R.id.btNormal);
 		btUniv = (Button) findViewById(R.id.btUniv);
+		btShowDep = (Button) findViewById(R.id.btShowDep);
 		btColor = (Button) findViewById(R.id.btColor);
 		hlv = (HorizontalListView) findViewById(R.id.hlv);
 		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
@@ -1108,9 +1117,9 @@ public class SubMainActivity extends FragmentActivity {
 		spinner = (Spinner) findViewById(R.id.spinner);
 		spinnerAdapter = ArrayAdapter
 				.createFromResource(this, R.array.wdm,
-						R.layout.simple_spinner_item);
+						R.layout.wdm_spinner_item);
 		spinnerAdapter
-				.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+				.setDropDownViewResource(R.layout.wdm_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		spinner.setAdapter(spinnerAdapter);
 		spinner.setSelection(viewMode);
@@ -1213,7 +1222,7 @@ public class SubMainActivity extends FragmentActivity {
 	ImageButton ibMenu, ibBack, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
 	TextView tvTitle,tvTitleYear,tvShare,tvAlarm,tvRepeat;
 	EditText etPlace,etMemo;
-	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btEnter;
+	Button btPlus,btNormal, btUniv, btColor, btShowUniv,btEnter,btShowDep;
 	FrameLayout flSurface, frame_container;
 	RelativeLayout rlArea;
 	Fragment mContent = null;
@@ -1223,10 +1232,8 @@ public class SubMainActivity extends FragmentActivity {
 	HorizontalListView lvTime;
 	HashMap<Integer,Integer> dayIndex;//어느 요일이 선택됬는지
 	AutoCompleteTextView actvSelectUniv;
-	Boolean clickFlag1=false;
-	Boolean clickFlag2=false;
+	Boolean clickFlag1=false,actvDepFlag=false,selected=false,adapterFlag=false;
 	GradientDrawable gd;
-	Boolean adapterFlag=false;
 	static int indexForTitle=0;
 	int viewMode;
 	private HorizontalListView hlv;
