@@ -33,7 +33,9 @@
                 android:textColorHint="@color/gray"
                 android:paddingLeft="@dimen/margin_xxs"
                 android:singleLine="true"
-                android:textSize="@dimen/textsize_default" />
+                android:textSize="@dimen/textsize_default"
+                android:textColor="@color/dimgray"
+                />
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
@@ -51,7 +53,9 @@
                 android:textColorHint="@color/gray"
                 android:paddingLeft="@dimen/margin_xxs"
                 android:singleLine="true"
-                android:textSize="@dimen/textsize_default" />
+                android:textSize="@dimen/textsize_default"
+                android:textColor="@color/dimgray"
+                />
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"

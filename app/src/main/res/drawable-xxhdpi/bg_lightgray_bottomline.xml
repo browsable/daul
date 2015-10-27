@@ -3,7 +3,7 @@
     <!-- This is the line -->
     <item>
         <shape>
-            <padding android:left="0px" android:top="0px" android:right="0px" android:bottom="1px"/>
+            <padding android:left="0px" android:top="0px" android:right="0px" android:bottom="5px"/>
             <solid android:color="@color/lightgray" />
         </shape>
     </item>

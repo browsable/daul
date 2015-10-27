@@ -753,11 +753,38 @@ public class SubMainActivity extends FragmentActivity {
 			}
 		});
 		final AutoCompleteTextView actvSub,actvDep;
-		ArrayList<String> subOrProf = new ArrayList<>();
-		subOrProf.addAll(db.getSubOrProfList());
-		ArrayAdapter<String> subAdapter = new ArrayAdapter<>(this,
-				R.layout.dropdown_search,subOrProf);
+		actvDep = (AutoCompleteTextView) findViewById(R.id.actvDep);
 		actvSub = (AutoCompleteTextView) findViewById(R.id.actvSub);
+		final Spinner depGradeSpinner = (Spinner) findViewById(R.id.depGradeSpinner);
+		ArrayAdapter depGradeAdapter = ArrayAdapter
+				.createFromResource(this, R.array.univ_depgrade,
+						R.layout.univ_spinner_item);
+		ArrayList<String>
+				dep = new ArrayList<>(),
+				subOrProf = new ArrayList<>();
+		ArrayAdapter<String>
+				depAdapter = new ArrayAdapter<>(this,
+				R.layout.dropdown_searchuniv,dep),
+				subAdapter = new ArrayAdapter<>(this,
+				R.layout.dropdown_searchuniv,subOrProf);
+		dep.addAll(db.getDepList());
+		subOrProf.addAll(db.getSubOrProfList());
+		actvDep.requestFocus();
+		actvDep.setThreshold(1);// will start working from first character
+		actvDep.setAdapter(depAdapter);// setting the adapter data into the
+		actvDep.setTextColor(Color.DKGRAY);
+		actvDep.setDropDownVerticalOffset(10);
+		actvDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v,
+									int position, long id) {
+				actvSub.setText("");
+				subjects.clear();
+				subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(), String.valueOf(depGradeSpinner.getSelectedItemPosition())));
+				hoAdapter.notifyDataSetChanged();
+				//hoAdapter = new HorizontalListAdapter(SubMainActivity.this, subjects);
+				//SubMainActivity.this.hoAdapter.notifyDataSetChanged();
+			}
+		});
 		actvSub.requestFocus();
 		actvSub.setThreshold(1);// will start working from first character
 		actvSub.setAdapter(subAdapter);// setting the adapter data into the
@@ -768,50 +795,24 @@ public class SubMainActivity extends FragmentActivity {
 			public void onItemClick(AdapterView<?> parent, View v,
 									int position, long id) {
 				//actvSub.getText().toString();
+				actvDep.setText("");
 				subjects.clear();
 				subjects.addAll(db.getAllWithSubOrProf(actvSub.getText().toString()));
 				hoAdapter.notifyDataSetChanged();
 			}
 		});
 
-		ArrayList<String> dep = new ArrayList<>();
-		dep.add("기계공학부");
-		dep.add("메카트로닉스공학부");
-		ArrayAdapter<String> depAdapter = new ArrayAdapter<>(this,
-				R.layout.dropdown_search,dep);
-		actvDep = (AutoCompleteTextView) findViewById(R.id.actvDep);
-		actvDep.requestFocus();
-		actvDep.setThreshold(1);// will start working from first character
-		actvDep.setAdapter(depAdapter);// setting the adapter data into the
-		actvDep.setTextColor(Color.DKGRAY);
-		actvDep.setDropDownVerticalOffset(10);
-		actvDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v,
-									int position, long id) {
-					subjects.clear();
-					subjects.addAll(db.getAllWithDep(actvDep.getText().toString().substring(0, 2)));
-					hoAdapter.notifyDataSetChanged();
-					//hoAdapter = new HorizontalListAdapter(SubMainActivity.this, subjects);
-					//SubMainActivity.this.hoAdapter.notifyDataSetChanged();
-			}
-		});
-		Spinner depGradeSpinner = (Spinner) findViewById(R.id.depGradeSpinner);
-		ArrayAdapter depGradeAdapter = ArrayAdapter
-				.createFromResource(this, R.array.univ_depgrade,
-						R.layout.univ_spinner_item);
 		depGradeAdapter
 				.setDropDownViewResource(R.layout.univ_spinner_dropdown_item);
-		// Apply the adapter to the spinner
 		depGradeSpinner.setAdapter(depGradeAdapter);
 		depGradeSpinner.setSelection(viewMode);
 		depGradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 									   int position, long id) {
-				switch (position) {
-					default:
-						break;
-				}
+				subjects.clear();
+				subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(), String.valueOf(position)));
+				hoAdapter.notifyDataSetChanged();
 			}
 
 			@Override

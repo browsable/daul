@@ -80,42 +80,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// return SubjectData list
 		return SubjectDataList;
 	}
-	List<SubjectData> SubjectDataList = new ArrayList<>();
-	public List<SubjectData> getRecommendSubjectDatas(String time) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		SubjectDataList.clear();
-		// Select All Query
-		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE time LIKE '%"+time+"%'";
-		//SQLiteDatabase db = this.getWritableDatabase();
-		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		// looping through all rows and adding to list
-		if (cursor.moveToFirst()) {
-			do {
-				SubjectData SubjectData = new SubjectData();
-				SubjectData.set_id(cursor.getInt(0));
-				SubjectData.setSubnum(cursor.getString(1));
-				SubjectData.setSubtitle(cursor.getString(2));
-				SubjectData.setCredit(cursor.getString(3));
-				SubjectData.setClassnum(cursor.getString(4));
-				SubjectData.setLimitnum(cursor.getString(5));
-				SubjectData.setDep_grade(cursor.getString(7));
-				SubjectData.setDep_detail(cursor.getString(8));
-				SubjectData.setTime(cursor.getString(30));
-				SubjectData.setProf(cursor.getString(31));
-				SubjectDataList.add(SubjectData);
-			} while (cursor.moveToNext());
-		}
-
-		// return SubjectData list
-		return SubjectDataList;
-	}
-
-	public List<SubjectData> getAllWithDep(String depName) {
+	public List<SubjectData> getAllWithDepAndGrade(String depName,String depgrade) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		List<SubjectData> SubjectDataList = new ArrayList<>();
 		// Select All Query
-		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE dep_grade LIKE '%"+depName+"%' or dep_grade LIKE ' 전체%'";
+		String selectQuery;
+		if(depName.equals("")) {
+			if(depgrade.equals("0")) {
+				selectQuery = "SELECT * FROM " + TABLE_SCHEDULE;
+			}else{
+				selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE dep_grade LIKE '%"+depgrade+"%'";
+			}
+		}else{
+			if(depgrade.equals("0")) {
+				selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE dep LIKE '%" + depName + "%'";
+			}else{
+				selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE (dep LIKE '%"+depName+"%' and dep_grade LIKE '%"+depgrade+"%')";
+			}
+		}
 		//SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -140,24 +122,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		return SubjectDataList;
 	}
+	public List<String> getDepList() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		List<String> depList = new ArrayList<>();
+		String selectSub = "SELECT DISTINCT dep FROM " + TABLE_SCHEDULE;
+		Cursor subCursor = db.rawQuery(selectSub, null);
+		if (subCursor.moveToFirst()) {
+			do {
+				depList.add(subCursor.getString(0));
+			} while (subCursor.moveToNext());
+		}
+		return depList;
+	}
 	public List<String> getSubOrProfList() {
 		SQLiteDatabase db = this.getWritableDatabase();
-		List<String> SubOrProfList = new ArrayList<>();
-		// Select All Query
-		String selectQuery = "SELECT DISTINCT subtitle,prof FROM " + TABLE_SCHEDULE;
-		//SQLiteDatabase db = this.getWritableDatabase();
-		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		// looping through all rows and adding to list
-		if (cursor.moveToFirst()) {
+		List<String> subOrProfList = new ArrayList<>();
+		String selectSub = "SELECT DISTINCT subtitle FROM " + TABLE_SCHEDULE;
+		Cursor subCursor = db.rawQuery(selectSub, null);
+		if (subCursor.moveToFirst()) {
 			do {
-				SubOrProfList.add(cursor.getString(0));
-				SubOrProfList.add(cursor.getString(1));
-			} while (cursor.moveToNext());
+				subOrProfList.add(subCursor.getString(0));
+			} while (subCursor.moveToNext());
 		}
-
-		// return SubjectData list
-		return SubOrProfList;
+		String selectProf = "SELECT DISTINCT prof FROM " + TABLE_SCHEDULE;
+		Cursor profCursor = db.rawQuery(selectProf, null);
+		if (profCursor.moveToFirst()) {
+			do {
+				subOrProfList.add(profCursor.getString(0));
+			} while (profCursor.moveToNext());
+		}
+		return subOrProfList;
 	}
 	public List<SubjectData> getAllWithSubOrProf(String subOrProf) {
 		SQLiteDatabase db = this.getWritableDatabase();
