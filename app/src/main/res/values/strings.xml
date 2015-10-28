@@ -33,7 +33,7 @@
     <string name="normal_alarm">알람 : 없음</string>
     <string name="normal_share">공유 : 비공개</string>
     <string name="normal_repeat">반복 : 없음</string>
-    <string name="normal_memo">메모</string>
+    <string name="normal_memo">메모 : 없음</string>
     <string name="normal_search">검색</string>
     <string name="normal_i">비공개</string>
     <string name="normal_friend">친구공개</string>

@@ -21,20 +21,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// SubjectDatas table name
 	private static final String TABLE_SCHEDULE = "schedule";
-
-	// SubjectDatas Table Columns names
-	private static final String KEY_ID = "_id";
-	private String KEY_SUBNUM = "subnum";
-	private String KEY_SUBTITLE = "subtitle";
-	private String KEY_PROF = "prof";
-	private String KEY_CREDIT = "credit";
-	private String KEY_CLASSNUM ="classnum";
-	private String KEY_LIMITNUM = "limitnum"; //제한수
-	private String KEY_DEP = "";
-	private String KEY_DEP_DETAIL = ""; //이수형태
-	private String KEY_DEP_GRADE = "dep_grade"; //대상학년
-	SQLiteDatabase db;
-	private String filePath;
+	List<SubjectData> subjectDataList = new ArrayList<>();
+	List<String> stringList = new ArrayList<>();
 	public DatabaseHandler(Context context) {
 		//super(context, DATABASE_NAME+ User.USER.getEngUnivName()+".sqlite", null, DATABASE_VERSION);
 		super(context, DATABASE_NAME+"subject.sqlite", null, DATABASE_VERSION);
@@ -49,10 +37,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 	// Getting All SubjectDatas
+
 	public List<SubjectData> getAllSubjectDatas() {
 		SQLiteDatabase db = this.getWritableDatabase();
-		List<SubjectData> SubjectDataList = new ArrayList<>();
 		// Select All Query
+		subjectDataList.clear();
 		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE;
 
 		//SQLiteDatabase db = this.getWritableDatabase();
@@ -73,16 +62,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SubjectData.setDep_detail(cursor.getString(8));
 				SubjectData.setTime(cursor.getString(9));
 				SubjectData.setProf(cursor.getString(10));
-				SubjectDataList.add(SubjectData);
+				subjectDataList.add(SubjectData);
 			} while (cursor.moveToNext());
 		}
 
 		// return SubjectData list
-		return SubjectDataList;
+		return subjectDataList;
 	}
 	public List<SubjectData> getAllWithDepAndGrade(String depName,String depgrade) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		List<SubjectData> SubjectDataList = new ArrayList<>();
+		subjectDataList.clear();
 		// Select All Query
 		String selectQuery;
 		if(depName.equals("")||depName.equals("전체")) {
@@ -116,47 +105,47 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SubjectData.setDep_detail(cursor.getString(8));
 				SubjectData.setTime(cursor.getString(9));
 				SubjectData.setProf(cursor.getString(10));
-				SubjectDataList.add(SubjectData);
+				subjectDataList.add(SubjectData);
 			} while (cursor.moveToNext());
 		}
 
-		return SubjectDataList;
+		return subjectDataList;
 	}
 	public List<String> getDepList() {
 		SQLiteDatabase db = this.getWritableDatabase();
-		List<String> depList = new ArrayList<>();
-		depList.add("전체");
+		stringList.clear();
+		stringList.add("전체");
 		String selectSub = "SELECT DISTINCT dep FROM " + TABLE_SCHEDULE;
 		Cursor subCursor = db.rawQuery(selectSub, null);
 		if (subCursor.moveToFirst()) {
 			do {
-				depList.add(subCursor.getString(0));
+				stringList.add(subCursor.getString(0));
 			} while (subCursor.moveToNext());
 		}
-		return depList;
+		return stringList;
 	}
 	public List<String> getSubOrProfList() {
 		SQLiteDatabase db = this.getWritableDatabase();
-		List<String> subOrProfList = new ArrayList<>();
+		stringList.clear();
 		String selectSub = "SELECT DISTINCT subtitle FROM " + TABLE_SCHEDULE;
 		Cursor subCursor = db.rawQuery(selectSub, null);
 		if (subCursor.moveToFirst()) {
 			do {
-				subOrProfList.add(subCursor.getString(0));
+				stringList.add(subCursor.getString(0));
 			} while (subCursor.moveToNext());
 		}
 		String selectProf = "SELECT DISTINCT prof FROM " + TABLE_SCHEDULE;
 		Cursor profCursor = db.rawQuery(selectProf, null);
 		if (profCursor.moveToFirst()) {
 			do {
-				subOrProfList.add(profCursor.getString(0));
+				stringList.add(profCursor.getString(0));
 			} while (profCursor.moveToNext());
 		}
-		return subOrProfList;
+		return stringList;
 	}
 	public List<SubjectData> getAllWithSubOrProf(String subOrProf) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		List<SubjectData> SubjectDataList = new ArrayList<>();
+		subjectDataList.clear();
 		// Select All Query
 		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE (subtitle LIKE '%"+subOrProf+"%' or prof LIKE '%"+subOrProf+"%')";
 		//SQLiteDatabase db = this.getWritableDatabase();
@@ -177,12 +166,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SubjectData.setDep_detail(cursor.getString(8));
 				SubjectData.setTime(cursor.getString(9));
 				SubjectData.setProf(cursor.getString(10));
-				SubjectDataList.add(SubjectData);
+				subjectDataList.add(SubjectData);
 			} while (cursor.moveToNext());
 		}
 
 		// return SubjectData list
-		return SubjectDataList;
+		return subjectDataList;
 	}
 /*
 	// Adding new SubjectData

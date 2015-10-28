@@ -18,12 +18,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -36,6 +36,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextSwitcher;
@@ -61,8 +62,8 @@ import com.daemin.data.SubjectData;
 import com.daemin.dialog.DialAddTimePicker;
 import com.daemin.dialog.DialAlarm;
 import com.daemin.dialog.DialMonthPicker;
-import com.daemin.dialog.DialSchedule;
 import com.daemin.dialog.DialRepeat;
+import com.daemin.dialog.DialSchedule;
 import com.daemin.dialog.DialShare;
 import com.daemin.dialog.DialWeekPicker;
 import com.daemin.enumclass.DayOfMonthPos;
@@ -90,7 +91,6 @@ import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.InitWeekThread;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -107,14 +107,14 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class SubMainActivity extends FragmentActivity {
+public class SubMainActivity2 extends FragmentActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		singleton = this;
 		EventBus.getDefault().register(this);
-		//getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
 		setContentView(R.layout.activity_main);
 		initUI();
 		setTitle();
@@ -138,7 +138,7 @@ public class SubMainActivity extends FragmentActivity {
 		switcher.setFactory(new ViewSwitcher.ViewFactory() {
 			@Override
 			public View makeView() {
-				TextView myText = new TextView(SubMainActivity.this);
+				TextView myText = new TextView(SubMainActivity2.this);
 				myText.setGravity(Gravity.BOTTOM);
 				myText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 				myText.setTypeface(Typeface.DEFAULT_BOLD);
@@ -173,11 +173,11 @@ public class SubMainActivity extends FragmentActivity {
 						String startMin = ((TextView) view.findViewById(R.id.tvStartMin)).getText().toString();
 						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
 						String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
-						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity.this, position, xth, startHour, startMin, endHour, endMin);
+						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity2.this, position, xth, startHour, startMin, endHour, endMin);
 						dwp.show();
 						break;
 					case 2:
-						DialMonthPicker dmp = new DialMonthPicker(SubMainActivity.this);
+						DialMonthPicker dmp = new DialMonthPicker(SubMainActivity2.this);
 						dmp.show();
 						break;
 				}
@@ -407,11 +407,8 @@ public class SubMainActivity extends FragmentActivity {
 				boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLeftDrawer);
 				if (drawerOpen) {
 					mDrawerLayout.closeDrawer(mLeftDrawer);
-				}
-				else {
+				} else {
 					mDrawerLayout.openDrawer(mLeftDrawer);
-					if(mLayout.getPanelState()==SlidingUpPanelLayout.PanelState.EXPANDED)
-						mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				}
 				break;
 			case R.id.btTimetable:
@@ -422,8 +419,6 @@ public class SubMainActivity extends FragmentActivity {
 				llTitle.setVisibility(View.VISIBLE);
 				tvTitle.setVisibility(View.GONE);
 				btPlus.setVisibility(View.VISIBLE);
-				mLayout.setVisibility(View.VISIBLE);
-				mLayout.setTouchEnabled(true);
 				changeFragment(TimetableFragment.class, "");
 				flSurface.setVisibility(View.VISIBLE);
 				frame_container.setVisibility(View.GONE);
@@ -437,7 +432,8 @@ public class SubMainActivity extends FragmentActivity {
 				changeFragment(FriendFragment.class, "친구시간표");
 
 				break;
-			case R.id.btArea: case R.id.ibareaSchedule:
+			case R.id.btArea:
+			case R.id.ibareaSchedule:
 				ibfindSchedule.setVisibility(View.VISIBLE);
 				ibareaSchedule.setVisibility(View.GONE);
 				changeSetting();
@@ -482,7 +478,7 @@ public class SubMainActivity extends FragmentActivity {
 				//ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.dropdown_search, MyRequest.getGroupListFromLocal());
 				ArrayList<String> univname = new ArrayList<>();
 				univname.add("한국기술교육대학교");
-				ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.dropdown_search, univname);
+				ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_search, univname);
 				actvSelectUniv = (AutoCompleteTextView) findViewById(R.id.actvSelectUniv);
 				actvSelectUniv.requestFocus();
 				actvSelectUniv.setThreshold(1);// will start working from first character
@@ -514,19 +510,19 @@ public class SubMainActivity extends FragmentActivity {
 							public void onClick(View v) {
 								if (Common.isOnline()) {
 									if (User.USER.isSubjectDownloadState()) {
-										Toast.makeText(SubMainActivity.this, "이미 다운로드된 상태이므로 과목셋팅만", Toast.LENGTH_SHORT).show();
+										Toast.makeText(SubMainActivity2.this, "이미 다운로드된 상태이므로 과목셋팅만", Toast.LENGTH_SHORT).show();
 										setupSubjectDatas();
 									} else {
-										Toast.makeText(SubMainActivity.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
+										Toast.makeText(SubMainActivity2.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
 										new DownloadFileFromURL().execute("koreatech");
 										//DownloadSqlite("koreatech");
 									}
 								} else {
 									if (User.USER.isSubjectDownloadState()) {
-										Toast.makeText(SubMainActivity.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
+										Toast.makeText(SubMainActivity2.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
 										setupSubjectDatas();
 									} else {
-										Toast.makeText(SubMainActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+										Toast.makeText(SubMainActivity2.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
 									}
 								}
 							}
@@ -538,10 +534,10 @@ public class SubMainActivity extends FragmentActivity {
 					public void onClick(View v) {
 						if (Common.isOnline()) {
 							if (User.USER.isSubjectDownloadState()) {
-								Toast.makeText(SubMainActivity.this, "이미 다운로드된 상태이므로 과목셋팅만", Toast.LENGTH_SHORT).show();
+								Toast.makeText(SubMainActivity2.this, "이미 다운로드된 상태이므로 과목셋팅만", Toast.LENGTH_SHORT).show();
 								setupSubjectDatas();
 							} else {
-								Toast.makeText(SubMainActivity.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
+								Toast.makeText(SubMainActivity2.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
 
 								new DownloadFileFromURL().execute("koreatech");
 								//DownloadSqlite("koreatech");
@@ -549,10 +545,10 @@ public class SubMainActivity extends FragmentActivity {
 							}
 						} else {
 							if (User.USER.isSubjectDownloadState()) {
-								Toast.makeText(SubMainActivity.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
+								Toast.makeText(SubMainActivity2.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
 								setupSubjectDatas();
 							} else {
-								Toast.makeText(SubMainActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+								Toast.makeText(SubMainActivity2.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
 							}
 						}
 					}
@@ -566,7 +562,7 @@ public class SubMainActivity extends FragmentActivity {
 							clickFlag1 = false;
 
 						} else {
-							if(!User.USER.isGroupListDownloadState()) {
+							if (!User.USER.isGroupListDownloadState()) {
 								MyRequest.getGroupList();
 							}
 							actvSelectUniv.showDropDown();
@@ -594,22 +590,58 @@ public class SubMainActivity extends FragmentActivity {
 				}
 				break;
 			case R.id.btPlus:
-					llColor.setVisibility(View.INVISIBLE);
-					mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-					if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);
+					/*//if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);*/
+					/*DialSchedule dsc = new DialSchedule(SubMainActivity2.this);
+					dsc.show();*/
+					/*Intent i = new Intent(SubMainActivity2.this, DialSchedule2.class);
+					startActivity(i);
+					overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);*/
+				//클릭시 팝업 윈도우 생성
+				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				//팝업으로 띄울 커스텀뷰를 설정하고
+				View popupView = inflater.inflate(R.layout.dialog_schedule, null);
+				popup = new PopupWindow(
+						popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+				//팝업 뷰 터치 되도록
+				popup.setTouchable(true);
+				//팝업 뷰 포커스도 주고
+				//popup.setFocusable(true);
+				//팝업 뷰 이외에도 터치되게 (터치시 팝업 닫기 위한 코드)
+				popup.setOutsideTouchable(true);
+				//인자로 넘겨준 v 아래로 보여주기
+				popup.showAtLocation(v, Gravity.BOTTOM, 0, 0);
+
+				popupView.setOnTouchListener(new View.OnTouchListener() {
+					private int dx = 0;
+					private int dy = 0;
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						switch (event.getAction()) {
+							case MotionEvent.ACTION_DOWN:
+								dx = mPosX+(int)event.getRawX();
+								dy = mPosY+(int)event.getRawY();
+								break;
+							case MotionEvent.ACTION_MOVE:
+								mPosX = (int) (dx-event.getRawX());
+								mPosY = (int) (dy-event.getRawY());
+								popup.update(mPosX, mPosY, -1, -1);
+								break;
+						}
+						return true;
+					}
+				});
 				break;
 			case R.id.btAddTime:
 				switch (DrawMode.CURRENT.getMode()) {
 					case 0:
 						break;
 					case 1:
-						DialSchedule dn = new DialSchedule(SubMainActivity.this);
+						DialSchedule dn = new DialSchedule(SubMainActivity2.this);
 						dn.show();
 						break;
 				}
 				break;
 			case R.id.btCancel:
-				mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				switch (DrawMode.CURRENT.getMode()) {
 					case 0:
 						DrawMode.CURRENT.setMode(0);
@@ -619,6 +651,9 @@ public class SubMainActivity extends FragmentActivity {
 						DrawMode.CURRENT.setMode(3);
 						adapterFlag=false;
 						break;
+				}
+				if (popup != null && popup.isShowing()) {
+					popup.dismiss();
 				}
 				break;
 			case R.id.btBack:
@@ -704,27 +739,27 @@ public class SubMainActivity extends FragmentActivity {
 				switch(viewMode) {
 					case 0:
 						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
-						datp = new DialAddTimePicker(SubMainActivity.this, iw.getAllMonthAndDay());
+						datp = new DialAddTimePicker(SubMainActivity2.this, iw.getAllMonthAndDay());
 						break;
 					case 2:
 						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
-						datp = new DialAddTimePicker(SubMainActivity.this, im.getMonthData(),im.getDayOfWeekOfLastMonth());
+						datp = new DialAddTimePicker(SubMainActivity2.this, im.getMonthData(),im.getDayOfWeekOfLastMonth());
 						break;
 				}
 				datp.show();
 
 				break;
 			case R.id.btPlace:
-				Intent i = new Intent(SubMainActivity.this, MapActivity.class);
-				startActivity(i);
+				Intent in = new Intent(SubMainActivity2.this, MapActivity.class);
+				startActivity(in);
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
 			case R.id.btShare:
-				DialShare ds = new DialShare(SubMainActivity.this);
+				DialShare ds = new DialShare(SubMainActivity2.this);
 				ds.show();
 				break;
 			case R.id.btAlarm:
-				DialAlarm da = new DialAlarm(SubMainActivity.this);
+				DialAlarm da = new DialAlarm(SubMainActivity2.this);
 				da.show();
 				break;
 			case R.id.btRepeat:
@@ -733,7 +768,7 @@ public class SubMainActivity extends FragmentActivity {
 					if(!dayIndex.containsKey(d.getXth()))
 						dayIndex.put(d.getXth(),d.getXth());
 				}
-				DialRepeat dr = new DialRepeat(SubMainActivity.this,dayIndex);
+				DialRepeat dr = new DialRepeat(SubMainActivity2.this,dayIndex);
 				dr.show();
 				break;
 			case R.id.left_drawer://드로어 뒤 터치를 막기위한 dummy event
@@ -789,8 +824,8 @@ public class SubMainActivity extends FragmentActivity {
 		actvDep.setTextColor(Color.DKGRAY);
 		actvDep.setDropDownVerticalOffset(10);
 		actvDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v,
-									int position, long id) {
+				public void onItemClick(AdapterView<?> parent, View v,
+										int position, long id) {
 				actvSub.setText("");
 				subjects.clear();
 				subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(), String.valueOf(depGradeSpinner.getSelectedItemPosition())));
@@ -868,19 +903,14 @@ public class SubMainActivity extends FragmentActivity {
 			else
 				return timeList;
 		}catch(NullPointerException e){
-			Toast.makeText(SubMainActivity.this, getString(R.string.e_learning), Toast.LENGTH_SHORT).show();
+			Toast.makeText(SubMainActivity2.this, getString(R.string.e_learning), Toast.LENGTH_SHORT).show();
 		}
 		return timeList;
 	}
 	public void onBackPressed() {
-		//super.onBackPressed();
-		if (mLayout != null &&
-				(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-			mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-		} else {
-			backPressCloseHandler.onBackPressed(backKeyName);
-		}
+		backPressCloseHandler.onBackPressed(backKeyName);
 	}
+
 	class DownloadFileFromURL extends AsyncTask<String, String, String> {
 		@Override
 		protected void onPreExecute() {
@@ -989,14 +1019,14 @@ public class SubMainActivity extends FragmentActivity {
 		clearApplicationCache(getExternalCacheDir());
 	}
 
-	private void clearApplicationCache(java.io.File dir){
+	private void clearApplicationCache(File dir){
 		if(dir==null)
 			dir = getCacheDir();
 		else;
 		if(dir==null)
 			return;
 		else;
-		java.io.File[] children = dir.listFiles();
+		File[] children = dir.listFiles();
 		try{
 			for(int i=0;i<children.length;i++)
 				if(children[i].isDirectory())
@@ -1035,7 +1065,6 @@ public class SubMainActivity extends FragmentActivity {
 		btPlus.setVisibility(View.GONE);
 		llSpinner.setVisibility(View.GONE);
 		flSurface.setVisibility(View.GONE);
-		mLayout.setTouchEnabled(false);
 		frame_container.setVisibility(View.VISIBLE);
 		surfaceFlag = true;
 		InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
@@ -1071,8 +1100,8 @@ public class SubMainActivity extends FragmentActivity {
 	}
 	public void onEventMainThread(ExcuteMethodEvent e){
 		try {
-			Method m = SubMainActivity.this.getClass().getDeclaredMethod(e.getMethodName());
-			m.invoke(SubMainActivity.this);
+			Method m = SubMainActivity2.this.getClass().getDeclaredMethod(e.getMethodName());
+			m.invoke(SubMainActivity2.this);
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
@@ -1090,12 +1119,10 @@ public class SubMainActivity extends FragmentActivity {
 		ibwriteSchedule = (ImageButton)findViewById(R.id.ibwriteSchedule);
 		ibareaSchedule = (ImageButton)findViewById(R.id.ibareaSchedule);
 		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
-		llDialog = (LinearLayout) findViewById(R.id.llDialog);
 		llProfile = (LinearLayout) findViewById(R.id.llProfile);
 		llColor = (LinearLayout) findViewById(R.id.llColor);
 		llNormal = (LinearLayout) findViewById(R.id.llNormal);
 		llUniv = (LinearLayout) findViewById(R.id.llUniv);
-		llIncludeUniv = (LinearLayout) findViewById(R.id.llIncludeUniv);
 		llIncludeDep = (LinearLayout) findViewById(R.id.llIncludeDep);
 		llSpinner = (LinearLayout) findViewById(R.id.llSpinner);
 		llTitle = (LinearLayout) findViewById(R.id.llTitle);
@@ -1113,20 +1140,18 @@ public class SubMainActivity extends FragmentActivity {
 		btShowDep = (Button) findViewById(R.id.btShowDep);
 		btColor = (Button) findViewById(R.id.btColor);
 		hlv = (HorizontalListView) findViewById(R.id.hlv);
-		mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-		mLayout.setTouchEnabled(false);
 		ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
 		ivProfile.setImageUrl(SAMPLE_IMAGE_URL, MyVolley.getImageLoader());
 		switcher = (TextSwitcher) findViewById(R.id.switcher);
-		ViewGroup.LayoutParams params = llDialog.getLayoutParams();
+		/*ViewGroup.LayoutParams params = llDialog.getLayoutParams();
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		params.height = dm.heightPixels/3 - 10;
-		llDialog.setLayoutParams(params);
+		llDialog.setLayoutParams(params);*/
 		flSurface = (FrameLayout) findViewById(R.id.flSurface);
 		frame_container = (FrameLayout) findViewById(R.id.frame_container);
-		params = flSurface.getLayoutParams();
+		/*params = flSurface.getLayoutParams();
 		params.height = dm.heightPixels * 7 / 8;
-		flSurface.setLayoutParams(params);
+		flSurface.setLayoutParams(params);*/
 		InitSurfaceView = new InitSurfaceView(this,viewMode);
 		flSurface.addView(InitSurfaceView);
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
@@ -1152,9 +1177,9 @@ public class SubMainActivity extends FragmentActivity {
 				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 				indexForTitle = 0;
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
-				switch(position){
+				switch (position) {
 					case 0: //주
-						barText = CurrentTime.getTitleMonthWeek(SubMainActivity.this);
+						barText = CurrentTime.getTitleMonthWeek(SubMainActivity2.this);
 						switcher.setText("");
 						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.VISIBLE);
@@ -1168,7 +1193,7 @@ public class SubMainActivity extends FragmentActivity {
 						InitSurfaceView.setMode(viewMode);
 						break;
 					case 1: // 일
-						barText = CurrentTime.getTitleMonthWeek(SubMainActivity.this);
+						barText = CurrentTime.getTitleMonthWeek(SubMainActivity2.this);
 						switcher.setText("");
 						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.GONE);
@@ -1186,7 +1211,7 @@ public class SubMainActivity extends FragmentActivity {
 						changeFragment(InitDayFragment.class, "일");
 						break;
 					case 2: // 월
-						barText = CurrentTime.getTitleYearMonth(SubMainActivity.this);
+						barText = CurrentTime.getTitleYearMonth(SubMainActivity2.this);
 						switcher.setText("");
 						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.GONE);
@@ -1206,30 +1231,10 @@ public class SubMainActivity extends FragmentActivity {
 				InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
 				surfaceFlag = false;
 			}
+
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				// TODO Auto-generated method stub
-			}
-		});
-		mLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-			@Override
-			public void onPanelSlide(View panel, float slideOffset) {
-				btPlus.setVisibility(View.GONE);
-			}
-			@Override
-			public void onPanelExpanded(View panel) {
-			}
-			@Override
-			public void onPanelCollapsed(View panel) {
-				llColor.setVisibility(View.GONE);
-				btPlus.setVisibility(View.VISIBLE);
-			}
-			@Override
-			public void onPanelAnchored(View panel) {
-			}
-			@Override
-			public void onPanelHidden(View panel) {
-
 			}
 		});
 	}
@@ -1237,7 +1242,7 @@ public class SubMainActivity extends FragmentActivity {
 	InitSurfaceView InitSurfaceView;
 	DrawerLayout mDrawerLayout;
 	RoundedCornerNetworkImageView ivProfile;
-	LinearLayout mLeftDrawer,llProfile,llDialog,llColor, llNormal, llUniv, llIncludeUniv, llIncludeDep,llTitle,llSpinner;
+	LinearLayout mLeftDrawer,llProfile,llColor, llNormal, llUniv, llIncludeDep,llTitle,llSpinner;
 	ImageButton ibMenu, ibBack, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
 	TextView tvTitle,tvTitleYear,tvShare,tvAlarm,tvRepeat;
 	EditText etPlace,etMemo;
@@ -1245,34 +1250,33 @@ public class SubMainActivity extends FragmentActivity {
 	FrameLayout flSurface, frame_container;
 	RelativeLayout rlArea;
 	Fragment mContent = null;
-	Boolean surfaceFlag = false, colorFlag = false;
 	BackPressCloseHandler backPressCloseHandler;
 	String backKeyName,colorName,korName,engName,barText;
 	HorizontalListView lvTime;
 	HashMap<Integer,Integer> dayIndex;//어느 요일이 선택됬는지
 	AutoCompleteTextView actvSelectUniv;
-	Boolean clickFlag1=false,actvDepFlag=false,selected=false,adapterFlag=false;
+	Boolean clickFlag1=false,actvDepFlag=false,selected=false,adapterFlag=false,surfaceFlag = false, colorFlag = false;;
 	GradientDrawable gd;
 	static int indexForTitle=0;
 	int viewMode;
 	private HorizontalListView hlv;
 	DatabaseHandler db;
 	Bitmap capture = null;
-	static SubMainActivity singleton;
+	static SubMainActivity2 singleton;
 	public ImageButton getIbBack() {return ibBack;}
 	public ImageButton getIbMenu() {return ibMenu;}
 	public String getBarText() {
 		return barText;
 	}
-	public static SubMainActivity getInstance() {
+	public static SubMainActivity2 getInstance() {
 		return singleton;
 	}
 	Spinner spinner;
 	ArrayAdapter<CharSequence> spinnerAdapter;
 	HorizontalListAdapter hoAdapter;
 	TextSwitcher switcher;
-	//bottom drawer
-	private SlidingUpPanelLayout mLayout;
 	ArrayList<BottomNormalData> normalList;
 	ArrayAdapter normalAdapter;
+	int mPosX,mPosY;
+	PopupWindow popup;
 }

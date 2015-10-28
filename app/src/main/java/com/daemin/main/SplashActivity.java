@@ -49,7 +49,7 @@ public class SplashActivity extends Activity {
 			public void handleMessage(Message msg) {
 				finish();
 
-				Intent i = new Intent(getApplicationContext(), SubMainActivity.class);
+				Intent i = new Intent(getApplicationContext(), SubMainActivity2.class);
 			    startActivity(i);
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 			}

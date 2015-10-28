@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.daemin.timetable"
     android:versionCode="2"
-    android:versionName="1.02">
+    android:versionName="1.02" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -23,7 +23,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -33,24 +34,25 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Light.NoTitleBar">
+        android:theme="@android:style/Theme.Light.NoTitleBar" >
 
         <!-- android:largeHeap="true" -->
 
         <activity
             android:name="com.daemin.main.SplashActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.daemin.main.SubMainActivity"
+            android:name="com.daemin.main.SubMainActivity2"
             android:configChanges="orientation|screenSize|screenLayout"
             android:label="@string/app_menu"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="adjustNothing" >
             <intent-filter>
                 <action android:name="com.daemin.timetable.widget.CALL_ACTIVITY" />
 
@@ -58,12 +60,13 @@
             </intent-filter>
         </activity>
         <activity android:name="com.daemin.map.MapActivity" />
+        <activity android:name="com.daemin.dialog.DialSchedule2" android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity android:name="com.daemin.community.github.GithubActivity" />
         <activity android:name="com.daemin.community.amazon.AmazonActivity" />
         <activity android:name="com.daemin.community.lib.DoubleTapZoomNetworkImageViewActivity" />
         <activity android:name="com.daemin.community.lib.SingleTapZoomNetworkImageViewActivity" />
 
-        <receiver android:name="com.daemin.widget.MyCustomWidget">
+        <receiver android:name="com.daemin.widget.MyCustomWidget" >
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_configuration4_4" />
@@ -74,7 +77,7 @@
                 <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.daemin.widget.MyCustomWidget2">
+        <receiver android:name="com.daemin.widget.MyCustomWidget2" >
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_configuration3_3" />
@@ -88,10 +91,11 @@
 
         <service
             android:name="com.daemin.widget.MyCustomWidget$UpdateService"
-            android:enabled="true"></service>
+            android:enabled="true" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD-Z1E0xalbR8VYjJ_W2xMzZwLUQU8tJCg"/>
+            android:value="AIzaSyD-Z1E0xalbR8VYjJ_W2xMzZwLUQU8tJCg" />
     </application>
 
 </manifest>

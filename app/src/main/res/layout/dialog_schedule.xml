@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llDialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparency"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/llColor"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:visibility="invisible" >
+
+        <ImageButton
+            android:id="@+id/btcolor1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/btcolor1" />
+
+        <ImageButton
+            android:id="@+id/btcolor2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/btcolor2" />
+
+        <ImageButton
+            android:id="@+id/btcolor3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/btcolor3" />
+
+        <ImageButton
+            android:id="@+id/btcolor4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/btcolor4" />
+
+        <ImageButton
+            android:id="@+id/btcolor5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/btcolor5" />
+
+        <ImageButton
+            android:id="@+id/btcolor6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/btcolor6" />
+
+        <ImageButton
+            android:id="@+id/btcolor7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/btcolor7" />
+
+        <ImageButton
+            android:id="@+id/btcolor8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/btcolor8" />
+        <ImageButton
+            android:id="@+id/btcolor9"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/btcolor9" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dimgray"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btNormal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/transparency"
+            android:text="일반"
+            android:textSize="@dimen/textsize_l"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:onClick="mOnClick"
+            />
+
+        <Button
+            android:id="@+id/btUniv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/transparency"
+            android:text="대학"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold"
+            android:onClick="mOnClick"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6" />
+        <Button
+            android:id="@+id/btColor"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="@dimen/margin_s"
+            android:layout_marginBottom="@dimen/margin_s"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/margin_l"
+            android:background="@drawable/bg_circle_maincolor"
+            />
+
+        <Button
+            android:id="@+id/btAddSchedule"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="@dimen/margin_s"
+            android:layout_marginBottom="@dimen/margin_s"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/margin_l"
+            android:background="@drawable/ic_check"
+            />
+
+        <Button
+            android:id="@+id/btCancel"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="@dimen/margin_s"
+            android:layout_marginBottom="@dimen/margin_s"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/margin_l"
+            android:background="@drawable/ic_cancel" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/llNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical" >
+        <include
+            layout="@layout/dialog_schedule_include"
+            />
+        <LinearLayout
+            android:id="@+id/llButtonArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_xl"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="horizontal" >
+            <Button
+                android:id="@+id/btCommunity"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginRight="@dimen/margin_xxl"
+                android:background="@drawable/ic_community_black" />
+
+            <Button
+                android:id="@+id/btInvite"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginRight="@dimen/margin_xxl"
+                android:background="@drawable/ic_invite" />
+
+            <Button
+                android:id="@+id/btRemove"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/ic_remove" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llUniv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:orientation="vertical"
+        android:visibility="gone" >
+        <include
+            layout="@layout/bottom_dialog_univ"
+            />
+        <include
+            layout="@layout/bottom_dialog_dep" />
+
+    </LinearLayout>
+
+</LinearLayout>
