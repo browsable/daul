@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/llDialog"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/transparency"
-    android:orientation="vertical" >
-
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_lightgray_bottomline"
+    android:orientation="vertical">
     <LinearLayout
         android:id="@+id/llColor"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
         android:background="@android:color/white"
+        android:clickable="true"
         android:gravity="center"
         android:orientation="horizontal"
-        android:clickable="true"
-        android:visibility="invisible" >
+        android:visibility="invisible">
 
         <ImageButton
             android:id="@+id/btcolor1"
@@ -71,6 +70,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/btcolor8" />
+
         <ImageButton
             android:id="@+id/btcolor9"
             android:layout_width="match_parent"
@@ -83,91 +83,90 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/dimgray"
-        android:orientation="horizontal" >
+        android:paddingLeft="@dimen/margin_s"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btNormal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:background="@color/transparency"
             android:text="일반"
-            android:textSize="@dimen/textsize_l"
             android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:onClick="mOnClick"
-            />
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btUniv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:background="@color/transparency"
             android:text="대학"
             android:textColor="@color/gray"
             android:textSize="@dimen/textsize_l"
-            android:textStyle="bold"
-            android:onClick="mOnClick"
-            />
+            android:textStyle="bold" />
 
         <View
+            android:id="@+id/dragToggle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.6" />
+            android:layout_weight="0.7" />
+
         <Button
             android:id="@+id/btColor"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginTop="@dimen/margin_s"
-            android:layout_marginBottom="@dimen/margin_s"
             android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_s"
             android:layout_marginRight="@dimen/margin_l"
-            android:background="@drawable/bg_circle_maincolor"
-            />
+            android:layout_marginTop="@dimen/margin_s"
+            android:background="@drawable/bg_circle_maincolor" />
 
         <Button
             android:id="@+id/btAddSchedule"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginTop="@dimen/margin_s"
-            android:layout_marginBottom="@dimen/margin_s"
             android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_s"
             android:layout_marginRight="@dimen/margin_l"
-            android:background="@drawable/ic_check"
-            />
+            android:layout_marginTop="@dimen/margin_s"
+            android:background="@drawable/ic_check" />
 
         <Button
             android:id="@+id/btCancel"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginTop="@dimen/margin_s"
-            android:layout_marginBottom="@dimen/margin_s"
             android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_s"
             android:layout_marginRight="@dimen/margin_l"
+            android:layout_marginTop="@dimen/margin_s"
             android:background="@drawable/ic_cancel" />
     </LinearLayout>
-
 
 
     <LinearLayout
         android:id="@+id/llNormal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:visibility="visible"
         android:background="@android:color/white"
-        android:orientation="vertical" >
-        <include
-            layout="@layout/dialog_schedule_include"
-            />
+        android:orientation="vertical">
+
+        <include layout="@layout/dialog_schedule_include" />
+
         <LinearLayout
             android:id="@+id/llButtonArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin_xl"
             android:background="@android:color/white"
             android:gravity="center"
-            android:visibility="gone"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_xl"
+            android:visibility="gone">
+
             <Button
                 android:id="@+id/btCommunity"
                 android:layout_width="28dp"
@@ -189,18 +188,18 @@
                 android:background="@drawable/ic_remove" />
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/llUniv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.8"
+        android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="gone" >
-        <include
-            layout="@layout/bottom_dialog_univ"
-            />
-        <include
-            layout="@layout/bottom_dialog_dep" />
+        android:visibility="gone">
+
+        <include layout="@layout/bottom_dialog_univ" />
+
+        <include layout="@layout/bottom_dialog_dep" />
 
     </LinearLayout>
 

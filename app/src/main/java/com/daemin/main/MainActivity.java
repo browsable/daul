@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,8 +20,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -36,7 +33,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextSwitcher;
@@ -107,7 +103,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class SubMainActivity2 extends FragmentActivity{
+public class MainActivity extends FragmentActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -118,7 +114,6 @@ public class SubMainActivity2 extends FragmentActivity{
 		setContentView(R.layout.activity_main);
 		initUI();
 		setTitle();
-		colorButtonSetting();
 		makeNormalList();
 		if (savedInstanceState != null)
 			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
@@ -138,7 +133,7 @@ public class SubMainActivity2 extends FragmentActivity{
 		switcher.setFactory(new ViewSwitcher.ViewFactory() {
 			@Override
 			public View makeView() {
-				TextView myText = new TextView(SubMainActivity2.this);
+				TextView myText = new TextView(MainActivity.this);
 				myText.setGravity(Gravity.BOTTOM);
 				myText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 				myText.setTypeface(Typeface.DEFAULT_BOLD);
@@ -173,11 +168,11 @@ public class SubMainActivity2 extends FragmentActivity{
 						String startMin = ((TextView) view.findViewById(R.id.tvStartMin)).getText().toString();
 						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
 						String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
-						DialWeekPicker dwp = new DialWeekPicker(SubMainActivity2.this, position, xth, startHour, startMin, endHour, endMin);
+						DialWeekPicker dwp = new DialWeekPicker(MainActivity.this, position, xth, startHour, startMin, endHour, endMin);
 						dwp.show();
 						break;
 					case 2:
-						DialMonthPicker dmp = new DialMonthPicker(SubMainActivity2.this);
+						DialMonthPicker dmp = new DialMonthPicker(MainActivity.this);
 						dmp.show();
 						break;
 				}
@@ -315,25 +310,7 @@ public class SubMainActivity2 extends FragmentActivity{
 		normalAdapter.notifyDataSetChanged();
 		Common.stateFilter(Common.getTempTimePos(), viewMode);
 	}
-	public void colorButtonSetting(){
-		gd = (GradientDrawable) btColor.getBackground().mutate();
-		String[] dialogColorBtn = getResources().getStringArray(R.array.dialogColorBtn);
-		for (int i = 0; i < dialogColorBtn.length; i++) {
-			int resID = getResources().getIdentifier(dialogColorBtn[i], "id", getPackageName());
-			final int resColor = getResources().getIdentifier(dialogColorBtn[i], "color", getPackageName());
-			ImageButton B = (ImageButton) findViewById(resID);
-			B.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					llColor.setVisibility(View.INVISIBLE);
-					colorFlag = false;
-					colorName = getResources().getString(resColor);
-					gd.setColor(getResources().getColor(resColor));
-					gd.invalidateSelf();
-				}
-			});
-		}
-	}
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -454,13 +431,6 @@ public class SubMainActivity2 extends FragmentActivity{
 				normalAdapter.notifyDataSetChanged();
 				DrawMode.CURRENT.setMode(0);
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
-				llNormal.setVisibility(View.VISIBLE);
-				llUniv.setVisibility(View.GONE);
-				btColor.setVisibility(View.VISIBLE);
-				btNormal.setTextColor(getResources().getColor(
-						android.R.color.white));
-				btUniv.setTextColor(getResources().getColor(
-						R.color.gray));
 				break;
 			case R.id.btUniv:
 				normalList.clear();
@@ -468,13 +438,7 @@ public class SubMainActivity2 extends FragmentActivity{
 				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(1);
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
-				btColor.setVisibility(View.GONE);
-				llNormal.setVisibility(View.GONE);
-				llUniv.setVisibility(View.VISIBLE);
-				btNormal.setTextColor(getResources().getColor(
-						R.color.gray));
-				btUniv.setTextColor(getResources().getColor(
-						android.R.color.white));
+
 				//ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.dropdown_search, MyRequest.getGroupListFromLocal());
 				ArrayList<String> univname = new ArrayList<>();
 				univname.add("한국기술교육대학교");
@@ -510,19 +474,19 @@ public class SubMainActivity2 extends FragmentActivity{
 							public void onClick(View v) {
 								if (Common.isOnline()) {
 									if (User.USER.isSubjectDownloadState()) {
-										Toast.makeText(SubMainActivity2.this, "이미 다운로드된 상태이므로 과목셋팅만", Toast.LENGTH_SHORT).show();
+										Toast.makeText(MainActivity.this, "이미 다운로드된 상태이므로 과목셋팅만", Toast.LENGTH_SHORT).show();
 										setupSubjectDatas();
 									} else {
-										Toast.makeText(SubMainActivity2.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
+										Toast.makeText(MainActivity.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
 										new DownloadFileFromURL().execute("koreatech");
 										//DownloadSqlite("koreatech");
 									}
 								} else {
 									if (User.USER.isSubjectDownloadState()) {
-										Toast.makeText(SubMainActivity2.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
+										Toast.makeText(MainActivity.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
 										setupSubjectDatas();
 									} else {
-										Toast.makeText(SubMainActivity2.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+										Toast.makeText(MainActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
 									}
 								}
 							}
@@ -534,10 +498,10 @@ public class SubMainActivity2 extends FragmentActivity{
 					public void onClick(View v) {
 						if (Common.isOnline()) {
 							if (User.USER.isSubjectDownloadState()) {
-								Toast.makeText(SubMainActivity2.this, "이미 다운로드된 상태이므로 과목셋팅만", Toast.LENGTH_SHORT).show();
+								Toast.makeText(MainActivity.this, "이미 다운로드된 상태이므로 과목셋팅만", Toast.LENGTH_SHORT).show();
 								setupSubjectDatas();
 							} else {
-								Toast.makeText(SubMainActivity2.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
+								Toast.makeText(MainActivity.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
 
 								new DownloadFileFromURL().execute("koreatech");
 								//DownloadSqlite("koreatech");
@@ -545,10 +509,10 @@ public class SubMainActivity2 extends FragmentActivity{
 							}
 						} else {
 							if (User.USER.isSubjectDownloadState()) {
-								Toast.makeText(SubMainActivity2.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
+								Toast.makeText(MainActivity.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
 								setupSubjectDatas();
 							} else {
-								Toast.makeText(SubMainActivity2.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+								Toast.makeText(MainActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
 							}
 						}
 					}
@@ -580,64 +544,20 @@ public class SubMainActivity2 extends FragmentActivity{
 					}
 				});
 				break;
-			case R.id.btColor:
-				if (!colorFlag) {
-					llColor.setVisibility(View.VISIBLE);
-					colorFlag = true;
-				} else {
-					llColor.setVisibility(View.INVISIBLE);
-					colorFlag = false;
-				}
-				break;
 			case R.id.btPlus:
-					/*//if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);*/
-					/*DialSchedule dsc = new DialSchedule(SubMainActivity2.this);
-					dsc.show();*/
-					/*Intent i = new Intent(SubMainActivity2.this, DialSchedule2.class);
+				if(DrawMode.CURRENT.getMode()==3) DrawMode.CURRENT.setMode(1);
+					Intent i = new Intent(MainActivity.this, DialSchedule.class);
 					startActivity(i);
-					overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);*/
-				//클릭시 팝업 윈도우 생성
-				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				//팝업으로 띄울 커스텀뷰를 설정하고
-				View popupView = inflater.inflate(R.layout.dialog_schedule, null);
-				popup = new PopupWindow(
-						popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-				//팝업 뷰 터치 되도록
-				popup.setTouchable(true);
-				//팝업 뷰 포커스도 주고
-				//popup.setFocusable(true);
-				//팝업 뷰 이외에도 터치되게 (터치시 팝업 닫기 위한 코드)
-				popup.setOutsideTouchable(true);
-				//인자로 넘겨준 v 아래로 보여주기
-				popup.showAtLocation(v, Gravity.BOTTOM, 0, 0);
-
-				popupView.setOnTouchListener(new View.OnTouchListener() {
-					private int dx = 0;
-					private int dy = 0;
-					@Override
-					public boolean onTouch(View v, MotionEvent event) {
-						switch (event.getAction()) {
-							case MotionEvent.ACTION_DOWN:
-								dx = mPosX+(int)event.getRawX();
-								dy = mPosY+(int)event.getRawY();
-								break;
-							case MotionEvent.ACTION_MOVE:
-								mPosX = (int) (dx-event.getRawX());
-								mPosY = (int) (dy-event.getRawY());
-								popup.update(mPosX, mPosY, -1, -1);
-								break;
-						}
-						return true;
-					}
-				});
+					overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
 			case R.id.btAddTime:
 				switch (DrawMode.CURRENT.getMode()) {
 					case 0:
 						break;
 					case 1:
-						DialSchedule dn = new DialSchedule(SubMainActivity2.this);
-						dn.show();
+						Intent in = new Intent(MainActivity.this, DialSchedule.class);
+						startActivity(in);
+						overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 						break;
 				}
 				break;
@@ -651,9 +571,6 @@ public class SubMainActivity2 extends FragmentActivity{
 						DrawMode.CURRENT.setMode(3);
 						adapterFlag=false;
 						break;
-				}
-				if (popup != null && popup.isShowing()) {
-					popup.dismiss();
 				}
 				break;
 			case R.id.btBack:
@@ -739,27 +656,27 @@ public class SubMainActivity2 extends FragmentActivity{
 				switch(viewMode) {
 					case 0:
 						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
-						datp = new DialAddTimePicker(SubMainActivity2.this, iw.getAllMonthAndDay());
+						datp = new DialAddTimePicker(MainActivity.this, iw.getAllMonthAndDay());
 						break;
 					case 2:
 						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
-						datp = new DialAddTimePicker(SubMainActivity2.this, im.getMonthData(),im.getDayOfWeekOfLastMonth());
+						datp = new DialAddTimePicker(MainActivity.this, im.getMonthData(),im.getDayOfWeekOfLastMonth());
 						break;
 				}
 				datp.show();
 
 				break;
 			case R.id.btPlace:
-				Intent in = new Intent(SubMainActivity2.this, MapActivity.class);
+				Intent in = new Intent(MainActivity.this, MapActivity.class);
 				startActivity(in);
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
 			case R.id.btShare:
-				DialShare ds = new DialShare(SubMainActivity2.this);
+				DialShare ds = new DialShare(MainActivity.this);
 				ds.show();
 				break;
 			case R.id.btAlarm:
-				DialAlarm da = new DialAlarm(SubMainActivity2.this);
+				DialAlarm da = new DialAlarm(MainActivity.this);
 				da.show();
 				break;
 			case R.id.btRepeat:
@@ -768,7 +685,7 @@ public class SubMainActivity2 extends FragmentActivity{
 					if(!dayIndex.containsKey(d.getXth()))
 						dayIndex.put(d.getXth(),d.getXth());
 				}
-				DialRepeat dr = new DialRepeat(SubMainActivity2.this,dayIndex);
+				DialRepeat dr = new DialRepeat(MainActivity.this,dayIndex);
 				dr.show();
 				break;
 			case R.id.left_drawer://드로어 뒤 터치를 막기위한 dummy event
@@ -903,7 +820,7 @@ public class SubMainActivity2 extends FragmentActivity{
 			else
 				return timeList;
 		}catch(NullPointerException e){
-			Toast.makeText(SubMainActivity2.this, getString(R.string.e_learning), Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, getString(R.string.e_learning), Toast.LENGTH_SHORT).show();
 		}
 		return timeList;
 	}
@@ -1001,7 +918,7 @@ public class SubMainActivity2 extends FragmentActivity{
 
 	}
 	@Override
-	protected void onDestroy() {
+	 protected void onDestroy() {
 		super.onDestroy();
 		//appcontroller에서 앱 실행시 초기에 불러오게될 정보를 저장함
 		SharedPreferences.Editor editor = MyPreferences.USERINFO.getEditor();
@@ -1100,8 +1017,8 @@ public class SubMainActivity2 extends FragmentActivity{
 	}
 	public void onEventMainThread(ExcuteMethodEvent e){
 		try {
-			Method m = SubMainActivity2.this.getClass().getDeclaredMethod(e.getMethodName());
-			m.invoke(SubMainActivity2.this);
+			Method m = MainActivity.this.getClass().getDeclaredMethod(e.getMethodName());
+			m.invoke(MainActivity.this);
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
@@ -1120,7 +1037,6 @@ public class SubMainActivity2 extends FragmentActivity{
 		ibareaSchedule = (ImageButton)findViewById(R.id.ibareaSchedule);
 		mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
 		llProfile = (LinearLayout) findViewById(R.id.llProfile);
-		llColor = (LinearLayout) findViewById(R.id.llColor);
 		llNormal = (LinearLayout) findViewById(R.id.llNormal);
 		llUniv = (LinearLayout) findViewById(R.id.llUniv);
 		llIncludeDep = (LinearLayout) findViewById(R.id.llIncludeDep);
@@ -1156,7 +1072,6 @@ public class SubMainActivity2 extends FragmentActivity{
 		flSurface.addView(InitSurfaceView);
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
-		colorName = Common.MAIN_COLOR;
 		dayIndex = new HashMap<>();
 		spinner = (Spinner) findViewById(R.id.spinner);
 		spinnerAdapter = ArrayAdapter
@@ -1179,7 +1094,7 @@ public class SubMainActivity2 extends FragmentActivity{
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
 				switch (position) {
 					case 0: //주
-						barText = CurrentTime.getTitleMonthWeek(SubMainActivity2.this);
+						barText = CurrentTime.getTitleMonthWeek(MainActivity.this);
 						switcher.setText("");
 						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.VISIBLE);
@@ -1193,7 +1108,7 @@ public class SubMainActivity2 extends FragmentActivity{
 						InitSurfaceView.setMode(viewMode);
 						break;
 					case 1: // 일
-						barText = CurrentTime.getTitleMonthWeek(SubMainActivity2.this);
+						barText = CurrentTime.getTitleMonthWeek(MainActivity.this);
 						switcher.setText("");
 						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.GONE);
@@ -1211,7 +1126,7 @@ public class SubMainActivity2 extends FragmentActivity{
 						changeFragment(InitDayFragment.class, "일");
 						break;
 					case 2: // 월
-						barText = CurrentTime.getTitleYearMonth(SubMainActivity2.this);
+						barText = CurrentTime.getTitleYearMonth(MainActivity.this);
 						switcher.setText("");
 						switcher.setText(barText);
 						tvTitleYear.setVisibility(View.GONE);
@@ -1242,7 +1157,7 @@ public class SubMainActivity2 extends FragmentActivity{
 	InitSurfaceView InitSurfaceView;
 	DrawerLayout mDrawerLayout;
 	RoundedCornerNetworkImageView ivProfile;
-	LinearLayout mLeftDrawer,llProfile,llColor, llNormal, llUniv, llIncludeDep,llTitle,llSpinner;
+	LinearLayout mLeftDrawer,llProfile, llNormal, llUniv, llIncludeDep,llTitle,llSpinner;
 	ImageButton ibMenu, ibBack, ibfindSchedule, ibwriteSchedule, ibareaSchedule;
 	TextView tvTitle,tvTitleYear,tvShare,tvAlarm,tvRepeat;
 	EditText etPlace,etMemo;
@@ -1251,24 +1166,23 @@ public class SubMainActivity2 extends FragmentActivity{
 	RelativeLayout rlArea;
 	Fragment mContent = null;
 	BackPressCloseHandler backPressCloseHandler;
-	String backKeyName,colorName,korName,engName,barText;
+	String backKeyName,korName,engName,barText;
 	HorizontalListView lvTime;
 	HashMap<Integer,Integer> dayIndex;//어느 요일이 선택됬는지
 	AutoCompleteTextView actvSelectUniv;
 	Boolean clickFlag1=false,actvDepFlag=false,selected=false,adapterFlag=false,surfaceFlag = false, colorFlag = false;;
-	GradientDrawable gd;
 	static int indexForTitle=0;
 	int viewMode;
 	private HorizontalListView hlv;
 	DatabaseHandler db;
 	Bitmap capture = null;
-	static SubMainActivity2 singleton;
+	static MainActivity singleton;
 	public ImageButton getIbBack() {return ibBack;}
 	public ImageButton getIbMenu() {return ibMenu;}
 	public String getBarText() {
 		return barText;
 	}
-	public static SubMainActivity2 getInstance() {
+	public static MainActivity getInstance() {
 		return singleton;
 	}
 	Spinner spinner;
@@ -1277,6 +1191,4 @@ public class SubMainActivity2 extends FragmentActivity{
 	TextSwitcher switcher;
 	ArrayList<BottomNormalData> normalList;
 	ArrayAdapter normalAdapter;
-	int mPosX,mPosY;
-	PopupWindow popup;
 }

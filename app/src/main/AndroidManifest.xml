@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.daemin.main.SubMainActivity2"
+            android:name="com.daemin.main.MainActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:label="@string/app_menu"
             android:screenOrientation="portrait"
@@ -60,7 +60,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.daemin.map.MapActivity" />
-        <activity android:name="com.daemin.dialog.DialSchedule2" android:theme="@android:style/Theme.Holo.Light.Dialog" />
+        <activity android:name="com.daemin.dialog.DialSchedule" android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity android:name="com.daemin.community.github.GithubActivity" />
         <activity android:name="com.daemin.community.amazon.AmazonActivity" />
         <activity android:name="com.daemin.community.lib.DoubleTapZoomNetworkImageViewActivity" />

@@ -100,44 +100,6 @@
             android:textSize="13dip"
             android:background="@drawable/bg_maincolor_round_border"
             android:visibility="gone"/>
-        <RelativeLayout
-            android:id="@+id/rlArea"
-            android:layout_width="80dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:padding="@dimen/margin_default"
-            android:visibility="gone">
-            <ImageButton
-                android:id="@+id/ibfindSchedule"
-                android:layout_width="24dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:background="@color/transparency"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_circlesearch"
-                />
-            <ImageButton
-                android:id="@+id/ibareaSchedule"
-                android:layout_width="24dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:background="@color/transparency"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_write"
-                android:visibility="gone"
-                android:onClick="mOnClick"
-                />
-            <ImageButton
-                android:id="@+id/ibwriteSchedule"
-                android:layout_width="24dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@color/transparency"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_write"
-                />
-
-        </RelativeLayout>
         <LinearLayout
             android:id="@+id/llSpinner"
             android:layout_width="34dp"

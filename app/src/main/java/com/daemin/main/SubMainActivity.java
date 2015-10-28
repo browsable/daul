@@ -61,7 +61,6 @@ import com.daemin.data.SubjectData;
 import com.daemin.dialog.DialAddTimePicker;
 import com.daemin.dialog.DialAlarm;
 import com.daemin.dialog.DialMonthPicker;
-import com.daemin.dialog.DialSchedule;
 import com.daemin.dialog.DialRepeat;
 import com.daemin.dialog.DialShare;
 import com.daemin.dialog.DialWeekPicker;
@@ -603,8 +602,6 @@ public class SubMainActivity extends FragmentActivity {
 					case 0:
 						break;
 					case 1:
-						DialSchedule dn = new DialSchedule(SubMainActivity.this);
-						dn.show();
 						break;
 				}
 				break;
