@@ -55,7 +55,6 @@
             android:windowSoftInputMode="adjustNothing" >
             <intent-filter>
                 <action android:name="com.daemin.timetable.widget.CALL_ACTIVITY" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

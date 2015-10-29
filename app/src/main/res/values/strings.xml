@@ -86,6 +86,7 @@
     <string name="univ_notice_setting">대학은 설정 메뉴에서 재설정 가능합니다.</string>
     <string name="univ_notice_enroll">소속대학이 없을 때</string>
     <string name="univ_notice_email">hernia@koreatech.ac.kr</string>
+    <string name="univ_notice_emtpy">정해진 시간이 없습니다</string>
     <string-array name="univ_depgrade">
         <item>전체</item>
         <item>1학년</item>

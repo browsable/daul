@@ -30,8 +30,6 @@ public class AreaFragment_Write extends BasicFragment {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
         if (layoutId > 0) {
-            ibfindSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibfindSchedule);
-            ibwriteSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibwriteSchedule);
             //EventBus.getDefault().post(new ViewGoneEvent(new String[]{"ibMenu"}));
             //EventBus.getDefault().post(new ViewVisibleEvent(new String[]{"ibBack"}));
             EventBus.getDefault().post(new BackKeyEvent("AreaFragment"));

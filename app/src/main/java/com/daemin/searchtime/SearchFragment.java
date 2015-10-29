@@ -38,7 +38,7 @@ public class SearchFragment {
                 adapter.notifyDataSetChanged();
             }
         }else{
-            Toast.makeText(SubMainActivity.this, "먼저 대학을 선택하세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "먼저 대학을 선택하세요", Toast.LENGTH_SHORT).show();
         }
     }*/
 }

@@ -7,16 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.daemin.common.BasicFragment;
-import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 
 import java.util.ArrayList;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by HOME on 2015-09-21.
@@ -26,7 +22,6 @@ public class AreaFragment_Find extends BasicFragment {
     private View root;
     Spinner spinner;
     AutoCompleteTextView area_autocomplete;
-    ImageButton ibareaSchedule, ibwriteSchedule,ibfindSchedule;
     ArrayList<String> data,spinner_data;
     ArrayAdapter<String> adapter,spinnerAdapter;
     public AreaFragment_Find() {
@@ -37,12 +32,6 @@ public class AreaFragment_Find extends BasicFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = super.onCreateView(inflater, container, savedInstanceState);
         if (layoutId > 0) {
-            ibfindSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibfindSchedule);
-            ibareaSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibareaSchedule);
-            ibwriteSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibwriteSchedule);
-            ibfindSchedule.setVisibility(View.GONE);
-            ibareaSchedule.setVisibility(View.VISIBLE);
-            ibwriteSchedule.setVisibility(View.VISIBLE);
 
             data = new ArrayList();
             for(int i=0;i< AreaFragment.eventList.size();i++){
@@ -67,7 +56,7 @@ public class AreaFragment_Find extends BasicFragment {
             spinner.setAdapter(spinnerAdapter);
 
         }
-        ibwriteSchedule.setOnClickListener(new View.OnClickListener() {
+       /* ibwriteSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new ChangeFragEvent(AreaFragment_Write.class, "이벤트작성"));
@@ -75,7 +64,7 @@ public class AreaFragment_Find extends BasicFragment {
                 ibwriteSchedule.setVisibility(View.GONE);
                 ibareaSchedule.setVisibility(View.GONE);
             }
-        });
+        });*/
 
 
 

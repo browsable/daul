@@ -197,7 +197,7 @@ public class InitWeekThread extends InitThread {
                     ETP.setPosState(PosState.ADJUST);
                     if(!Common.getTempTimePos().contains(ETP.name()))
                     Common.getTempTimePos().add(ETP.name());
-                    SubMainActivity.getInstance().setupRecommendDatas(ETP.name());
+                    MainActivity.getInstance().setupRecommendDatas(ETP.name());
                 }else {
                     Common.stateFilter(Common.getTempTimePos(), "week");
                 }

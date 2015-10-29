@@ -35,7 +35,7 @@ public class DialMonthPicker extends Dialog {
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-        layoutParams.width = dm.widthPixels*2/3;;
+        layoutParams.width = dm.widthPixels*5/6;;
         layoutParams.height = dm.heightPixels*4/9;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);

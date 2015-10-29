@@ -9,6 +9,6 @@
   
   />
   <!--android:previewImage="@drawable/"
-	  android:"com.daemin.timetable.SubMainActivity"
+	  android:"com.daemin.timetable.MainActivity"
   -->
   <!-- android:updatePeriodMillis="10000" -->

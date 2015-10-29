@@ -7,21 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.daemin.adapter.EventListAdapter;
 import com.daemin.common.BasicFragment;
 import com.daemin.data.EventlistData;
-import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import java.util.LinkedList;
-
-import de.greenrobot.event.EventBus;
 
 public class AreaFragment extends BasicFragment {
 	private static AreaFragment singleton;
@@ -29,7 +25,6 @@ public class AreaFragment extends BasicFragment {
 	private PullToRefreshListView listView;
 	static LinkedList<EventlistData> eventList;
 	EventListAdapter event_adapter;
-	ImageButton ibfindSchedule, ibwriteSchedule;
 
 	//public static RequestQueue queue;
 	public AreaFragment() {
@@ -42,14 +37,7 @@ public class AreaFragment extends BasicFragment {
 			Bundle savedInstanceState) {
 		View root = super.onCreateView(inflater, container, savedInstanceState);
 		if (layoutId > 0) {
-			ibfindSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibfindSchedule);
-			ibwriteSchedule = (ImageButton) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.ibwriteSchedule);
-			ibfindSchedule.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
 
-				}
-			});
 
 		listView = (PullToRefreshListView)root.findViewById(R.id.event_list);
 
@@ -84,7 +72,7 @@ public class AreaFragment extends BasicFragment {
 		eventList.add(new EventlistData("창업동아리 다울 회의","2015.09.14","daul@gmail.com"));
 		event_adapter = new EventListAdapter(getActivity().getApplicationContext(), eventList);
 		listView.setAdapter(event_adapter);
-		ibwriteSchedule.setOnClickListener(new View.OnClickListener() {
+		/*ibwriteSchedule.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				EventBus.getDefault().post(new ChangeFragEvent(AreaFragment_Write.class,"이벤트작성"));
@@ -98,7 +86,7 @@ public class AreaFragment extends BasicFragment {
 			public void onClick(View v) {
 				EventBus.getDefault().post(new ChangeFragEvent(AreaFragment_Find.class, "주변이벤트찾검색"));
 			}
-		});
+		});*/
 		}
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -127,7 +115,7 @@ public class AreaFragment extends BasicFragment {
 		}
 	}
 //	public void onClick_amazon(){
-//		Intent intent = new Intent(SubMainActivity.getInstance(), AmazonActivity.class);
+//		Intent intent = new Intent(MainActivity.getInstance(), AmazonActivity.class);
 //		startActivity(intent);
 //	}
 	public static AreaFragment getInstance(){

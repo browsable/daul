@@ -19,7 +19,7 @@ import android.widget.ImageButton;
 import com.daemin.common.BasicFragment;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
-import com.daemin.main.SubMainActivity;
+import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
 
 import de.greenrobot.event.EventBus;
@@ -43,8 +43,8 @@ public class SettingUnivFragment extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        ibMenu = SubMainActivity.getInstance().getIbMenu();
-        ibBack = SubMainActivity.getInstance().getIbBack();
+        ibMenu = MainActivity.getInstance().getIbMenu();
+        ibBack = MainActivity.getInstance().getIbBack();
         if (layoutId > 0) {
             ibMenu.setVisibility(View.GONE);
             ibBack.setVisibility(View.VISIBLE);
