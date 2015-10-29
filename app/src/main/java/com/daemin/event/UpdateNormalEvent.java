@@ -3,7 +3,7 @@ package com.daemin.event;
 /**
  * Created by hernia on 2015-10-16.
  */
-public class UpdateByDialEvent {
+public class UpdateNormalEvent {
     String startHour;
     String startMin;
     String endHour;
@@ -11,7 +11,7 @@ public class UpdateByDialEvent {
     int xth;
     int position;
 
-    public UpdateByDialEvent(String startHour, String startMin, String endHour, String endMin, int xth, int position) {
+    public UpdateNormalEvent(String startHour, String startMin, String endHour, String endMin, int xth, int position) {
         this.startHour = startHour;
         this.startMin = startMin;
         this.endHour = endHour;

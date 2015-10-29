@@ -74,12 +74,12 @@ import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.event.ExcuteMethodEvent;
-import com.daemin.event.SendPlaceEvent;
+import com.daemin.event.SetPlaceEvent;
 import com.daemin.event.SetAlarmEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
 import com.daemin.event.SetTitleTImeEvent;
-import com.daemin.event.UpdateByDialEvent;
+import com.daemin.event.UpdateNormalEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.map.MapActivity;
 import com.daemin.setting.SettingFragment;
@@ -1037,14 +1037,14 @@ public class SubMainActivity extends FragmentActivity {
 		surfaceFlag = true;
 		InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
 	}
-	public void onEventMainThread(SendPlaceEvent e){
+	public void onEventMainThread(SetPlaceEvent e){
 				etPlace.setText(e.getPlace());
 	}
 	public void onEventMainThread(BottomNormalData e){
 		normalList.add(e);
 		normalAdapter.notifyDataSetChanged();
 	}
-	public void onEventMainThread(UpdateByDialEvent e){
+	public void onEventMainThread(UpdateNormalEvent e){
 		normalList.remove(e.getPosition());
 		normalList.add(e.getPosition(), new BottomNormalData(
 				InitSurfaceView.getInitThread().getMonthAndDay(e.getXth()), e.getStartHour(), e.getStartMin(),

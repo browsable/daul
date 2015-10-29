@@ -17,7 +17,7 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
-import com.daemin.event.UpdateByDialEvent;
+import com.daemin.event.UpdateNormalEvent;
 import com.daemin.timetable.R;
 
 import de.greenrobot.event.EventBus;
@@ -145,7 +145,7 @@ public class DialWeekPicker extends Dialog {
                 tp.setMin(startMin, endMin);
                 tp.setPosState(PosState.ADJUST);
             }
-            EventBus.getDefault().post(new UpdateByDialEvent(tvDailStartTime.getText().toString(),
+            EventBus.getDefault().post(new UpdateNormalEvent(tvDailStartTime.getText().toString(),
                 Convert.IntToString(npStartMin.getValue()),
                 tvDialEndTime.getText().toString(),
                 Convert.IntToString(npEndMin.getValue()),

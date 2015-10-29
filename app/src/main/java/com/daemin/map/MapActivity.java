@@ -17,7 +17,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.daemin.event.SendPlaceEvent;
+import com.daemin.event.SetPlaceEvent;
 import com.daemin.timetable.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -386,7 +386,7 @@ public class MapActivity extends FragmentActivity
             public void onClick(View v) {
                 String place = mAutocompleteView.getText().toString();
                 if (!place.equals(null)) {
-                    EventBus.getDefault().post(new SendPlaceEvent(place));
+                    EventBus.getDefault().post(new SetPlaceEvent(place));
                     finish();
                 }
             }

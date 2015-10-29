@@ -40,7 +40,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import com.daemin.adapter.BottomNormalListAdapter;
 import com.daemin.adapter.HorizontalListAdapter;
 import com.daemin.area.AreaFragment;
 import com.daemin.common.BackPressCloseHandler;
@@ -53,17 +52,8 @@ import com.daemin.common.MyRequest;
 import com.daemin.common.MyVolley;
 import com.daemin.common.RoundedCornerNetworkImageView;
 import com.daemin.community.CommunityFragment2;
-import com.daemin.data.BottomNormalData;
 import com.daemin.data.SubjectData;
-import com.daemin.dialog.DialAddTimePicker;
-import com.daemin.dialog.DialAlarm;
-import com.daemin.dialog.DialMonthPicker;
-import com.daemin.dialog.DialRepeat;
 import com.daemin.dialog.DialSchedule;
-import com.daemin.dialog.DialShare;
-import com.daemin.dialog.DialWeekPicker;
-import com.daemin.enumclass.DayOfMonthPos;
-import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.PosState;
@@ -71,15 +61,9 @@ import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
-import com.daemin.event.ExcuteMethodEvent;
-import com.daemin.event.SendPlaceEvent;
-import com.daemin.event.SetAlarmEvent;
-import com.daemin.event.SetRepeatEvent;
-import com.daemin.event.SetShareEvent;
+import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.SetTitleTImeEvent;
-import com.daemin.event.UpdateByDialEvent;
 import com.daemin.friend.FriendFragment;
-import com.daemin.map.MapActivity;
 import com.daemin.setting.SettingFragment;
 import com.daemin.timetable.InitDayFragment;
 import com.daemin.timetable.InitMonthThread;
@@ -94,11 +78,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -114,7 +96,6 @@ public class MainActivity extends FragmentActivity{
 		setContentView(R.layout.activity_main);
 		initUI();
 		setTitle();
-		makeNormalList();
 		if (savedInstanceState != null)
 			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
 		if(viewMode == 2){
@@ -153,54 +134,7 @@ public class MainActivity extends FragmentActivity{
 		}
 
 	}
-	public void makeNormalList(){
-		normalList = new ArrayList<>();
-		lvTime = (HorizontalListView) findViewById(R.id.lvTime);
-		normalAdapter = new BottomNormalListAdapter(this, normalList);
-		lvTime.setAdapter(normalAdapter);
-		lvTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				switch (viewMode) {
-					case 0:
-						String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
-						String startMin = ((TextView) view.findViewById(R.id.tvStartMin)).getText().toString();
-						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
-						String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
-						DialWeekPicker dwp = new DialWeekPicker(MainActivity.this, position, xth, startHour, startMin, endHour, endMin);
-						dwp.show();
-						break;
-					case 2:
-						DialMonthPicker dmp = new DialMonthPicker(MainActivity.this);
-						dmp.show();
-						break;
-				}
-			}
-		});
-		lvTime.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			public boolean onItemLongClick(AdapterView<?> arg0, View view,
-										   int pos, long id) {
-				switch (viewMode) {
-					case 0:
-						String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
-						String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
-						String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
-						String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-						removeWeek(Integer.parseInt(xth), Integer.parseInt(startHour), Integer.parseInt(endHour), Integer.parseInt(endMin));
-						break;
-					case 2:
-						String tvYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
-						String xth2 = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-						removeMonth(Integer.parseInt(xth2), Integer.parseInt(tvYMD.split("/")[1]));
-						break;
-				}
-				normalList.remove(pos);
-				normalAdapter.notifyDataSetChanged();
-				return true;
-			}
-		});
-	}
+
 	//3:9:00:10:00 , 3:9:00:11:00, 3:9:00:11:30
 	public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin){
 		if(endMin!=0) ++endHour;
@@ -219,98 +153,6 @@ public class MainActivity extends FragmentActivity{
 			++j;
 		}
 	}
-	public void removeWeek(int xth, int startHour, int endHour, int endMin){
-		if(startHour!=endHour) {
-			if(endMin!=0)++endHour;
-			TimePos[] tp = new TimePos[endHour - startHour];
-			int j = 0;
-			for (int i = startHour; i < endHour; i++) {
-				tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
-				if (tp[j].getPosState() != PosState.NO_PAINT) {
-					tp[j].setMin(0, 60);
-					tp[j].setPosState(PosState.NO_PAINT);
-				}
-				++j;
-			}
-		}else{
-			TimePos tp = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
-			tp.setMin(0, 60);
-			tp.setPosState(PosState.NO_PAINT);
-		}
-	}
-	public void removeMonth(int xth, int day){
-		InitMonthThread im = (InitMonthThread)InitSurfaceView.getInitThread();
-		int yth = (im.getDayOfWeekOfLastMonth()+day)/7+1;
-		DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
-		if (DOMP.getPosState() != DayOfMonthPosState.NO_PAINT) {
-			DOMP.setPosState(DayOfMonthPosState.NO_PAINT);
-		}
-	}
-	public void updateWeekList(){
-		normalList.clear();
-		int startYth=0,startMin=0,endYth=0,endMin=0,tmpXth=0;
-		int tmpStartYth=0, tmpStartMin=0, tmpEndYth=0, tmpEndMin=0;
-		String YMD="";
-		for (TimePos ETP : TimePos.values()) {
-			if(ETP.getPosState()==PosState.PAINT||ETP.getPosState()==PosState.ADJUST){
-				if(tmpXth!=ETP.getXth()){
-					tmpXth = ETP.getXth();
-					YMD = InitSurfaceView.getInitThread().getMonthAndDay(tmpXth);
-					tmpStartYth=tmpStartMin=tmpEndYth=tmpEndMin=0;
-				}
-				if(tmpEndYth!=ETP.getYth()) {
-					tmpStartYth = startYth = ETP.getYth();
-					tmpStartMin = startMin = ETP.getStartMin();
-					tmpEndMin = endMin = ETP.getEndMin();
-					if(endMin!=0) tmpEndYth = endYth = startYth;
-					else tmpEndYth = endYth = startYth + 2;
-					normalList.add(new BottomNormalData(YMD,
-							Convert.YthToHourOfDay(startYth),
-							Convert.IntToString(startMin),
-							Convert.YthToHourOfDay(endYth),
-							Convert.IntToString(endMin),
-							tmpXth
-					));
-				}else if(tmpEndYth== ETP.getYth()&&tmpEndMin==ETP.getStartMin()){ //
-					normalList.remove(normalList.size()-1);
-					startYth = tmpStartYth;
-					startMin = tmpStartMin;
-					tmpEndMin = endMin = ETP.getEndMin();
-					if(endMin!=0) tmpEndYth = endYth = ETP.getYth();
-					else tmpEndYth = endYth = ETP.getYth() + 2;
-					normalList.add(new BottomNormalData(YMD,
-							Convert.YthToHourOfDay(startYth),
-							Convert.IntToString(startMin),
-							Convert.YthToHourOfDay(endYth),
-							Convert.IntToString(endMin),
-							tmpXth
-					));
-				}
-			}
-		}
-		normalAdapter.notifyDataSetChanged();
-
-	}
-	public void updateMonthList(){
-		normalList.clear();
-		int tmpXth=0,tmpYth=0;
-		String YMD="";
-		for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
-			if (DOMP.getPosState() == DayOfMonthPosState.PAINT) {
-				tmpXth = DOMP.getXth();
-				tmpYth = DOMP.getYth();
-				YMD = CurrentTime.getTitleMonth()+"/"+InitSurfaceView.getInitThread().getMonthAndDay(tmpXth - 1, 7 * (tmpYth - 1));
-				normalList.add(new BottomNormalData(YMD,"8","00","9","00",tmpXth));
-			}
-		}
-		normalAdapter.notifyDataSetChanged();
-	}
-	public void clearView(){
-		normalList.clear();
-		normalAdapter.notifyDataSetChanged();
-		Common.stateFilter(Common.getTempTimePos(), viewMode);
-	}
-
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -389,8 +231,7 @@ public class MainActivity extends FragmentActivity{
 				}
 				break;
 			case R.id.btTimetable:
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
+				EventBus.getDefault().post(new ClearNormalEvent());
 				rlArea.setVisibility(View.GONE);
 				llSpinner.setVisibility(View.VISIBLE);
 				llTitle.setVisibility(View.VISIBLE);
@@ -400,7 +241,7 @@ public class MainActivity extends FragmentActivity{
 				flSurface.setVisibility(View.VISIBLE);
 				frame_container.setVisibility(View.GONE);
 				if (surfaceFlag) {
-					InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
+					initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
 					surfaceFlag = false;
 				}
 				break;
@@ -427,14 +268,12 @@ public class MainActivity extends FragmentActivity{
 			case R.id.btNormal:
 				rlArea.setVisibility(View.GONE);
 				DrawMode.CURRENT.setMode(0);
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
+				EventBus.getDefault().post(new ClearNormalEvent());
 				DrawMode.CURRENT.setMode(0);
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
 				break;
 			case R.id.btUniv:
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
+				EventBus.getDefault().post(new ClearNormalEvent());
 				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 				DrawMode.CURRENT.setMode(1);
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
@@ -575,11 +414,10 @@ public class MainActivity extends FragmentActivity{
 				break;
 			case R.id.btBack:
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
+				EventBus.getDefault().post(new ClearNormalEvent());
 				switch(viewMode) {
 					case 0:
-						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
+						InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
 						--indexForTitle;
 						if (indexForTitle < 0) {
 							tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
@@ -594,7 +432,7 @@ public class MainActivity extends FragmentActivity{
 						}
 						break;
 					case 2:
-						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
+						InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
 						--indexForTitle;
 						if (indexForTitle < 0) {
 							barText = CurrentTime.backTitleYearMonth(this, -indexForTitle);
@@ -614,11 +452,10 @@ public class MainActivity extends FragmentActivity{
 				break;
 			case R.id.btForward:
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
+				EventBus.getDefault().post(new ClearNormalEvent());
 				switch(viewMode) {
 					case 0:
-						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
+						InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
 						++indexForTitle;
 						if (indexForTitle < 0) {
 							tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
@@ -633,7 +470,7 @@ public class MainActivity extends FragmentActivity{
 						}
 						break;
 					case 2:
-						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
+						InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
 						++indexForTitle;
 						if (indexForTitle < 0) {
 							barText = CurrentTime.backTitleYearMonth(this, -indexForTitle);
@@ -650,43 +487,6 @@ public class MainActivity extends FragmentActivity{
 						}
 						break;
 				}
-				break;
-			case R.id.btNew1:case R.id.btNew2:
-				DialAddTimePicker datp = null;
-				switch(viewMode) {
-					case 0:
-						InitWeekThread iw = (InitWeekThread) InitSurfaceView.getInitThread();
-						datp = new DialAddTimePicker(MainActivity.this, iw.getAllMonthAndDay());
-						break;
-					case 2:
-						InitMonthThread im = (InitMonthThread) InitSurfaceView.getInitThread();
-						datp = new DialAddTimePicker(MainActivity.this, im.getMonthData(),im.getDayOfWeekOfLastMonth());
-						break;
-				}
-				datp.show();
-
-				break;
-			case R.id.btPlace:
-				Intent in = new Intent(MainActivity.this, MapActivity.class);
-				startActivity(in);
-				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-				break;
-			case R.id.btShare:
-				DialShare ds = new DialShare(MainActivity.this);
-				ds.show();
-				break;
-			case R.id.btAlarm:
-				DialAlarm da = new DialAlarm(MainActivity.this);
-				da.show();
-				break;
-			case R.id.btRepeat:
-				dayIndex.clear();
-				for(BottomNormalData d : normalList){
-					if(!dayIndex.containsKey(d.getXth()))
-						dayIndex.put(d.getXth(),d.getXth());
-				}
-				DialRepeat dr = new DialRepeat(MainActivity.this,dayIndex);
-				dr.show();
 				break;
 			case R.id.left_drawer://드로어 뒤 터치를 막기위한 dummy event
 				break;
@@ -974,8 +774,7 @@ public class MainActivity extends FragmentActivity{
 		}
 	}
 	private void changeSetting(){
-		normalList.clear();
-		normalAdapter.notifyDataSetChanged();
+		EventBus.getDefault().post(new ClearNormalEvent());
 		rlArea.setVisibility(View.GONE);
 		llTitle.setVisibility(View.GONE);
 		tvTitle.setVisibility(View.VISIBLE);
@@ -984,45 +783,10 @@ public class MainActivity extends FragmentActivity{
 		flSurface.setVisibility(View.GONE);
 		frame_container.setVisibility(View.VISIBLE);
 		surfaceFlag = true;
-		InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+		initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
 	}
-	public void onEventMainThread(SendPlaceEvent e){
-				etPlace.setText(e.getPlace());
-	}
-	public void onEventMainThread(BottomNormalData e){
-		normalList.add(e);
-		normalAdapter.notifyDataSetChanged();
-	}
-	public void onEventMainThread(UpdateByDialEvent e){
-		normalList.remove(e.getPosition());
-		normalList.add(e.getPosition(), new BottomNormalData(
-				InitSurfaceView.getInitThread().getMonthAndDay(e.getXth()), e.getStartHour(), e.getStartMin(),
-				e.getEndHour(), e.getEndMin(), e.getXth()));
-		normalAdapter.notifyDataSetChanged();
-	}
-	public void onEventMainThread(BackKeyEvent e){
-		backKeyName = e.getFragName();
-	}
-	public void onEventMainThread(SetAlarmEvent e){
-		tvAlarm.setText(e.getTime());
-	}
-	public void onEventMainThread(SetShareEvent e){
-		tvShare.setText(e.getShare());
-	}
-	public void onEventMainThread(SetRepeatEvent e){
-		tvRepeat.setText(e.toString());
-	}
-	public void onEventMainThread(ChangeFragEvent e){
-		changeFragment(e.getCl(), e.getTitleName());
-	}
-	public void onEventMainThread(ExcuteMethodEvent e){
-		try {
-			Method m = MainActivity.this.getClass().getDeclaredMethod(e.getMethodName());
-			m.invoke(MainActivity.this);
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}
+
+
 	private void initUI(){
 		backKeyName="";
 		if (User.USER.isSubjectDownloadState()) db = new DatabaseHandler(this);
@@ -1068,17 +832,18 @@ public class MainActivity extends FragmentActivity{
 		/*params = flSurface.getLayoutParams();
 		params.height = dm.heightPixels * 7 / 8;
 		flSurface.setLayoutParams(params);*/
-		InitSurfaceView = new InitSurfaceView(this,viewMode);
-		flSurface.addView(InitSurfaceView);
+		initSurfaceView = new InitSurfaceView(this,viewMode);
+		flSurface.addView(initSurfaceView);
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
-		dayIndex = new HashMap<>();
+
 		spinner = (Spinner) findViewById(R.id.spinner);
 		spinnerAdapter = ArrayAdapter
 				.createFromResource(this, R.array.wdm,
 						R.layout.wdm_spinner_item);
 		spinnerAdapter
 				.setDropDownViewResource(R.layout.wdm_spinner_dropdown_item);
+
 		// Apply the adapter to the spinner
 		spinner.setAdapter(spinnerAdapter);
 		spinner.setSelection(viewMode);
@@ -1086,10 +851,9 @@ public class MainActivity extends FragmentActivity{
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 									   int position, long id) {
-				normalList.clear();
-				normalAdapter.notifyDataSetChanged();
+				EventBus.getDefault().post(new ClearNormalEvent());
 				llTitle.setVisibility(View.VISIBLE);
-				InitSurfaceView.surfaceDestroyed(InitSurfaceView.getHolder());
+				initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
 				indexForTitle = 0;
 				Common.stateFilter(Common.getTempTimePos(), viewMode);
 				switch (position) {
@@ -1105,7 +869,7 @@ public class MainActivity extends FragmentActivity{
 						changeFragment(TimetableFragment.class, "");
 						flSurface.setVisibility(View.VISIBLE);
 						frame_container.setVisibility(View.GONE);
-						InitSurfaceView.setMode(viewMode);
+						initSurfaceView.setMode(viewMode);
 						break;
 					case 1: // 일
 						barText = CurrentTime.getTitleMonthWeek(MainActivity.this);
@@ -1140,10 +904,10 @@ public class MainActivity extends FragmentActivity{
 						changeFragment(TimetableFragment.class, "");
 						flSurface.setVisibility(View.VISIBLE);
 						frame_container.setVisibility(View.GONE);
-						InitSurfaceView.setMode(viewMode);
+						initSurfaceView.setMode(viewMode);
 						break;
 				}
-				InitSurfaceView.surfaceCreated(InitSurfaceView.getHolder());
+				initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
 				surfaceFlag = false;
 			}
 
@@ -1154,7 +918,7 @@ public class MainActivity extends FragmentActivity{
 		});
 	}
 	private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
-	InitSurfaceView InitSurfaceView;
+	InitSurfaceView initSurfaceView;
 	DrawerLayout mDrawerLayout;
 	RoundedCornerNetworkImageView ivProfile;
 	LinearLayout mLeftDrawer,llProfile, llNormal, llUniv, llIncludeDep,llTitle,llSpinner;
@@ -1167,8 +931,6 @@ public class MainActivity extends FragmentActivity{
 	Fragment mContent = null;
 	BackPressCloseHandler backPressCloseHandler;
 	String backKeyName,korName,engName,barText;
-	HorizontalListView lvTime;
-	HashMap<Integer,Integer> dayIndex;//어느 요일이 선택됬는지
 	AutoCompleteTextView actvSelectUniv;
 	Boolean clickFlag1=false,actvDepFlag=false,selected=false,adapterFlag=false,surfaceFlag = false, colorFlag = false;;
 	static int indexForTitle=0;
@@ -1177,18 +939,30 @@ public class MainActivity extends FragmentActivity{
 	DatabaseHandler db;
 	Bitmap capture = null;
 	static MainActivity singleton;
+	Spinner spinner;
+	ArrayAdapter<CharSequence> spinnerAdapter;
+	HorizontalListAdapter hoAdapter;
+	TextSwitcher switcher;
 	public ImageButton getIbBack() {return ibBack;}
 	public ImageButton getIbMenu() {return ibMenu;}
 	public String getBarText() {
 		return barText;
 	}
+	public InitSurfaceView getInitSurfaceView() {
+		return initSurfaceView;
+	}
 	public static MainActivity getInstance() {
 		return singleton;
 	}
-	Spinner spinner;
-	ArrayAdapter<CharSequence> spinnerAdapter;
-	HorizontalListAdapter hoAdapter;
-	TextSwitcher switcher;
-	ArrayList<BottomNormalData> normalList;
-	ArrayAdapter normalAdapter;
+	public int getViewMode() {
+		return viewMode;
+	}
+
+
+	public void onEventMainThread(BackKeyEvent e){
+		backKeyName = e.getFragName();
+	}
+	public void onEventMainThread(ChangeFragEvent e){
+		changeFragment(e.getCl(), e.getTitleName());
+	}
 }

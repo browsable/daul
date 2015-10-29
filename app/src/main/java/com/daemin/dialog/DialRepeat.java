@@ -32,6 +32,7 @@ import de.greenrobot.event.EventBus;
 public class DialRepeat extends Dialog {
     Context context;
     HashMap<Integer, Integer> dayIndex;
+
     public DialRepeat(Context context, HashMap<Integer, Integer> dayIndex) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
@@ -51,7 +52,7 @@ public class DialRepeat extends Dialog {
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels * 2 / 3;
-        layoutParams.height = dm.heightPixels * 3 / 5;
+        layoutParams.height = dm.heightPixels * 4 / 9;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();
@@ -64,11 +65,11 @@ public class DialRepeat extends Dialog {
         etWeek = (EditText) findViewById(R.id.etWeek);
         etMonth = (EditText) findViewById(R.id.etMonth);
         etYear = (EditText) findViewById(R.id.etYear);
-        repeatGroup = (RadioGroup)findViewById(R.id.repeatGroup);
-        llTerm = (LinearLayout)findViewById(R.id.llTerm);
-        llWeek = (LinearLayout)findViewById(R.id.llWeek);
-        llMonth = (LinearLayout)findViewById(R.id.llMonth);
-        llYear = (LinearLayout)findViewById(R.id.llYear);
+        repeatGroup = (RadioGroup) findViewById(R.id.repeatGroup);
+        llTerm = (LinearLayout) findViewById(R.id.llTerm);
+        llWeek = (LinearLayout) findViewById(R.id.llWeek);
+        llMonth = (LinearLayout) findViewById(R.id.llMonth);
+        llYear = (LinearLayout) findViewById(R.id.llYear);
         tvSun = (TextView) findViewById(R.id.tvSun);
         tvMon = (TextView) findViewById(R.id.tvMon);
         tvTue = (TextView) findViewById(R.id.tvTue);
@@ -76,8 +77,8 @@ public class DialRepeat extends Dialog {
         tvThr = (TextView) findViewById(R.id.tvThr);
         tvFri = (TextView) findViewById(R.id.tvFri);
         tvSat = (TextView) findViewById(R.id.tvSat);
-        for(int i : dayIndex.keySet()){
-            switch (i){
+        for (int i : dayIndex.keySet()) {
+            switch (i) {
                 case 1:
                     tvSun.setBackgroundResource(R.drawable.bg_circle_maincolor);
                     break;
@@ -107,10 +108,12 @@ public class DialRepeat extends Dialog {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 llTerm.setVisibility(View.VISIBLE);
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -120,10 +123,12 @@ public class DialRepeat extends Dialog {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 llTerm.setVisibility(View.VISIBLE);
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -186,7 +191,7 @@ public class DialRepeat extends Dialog {
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int limitNum=0;//횟수제한
+                int limitNum = 0;//횟수제한
                 if (repeatGroup.getCheckedRadioButtonId() != -1) {
                     int id = repeatGroup.getCheckedRadioButtonId();
                     View radioButton = repeatGroup.findViewById(id);
@@ -201,31 +206,38 @@ public class DialRepeat extends Dialog {
                         case 1:
                             repeatPeriod = etWeek.getText().toString();
                             repeatType = context.getResources().getString(R.string.everyweek);
-                            limitNum = 7*Integer.parseInt(repeatPeriod);
+                            if (!repeatPeriod.equals(""))
+                                limitNum = 7 * Integer.parseInt(repeatPeriod);
                             break;
                         case 2:
                             repeatPeriod = etMonth.getText().toString();
                             repeatType = context.getResources().getString(R.string.everymonth);
-                            limitNum = 7*4*Integer.parseInt(repeatPeriod);
+                            if (!repeatPeriod.equals(""))
+                                limitNum = 7 * 4 * Integer.parseInt(repeatPeriod);
                             break;
                         case 3:
                             repeatPeriod = etYear.getText().toString();
                             repeatType = context.getResources().getString(R.string.everyyear);
-                            limitNum = 7*4*12*Integer.parseInt(repeatPeriod);
+                            if (!repeatPeriod.equals(""))
+                                limitNum = 7 * 4 * 12 * Integer.parseInt(repeatPeriod);
                             break;
                     }
                     String term = etTerm.getText().toString();
                     repeatNumber = term;
-                    if (repeatPeriod.equals("") || repeatNumber.equals(""))
-                        Toast.makeText(context, "단위를 입력하세요", Toast.LENGTH_SHORT).show();
-                    else {
-                        if (Integer.parseInt(repeatNumber)*limitNum <= 365*10) {
-                            EventBus.getDefault().post(new SetRepeatEvent(repeatType, repeatPeriod, repeatNumber));
-                            cancel();
-                        } else {
-                            Toast.makeText(context, "반복기한은 10년 이하로 가능합니다", Toast.LENGTH_SHORT).show();
+                    if(!repeatType.equals("반복 없음")) {
+                        if (repeatPeriod.equals("") || repeatNumber.equals(""))
+                            Toast.makeText(context, "단위를 입력하세요", Toast.LENGTH_SHORT).show();
+                        else {
+                            if (Integer.parseInt(repeatNumber) * limitNum <= 365 * 10) {
+                                EventBus.getDefault().post(new SetRepeatEvent(repeatType, repeatPeriod, repeatNumber));
+                                cancel();
+                            } else {
+                                Toast.makeText(context, "반복기한은 10년 이하로 가능합니다", Toast.LENGTH_SHORT).show();
+                            }
                         }
-
+                    }else{
+                        EventBus.getDefault().post(new SetRepeatEvent(repeatType, repeatPeriod, repeatNumber));
+                        cancel();
                     }
                 }
             }
@@ -237,10 +249,11 @@ public class DialRepeat extends Dialog {
             }
         });
     }
-    private Button btDialCancel,btDialSetting;
+
+    private Button btDialCancel, btDialSetting;
     private RadioGroup repeatGroup;
-    private LinearLayout llTerm,llWeek,llMonth,llYear;
-    private EditText etTerm,etWeek,etMonth,etYear;
-    private TextView tvSun,tvMon,tvTue,tvWed,tvThr,tvFri,tvSat;
-    private String repeatType,repeatPeriod,repeatNumber;
+    private LinearLayout llTerm, llWeek, llMonth, llYear;
+    private EditText etTerm, etWeek, etMonth, etYear;
+    private TextView tvSun, tvMon, tvTue, tvWed, tvThr, tvFri, tvSat;
+    private String repeatType, repeatPeriod, repeatNumber;
 }

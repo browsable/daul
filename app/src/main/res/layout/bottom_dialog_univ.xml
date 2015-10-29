@@ -25,7 +25,6 @@
             android:hint="대학을 검색하세요"
             android:paddingLeft="@dimen/margin_xs"
             android:singleLine="true"
-            android:textColorHint="@color/dimgray"
             android:textSize="@dimen/textsize_l" />
 
         <requestFocus />

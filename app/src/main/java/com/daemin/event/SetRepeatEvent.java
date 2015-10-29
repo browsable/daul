@@ -28,8 +28,8 @@ public class SetRepeatEvent {
 
     @Override
     public String toString() {
-        if(!repeatType.equals("반복 없음")) repeatNumber +="회 반복";
-        return repeatNumber+" : "+
+        if(!repeatType.equals("반복 없음")) repeatNumber +="회 : ";
+        return repeatNumber+
                 repeatPeriod
                 + repeatType;
     }
