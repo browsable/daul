@@ -2,6 +2,7 @@ package com.daemin.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -80,24 +81,31 @@ public class DialRepeat extends Dialog {
         for (int i : dayIndex.keySet()) {
             switch (i) {
                 case 1:
+                    tvSun.setTextColor(Color.WHITE);
                     tvSun.setBackgroundResource(R.drawable.bg_circle_maincolor);
                     break;
                 case 3:
+                    tvMon.setTextColor(Color.WHITE);
                     tvMon.setBackgroundResource(R.drawable.bg_circle_maincolor);
                     break;
                 case 5:
+                    tvTue.setTextColor(Color.WHITE);
                     tvTue.setBackgroundResource(R.drawable.bg_circle_maincolor);
                     break;
                 case 7:
+                    tvWed.setTextColor(Color.WHITE);
                     tvWed.setBackgroundResource(R.drawable.bg_circle_maincolor);
                     break;
                 case 9:
+                    tvThr.setTextColor(Color.WHITE);
                     tvThr.setBackgroundResource(R.drawable.bg_circle_maincolor);
                     break;
                 case 11:
+                    tvFri.setTextColor(Color.WHITE);
                     tvFri.setBackgroundResource(R.drawable.bg_circle_maincolor);
                     break;
                 case 13:
+                    tvSat.setTextColor(Color.WHITE);
                     tvSat.setBackgroundResource(R.drawable.bg_circle_maincolor);
                     break;
             }

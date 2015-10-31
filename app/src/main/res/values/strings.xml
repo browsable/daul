@@ -28,7 +28,7 @@
     <string name="setting">설정</string>
     <!--하단드로어메뉴-->
     <!--일반-->
-    <string name="normal_name">이름</string>
+    <string name="normal_name">이름입력</string>
     <string name="normal_place">장소 : 직접입력</string>
     <string name="normal_alarm">알람 : 없음</string>
     <string name="normal_share">공유 : 비공개</string>
@@ -83,18 +83,17 @@
     <!--대학-->
     <string name="univ_search">강의 또는 교수명 검색</string>
     <string name="univ_searchdep">학과 검색</string>
+    <string name="univ_grade">학년 : 전체</string>
     <string name="univ_credit">학점 :</string>
     <string name="univ_notice_setting">대학은 설정 메뉴에서 재설정 가능합니다.</string>
-    <string name="univ_notice_enroll">소속 대학이 없나요?</string>
+    <string name="univ_notice_enroll">소속대학이 없나요?</string>
+    <string name="univ_notice1">TimeDAO는 각 학교의 강의데이터를</string>
+    <string name="univ_notice2">토대로 시간표를 제작합니다.</string>
+    <string name="univ_notice3">소속대학이 목록에 없는 경우,</string>
+    <string name="univ_notice4">대학의 수강편람을 메일로 보내주세요.</string>
     <string name="univ_notice_email">hernia@koreatech.ac.kr</string>
+    <string name="univ_notice_copy">복사하기</string>
     <string name="univ_notice_emtpy">정해진 시간이 없습니다</string>
-    <string-array name="univ_depgrade">
-        <item>학년 : 전체</item>
-        <item>1학년</item>
-        <item>2학년</item>
-        <item>3학년</item>
-        <item>4학년</item>
-    </string-array>
 <!--친구-->
     <string name="friend_favorite">즐겨찾기</string>
     <string name="friend_friend">친구</string>

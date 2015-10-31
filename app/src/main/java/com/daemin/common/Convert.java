@@ -111,4 +111,25 @@ public class Convert {
 				return 0;
 		}
 	}
+	public static String indexOfGrade(String grade) {
+		String index ="0";
+		switch (grade) {
+			case "학년 : 전체":
+				break;
+			case "1학년":
+				index="1";
+				break;
+			case "2학년":
+				index="2";
+				break;
+			case "3학년":
+				index="3";
+				break;
+			case "4학년":
+				index="4";
+				break;
+		}
+		return index;
+	}
+
 }

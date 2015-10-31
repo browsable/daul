@@ -48,9 +48,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/univ_notice_enroll"
-            android:textColor="@android:color/black"
+            android:textColor="@color/dimgray"
             android:textSize="@dimen/textsize_s"
             android:layout_marginTop="@dimen/margin_l"
-            android:background="@drawable/bg_black_bottomline"
+            android:background="@drawable/bg_lightgray_bottomline"
             android:layout_gravity="top|right"/>
 </LinearLayout>

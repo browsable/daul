@@ -37,11 +37,12 @@
                 android:layout_marginLeft="@dimen/margin_xxs"
                 android:layout_marginRight="@dimen/margin_xxs"
                 android:layout_weight="1"
-                android:background="@drawable/bg_circle_border_black"
                 android:gravity="center"
                 android:text="@string/sun"
-                android:textSize="@dimen/textsize_xs"
-                android:textStyle="bold" />
+                android:textSize="@dimen/textsize_s"
+                android:textStyle="bold"
+                android:textColor="@color/middlegray"
+                />
 
             <TextView
                 android:id="@+id/tvMon"
@@ -50,10 +51,10 @@
                 android:layout_marginLeft="@dimen/margin_xxs"
                 android:layout_marginRight="@dimen/margin_xxs"
                 android:layout_weight="1"
-                android:background="@drawable/bg_circle_border_black"
                 android:gravity="center"
                 android:text="@string/mon"
-                android:textSize="@dimen/textsize_xs"
+                android:textSize="@dimen/textsize_s"
+                android:textColor="@color/middlegray"
                 android:textStyle="bold" />
 
             <TextView
@@ -63,10 +64,10 @@
                 android:layout_marginLeft="@dimen/margin_xxs"
                 android:layout_marginRight="@dimen/margin_xxs"
                 android:layout_weight="1"
-                android:background="@drawable/bg_circle_border_black"
                 android:gravity="center"
                 android:text="@string/tue"
-                android:textSize="@dimen/textsize_xs"
+                android:textSize="@dimen/textsize_s"
+                android:textColor="@color/middlegray"
                 android:textStyle="bold" />
 
             <TextView
@@ -76,10 +77,10 @@
                 android:layout_marginLeft="@dimen/margin_xxs"
                 android:layout_marginRight="@dimen/margin_xxs"
                 android:layout_weight="1"
-                android:background="@drawable/bg_circle_border_black"
                 android:gravity="center"
                 android:text="@string/wed"
-                android:textSize="@dimen/textsize_xs"
+                android:textSize="@dimen/textsize_s"
+                android:textColor="@color/middlegray"
                 android:textStyle="bold" />
 
             <TextView
@@ -89,10 +90,10 @@
                 android:layout_marginLeft="@dimen/margin_xxs"
                 android:layout_marginRight="@dimen/margin_xxs"
                 android:layout_weight="1"
-                android:background="@drawable/bg_circle_border_black"
                 android:gravity="center"
                 android:text="@string/thr"
-                android:textSize="@dimen/textsize_xs"
+                android:textSize="@dimen/textsize_s"
+                android:textColor="@color/middlegray"
                 android:textStyle="bold" />
 
             <TextView
@@ -102,10 +103,10 @@
                 android:layout_marginLeft="@dimen/margin_xxs"
                 android:layout_marginRight="@dimen/margin_xxs"
                 android:layout_weight="1"
-                android:background="@drawable/bg_circle_border_black"
                 android:gravity="center"
                 android:text="@string/fri"
-                android:textSize="@dimen/textsize_xs"
+                android:textSize="@dimen/textsize_s"
+                android:textColor="@color/middlegray"
                 android:textStyle="bold" />
 
             <TextView
@@ -115,10 +116,10 @@
                 android:layout_marginLeft="@dimen/margin_xxs"
                 android:layout_marginRight="@dimen/margin_xxs"
                 android:layout_weight="1"
-                android:background="@drawable/bg_circle_border_black"
                 android:gravity="center"
                 android:text="@string/sat"
-                android:textSize="@dimen/textsize_xs"
+                android:textSize="@dimen/textsize_s"
+                android:textColor="@color/middlegray"
                 android:textStyle="bold" />
 
         </LinearLayout>
