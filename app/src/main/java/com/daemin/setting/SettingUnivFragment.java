@@ -69,11 +69,11 @@ public class SettingUnivFragment extends BasicFragment {
         });
 
         actvSelectUniv = makeACTV(root, getActivity(),
-                R.layout.dropdown_search,
+                R.layout.dropdown_univ,
                 R.id.actvSelectUniv,
                 arrayDep);
         actvSelectDep = makeACTV(root, getActivity(),
-                R.layout.dropdown_search,
+                R.layout.dropdown_univ,
                 R.id.actvSelectDep,
                 arrayDep);
 

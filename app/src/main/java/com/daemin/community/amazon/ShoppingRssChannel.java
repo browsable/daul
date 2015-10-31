@@ -29,10 +29,8 @@ public class ShoppingRssChannel {
     private String language;
     @Element(required = false)
     private String copyright;
-
     @ElementList(inline=true)
     private List<ShoppingItem> items;
-
     public List<ShoppingItem> getShoppingItems() {
         return items;
     }

@@ -28,28 +28,29 @@ public class SplashActivity extends Activity {
 			setContentView(R.layout.activity_splash);
 			EventBus.getDefault().postSticky(new SetTitleTImeEvent(CurrentTime.getTitleMonthWeek(this)));
 			initialize();
-			if(Common.isOnline()) {
-				if (User.USER.isGroupListDownloadState()) {
-					Toast.makeText(this, "그룹리스트다운로드되있는상태", Toast.LENGTH_SHORT).show();
-				}else{
-					Toast.makeText(this, "그룹리스트다운로드해야함", Toast.LENGTH_SHORT).show();
-					//MyRequest.getGroupList();
-				}
-			}
-			else{
-				Toast.makeText(this, this.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-			}
-			//MyRequest.test(singleton);
+
 		}
 
 	
 	private void initialize() {
+		if(Common.isOnline()) {
+			if (User.USER.isGroupListDownloadState()) {
+				Toast.makeText(this, "그룹리스트다운로드되있는상태", Toast.LENGTH_SHORT).show();
+			}else{
+				Toast.makeText(this, "그룹리스트다운로드해야함", Toast.LENGTH_SHORT).show();
+				//MyRequest.getGroupList();
+			}
+		}
+		else{
+			Toast.makeText(this, this.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+		}
+		//MyRequest.test(singleton);
 		Handler handler = new Handler() {
 
 			public void handleMessage(Message msg) {
 				finish();
 
-				Intent i = new Intent(getApplicationContext(), MainActivity.class);
+				Intent i = new Intent(SplashActivity.this, MainActivity.class);
 			    startActivity(i);
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 			}

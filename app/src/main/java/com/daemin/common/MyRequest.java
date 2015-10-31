@@ -14,7 +14,6 @@ import com.daemin.community.github.GithubActivity;
 import com.daemin.data.GroupListData;
 import com.daemin.enumclass.User;
 import com.daemin.repository.GroupListFromServerRepository;
-import com.daemin.timetable.R;
 import com.navercorp.volleyextensions.request.Jackson2Request;
 
 import org.json.JSONException;
@@ -67,7 +66,7 @@ public class MyRequest {
             public void onErrorResponse(VolleyError error) {
                 Log.d(GithubActivity.class.getSimpleName(), ""
                         + error.getMessage());
-                Toast.makeText(context, context.getString(R.string.dataloading_error), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, context.getString(R.string.dataloading_error), Toast.LENGTH_SHORT).show();
             }
 
         });

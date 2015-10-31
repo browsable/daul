@@ -183,7 +183,7 @@ public class InitWeekThread extends InitThread {
                 break;
             case 1: //대학
                 //대학선택시에 그리는 것은 막고 선택한 과목은 함께 지워져야함
-                if (Common.checkTableStateIsNothing && Common.isLlIncludeDepIn()) {
+                if (Common.checkTableStateIsNothing){
                     Toast.makeText(context, "과목을 선택하세요", Toast.LENGTH_SHORT).show();
                 } else {
                     Common.stateFilter(Common.getTempTimePos(), 0);

@@ -7,7 +7,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.daemin.enumclass.PosState;
-import com.daemin.enumclass.SerialNumberGenerator;
 import com.daemin.enumclass.TimePos;
 import com.daemin.event.ExcuteMethodEvent;
 
@@ -19,7 +18,6 @@ public class InitSurfaceView extends SurfaceView implements
 
 	private SurfaceHolder holder;
 	private InitThread initThread;
-	float txPos, tyPos;
 	Context context;
 	private int xth, yth;
 	private boolean outOfTouchArea;
@@ -77,7 +75,6 @@ public class InitSurfaceView extends SurfaceView implements
 			try {
 				initThread.join();
 				done = false;
-				SerialNumberGenerator.COUNT.initCount();
 				for (TimePos ETP : TimePos.values()) {
 					//시간표 사각형 그려진 영역 초기화
 					if(ETP.getPosState()!= PosState.NO_PAINT){

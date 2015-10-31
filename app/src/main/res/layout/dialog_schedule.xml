@@ -116,11 +116,13 @@
             android:layout_height="match_parent"
             android:layout_weight="0.7" />
 
-        <Button
+        <ToggleButton
             android:id="@+id/btColor"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_gravity="center"
+            android:textOn=""
+            android:textOff=""
             android:layout_marginBottom="@dimen/margin_s"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_marginTop="@dimen/margin_s"

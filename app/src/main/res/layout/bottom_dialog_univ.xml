@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/llIncludeUniv"
+    android:id="@+id/llSelectUniv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
@@ -16,7 +16,7 @@
         android:orientation="horizontal">
 
         <AutoCompleteTextView
-            android:id="@+id/actvSelectUniv"
+            android:id="@+id/actvUniv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -30,7 +30,7 @@
 
         <requestFocus />
 
-        <Button
+        <View
             android:id="@+id/btShowUniv"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -43,22 +43,14 @@
             android:background="@drawable/ic_action_forward"
             android:visibility="gone" />
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:orientation="vertical">
-
         <TextView
             android:id="@+id/btEnroll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/univ_notice_enroll"
-            android:textColor="@color/blue"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/textsize_s"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:background="@drawable/bg_blue_bottomline"
-            android:layout_gravity="center"/>
-    </LinearLayout>
+            android:layout_marginTop="@dimen/margin_l"
+            android:background="@drawable/bg_black_bottomline"
+            android:layout_gravity="top|right"/>
 </LinearLayout>

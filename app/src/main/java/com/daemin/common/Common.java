@@ -35,13 +35,6 @@ public class Common {
 
 	public static boolean checkTableStateIsNothing = true;
 
-	public static boolean llIncludeDepIn = false;
-	public static boolean isLlIncludeDepIn() {
-		return llIncludeDepIn;
-	}
-	public static void setLlIncludeDepIn(boolean llIncludeDepIn) {
-		Common.llIncludeDepIn = llIncludeDepIn;
-	}
 	public static boolean isOnline() { // network 연결 상태 확인
 		try {
 			ConnectivityManager conMan = (ConnectivityManager) AppController.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);

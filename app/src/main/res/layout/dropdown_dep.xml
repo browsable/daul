@@ -5,6 +5,7 @@
 	android:layout_height="match_parent"
 	android:background="@android:color/white"
 	android:gravity="center_vertical"
-	android:padding="5dp"
-	android:textSize="@dimen/textsize_xxl"
+	android:padding="@dimen/margin_xs"
+	android:textSize="@dimen/textsize_l"
+	android:ellipsize="marquee"
 	/> 

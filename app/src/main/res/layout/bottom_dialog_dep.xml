@@ -1,91 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:widget="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/llIncludeDep"
+    android:id="@+id/llDep"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_lightgray_bottomline"
     android:orientation="vertical"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_lightgray_bottomline"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_lightgray_bottomline"
+            android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/margin_xxs"
+            android:orientation="horizontal">
+            <AutoCompleteTextView
+                android:id="@+id/actvDep"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_xxs"
+                android:layout_weight="1"
+                android:ems="10"
+                android:overScrollMode="always"
+                android:hint="@string/univ_searchdep"
+                android:singleLine="true"
+                android:dropDownWidth="160dp"
+                android:dropDownHeight="160dp"
+                android:background="@android:color/white"
+                android:textColor="@color/dimgray"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/textsize_default" />
+            <View
+                android:id="@+id/btShowDep"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_expand" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/bg_lightgray_bottomline"
             android:gravity="center"
             android:orientation="horizontal">
-
-            <AutoCompleteTextView
-                android:id="@+id/actvDep"
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/depGradeSpinner"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_xxs"
-                android:layout_weight="2.5"
-                android:background="@android:color/white"
-                android:ems="10"
-                android:hint="@string/univ_searchdep"
-                android:textColorHint="@color/gray"
-                android:paddingLeft="@dimen/margin_xxs"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_default"
-                android:textColor="@color/dimgray"
-                />
-            <Button
-                android:id="@+id/btShowDep"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/ic_expand"
+                android:layout_weight="1"
+                android:dropDownVerticalOffset="0.45dp"
+                android:spinnerMode="dropdown"
                 />
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/lightgray"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="3"
-                android:orientation="horizontal"
-                android:scaleType="fitXY">
-                <Spinner
-                    android:id="@+id/depGradeSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/transparency"
-                    android:dropDownVerticalOffset="0.45dp"
-                    android:layout_weight="1"
-                    android:spinnerMode="dropdown" />
+                android:background="@color/lightgray" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_s"
+                android:text="@string/univ_credit"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/textsize_default" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_xxs"
+                android:layout_marginRight="@dimen/margin_default"
+                android:text="0"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/textsize_default" />
             </LinearLayout>
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/lightgray"
-                />
-            <AutoCompleteTextView
-                android:id="@+id/actvSub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_xxs"
-                android:layout_weight="1.8"
-                android:background="@android:color/white"
-                android:ems="10"
-                android:hint="@string/univ_search"
-                android:textColorHint="@color/gray"
-                android:paddingLeft="@dimen/margin_xxs"
-                android:dropDownWidth="160dp"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_default"
-                android:textColor="@color/dimgray"
-                />
         </LinearLayout>
+        <AutoCompleteTextView
+            android:id="@+id/actvSub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_xxs"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:dropDownWidth="160dp"
+            android:ems="10"
+            android:hint="@string/univ_search"
+            android:padding="@dimen/margin_xxs"
+            android:singleLine="true"
+            android:textColor="@color/dimgray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/textsize_default" />
     </LinearLayout>
+
     <com.daemin.common.HorizontalListView
         android:id="@+id/hlv"
         android:layout_width="match_parent"

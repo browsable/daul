@@ -48,6 +48,7 @@ import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.event.ClearNormalEvent;
+import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetBtPlusGoneEvent;
 import com.daemin.event.SetBtPlusVisibleEvent;
 import com.daemin.event.SetTitleTImeEvent;
@@ -115,7 +116,6 @@ public class MainActivity extends FragmentActivity {
         editor.putInt("viewMode", viewMode);
         editor.commit();
         EventBus.getDefault().unregister(this);
-        Common.setLlIncludeDepIn(false);
         Common.stateFilter(Common.getTempTimePos(), viewMode);
         CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
         indexForTitle = 0;
@@ -138,12 +138,13 @@ public class MainActivity extends FragmentActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         setContentView(R.layout.activity_main);
+        if (savedInstanceState != null)
+            mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
         setLayout();
         setTitle();
         //Log.i("phone", User.USER.getPhoneNum());
         backPressCloseHandler = new BackPressCloseHandler(this);
-        if (savedInstanceState != null)
-            mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
+
 
     }
 
@@ -271,6 +272,7 @@ public class MainActivity extends FragmentActivity {
     public void mOnClick(View v) {
         switch (v.getId()) {
             case R.id.ibMenu:
+                EventBus.getDefault().post(new FinishDialogEvent());
                 if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
                     mDrawerLayout.closeDrawer(mLeftDrawer);
                 } else {
