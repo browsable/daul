@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<!--시스템전반-->
+    <!--시스템전반-->
     <string name="app_name">TimeDAO</string>
     <string name="app_menu">메뉴</string>
     <string name="action_settings">Settings</string>
@@ -19,7 +19,7 @@
     <string name="appupdate">APP 업데이트 버전이 있습니다. 업데이트 하시겠습니까?</string>
     <string name="dbupdate">DB 업데이트 버전이 있습니다. 업데이트 하시겠습니까?</string>
 
-<!--메인화면-->
+    <!--메인화면-->
     <!--좌측드로어메뉴-->
     <string name="timetable">시간표</string>
     <string name="friend">친구시간표</string>
@@ -38,48 +38,48 @@
     <string name="normal_i">비공개</string>
     <string name="normal_friend">친구공개</string>
     <string name="normal_all">전체공개</string>
-        <!--다이얼 -->
-        <string name="tvDialTime">시간설정</string>
-        <string name="tvDialShare">공유설정</string>
-        <string name="tvDialAlarm">알람설정</string>
-        <string name="tvDialRepeat">반복설정</string>
-        <string name="tvDialAddGroup">그룹추가</string>
-        <string name="btDialCancel">취소</string>
-        <string name="btDialSetting">확인</string>
-        <!--지도-->
-        <string name="search_place">장소 검색</string>
-        <!--공유 -->
-        <string name="share_radio0">비공개</string>
-        <string name="share_radio1">친구공개</string>
-        <string name="share_radio2">전체공개</string>
-        <!--알람 -->
-        <string name="alram_radio0">알람 없음</string>
-        <string name="alram_radio1">3분 전</string>
-        <string name="alram_radio2">5분 전</string>
-        <string name="alram_radio3">10분 전</string>
-        <string name="alram_radio4">15분 전</string>
-        <string name="alram_radio5">20분 전</string>
-        <string name="alram_radio6">30분 전</string>
-        <string name="alram_radio7">1시간 전</string>
-        <string name="alram_radio8">1일 전</string>
-        <!--반복-->
-        <string name="sun">일</string>
-        <string name="mon">월</string>
-        <string name="tue">화</string>
-        <string name="wed">수</string>
-        <string name="thr">목</string>
-        <string name="fri">금</string>
-        <string name="sat">토</string>
-        <string name="repeat_radio0">반복 없음</string>
-        <string name="repeat_radio1">주간 반복</string>
-        <string name="repeat_radio2">월간 반복</string>
-        <string name="repeat_radio3">년간 반복</string>
-        <string name="repeat_number">반복 횟수</string>
-        <string name="term_month">개월</string>
-        <string name="everyweek">주마다</string>
-        <string name="everymonth">개월마다</string>
-        <string name="everyyear">년마다</string>
-        <string name="term">회</string>
+    <!--다이얼 -->
+    <string name="tvDialTime">시간설정</string>
+    <string name="tvDialShare">공유설정</string>
+    <string name="tvDialAlarm">알람설정</string>
+    <string name="tvDialRepeat">반복설정</string>
+    <string name="tvDialAddGroup">그룹추가</string>
+    <string name="btDialCancel">취소</string>
+    <string name="btDialSetting">확인</string>
+    <!--지도-->
+    <string name="search_place">장소 검색</string>
+    <!--공유 -->
+    <string name="share_radio0">비공개</string>
+    <string name="share_radio1">친구공개</string>
+    <string name="share_radio2">전체공개</string>
+    <!--알람 -->
+    <string name="alram_radio0">알람 없음</string>
+    <string name="alram_radio1">3분 전</string>
+    <string name="alram_radio2">5분 전</string>
+    <string name="alram_radio3">10분 전</string>
+    <string name="alram_radio4">15분 전</string>
+    <string name="alram_radio5">20분 전</string>
+    <string name="alram_radio6">30분 전</string>
+    <string name="alram_radio7">1시간 전</string>
+    <string name="alram_radio8">1일 전</string>
+    <!--반복-->
+    <string name="sun">일</string>
+    <string name="mon">월</string>
+    <string name="tue">화</string>
+    <string name="wed">수</string>
+    <string name="thr">목</string>
+    <string name="fri">금</string>
+    <string name="sat">토</string>
+    <string name="repeat_radio0">반복 없음</string>
+    <string name="repeat_radio1">주간 반복</string>
+    <string name="repeat_radio2">월간 반복</string>
+    <string name="repeat_radio3">년간 반복</string>
+    <string name="repeat_number">반복 횟수</string>
+    <string name="term_month">개월</string>
+    <string name="everyweek">주마다</string>
+    <string name="everymonth">개월마다</string>
+    <string name="everyyear">년마다</string>
+    <string name="term">회</string>
     <!--대학-->
     <string name="univ_search">강의 또는 교수명 검색</string>
     <string name="univ_searchdep">학과 검색</string>
@@ -87,26 +87,26 @@
     <string name="univ_credit">학점 :</string>
     <string name="univ_notice_setting">대학은 설정 메뉴에서 재설정 가능합니다.</string>
     <string name="univ_notice_enroll">소속대학이 없나요?</string>
-    <string name="univ_notice1">TimeDAO는 각 학교의 강의데이터를</string>
+    <string name="univ_notice1">TimeDAO는 각 학교의 수강데이터를</string>
     <string name="univ_notice2">토대로 시간표를 제작합니다.</string>
-    <string name="univ_notice3">소속대학이 목록에 없는 경우,</string>
+    <string name="univ_notice3">소속대학이 목록에 없는 경우</string>
     <string name="univ_notice4">대학의 수강편람을 메일로 보내주세요.</string>
     <string name="univ_notice_email">hernia@koreatech.ac.kr</string>
-    <string name="univ_notice_copy">복사하기</string>
+    <string name="univ_notice_share">메일 주소 내보내기</string>
     <string name="univ_notice_emtpy">정해진 시간이 없습니다</string>
-<!--친구-->
+    <!--친구-->
     <string name="friend_favorite">즐겨찾기</string>
     <string name="friend_friend">친구</string>
     <string name="friend_group">그룹</string>
     <string name="friend_addgroup">+그룹</string>
     <string name="friend_search">친구 또는 그룹 검색</string>
-<!--주변-->
+    <!--주변-->
     <string name="list_item_01">1km</string>
     <string name="list_item_02">5km</string>
     <string name="list_item_03">10km</string>
-<!--커뮤니티-->
+    <!--커뮤니티-->
     <string name="community_search">커뮤니티 검색</string>
-<!--설정-->
+    <!--설정-->
     <string name="setting_id">TimeDAO 계정</string>
     <string name="setting_mail">메일주소 변경</string>
     <string name="setting_mailpassword">비밀번호 변경</string>

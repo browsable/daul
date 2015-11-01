@@ -52,6 +52,9 @@ import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetAlarmEvent;
 import com.daemin.event.SetBtPlusGoneEvent;
 import com.daemin.event.SetBtPlusVisibleEvent;
+import com.daemin.event.SetBtUnivGoneEvent;
+import com.daemin.event.SetBtUnivNoticeEvent;
+import com.daemin.event.SetBtUnivVisibleEvent;
 import com.daemin.event.SetPlaceEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
@@ -81,12 +84,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onBackPressed() {
         EventBus.getDefault().post(new SetBtPlusVisibleEvent());
         switch (DrawMode.CURRENT.getMode()) {
-            case 0:
-                DrawMode.CURRENT.setMode(0);
-                break;
             case 1:
                 Common.stateFilter(Common.getTempTimePos(), viewMode);
-                DrawMode.CURRENT.setMode(3);
+                DrawMode.CURRENT.setMode(0);
                 break;
         }
         finish();
@@ -138,7 +138,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             B.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    btColor.setChecked(true);
+                    btColor.setChecked(false);
                     llColor.setVisibility(View.INVISIBLE);
                     colorName = getResources().getString(resColor);
                     gd.setColor(getResources().getColor(resColor));
@@ -475,12 +475,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             case R.id.btCancel:
                 EventBus.getDefault().post(new SetBtPlusVisibleEvent());
                 switch (DrawMode.CURRENT.getMode()) {
-                    case 0:
-                        DrawMode.CURRENT.setMode(0);
-                        break;
                     case 1:
                         Common.stateFilter(Common.getTempTimePos(), viewMode);
-                        DrawMode.CURRENT.setMode(3);
+                        DrawMode.CURRENT.setMode(0);
                         break;
                 }
                 finish();
@@ -527,9 +524,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 DialRepeat dr = new DialRepeat(DialSchedule.this,dayIndex);
                 dr.show();
                 break;
-            case R.id.btEnroll:
-                btEnroll.setTextColor(Color.BLACK);
-                btEnroll.setBackgroundResource(R.drawable.bg_black_bottomline);
+            case R.id.btUnivNotice:
+                btUnivNotice.setTextColor(Color.GRAY);
+                btUnivNotice.setBackgroundResource(R.drawable.bg_lightgray_bottomline);
                 DialUnivNotice du = new DialUnivNotice(DialSchedule.this);
                 du.show();
                 break;
@@ -598,7 +595,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         tvShare = (TextView) findViewById(R.id.tvShare);
         tvAlarm = (TextView) findViewById(R.id.tvAlarm);
         tvRepeat = (TextView) findViewById(R.id.tvRepeat);
-        btEnroll = (TextView) findViewById(R.id.btEnroll);
+        btUnivNotice = (TextView) findViewById(R.id.btUnivNotice);
         etName = (EditText) findViewById(R.id.etName);
         etPlace = (EditText) findViewById(R.id.etPlace);
         etMemo = (EditText) findViewById(R.id.etMemo);
@@ -616,7 +613,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btCommunity.setOnClickListener(this);
         btInvite.setOnClickListener(this);
         btRemove.setOnClickListener(this);
-        btEnroll.setOnClickListener(this);
+        btUnivNotice.setOnClickListener(this);
         btShowUniv.setOnClickListener(this);
         btShowDep.setOnClickListener(this);
         btShowGrade.setOnClickListener(this);
@@ -753,7 +750,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private Button btNormal, btUniv,btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter;
     private ToggleButton btColor;
     private LinearLayout llColor, llNormal, llButtonArea, llUniv,llSelectUniv, llDep, btNew1, btNew2, btPlace, btShare, btAlarm, btRepeat;
-    private TextView tvShare, tvAlarm, tvRepeat, btEnroll;
+    private TextView tvShare, tvAlarm, tvRepeat, btUnivNotice;
     private EditText etName, etPlace, etMemo;
     private View dragToggle,btShowUniv,btShowDep,btShowGrade;
     private HorizontalListView lvTime,hlv;
@@ -787,6 +784,16 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
     public void onEventMainThread(SetPlaceEvent e){
         etPlace.setText(e.getPlace());
+    }
+    public void onEventMainThread(SetBtUnivNoticeEvent e) {
+        btUnivNotice.setTextColor(Color.BLACK);
+        btUnivNotice.setBackgroundResource(R.drawable.bg_black_bottomline);
+    }
+    public void onEventMainThread(SetBtUnivGoneEvent e) {
+        btUniv.setVisibility(View.GONE);
+    }
+    public void onEventMainThread(SetBtUnivVisibleEvent e) {
+        btUniv.setVisibility(View.VISIBLE);
     }
     public void onEventMainThread(BottomNormalData e){
         normalList.add(e);

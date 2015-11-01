@@ -32,7 +32,7 @@
                 />
             <View
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@drawable/ic_univnotice"
                 />
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 />
-            </LinearLayout>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -83,7 +83,7 @@
                 android:text="@string/univ_notice4"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/textsize_s"/>
-            </LinearLayout>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -98,16 +98,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:gravity="bottom"
-                android:paddingBottom="@dimen/margin_l"
+                android:paddingBottom="@dimen/margin_s"
                 android:text="@string/univ_notice_email"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/textsize_s"/>
-            <TextView
+            <Button
+                android:id="@+id/btEmailShare"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="14dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/univ_notice_copy"
+                android:text="@string/univ_notice_share"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/textsize_s"
                 android:paddingLeft="@dimen/margin_l"

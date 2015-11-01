@@ -18,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -51,6 +52,8 @@ import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetBtPlusGoneEvent;
 import com.daemin.event.SetBtPlusVisibleEvent;
+import com.daemin.event.SetBtUnivGoneEvent;
+import com.daemin.event.SetBtUnivVisibleEvent;
 import com.daemin.event.SetTitleTImeEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.setting.SettingFragment;
@@ -310,7 +313,6 @@ public class MainActivity extends FragmentActivity {
                 changeFragment(SettingFragment.class, "설정");
                 break;
             case R.id.btPlus:
-                if (DrawMode.CURRENT.getMode() == 3) DrawMode.CURRENT.setMode(1);
                 Intent i = new Intent(MainActivity.this, DialSchedule.class);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -434,6 +436,13 @@ public class MainActivity extends FragmentActivity {
         // Apply the adapter to the spinner
         spinner.setAdapter(spinnerAdapter);
         spinner.setSelection(viewMode);
+        spinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                EventBus.getDefault().post(new FinishDialogEvent());
+                return false;
+            }
+        });
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
@@ -445,6 +454,7 @@ public class MainActivity extends FragmentActivity {
                 Common.stateFilter(Common.getTempTimePos(), viewMode);
                 switch (position) {
                     case 0: //주
+                        EventBus.getDefault().post(new SetBtUnivVisibleEvent());
                         barText = CurrentTime.getTitleMonthWeek(MainActivity.this);
                         switcher.setText("");
                         switcher.setText(barText);
@@ -466,6 +476,7 @@ public class MainActivity extends FragmentActivity {
                         changeFragment(InitDayFragment.class, "일");
                         break;
                     case 2: // 월
+                        EventBus.getDefault().post(new SetBtUnivGoneEvent());
                         barText = CurrentTime.getTitleYearMonth(MainActivity.this);
                         switcher.setText("");
                         switcher.setText(barText);
