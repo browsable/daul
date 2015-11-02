@@ -2,6 +2,7 @@ package com.daemin.timetable;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -36,6 +37,7 @@ public class InitMonthThread extends InitThread {
 	static int tempxth;
 	static int tempyth;
 	Canvas canvas;
+	Thread th = null;
 	public InitMonthThread(SurfaceHolder holder, Context context) {
 		this.mholder = holder;
 		this.context = context;
@@ -50,18 +52,18 @@ public class InitMonthThread extends InitThread {
 		hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		hpvp.setAlpha(70);
 		tp = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tp.setTextSize(34);
+		tp.setTextSize(38);
 		tp.setTextAlign(Paint.Align.CENTER);
 		tpred = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tpred.setTextSize(34);
+		tpred.setTextSize(38);
 		tpred.setTextAlign(Paint.Align.CENTER);
 		tpred.setColor(context.getResources().getColor(R.color.red));
 		tpblue = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tpblue.setTextSize(34);
+		tpblue.setTextSize(38);
 		tpblue.setTextAlign(Paint.Align.CENTER);
 		tpblue.setColor(context.getResources().getColor(R.color.blue));
 		tpgray = new Paint(Paint.ANTI_ALIAS_FLAG);
-		tpgray.setTextSize(40);
+		tpgray.setTextSize(38);
 		tpgray.setTextAlign(Paint.Align.CENTER);
 		tpgray.setColor(context.getResources().getColor(R.color.middlegray));
 		tmp = dayOfWeekOfLastMonth+dayOfMonth+1;
@@ -107,6 +109,9 @@ public class InitMonthThread extends InitThread {
 	public String getMonthAndDay(int... index) {
 		return monthData[index[0]+index[1]];
 	}
+
+
+
 	public void run() {
 		while (isLoop) {
 			canvas = null;
@@ -116,8 +121,6 @@ public class InitMonthThread extends InitThread {
 				height = canvas.getHeight();
 				synchronized (mholder) {
 					initScreen();
-					Common.checkTableStateIsNothing = true;
-					// 사각형 그리기
 					for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
 						DOMP.drawTimePos(canvas, width, height);
 					}
@@ -130,7 +133,6 @@ public class InitMonthThread extends InitThread {
 			}
 		}
 	}
-
 	public void getDownXY(int xth, int yth) {
 		if(!(xth>0&&xth+7*(yth-1)<dayOfWeekOfLastMonth+2 || xth+7*(yth-1)>dayOfWeekOfLastMonth + dayNumOfMonth + 1)) {
 			makeTimePos(xth, yth);
@@ -175,17 +177,19 @@ public class InitMonthThread extends InitThread {
 
 		float[] vp = {
 				// 세로 선
-				width / 7, height / 32 + 6, width / 7, height * 62 / 64+ 6, width * 2 / 7,
+				2, height / 32 + 6, 2, height * 62 / 64+ 6, width / 7,
+				height / 32 + 6, width / 7, height * 62 / 64+ 6, width * 2 / 7,
 				height / 32 + 6, width * 2 / 7, height * 62 / 64+ 6, width * 3 / 7,
 				height / 32 + 6, width * 3 / 7, height * 62 / 64+ 6, width * 4 / 7,
 				height / 32 + 6, width * 4 / 7, height * 62 / 64+ 6, width * 5 / 7,
 				height / 32 + 6, width * 5 / 7, height * 62 / 64+ 6, width * 6 / 7,
-				height / 32 + 6, width * 6 / 7, height * 62 / 64+ 6};
+				height / 32 + 6, width * 6 / 7, height * 62 / 64+ 6, width-2,
+				height / 32 + 6, width-2, height * 62 / 64+ 6};
 
 		canvas.drawColor(Color.WHITE);
 		canvas.drawLines(hp_hour, hp);
 		canvas.drawLines(vp, hpvp);
-		hp.setAlpha(10);
+		hp.setAlpha(40);
 		canvas.drawRect(width * (tx - 1) / 7, height * ((tmp / 7) * 10 + 2) / 64 + 6,
 				width * tx / 7, height * ((tmp / 7 + 1) * 10 + 2) / 64 + 6, hp);
 		hp.setAlpha(100);
@@ -219,5 +223,23 @@ public class InitMonthThread extends InitThread {
 		}
 
 	}
-
+	public Bitmap draw() {
+		Bitmap bm = null;
+		try{
+			Canvas canvas = mholder.lockCanvas();
+			bm = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
+			canvas.setBitmap(bm);
+			synchronized (mholder) {
+				initScreen();
+				for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
+					DOMP.drawTimePos(canvas, width, height);
+				}
+			}
+		} catch (Exception e) {
+		} finally {
+			if (canvas != null)
+				mholder.unlockCanvasAndPost(canvas);
+		}
+		return bm;
+	}
 }

@@ -25,7 +25,6 @@ public enum DayOfMonthPosState {
     }
 
     public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth) {
-        Common.checkTableStateIsNothing = false;
             canvas.drawRect(width * (xth-1) / 7, height * ((yth-1)*10+2) / 64 + 6,
                     width * xth / 7, height * (yth*10+2) / 64 + 6, rp);
 

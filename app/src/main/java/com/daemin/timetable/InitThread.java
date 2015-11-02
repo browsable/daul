@@ -1,5 +1,7 @@
 package com.daemin.timetable;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by hernia on 2015-08-18.
  */
@@ -11,5 +13,6 @@ public abstract class InitThread extends Thread {
     public abstract int getWidth();
     public abstract int getHeight();
     public abstract String getMonthAndDay(int... index);
+    public abstract Bitmap draw();
 
 }

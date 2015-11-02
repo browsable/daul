@@ -17,9 +17,9 @@ import android.widget.RemoteViews;
 import com.daemin.common.Common;
 import com.daemin.timetable.R;
 
-public class MyCustomWidget2 extends AppWidgetProvider {
+public class Widget3_3 extends AppWidgetProvider {
 	
-	private static final String TAG = "MyCustomWidget";
+	private static final String TAG = "Widget3_3";
 	private Context context;
 	
 	@Override
@@ -41,7 +41,7 @@ public class MyCustomWidget2 extends AppWidgetProvider {
 		        
 		for(int i=0; i<appWidgetIds.length; i++){ 
 			int appWidgetId = appWidgetIds[i];
-			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mycustomwidget);
+			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		} 
     }
@@ -55,7 +55,7 @@ public class MyCustomWidget2 extends AppWidgetProvider {
 	            RemoteViews updateViews = buildUpdate(this);
 
 	            // Push update for this widget to the home screen
-	            ComponentName thisWidget = new ComponentName(this, MyCustomWidget2.class);
+	            ComponentName thisWidget = new ComponentName(this, Widget3_3.class);
 	            AppWidgetManager manager = AppWidgetManager.getInstance(this);
 	            manager.updateAppWidget(thisWidget, updateViews);
 	        }
@@ -69,7 +69,7 @@ public class MyCustomWidget2 extends AppWidgetProvider {
 			
 	            RemoteViews views = null;
 	
-	            views = new RemoteViews(context.getPackageName(), R.layout.mycustomwidget);
+	            views = new RemoteViews(context.getPackageName(), R.layout.widget);
 	            String imgFile = Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg";
 
 	            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile);
@@ -99,7 +99,7 @@ public class MyCustomWidget2 extends AppWidgetProvider {
 	 */
 	public void initUI(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		Log.i(TAG, "======================= initUI() =======================");
-		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mycustomwidget);
+		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
 		 String imgFile = Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg";
 
          Bitmap myBitmap = BitmapFactory.decodeFile(imgFile);

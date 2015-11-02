@@ -3,7 +3,7 @@ package com.daemin.event;
 /**
  * Created by hernia on 2015-10-29.
  */
-public class SetBtUnivGoneEvent {
-    public SetBtUnivGoneEvent() {
+public class SetBtUnivInvisibleEvent {
+    public SetBtUnivInvisibleEvent() {
     }
 }

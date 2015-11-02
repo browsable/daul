@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="330dp"
+    android:minHeight="330dp"
+    android:previewImage="@drawable/appwidget"
+    android:initialLayout="@layout/widget"
+    android:updatePeriodMillis="86400000"
+    />
+  <!--android:previewImage="@drawable/"
+	  android:"com.daemin.timetable.MainActivity"
+  -->
+  <!-- android:updatePeriodMillis="10000" -->

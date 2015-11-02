@@ -52,7 +52,7 @@ import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetBtPlusGoneEvent;
 import com.daemin.event.SetBtPlusVisibleEvent;
-import com.daemin.event.SetBtUnivGoneEvent;
+import com.daemin.event.SetBtUnivInvisibleEvent;
 import com.daemin.event.SetBtUnivVisibleEvent;
 import com.daemin.event.SetTitleTImeEvent;
 import com.daemin.friend.FriendFragment;
@@ -75,8 +75,7 @@ public class MainActivity extends FragmentActivity {
         if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
             mDrawerLayout.closeDrawer(mLeftDrawer);
             Toast.makeText(MainActivity.this, "open", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             backPressCloseHandler.onBackPressed(backKeyName);
         }
     }
@@ -90,22 +89,13 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //screenshot();
-        Intent intent = new Intent();
-        //intent.setAction(android.appwidget.action.APPWIDGET_UPDATE);
-        intent.setAction(Common.ACTION_UPDATE);
-        sendBroadcast(intent);
-    }
-
-    @Override
-    public void onStop() {
-        // TODO Auto-generated method stub
-        super.onStop();
-        //screenshot();
-        Intent intent = new Intent();
-        //intent.setAction(android.appwidget.action.APPWIDGET_UPDATE);
-        intent.setAction(Common.ACTION_UPDATE);
-        sendBroadcast(intent);
+        if(!dialFlag) {
+            screenshot();
+            Intent intent = new Intent();
+            //intent.setAction(android.appwidget.action.APPWIDGET_UPDATE);
+            intent.setAction(Common.ACTION_UPDATE);
+            sendBroadcast(intent);
+        }
     }
 
     @Override
@@ -149,6 +139,23 @@ public class MainActivity extends FragmentActivity {
         backPressCloseHandler = new BackPressCloseHandler(this);
 
 
+    }
+
+    private void screenshot() {
+        initSurfaceView.getInitThread().setRunning(false);
+        Bitmap bm = initSurfaceView.getInitThread().draw();
+        initSurfaceView.getInitThread().setRunning(true);
+        try {
+            File path = new File(Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/");
+            if (!path.isDirectory()) {
+                path.mkdirs();
+            }
+            FileOutputStream out = new FileOutputStream(
+                    Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg");
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (FileNotFoundException e) {
+            Log.d("FileNotFoundException:", e.getMessage());
+        }
     }
 
     public void setTitle() {
@@ -220,6 +227,7 @@ public class MainActivity extends FragmentActivity {
             if (!title.equals("")) tvTitle.setText(title);
         }
     }
+
     private void clearApplicationCache(File dir) {
         if (dir == null)
             dir = getCacheDir();
@@ -237,28 +245,6 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    private void screenshot() {
-//캡처
-        flSurface.buildDrawingCache();
-        flSurface.setDrawingCacheEnabled(true);
-        capture = flSurface.getDrawingCache();
-
-        try {
-            File path = new File(Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/");
-
-            if (!path.isDirectory()) {
-                path.mkdirs();
-            }
-
-            FileOutputStream out = new FileOutputStream(
-                    Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg");
-            capture.compress(Bitmap.CompressFormat.JPEG, 100, out);
-
-        } catch (FileNotFoundException e) {
-            Log.d("FileNotFoundException:", e.getMessage());
-        }
-    }
-
     private void changeSetting() {
         EventBus.getDefault().post(new ClearNormalEvent());
         llTitle.setVisibility(View.GONE);
@@ -270,6 +256,7 @@ public class MainActivity extends FragmentActivity {
         surfaceFlag = true;
         initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
     }
+
     // 드로어 메뉴 버튼 클릭 리스너
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void mOnClick(View v) {
@@ -313,6 +300,7 @@ public class MainActivity extends FragmentActivity {
                 changeFragment(SettingFragment.class, "설정");
                 break;
             case R.id.btPlus:
+                dialFlag = true; // DialSchedule띄울때 MainActivity의 onPause가 실행되므로 이때 캡처 동작하는 것을 막음
                 Intent i = new Intent(MainActivity.this, DialSchedule.class);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -402,9 +390,8 @@ public class MainActivity extends FragmentActivity {
     private void setLayout() {
         backKeyName = "";
         mContent = null;
-        surfaceFlag = false;
-        capture = null;
-        indexForTitle=0;
+        surfaceFlag = false;dialFlag=false;
+        indexForTitle = 0;
         DrawMode.CURRENT.setMode(0);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -454,7 +441,7 @@ public class MainActivity extends FragmentActivity {
                 Common.stateFilter(Common.getTempTimePos(), viewMode);
                 switch (position) {
                     case 0: //주
-                        EventBus.getDefault().post(new SetBtUnivVisibleEvent());
+                        EventBus.getDefault().postSticky(new SetBtUnivVisibleEvent());
                         barText = CurrentTime.getTitleMonthWeek(MainActivity.this);
                         switcher.setText("");
                         switcher.setText(barText);
@@ -476,7 +463,7 @@ public class MainActivity extends FragmentActivity {
                         changeFragment(InitDayFragment.class, "일");
                         break;
                     case 2: // 월
-                        EventBus.getDefault().post(new SetBtUnivGoneEvent());
+                        EventBus.getDefault().postSticky(new SetBtUnivInvisibleEvent());
                         barText = CurrentTime.getTitleYearMonth(MainActivity.this);
                         switcher.setText("");
                         switcher.setText(barText);
@@ -512,36 +499,52 @@ public class MainActivity extends FragmentActivity {
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
     private String backKeyName, korName, engName, barText;
-    private Boolean surfaceFlag;
-    private Bitmap capture;
+    private Boolean surfaceFlag,dialFlag;
     private Spinner spinner;
     private ArrayAdapter<CharSequence> spinnerAdapter;
     private TextSwitcher switcher;
     private static MainActivity singleton;
     private int viewMode;
     private static int indexForTitle;
-    public ImageButton getIbBack() {return ibBack;}
-    public ImageButton getIbMenu() {return ibMenu;}
+
+    public ImageButton getIbBack() {
+        return ibBack;
+    }
+
+    public ImageButton getIbMenu() {
+        return ibMenu;
+    }
+
     public String getBarText() {
         return barText;
     }
+
     public InitSurfaceView getInitSurfaceView() {
         return initSurfaceView;
     }
+
     public static MainActivity getInstance() {
         return singleton;
     }
+
     public int getViewMode() {
         return viewMode;
     }
+
     public void onEventMainThread(SetBtPlusVisibleEvent e) {
         btPlus.setVisibility(View.VISIBLE);
+        dialFlag=false;
     }
+
     public void onEventMainThread(SetBtPlusGoneEvent e) {
         btPlus.setVisibility(View.GONE);
     }
+
     public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();
     }
-    public void onEventMainThread(ChangeFragEvent e) {changeFragment(e.getCl(), e.getTitleName());}
+
+    public void onEventMainThread(ChangeFragEvent e) {
+        changeFragment(e.getCl(), e.getTitleName());
+    }
 }

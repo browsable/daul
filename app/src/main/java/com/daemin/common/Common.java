@@ -33,8 +33,6 @@ public class Common {
 
 	public static final String MAIN_COLOR = AppController.getInstance().getResources().getString(R.color.maincolor);
 
-	public static boolean checkTableStateIsNothing = true;
-
 	public static boolean isOnline() { // network 연결 상태 확인
 		try {
 			ConnectivityManager conMan = (ConnectivityManager) AppController.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -52,7 +50,13 @@ public class Common {
 		}
 		return false;
 	}
-
+	public static boolean isTableEmpty(){
+		boolean empty = true;
+		for (TimePos ETP : TimePos.values()) {
+			if(ETP.getPosState()!=PosState.NO_PAINT) empty =false;
+		}
+		return empty;
+	}
 	static ArrayList<String> tempTimePos=new ArrayList<>();
 	public static ArrayList<String> getTempTimePos(){
 		return tempTimePos;

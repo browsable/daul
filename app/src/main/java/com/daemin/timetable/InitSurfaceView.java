@@ -47,19 +47,16 @@ public class InitSurfaceView extends SurfaceView implements
 	}
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		if (!initThread.isAlive()) {
-			switch (mode){
-				case 0:
-					initThread = new InitWeekThread(holder, context);
-					break;
-				case 2:
-					initThread = new InitMonthThread(holder, context);
-					break;
-			}
+		switch (mode){
+			case 0:
+				initThread = new InitWeekThread(holder, context);
+				break;
+			case 2:
+				initThread = new InitMonthThread(holder, context);
+				break;
 		}
 		initThread.setRunning(true);
 		if(!initThread.isAlive()) initThread.start();
-
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.daemin.timetable;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -31,7 +32,6 @@ public class InitWeekThread extends InitThread {
     private Paint tp, tpred, tpblue; // 시간 텍스트
     static int tempxth, tempyth;
     Canvas canvas;
-
     public InitWeekThread(SurfaceHolder holder, Context context) {
         DayOfWeekData dowd = CurrentTime.getDateOfWeek();
         this.mholder = holder;
@@ -61,6 +61,7 @@ public class InitWeekThread extends InitThread {
         tpblue.setTextSize(30);
         tpblue.setTextAlign(Paint.Align.CENTER);
         tpblue.setColor(context.getResources().getColor(R.color.blue));
+
     }
 
     public String getMonthAndDay(int... index) {
@@ -125,26 +126,17 @@ public class InitWeekThread extends InitThread {
                 height = canvas.getHeight();
                 synchronized (mholder) {
                     initScreen(dayOfWeek);
-                    Common.checkTableStateIsNothing = true;
-
-                    /*for(String name: Common.getTempTimePos()){
-                        TimePos tp = TimePos.valueOf(name);
-                        tp.drawTimePos(canvas, width, height);
-                    }*/
-                    // 사각형 그리기
                     for (TimePos ETP : TimePos.values()) {
                         ETP.drawTimePos(canvas, width, height);
                     }
                 }
             } catch (Exception e) {
-
             } finally {
                 if (canvas != null)
                     mholder.unlockCanvasAndPost(canvas);
             }
         }
     }
-
     public void getDownXY(int xth, int yth) {
         makeTimePos(xth, yth);
         tempxth = xth;
@@ -169,8 +161,7 @@ public class InitWeekThread extends InitThread {
         else tmpYth = yth;
         TimePos ETP = TimePos.valueOf(Convert.getxyMerge(xth, tmpYth));
         switch (DrawMode.CURRENT.getMode()) {
-            case 0:
-            case 3://일반
+            case 0://일반
                 if (ETP.getPosState() == PosState.NO_PAINT) {
                     ETP.setPosState(PosState.PAINT);
                     if(!Common.getTempTimePos().contains(ETP.name()))
@@ -183,7 +174,7 @@ public class InitWeekThread extends InitThread {
                 break;
             case 1: //대학
                 //대학선택시에 그리는 것은 막고 선택한 과목은 함께 지워져야함
-                if (Common.checkTableStateIsNothing){
+                if (Common.isTableEmpty()){
                     Toast.makeText(context, "과목을 선택하세요", Toast.LENGTH_SHORT).show();
                 } else {
                     Common.stateFilter(Common.getTempTimePos(), 0);
@@ -229,7 +220,8 @@ public class InitWeekThread extends InitThread {
                 height / 32 + 18, width * 7 / 15, height * 31 / 32 + 18, width * 9 / 15,
                 height / 32 + 18, width * 9 / 15, height * 31 / 32 + 18, width * 11 / 15,
                 height / 32 + 18, width * 11 / 15, height * 31 / 32 + 18, width * 13 / 15,
-                height / 32 + 18, width * 13 / 15, height * 31 / 32 + 18};
+                height / 32 + 18, width * 13 / 15, height * 31 / 32 + 18,width-2,
+                height / 32 + 18, width-2, height * 31 / 32 + 18};
 
         canvas.drawColor(Color.WHITE);
         canvas.drawLines(hp_hour, hp);
@@ -256,9 +248,28 @@ public class InitWeekThread extends InitThread {
         canvas.drawText("FRI", width * 12 / 15, (height / 32 + 18) * 15 / 16, tp);
         canvas.drawText("SAT", width * 14 / 15, (height / 32 + 18) * 15 / 16, tpblue);
 
-        hp.setAlpha(10);
+        hp.setAlpha(40);
         canvas.drawRect(width * (2 * day + 1) / 15, ((height * 2) - 10) / 64 + 18,
                 width * (2 * day + 3) / 15, height * 62 / 64 + 18, hp);
         hp.setAlpha(100);
+    }
+    public Bitmap draw() {
+        Bitmap bm = null;
+        try{
+        Canvas canvas = mholder.lockCanvas();
+        bm = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bm);
+        synchronized (mholder) {
+                initScreen(dayOfWeek);
+                for (TimePos ETP : TimePos.values()) {
+                    ETP.drawTimePos(canvas, width, height);
+                }
+            }
+        } catch (Exception e) {
+        } finally {
+            if (canvas != null)
+                mholder.unlockCanvasAndPost(canvas);
+        }
+        return bm;
     }
 }

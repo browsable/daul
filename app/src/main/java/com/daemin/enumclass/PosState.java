@@ -20,7 +20,6 @@ public enum PosState {
     },
     ADJUST(){
         public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth, int startMin, int endMin) {
-            Common.checkTableStateIsNothing = false;
             canvas.drawRect(width * xth / 15, (height * yth / 32 + 18)+(2*height/32)*startMin/60,
                     width * (xth + 2) / 15, (height * yth / 32 + 18)+(2*height/32)*endMin/60, rp);
         }
@@ -32,7 +31,6 @@ public enum PosState {
         rp.setAlpha(100);
     }
     public void drawTimePos(Canvas canvas, int width, int height, int xth, int yth, int startMin, int endMin) {
-        Common.checkTableStateIsNothing = false;
         canvas.drawRect(width * xth / 15, height * yth / 32 + 18,
                 width * (xth + 2) / 15, height * (yth + 2) / 32 + 18, rp);
     }

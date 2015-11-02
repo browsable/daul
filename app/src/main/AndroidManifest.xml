@@ -64,32 +64,47 @@
         <activity android:name="com.daemin.community.amazon.AmazonActivity" />
         <activity android:name="com.daemin.community.lib.DoubleTapZoomNetworkImageViewActivity" />
         <activity android:name="com.daemin.community.lib.SingleTapZoomNetworkImageViewActivity" />
-
-        <receiver android:name="com.daemin.widget.MyCustomWidget" >
+        <receiver android:name="com.daemin.widget.Widget3_3" >
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_configuration4_4" />
-
+                android:resource="@xml/widget3_config" />
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
                 <action android:name="com.daemin.widget.widget.ACTION_UPDATE" />
                 <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.daemin.widget.MyCustomWidget2" >
+        <receiver android:name="com.daemin.widget.Widget4_4" >
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_configuration3_3" />
-
+                android:resource="@xml/widget4_config" />
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
                 <action android:name="com.daemin.widget.widget.ACTION_UPDATE" />
                 <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY" />
             </intent-filter>
         </receiver>
-
+        <receiver android:name="com.daemin.widget.Widget5_5" >
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget5_config" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+                <action android:name="com.daemin.widget.widget.ACTION_UPDATE" />
+                <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY" />
+            </intent-filter>
+        </receiver>
         <service
-            android:name="com.daemin.widget.MyCustomWidget$UpdateService"
+        android:name="com.daemin.widget.Widget3_3$UpdateService"
+        android:enabled="true" />
+        <service
+            android:name="com.daemin.widget.Widget4_4$UpdateService"
+            android:enabled="true" />
+        <service
+            android:name="com.daemin.widget.Widget5_5$UpdateService"
             android:enabled="true" />
 
         <meta-data

@@ -52,7 +52,7 @@ import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetAlarmEvent;
 import com.daemin.event.SetBtPlusGoneEvent;
 import com.daemin.event.SetBtPlusVisibleEvent;
-import com.daemin.event.SetBtUnivGoneEvent;
+import com.daemin.event.SetBtUnivInvisibleEvent;
 import com.daemin.event.SetBtUnivNoticeEvent;
 import com.daemin.event.SetBtUnivVisibleEvent;
 import com.daemin.event.SetPlaceEvent;
@@ -470,7 +470,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btAddSchedule:
-                finish();
+                Intent intent = new Intent();
+                //intent.setAction(android.appwidget.action.APPWIDGET_UPDATE);
+                intent.setAction(Common.ACTION_UPDATE);
+                sendBroadcast(intent);
                 break;
             case R.id.btCancel:
                 EventBus.getDefault().post(new SetBtPlusVisibleEvent());
@@ -746,6 +749,18 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 btShowGrade.setBackgroundResource(R.drawable.ic_expand);
             }
         });
+        SetBtUnivVisibleEvent UnivVisible = EventBus.getDefault()
+                .getStickyEvent(SetBtUnivVisibleEvent.class);
+        if (UnivVisible != null) {
+            EventBus.getDefault().removeStickyEvent(UnivVisible);
+            btUniv.setVisibility(View.VISIBLE);
+        }
+        SetBtUnivInvisibleEvent UnivInvisible = EventBus.getDefault()
+                .getStickyEvent(SetBtUnivInvisibleEvent.class);
+        if (UnivInvisible != null) {
+            EventBus.getDefault().removeStickyEvent(UnivInvisible);
+            btUniv.setVisibility(View.INVISIBLE);
+        }
     }
     private Button btNormal, btUniv,btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter;
     private ToggleButton btColor;
@@ -788,12 +803,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onEventMainThread(SetBtUnivNoticeEvent e) {
         btUnivNotice.setTextColor(Color.BLACK);
         btUnivNotice.setBackgroundResource(R.drawable.bg_black_bottomline);
-    }
-    public void onEventMainThread(SetBtUnivGoneEvent e) {
-        btUniv.setVisibility(View.GONE);
-    }
-    public void onEventMainThread(SetBtUnivVisibleEvent e) {
-        btUniv.setVisibility(View.VISIBLE);
     }
     public void onEventMainThread(BottomNormalData e){
         normalList.add(e);
