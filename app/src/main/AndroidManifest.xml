@@ -54,7 +54,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" >
             <intent-filter>
-                <action android:name="com.daemin.timetable.widget.CALL_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -70,9 +69,7 @@
                 android:resource="@xml/widget3_config" />
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
                 <action android:name="com.daemin.widget.widget.ACTION_UPDATE" />
-                <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.daemin.widget.Widget4_4" >
@@ -81,9 +78,7 @@
                 android:resource="@xml/widget4_config" />
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
                 <action android:name="com.daemin.widget.widget.ACTION_UPDATE" />
-                <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.daemin.widget.Widget5_5" >
@@ -92,11 +87,12 @@
                 android:resource="@xml/widget5_config" />
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
                 <action android:name="com.daemin.widget.widget.ACTION_UPDATE" />
-                <action android:name="com.daemin.widget.widget.ACTION_CALL_ACTIVITY" />
+                <action android:name="com.daemin.widget.widget.ACTION_BTBACK" />
+                <action android:name="com.daemin.widget.widget.ACTION_BTFORWARD" />
             </intent-filter>
         </receiver>
+
         <service
         android:name="com.daemin.widget.Widget3_3$UpdateService"
         android:enabled="true" />

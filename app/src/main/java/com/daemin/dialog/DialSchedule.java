@@ -46,15 +46,14 @@ import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
+import com.daemin.event.CaptureEvent;
 import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetAlarmEvent;
-import com.daemin.event.SetBtPlusGoneEvent;
-import com.daemin.event.SetBtPlusVisibleEvent;
-import com.daemin.event.SetBtUnivInvisibleEvent;
+import com.daemin.event.SetBtPlusEvent;
+import com.daemin.event.SetBtUnivEvent;
 import com.daemin.event.SetBtUnivNoticeEvent;
-import com.daemin.event.SetBtUnivVisibleEvent;
 import com.daemin.event.SetPlaceEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
@@ -82,7 +81,7 @@ import de.greenrobot.event.EventBus;
 
 public class DialSchedule extends Activity implements View.OnClickListener, View.OnTouchListener{
     public void onBackPressed() {
-        EventBus.getDefault().post(new SetBtPlusVisibleEvent());
+        EventBus.getDefault().post(new SetBtPlusEvent(true));
         switch (DrawMode.CURRENT.getMode()) {
             case 1:
                 Common.stateFilter(Common.getTempTimePos(), viewMode);
@@ -95,7 +94,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onResume() {
         super.onResume();
         if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
+
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -107,7 +112,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         EventBus.getDefault().register(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_schedule);
-        EventBus.getDefault().post(new SetBtPlusGoneEvent());
+        EventBus.getDefault().post(new SetBtPlusEvent(false));
         window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(
                 android.graphics.Color.TRANSPARENT));
@@ -470,13 +475,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btAddSchedule:
-                Intent intent = new Intent();
-                //intent.setAction(android.appwidget.action.APPWIDGET_UPDATE);
-                intent.setAction(Common.ACTION_UPDATE);
-                sendBroadcast(intent);
+                EventBus.getDefault().post(new CaptureEvent());
                 break;
             case R.id.btCancel:
-                EventBus.getDefault().post(new SetBtPlusVisibleEvent());
+                EventBus.getDefault().post(new SetBtPlusEvent(true));
                 switch (DrawMode.CURRENT.getMode()) {
                     case 1:
                         Common.stateFilter(Common.getTempTimePos(), viewMode);
@@ -749,17 +751,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 btShowGrade.setBackgroundResource(R.drawable.ic_expand);
             }
         });
-        SetBtUnivVisibleEvent UnivVisible = EventBus.getDefault()
-                .getStickyEvent(SetBtUnivVisibleEvent.class);
-        if (UnivVisible != null) {
-            EventBus.getDefault().removeStickyEvent(UnivVisible);
-            btUniv.setVisibility(View.VISIBLE);
-        }
-        SetBtUnivInvisibleEvent UnivInvisible = EventBus.getDefault()
-                .getStickyEvent(SetBtUnivInvisibleEvent.class);
-        if (UnivInvisible != null) {
-            EventBus.getDefault().removeStickyEvent(UnivInvisible);
-            btUniv.setVisibility(View.INVISIBLE);
+        SetBtUnivEvent btUnivEvent = EventBus.getDefault()
+                .getStickyEvent(SetBtUnivEvent.class);
+        if (btUnivEvent != null) {
+            EventBus.getDefault().removeStickyEvent(btUnivEvent);
+            if (btUnivEvent.isSetVisible())
+                btUniv.setVisibility(View.VISIBLE);
+            else
+                btUniv.setVisibility(View.INVISIBLE);
         }
     }
     private Button btNormal, btUniv,btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter;
@@ -786,7 +785,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private boolean univFlag,depFlag,gradeFlag;
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
-        EventBus.getDefault().post(new SetBtPlusVisibleEvent());
+        EventBus.getDefault().post(new SetBtPlusEvent(true));
     }
     public void onEventMainThread(SetAlarmEvent e) {
         tvAlarm.setText(e.getTime());

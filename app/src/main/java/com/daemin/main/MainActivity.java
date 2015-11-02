@@ -47,13 +47,13 @@ import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
+import com.daemin.event.CaptureEvent;
 import com.daemin.event.ChangeFragEvent;
+import com.daemin.event.ChangeWeekEvent;
 import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.FinishDialogEvent;
-import com.daemin.event.SetBtPlusGoneEvent;
-import com.daemin.event.SetBtPlusVisibleEvent;
-import com.daemin.event.SetBtUnivInvisibleEvent;
-import com.daemin.event.SetBtUnivVisibleEvent;
+import com.daemin.event.SetBtPlusEvent;
+import com.daemin.event.SetBtUnivEvent;
 import com.daemin.event.SetTitleTImeEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.setting.SettingFragment;
@@ -84,17 +84,17 @@ public class MainActivity extends FragmentActivity {
     public void onResume() {
         super.onResume();
         if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
+        if (surfaceFlag) {
+            initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
+            surfaceFlag = false;
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if(!dialFlag) {
+        if(captureFlag) {
             screenshot();
-            Intent intent = new Intent();
-            //intent.setAction(android.appwidget.action.APPWIDGET_UPDATE);
-            intent.setAction(Common.ACTION_UPDATE);
-            sendBroadcast(intent);
         }
     }
 
@@ -144,7 +144,8 @@ public class MainActivity extends FragmentActivity {
     private void screenshot() {
         initSurfaceView.getInitThread().setRunning(false);
         Bitmap bm = initSurfaceView.getInitThread().draw();
-        initSurfaceView.getInitThread().setRunning(true);
+        //initSurfaceView.getInitThread().setRunning(true);
+        initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
         try {
             File path = new File(Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/");
             if (!path.isDirectory()) {
@@ -156,6 +157,11 @@ public class MainActivity extends FragmentActivity {
         } catch (FileNotFoundException e) {
             Log.d("FileNotFoundException:", e.getMessage());
         }
+        bm.recycle();
+        Intent intent = new Intent();
+        intent.setAction(Common.ACTION_UPDATE);
+        sendBroadcast(intent);
+
     }
 
     public void setTitle() {
@@ -256,7 +262,78 @@ public class MainActivity extends FragmentActivity {
         surfaceFlag = true;
         initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
     }
-
+    public void btBackEvent(){
+        switch (viewMode) {
+            case 0:
+                InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
+                --indexForTitle;
+                if (indexForTitle < 0) {
+                    tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
+                    barText = CurrentTime.backTitleMonthWeek(this, -indexForTitle);
+                    switcher.setText(barText);
+                    iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
+                } else {
+                    tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
+                    barText = CurrentTime.preTitleMonthWeek(this, indexForTitle);
+                    switcher.setText(barText);
+                    iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
+                }
+                break;
+            case 2:
+                InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
+                --indexForTitle;
+                if (indexForTitle < 0) {
+                    barText = CurrentTime.backTitleYearMonth(this, -indexForTitle);
+                    switcher.setText(barText);
+                    im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
+                            CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
+                            CurrentTime.getBackDayNumOfMonth(-indexForTitle));
+                } else {
+                    barText = CurrentTime.preTitleYearMonth(this, indexForTitle);
+                    switcher.setText(barText);
+                    im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
+                            CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
+                            CurrentTime.getPreDayNumOfMonth(indexForTitle));
+                }
+                break;
+        }
+    }
+    public void btForwardEvent(){
+        switch (viewMode) {
+            case 0:
+                InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
+                ++indexForTitle;
+                if (indexForTitle < 0) {
+                    tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
+                    barText = CurrentTime.backTitleMonthWeek(this, -indexForTitle);
+                    switcher.setText(barText);
+                    iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
+                } else {
+                    tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
+                    barText = CurrentTime.preTitleMonthWeek(this, indexForTitle);
+                    switcher.setText(barText);
+                    iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
+                }
+                break;
+            case 2:
+                InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
+                ++indexForTitle;
+                if (indexForTitle < 0) {
+                    barText = CurrentTime.backTitleYearMonth(this, -indexForTitle);
+                    switcher.setText(barText);
+                    im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
+                            CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
+                            CurrentTime.getBackDayNumOfMonth(-indexForTitle));
+                } else {
+                    barText = CurrentTime.preTitleYearMonth(this, indexForTitle);
+                    switcher.setText(barText);
+                    im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
+                            CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
+                            CurrentTime.getPreDayNumOfMonth(indexForTitle));
+                }
+                break;
+        }
+    }
     // 드로어 메뉴 버튼 클릭 리스너
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void mOnClick(View v) {
@@ -300,7 +377,7 @@ public class MainActivity extends FragmentActivity {
                 changeFragment(SettingFragment.class, "설정");
                 break;
             case R.id.btPlus:
-                dialFlag = true; // DialSchedule띄울때 MainActivity의 onPause가 실행되므로 이때 캡처 동작하는 것을 막음
+                captureFlag = false; // DialSchedule띄울때 MainActivity의 onPause가 실행되므로 이때 캡처 동작하는 것을 막음
                 Intent i = new Intent(MainActivity.this, DialSchedule.class);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -308,78 +385,12 @@ public class MainActivity extends FragmentActivity {
             case R.id.btBack:
                 Common.stateFilter(Common.getTempTimePos(), viewMode);
                 EventBus.getDefault().post(new ClearNormalEvent());
-                switch (viewMode) {
-                    case 0:
-                        InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
-                        --indexForTitle;
-                        if (indexForTitle < 0) {
-                            tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
-                            barText = CurrentTime.backTitleMonthWeek(this, -indexForTitle);
-                            switcher.setText(barText);
-                            iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
-                        } else {
-                            tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
-                            barText = CurrentTime.preTitleMonthWeek(this, indexForTitle);
-                            switcher.setText(barText);
-                            iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
-                        }
-                        break;
-                    case 2:
-                        InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
-                        --indexForTitle;
-                        if (indexForTitle < 0) {
-                            barText = CurrentTime.backTitleYearMonth(this, -indexForTitle);
-                            switcher.setText(barText);
-                            im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
-                                    CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
-                                    CurrentTime.getBackDayNumOfMonth(-indexForTitle));
-                        } else {
-                            barText = CurrentTime.preTitleYearMonth(this, indexForTitle);
-                            switcher.setText(barText);
-                            im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
-                                    CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
-                                    CurrentTime.getPreDayNumOfMonth(indexForTitle));
-                        }
-                        break;
-                }
+                btBackEvent();
                 break;
             case R.id.btForward:
                 Common.stateFilter(Common.getTempTimePos(), viewMode);
                 EventBus.getDefault().post(new ClearNormalEvent());
-                switch (viewMode) {
-                    case 0:
-                        InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
-                        ++indexForTitle;
-                        if (indexForTitle < 0) {
-                            tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
-                            barText = CurrentTime.backTitleMonthWeek(this, -indexForTitle);
-                            switcher.setText(barText);
-                            iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
-                        } else {
-                            tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
-                            barText = CurrentTime.preTitleMonthWeek(this, indexForTitle);
-                            switcher.setText(barText);
-                            iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
-                        }
-                        break;
-                    case 2:
-                        InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
-                        ++indexForTitle;
-                        if (indexForTitle < 0) {
-                            barText = CurrentTime.backTitleYearMonth(this, -indexForTitle);
-                            switcher.setText(barText);
-                            im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
-                                    CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
-                                    CurrentTime.getBackDayNumOfMonth(-indexForTitle));
-                        } else {
-                            barText = CurrentTime.preTitleYearMonth(this, indexForTitle);
-                            switcher.setText(barText);
-                            im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
-                                    CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
-                                    CurrentTime.getPreDayNumOfMonth(indexForTitle));
-                        }
-                        break;
-                }
+                btForwardEvent();
                 break;
             case R.id.left_drawer://드로어 뒤 터치를 막기위한 dummy event
                 break;
@@ -390,7 +401,7 @@ public class MainActivity extends FragmentActivity {
     private void setLayout() {
         backKeyName = "";
         mContent = null;
-        surfaceFlag = false;dialFlag=false;
+        surfaceFlag = false;captureFlag=true;
         indexForTitle = 0;
         DrawMode.CURRENT.setMode(0);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -404,6 +415,8 @@ public class MainActivity extends FragmentActivity {
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
         btPlus = (Button) findViewById(R.id.btPlus);
+        btBack = (Button) findViewById(R.id.btBack);
+        btForward = (Button) findViewById(R.id.btForward);
         ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
         ivProfile.setImageUrl(SAMPLE_IMAGE_URL, MyVolley.getImageLoader());
         switcher = (TextSwitcher) findViewById(R.id.switcher);
@@ -441,7 +454,7 @@ public class MainActivity extends FragmentActivity {
                 Common.stateFilter(Common.getTempTimePos(), viewMode);
                 switch (position) {
                     case 0: //주
-                        EventBus.getDefault().postSticky(new SetBtUnivVisibleEvent());
+                        EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
                         barText = CurrentTime.getTitleMonthWeek(MainActivity.this);
                         switcher.setText("");
                         switcher.setText(barText);
@@ -463,7 +476,7 @@ public class MainActivity extends FragmentActivity {
                         changeFragment(InitDayFragment.class, "일");
                         break;
                     case 2: // 월
-                        EventBus.getDefault().postSticky(new SetBtUnivInvisibleEvent());
+                        EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
                         barText = CurrentTime.getTitleYearMonth(MainActivity.this);
                         switcher.setText("");
                         switcher.setText(barText);
@@ -494,56 +507,56 @@ public class MainActivity extends FragmentActivity {
     private LinearLayout mLeftDrawer, llTitle, llSpinner;
     private ImageButton ibMenu, ibBack;
     private TextView tvTitle, tvTitleYear;
-    private Button btPlus;
+    private Button btPlus,btBack,btForward;
     private FrameLayout flSurface, frame_container;
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
     private String backKeyName, korName, engName, barText;
-    private Boolean surfaceFlag,dialFlag;
+    private Boolean surfaceFlag,captureFlag;
     private Spinner spinner;
     private ArrayAdapter<CharSequence> spinnerAdapter;
     private TextSwitcher switcher;
     private static MainActivity singleton;
     private int viewMode;
     private static int indexForTitle;
-
     public ImageButton getIbBack() {
         return ibBack;
     }
-
     public ImageButton getIbMenu() {
         return ibMenu;
     }
-
     public String getBarText() {
         return barText;
     }
-
     public InitSurfaceView getInitSurfaceView() {
         return initSurfaceView;
     }
-
     public static MainActivity getInstance() {
         return singleton;
     }
-
     public int getViewMode() {
         return viewMode;
     }
-
-    public void onEventMainThread(SetBtPlusVisibleEvent e) {
-        btPlus.setVisibility(View.VISIBLE);
-        dialFlag=false;
+    public void onEventMainThread(CaptureEvent e) {
+        screenshot();
     }
-
-    public void onEventMainThread(SetBtPlusGoneEvent e) {
-        btPlus.setVisibility(View.GONE);
+    public void onEventMainThread(SetBtPlusEvent e) {
+        if(e.isSetVisable())
+            btPlus.setVisibility(View.VISIBLE);
+        else
+            btPlus.setVisibility(View.GONE);
     }
-
     public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();
     }
+    public void onEventMainThread(ChangeWeekEvent e) {
+        if(e.isBtBack())
+            btBackEvent();
+        else
+            btForwardEvent();
 
+        screenshot();
+    }
     public void onEventMainThread(ChangeFragEvent e) {
         changeFragment(e.getCl(), e.getTitleName());
     }

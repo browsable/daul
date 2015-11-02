@@ -20,13 +20,12 @@
                 android:layout_marginRight="@dimen/margin_default"
                 android:background="@drawable/bt_back"/>
             <TextView
-                android:id="@+id/tvTitleYear"
+                android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="2015.10.10째주"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/textsize_xxl"
+                android:textSize="@dimen/textsize_xl"
                 android:textStyle="bold" />
             <Button
                 android:id="@+id/btForward"
