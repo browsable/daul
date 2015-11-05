@@ -120,7 +120,6 @@
     <string name="setting_lockon">암호잠금 켜기</string>
     <string name="setting_lockchange">암호 변경하기</string>
 
-
     <string name="jackson1_text">-&#45;&#45; Jackson 1.x -&#45;&#45;</string>
     <string name="jackson2_text">-&#45;&#45; Jackson 2.x -&#45;&#45;</string>
     <string name="waiting_for_response">Waiting for a response . . .</string>

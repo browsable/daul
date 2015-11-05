@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="choz00@"
+                android:text="z00@"
                 android:textSize="@dimen/textsize_xxxl" />
 
 

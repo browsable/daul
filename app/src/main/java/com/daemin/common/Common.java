@@ -6,10 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import android.os.Environment;
 
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
@@ -27,9 +24,11 @@ public class Common {
 
 	/* BroadCastReceiver Filter */
 	public static final String ACTION_UPDATE = "com.daemin.widget.widget.ACTION_UPDATE";
-	public static final String ACTION_BTBACK = "com.daemin.widget.widget.ACTION_BTBACK";
-	public static final String ACTION_BTFORWARD = "com.daemin.widget.widget.ACTION_BTFORWARD";
-
+	public static final String ACTION_SHOWDIALOG = "com.daemin.widget.widget.ACTION_SHOWDIALOG";
+	public static final String ACTION_DELAY = "com.daemin.widget.widget.ACTION_DELAY";
+	public static final String ACTION_TIMEOUT = "com.daemin.widget.widget.ACTION_TIMEOUT";
+	public static final String ACTION_DIALOGFINISH = "com.daemin.widget.widget.ACTION_DIALOGFINISH";
+	public static final String CAPTURE = Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg";
 	public static final String MAIN_COLOR = AppController.getInstance().getResources().getString(R.color.maincolor);
 
 	public static boolean isOnline() { // network 연결 상태 확인

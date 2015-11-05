@@ -13,6 +13,6 @@ public abstract class InitThread extends Thread {
     public abstract int getWidth();
     public abstract int getHeight();
     public abstract String getMonthAndDay(int... index);
-    public abstract Bitmap draw();
+    public abstract Bitmap captureImg();
 
 }

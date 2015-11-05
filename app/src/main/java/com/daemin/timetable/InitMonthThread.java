@@ -223,7 +223,8 @@ public class InitMonthThread extends InitThread {
 		}
 
 	}
-	public Bitmap draw() {
+	public Bitmap captureImg() {
+		isLoop=false;
 		Bitmap bm = null;
 		try{
 			Canvas canvas = mholder.lockCanvas();
@@ -240,6 +241,7 @@ public class InitMonthThread extends InitThread {
 			if (canvas != null)
 				mholder.unlockCanvasAndPost(canvas);
 		}
+		isLoop=true;
 		return bm;
 	}
 }

@@ -129,7 +129,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         setLayout();
         colorButtonSetting();
         makeNormalList();
-        updateWeekList();
+        if(viewMode==0)
+            updateWeekList();
+        else
+            updateMonthList();
         backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
@@ -475,10 +478,12 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btAddSchedule:
-                EventBus.getDefault().post(new CaptureEvent());
+                //EventBus.getDefault().post(new CaptureEvent());
                 break;
             case R.id.btCancel:
                 EventBus.getDefault().post(new SetBtPlusEvent(true));
+                EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
+                //btUniv.setVisibility(View.VISIBLE);
                 switch (DrawMode.CURRENT.getMode()) {
                     case 1:
                         Common.stateFilter(Common.getTempTimePos(), viewMode);
@@ -530,8 +535,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 dr.show();
                 break;
             case R.id.btUnivNotice:
-                btUnivNotice.setTextColor(Color.GRAY);
-                btUnivNotice.setBackgroundResource(R.drawable.bg_lightgray_bottomline);
+                btUnivNotice.setTextColor(Color.BLACK);
+                btUnivNotice.setBackgroundResource(R.drawable.bg_black_bottomline);
                 DialUnivNotice du = new DialUnivNotice(DialSchedule.this);
                 du.show();
                 break;
@@ -751,17 +756,22 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 btShowGrade.setBackgroundResource(R.drawable.ic_expand);
             }
         });
-        SetBtUnivEvent btUnivEvent = EventBus.getDefault()
-                .getStickyEvent(SetBtUnivEvent.class);
-        if (btUnivEvent != null) {
-            EventBus.getDefault().removeStickyEvent(btUnivEvent);
-            if (btUnivEvent.isSetVisible())
+        SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
+        if(sbue != null){
+            EventBus.getDefault().removeStickyEvent(sbue);
+            if(sbue.isSetVisable())
                 btUniv.setVisibility(View.VISIBLE);
             else
                 btUniv.setVisibility(View.INVISIBLE);
         }
+        /*switch (viewMode){
+            case 0:
+                btUniv.setVisibility(View.VISIBLE);
+            case 2:
+                btUniv.setVisibility(View.INVISIBLE);
+        }*/
     }
-    private Button btNormal, btUniv,btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter;
+    private Button btNormal, btUniv, btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter;
     private ToggleButton btColor;
     private LinearLayout llColor, llNormal, llButtonArea, llUniv,llSelectUniv, llDep, btNew1, btNew2, btPlace, btShare, btAlarm, btRepeat;
     private TextView tvShare, tvAlarm, tvRepeat, btUnivNotice;
@@ -800,8 +810,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         etPlace.setText(e.getPlace());
     }
     public void onEventMainThread(SetBtUnivNoticeEvent e) {
-        btUnivNotice.setTextColor(Color.BLACK);
-        btUnivNotice.setBackgroundResource(R.drawable.bg_black_bottomline);
+        btUnivNotice.setTextColor(Color.GRAY);
+        btUnivNotice.setBackgroundResource(R.drawable.bg_lightgray_bottomline);
     }
     public void onEventMainThread(BottomNormalData e){
         normalList.add(e);

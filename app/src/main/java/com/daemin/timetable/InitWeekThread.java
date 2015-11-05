@@ -247,13 +247,12 @@ public class InitWeekThread extends InitThread {
         canvas.drawText("THU", width * 10 / 15, (height / 32 + 18) * 15 / 16, tp);
         canvas.drawText("FRI", width * 12 / 15, (height / 32 + 18) * 15 / 16, tp);
         canvas.drawText("SAT", width * 14 / 15, (height / 32 + 18) * 15 / 16, tpblue);
-
         hp.setAlpha(40);
-        canvas.drawRect(width * (2 * day + 1) / 15, ((height * 2) - 10) / 64 + 18,
-                width * (2 * day + 3) / 15, height * 62 / 64 + 18, hp);
+        canvas.drawRect(width * (2 * day + 1) / 15, ((height * 2) - 10) / 64 + 18, width * (2 * day + 3) / 15, height * 62 / 64 + 18, hp);
         hp.setAlpha(100);
     }
-    public Bitmap draw() {
+    public Bitmap captureImg() {
+        isLoop=false;
         Bitmap bm = null;
         try{
         Canvas canvas = mholder.lockCanvas();
@@ -270,6 +269,7 @@ public class InitWeekThread extends InitThread {
             if (canvas != null)
                 mholder.unlockCanvasAndPost(canvas);
         }
+        isLoop=true;
         return bm;
     }
 }

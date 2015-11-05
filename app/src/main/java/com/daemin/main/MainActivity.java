@@ -47,9 +47,7 @@ import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
-import com.daemin.event.CaptureEvent;
 import com.daemin.event.ChangeFragEvent;
-import com.daemin.event.ChangeWeekEvent;
 import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetBtPlusEvent;
@@ -70,7 +68,7 @@ import java.io.FileOutputStream;
 
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity{
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
             mDrawerLayout.closeDrawer(mLeftDrawer);
@@ -97,7 +95,6 @@ public class MainActivity extends FragmentActivity {
             screenshot();
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -108,11 +105,11 @@ public class MainActivity extends FragmentActivity {
         editor.putString("EngUnivName", User.USER.getEngUnivName());
         editor.putInt("viewMode", viewMode);
         editor.commit();
-        EventBus.getDefault().unregister(this);
         Common.stateFilter(Common.getTempTimePos(), viewMode);
         CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
         indexForTitle = 0;
         clearApplicationCache(getExternalCacheDir());
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -137,15 +134,10 @@ public class MainActivity extends FragmentActivity {
         setTitle();
         //Log.i("phone", User.USER.getPhoneNum());
         backPressCloseHandler = new BackPressCloseHandler(this);
-
-
     }
-
     private void screenshot() {
-        initSurfaceView.getInitThread().setRunning(false);
-        Bitmap bm = initSurfaceView.getInitThread().draw();
-        //initSurfaceView.getInitThread().setRunning(true);
-        initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
+        Log.i("widget", "capture start");
+        Bitmap bm = initSurfaceView.getInitThread().captureImg();
         try {
             File path = new File(Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/");
             if (!path.isDirectory()) {
@@ -154,16 +146,17 @@ public class MainActivity extends FragmentActivity {
             FileOutputStream out = new FileOutputStream(
                     Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg");
             bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            bm.recycle();
         } catch (FileNotFoundException e) {
-            Log.d("FileNotFoundException:", e.getMessage());
+            e.printStackTrace();
+        }catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        bm.recycle();
+        Log.i("widget", "capture end");
         Intent intent = new Intent();
         intent.setAction(Common.ACTION_UPDATE);
         sendBroadcast(intent);
-
     }
-
     public void setTitle() {
         tvTitleYear.setText(CurrentTime.getYear() + getString(R.string.year));
         switcher.setFactory(new ViewSwitcher.ViewFactory() {
@@ -537,9 +530,6 @@ public class MainActivity extends FragmentActivity {
     public int getViewMode() {
         return viewMode;
     }
-    public void onEventMainThread(CaptureEvent e) {
-        screenshot();
-    }
     public void onEventMainThread(SetBtPlusEvent e) {
         if(e.isSetVisable())
             btPlus.setVisibility(View.VISIBLE);
@@ -549,15 +539,8 @@ public class MainActivity extends FragmentActivity {
     public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();
     }
-    public void onEventMainThread(ChangeWeekEvent e) {
-        if(e.isBtBack())
-            btBackEvent();
-        else
-            btForwardEvent();
-
-        screenshot();
-    }
     public void onEventMainThread(ChangeFragEvent e) {
         changeFragment(e.getCl(), e.getTitleName());
     }
+
 }

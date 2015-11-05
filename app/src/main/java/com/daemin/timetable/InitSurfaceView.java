@@ -159,6 +159,7 @@ public class InitSurfaceView extends SurfaceView implements
 	public void calXthYth(MotionEvent event) {
 		switch (mode) {
 			case 0:
+				try{
 					//화면에 x축으로 15등분 중 몇번째에 위치하는지
 					xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 15 / initThread.getWidth();
 					if (xth % 2 == 0) {
@@ -170,6 +171,9 @@ public class InitSurfaceView extends SurfaceView implements
 						//if (DrawMode.CURRENT.getMode() == 0 || DrawMode.CURRENT.getMode() == 3)
 						yth -= 1;
 					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 				break;
 			case 2:
 				//화면에 x축으로 7등분 중 몇번째에 위치하는지
