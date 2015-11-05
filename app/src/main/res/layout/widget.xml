@@ -65,14 +65,20 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/maincolor" />
-    <ImageView
-        android:id="@+id/timetableimage"
+    <LinearLayout
+        android:id="@+id/llRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_marginTop="@dimen/margin_xxxs"
-        android:scaleType="fitXY"
-        />
+        android:layout_weight="1">
+        <ImageView
+            android:id="@+id/timetableimage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/margin_xxxs"
+            android:scaleType="fitXY"
+            />
+    </LinearLayout>
     <!-- android:scaleType="fitXY"
                  android:alpha="0.88"  -->
 

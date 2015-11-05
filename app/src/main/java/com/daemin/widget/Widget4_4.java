@@ -26,14 +26,19 @@ public class Widget4_4 extends AppWidgetProvider {
 				break;
 			case Common.ACTION_UPDATE:
 				// To prevent any ANR timeouts, we perform the update in a service
-				Intent i = new Intent(context, WidgetUpdateService.class);
-				i.putExtra("widget5_5", true);
-				context.startService(i);
+				Intent update = new Intent(context, WidgetUpdateService.class);
+				update.putExtra("widget5_5", false);
+				context.startService(update);
 				break;
 			case Common.ACTION_DIALOGFINISH:
 				Intent init = new Intent(context, WidgetInitService.class);
 				init.putExtra("widget5_5", false);
 				context.startService(init);
+				break;
+			case Common.ACTION_REFRESH:
+				Intent refresh = new Intent(context, WidgetRefreshService.class);
+				refresh.putExtra("widget5_5", false);
+				context.startService(refresh);
 				break;
 		}
 	}

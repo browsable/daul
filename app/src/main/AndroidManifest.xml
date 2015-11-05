@@ -54,15 +54,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.daemin.widget.ProgressDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:launchMode="singleTop">
-        <intent-filter>
-            <action android:name="com.daemin.widget.widget.ACTION_SHOWDIALOG" />
-            <action android:name="com.daemin.widget.widget.ACTION_DELAY" />
-            <action android:name="com.daemin.widget.widget.ACTION_TIMEOUT" />
-        </intent-filter>
-        </activity>
         <activity android:name="com.daemin.map.MapActivity" />
         <activity android:name="com.daemin.dialog.DialSchedule" android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity android:name="com.daemin.community.github.GithubActivity" />
@@ -77,9 +68,7 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.daemin.widget.widget.ACTION_UPDATE" />
-                <action android:name="com.daemin.widget.widget.ACTION_DIALOGFINISH" />
-                <action android:name="com.daemin.widget.widget.ACTION_DELAY" />
-                <action android:name="com.daemin.widget.widget.ACTION_TIMEOUT" />
+                <action android:name="com.daemin.widget.widget.ACTION_REFRESH" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.daemin.widget.Widget5_5">
@@ -89,9 +78,7 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.daemin.widget.widget.ACTION_UPDATE" />
-                <action android:name="com.daemin.widget.widget.ACTION_DIALOGFINISH" />
-                <action android:name="com.daemin.widget.widget.ACTION_DELAY" />
-                <action android:name="com.daemin.widget.widget.ACTION_TIMEOUT" />
+                <action android:name="com.daemin.widget.widget.ACTION_REFRESH" />
             </intent-filter>
         </receiver>
         <service
@@ -100,6 +87,10 @@
             />
         <service
             android:name="com.daemin.widget.WidgetInitService"
+            android:enabled="true"
+            />
+        <service
+            android:name="com.daemin.widget.WidgetRefreshService"
             android:enabled="true"
             />
         <meta-data
