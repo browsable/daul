@@ -1,40 +1,36 @@
-package com.daemin.timetable;
+package com.daemin.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.SurfaceHolder;
-import android.widget.Toast;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.MotionEvent;
+import android.widget.ImageView;
 
 import com.daemin.common.Common;
-import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.data.DayOfWeekData;
-import com.daemin.enumclass.DrawMode;
-import com.daemin.enumclass.PosState;
-import com.daemin.enumclass.TimePos;
-import com.daemin.event.ExcuteMethodEvent;
+import com.daemin.timetable.R;
 
-import de.greenrobot.event.EventBus;
-
-@SuppressLint("DefaultLocale")
-public class InitWeekThread extends InitThread {
-    SurfaceHolder mholder;
-    private boolean isLoop = true;
+/**
+ * Created by hernia on 2015-11-05.
+ */
+public class WeekCaptureView extends ImageView {
     private int width, height, dayOfWeek; //화면의 전체 너비, 높이
     private String sun, mon, tue, wed, thr, fri, sat;
-    Context context;
+    private Context context;
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
-    private Paint tp, tpred, tpblue; // 시간 텍스트
+    private Paint tp, tpred, tpblue, rp; // 시간 텍스트
     static int tempxth, tempyth;
-    Canvas canvas;
-    public InitWeekThread(SurfaceHolder holder, Context context) {
+    private Canvas canvas;
+    public WeekCaptureView(Context context)
+    {
+        super(context);
         DayOfWeekData dowd = CurrentTime.getDateOfWeek();
-        this.mholder = holder;
         this.context = context;
         this.sun = dowd.getSun();
         this.mon = dowd.getMon();
@@ -61,39 +57,18 @@ public class InitWeekThread extends InitThread {
         tpblue.setTextSize(30);
         tpblue.setTextAlign(Paint.Align.CENTER);
         tpblue.setColor(context.getResources().getColor(R.color.blue));
-
+        rp = new Paint(Paint.ANTI_ALIAS_FLAG);
+        rp.setColor(Color.parseColor(Common.MAIN_COLOR));
+        rp.setAlpha(100);
     }
-
-    public String getMonthAndDay(int... index) {
-        switch (index[0]) {
-            case 1:
-                return sun;
-            case 3:
-                return mon;
-            case 5:
-                return tue;
-            case 7:
-                return wed;
-            case 9:
-                return thr;
-            case 11:
-                return fri;
-            case 13:
-                return sat;
-            default:
-                return "";
-        }
+    public WeekCaptureView(Context context, AttributeSet attrs)
+    {
+        super(context, attrs);
     }
-    public String[] getAllMonthAndDay() {
-        String[] MD = new String[7];
-        MD[0] = sun;
-        MD[1] = mon;
-        MD[2] = tue;
-        MD[3] = wed;
-        MD[4] = thr;
-        MD[5] = fri;
-        MD[6] = sat;
-        return MD;
+    public WeekCaptureView(Context context, AttributeSet attrs, int defStyle)
+    {
+        super(context, attrs, defStyle);
+        // TODO Auto-generated constructor stub
     }
     public void setCurrentTime(DayOfWeekData dowd) {
         this.sun = dowd.getSun();
@@ -104,99 +79,62 @@ public class InitWeekThread extends InitThread {
         this.fri = dowd.getFri();
         this.sat = dowd.getSat();
     }
-
-    public void setRunning(boolean isLoop) {
-        this.isLoop = isLoop;
+    @Override
+    protected void onDraw(Canvas canvas)
+    {
+        // TODO Auto-generated method stub
+        super.onDraw(canvas);
+        this.canvas = canvas;
+        width = canvas.getWidth();
+        height = canvas.getHeight();
+        initScreen(dayOfWeek);
+        canvas.drawRect(width * 3 / 15, height * 5 / 32 + 18,
+                width * (5 + 2) / 15, height * (7 + 2) / 32 + 18, rp);
     }
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        // TODO Auto-generated method stub
+        Log.d("Hello Android", "Got a touch event: " + event.getAction());
+        return super.onTouchEvent(event);
 
-    public int getWidth() {
-        return width;
     }
+    public float getDip(float value) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
+    }
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
-    public int getHeight() {
-        return height;
-    }
-
-    public void run() {
-        while (isLoop) {
-            canvas = null;
-            try {
-                canvas = mholder.lockCanvas();
-                width = canvas.getWidth();
-                height = canvas.getHeight();
-                synchronized (mholder) {
-                    initScreen(dayOfWeek);
-                    for (TimePos ETP : TimePos.values()) {
-                        ETP.drawTimePos(canvas, width, height);
-                    }
-                }
-            } catch (Exception e) {
-            } finally {
-                if (canvas != null)
-                    mholder.unlockCanvasAndPost(canvas);
-            }
-        }
-    }
-    public void getDownXY(int xth, int yth) {
-        makeTimePos(xth, yth);
-        tempxth = xth;
-        tempyth = yth;
-    }
-
-    public void getMoveXY(int xth, int yth) {
-        if (tempxth != xth || tempyth != yth) {
-            makeTimePos(xth, yth);
-            tempxth = xth;
-            tempyth = yth;
-        }
-    }
-
-    public void getActionUp() {
-        EventBus.getDefault().post(new ExcuteMethodEvent("updateWeekList"));
-    }
-
-    public void makeTimePos(int xth, int yth) {
-        int tmpYth, ryth = yth%2;
-        if(ryth==0) tmpYth=yth-1;
-        else tmpYth = yth;
-        TimePos ETP = TimePos.valueOf(Convert.getxyMerge(xth, tmpYth));
-        switch (DrawMode.CURRENT.getMode()) {
-            case 0://일반
-                if (ETP.getPosState() == PosState.NO_PAINT) {
-                    ETP.setPosState(PosState.PAINT);
-                    if(!Common.getTempTimePos().contains(ETP.name()))
-                    Common.getTempTimePos().add(ETP.name());
-                } else {
-                    ETP.setMin(0,60);
-                    ETP.setPosState(PosState.NO_PAINT);
-                    Common.getTempTimePos().remove(ETP.name());
-                }
+        int width = (int)getDip(10);
+        int height = (int)getDip(10);
+        switch (widthMode) {
+            case MeasureSpec.UNSPECIFIED: // unspecified
+                width = widthMeasureSpec;
                 break;
-            case 1: //대학
-                //대학선택시에 그리는 것은 막고 선택한 과목은 함께 지워져야함
-                if (Common.isTableEmpty()){
-                    Toast.makeText(context, "과목을 선택하세요", Toast.LENGTH_SHORT).show();
-                } else {
-                    Common.stateFilter(Common.getTempTimePos(), 0);
-                }
+            case MeasureSpec.AT_MOST:  // wrap_content
                 break;
-           /* case 2: //추천
-                if (ETP.getPosState() == PosState.NO_PAINT||ETP.getPosState() == PosState.ADJUST) {
-                    Common.stateFilter(Common.getTempTimePos(), "week");
-                    if (ryth == 0) ETP.setMin(30, 60);
-                    else ETP.setMin(0, 30);
-                    ETP.setPosState(PosState.ADJUST);
-                    if(!Common.getTempTimePos().contains(ETP.name()))
-                    Common.getTempTimePos().add(ETP.name());
-                    MainActivity.getInstance().setupRecommendDatas(ETP.name());
-                }else {
-                    Common.stateFilter(Common.getTempTimePos(), "week");
-                }
-                break;*/
+            case MeasureSpec.EXACTLY:  // match_parent
+                width = MeasureSpec.getSize(widthMeasureSpec);
+                break;
         }
-        return;
+        switch (heightMode) {
+            case MeasureSpec.UNSPECIFIED: // unspecified
+                height = heightMeasureSpec;
+                break;
+            case MeasureSpec.AT_MOST:  // wrap_content
+                break;
+            case MeasureSpec.EXACTLY:  // match_parent
+                height = MeasureSpec.getSize(heightMeasureSpec);
+                break;
+        }
+        setMeasuredDimension(width, height);
     }
-
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right,
+                            int bottom) {
+    }
     public void initScreen(int day) {
 
         float[] hp_hour = {
@@ -251,25 +189,4 @@ public class InitWeekThread extends InitThread {
         canvas.drawRect(width * (2 * day + 1) / 15, ((height * 2) - 10) / 64 + 18, width * (2 * day + 3) / 15, height * 62 / 64 + 18, hp);
         hp.setAlpha(100);
     }
-    /*public Bitmap captureImg() {
-        isLoop=false;
-        Bitmap bm = null;
-        try{
-        Canvas canvas = mholder.lockCanvas();
-        bm = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
-        canvas.setBitmap(bm);
-        synchronized (mholder) {
-                initScreen(dayOfWeek);
-                for (TimePos ETP : TimePos.values()) {
-                    ETP.drawTimePos(canvas, width, height);
-                }
-            }
-        } catch (Exception e) {
-        } finally {
-            if (canvas != null)
-                mholder.unlockCanvasAndPost(canvas);
-        }
-        isLoop=true;
-        return bm;
-    }*/
 }

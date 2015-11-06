@@ -3,19 +3,16 @@ package com.daemin.main;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -52,7 +49,6 @@ import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
-import com.daemin.event.SetTitleTImeEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.setting.SettingFragment;
 import com.daemin.timetable.InitDayFragment;
@@ -63,8 +59,6 @@ import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 import de.greenrobot.event.EventBus;
 
@@ -91,8 +85,11 @@ public class MainActivity extends FragmentActivity{
     @Override
     protected void onPause() {
         super.onPause();
-        if(captureFlag) {
-            screenshot();
+        if(dialogFlag) {
+            Intent intent = new Intent();
+            intent.setAction(Common.ACTION_UPDATE);
+            intent.putExtra("viewMode", viewMode);
+            sendBroadcast(intent);
         }
     }
     @Override
@@ -103,11 +100,9 @@ public class MainActivity extends FragmentActivity{
         editor.putBoolean("GroupListDownloadState", User.USER.isGroupListDownloadState());
         editor.putBoolean("SubjectDownloadState", User.USER.isSubjectDownloadState());
         editor.putString("EngUnivName", User.USER.getEngUnivName());
-        editor.putInt("viewMode", viewMode);
         editor.commit();
         Common.stateFilter(Common.getTempTimePos(), viewMode);
         CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
-        indexForTitle = 0;
         clearApplicationCache(getExternalCacheDir());
         EventBus.getDefault().unregister(this);
     }
@@ -135,7 +130,7 @@ public class MainActivity extends FragmentActivity{
         //Log.i("phone", User.USER.getPhoneNum());
         backPressCloseHandler = new BackPressCloseHandler(this);
     }
-    private void screenshot() {
+    /*private void screenshot() {
         Log.i("widget", "capture start");
         Bitmap bm = initSurfaceView.getInitThread().captureImg();
         try {
@@ -156,7 +151,7 @@ public class MainActivity extends FragmentActivity{
         Intent intent = new Intent();
         intent.setAction(Common.ACTION_UPDATE);
         sendBroadcast(intent);
-    }
+    }*/
     public void setTitle() {
         tvTitleYear.setText(CurrentTime.getYear() + getString(R.string.year));
         switcher.setFactory(new ViewSwitcher.ViewFactory() {
@@ -174,12 +169,7 @@ public class MainActivity extends FragmentActivity{
         Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
         switcher.setInAnimation(in);
         switcher.setOutAnimation(out);
-        SetTitleTImeEvent stickyEvent = EventBus.getDefault()
-                .getStickyEvent(SetTitleTImeEvent.class);
-        if (stickyEvent != null) {
-            EventBus.getDefault().removeStickyEvent(stickyEvent);
-            switcher.setText(stickyEvent.getTitleTime());
-        }
+        switcher.setText(CurrentTime.getTitleMonthWeek(this));
         if (viewMode == 2) {
             barText = CurrentTime.getTitleYearMonth(this);
             switcher.setText(barText);
@@ -259,34 +249,34 @@ public class MainActivity extends FragmentActivity{
         switch (viewMode) {
             case 0:
                 InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
-                --indexForTitle;
-                if (indexForTitle < 0) {
-                    tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
-                    barText = CurrentTime.backTitleMonthWeek(this, -indexForTitle);
+                --dayIndex;
+                if (dayIndex < 0) {
+                    tvTitleYear.setText(CurrentTime.backTitleYear(-dayIndex) + getString(R.string.year));
+                    barText = CurrentTime.backTitleMonthWeek(this, -dayIndex);
                     switcher.setText(barText);
-                    iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
+                    iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-dayIndex));
                 } else {
-                    tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
-                    barText = CurrentTime.preTitleMonthWeek(this, indexForTitle);
+                    tvTitleYear.setText(CurrentTime.preTitleYear(dayIndex) + getString(R.string.year));
+                    barText = CurrentTime.preTitleMonthWeek(this, dayIndex);
                     switcher.setText(barText);
-                    iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
+                    iw.setCurrentTime(CurrentTime.getPreDateOfWeek(dayIndex));
                 }
                 break;
             case 2:
                 InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
-                --indexForTitle;
-                if (indexForTitle < 0) {
-                    barText = CurrentTime.backTitleYearMonth(this, -indexForTitle);
+                --dayIndex;
+                if (dayIndex < 0) {
+                    barText = CurrentTime.backTitleYearMonth(this, -dayIndex);
                     switcher.setText(barText);
-                    im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
-                            CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
-                            CurrentTime.getBackDayNumOfMonth(-indexForTitle));
+                    im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-dayIndex),
+                            CurrentTime.getBackDayOfWeekOfLastMonth(-dayIndex),
+                            CurrentTime.getBackDayNumOfMonth(-dayIndex));
                 } else {
-                    barText = CurrentTime.preTitleYearMonth(this, indexForTitle);
+                    barText = CurrentTime.preTitleYearMonth(this, dayIndex);
                     switcher.setText(barText);
-                    im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
-                            CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
-                            CurrentTime.getPreDayNumOfMonth(indexForTitle));
+                    im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(dayIndex),
+                            CurrentTime.getPreDayOfWeekOfLastMonth(dayIndex),
+                            CurrentTime.getPreDayNumOfMonth(dayIndex));
                 }
                 break;
         }
@@ -295,34 +285,34 @@ public class MainActivity extends FragmentActivity{
         switch (viewMode) {
             case 0:
                 InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
-                ++indexForTitle;
-                if (indexForTitle < 0) {
-                    tvTitleYear.setText(CurrentTime.backTitleYear(-indexForTitle) + getString(R.string.year));
-                    barText = CurrentTime.backTitleMonthWeek(this, -indexForTitle);
+                ++dayIndex;
+                if (dayIndex < 0) {
+                    tvTitleYear.setText(CurrentTime.backTitleYear(-dayIndex) + getString(R.string.year));
+                    barText = CurrentTime.backTitleMonthWeek(this, -dayIndex);
                     switcher.setText(barText);
-                    iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-indexForTitle));
+                    iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-dayIndex));
                 } else {
-                    tvTitleYear.setText(CurrentTime.preTitleYear(indexForTitle) + getString(R.string.year));
-                    barText = CurrentTime.preTitleMonthWeek(this, indexForTitle);
+                    tvTitleYear.setText(CurrentTime.preTitleYear(dayIndex) + getString(R.string.year));
+                    barText = CurrentTime.preTitleMonthWeek(this, dayIndex);
                     switcher.setText(barText);
-                    iw.setCurrentTime(CurrentTime.getPreDateOfWeek(indexForTitle));
+                    iw.setCurrentTime(CurrentTime.getPreDateOfWeek(dayIndex));
                 }
                 break;
             case 2:
                 InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
-                ++indexForTitle;
-                if (indexForTitle < 0) {
-                    barText = CurrentTime.backTitleYearMonth(this, -indexForTitle);
+                ++dayIndex;
+                if (dayIndex < 0) {
+                    barText = CurrentTime.backTitleYearMonth(this, -dayIndex);
                     switcher.setText(barText);
-                    im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-indexForTitle),
-                            CurrentTime.getBackDayOfWeekOfLastMonth(-indexForTitle),
-                            CurrentTime.getBackDayNumOfMonth(-indexForTitle));
+                    im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-dayIndex),
+                            CurrentTime.getBackDayOfWeekOfLastMonth(-dayIndex),
+                            CurrentTime.getBackDayNumOfMonth(-dayIndex));
                 } else {
-                    barText = CurrentTime.preTitleYearMonth(this, indexForTitle);
+                    barText = CurrentTime.preTitleYearMonth(this, dayIndex);
                     switcher.setText(barText);
-                    im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(indexForTitle),
-                            CurrentTime.getPreDayOfWeekOfLastMonth(indexForTitle),
-                            CurrentTime.getPreDayNumOfMonth(indexForTitle));
+                    im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(dayIndex),
+                            CurrentTime.getPreDayOfWeekOfLastMonth(dayIndex),
+                            CurrentTime.getPreDayNumOfMonth(dayIndex));
                 }
                 break;
         }
@@ -370,8 +360,8 @@ public class MainActivity extends FragmentActivity{
                 changeFragment(SettingFragment.class, "설정");
                 break;
             case R.id.btPlus:
-                captureFlag = false; // DialSchedule띄울때 MainActivity의 onPause가 실행되므로 이때 캡처 동작하는 것을 막음
-                Intent i = new Intent(MainActivity.this, DialSchedule.class);
+                dialogFlag =false;
+                 Intent i = new Intent(MainActivity.this, DialSchedule.class);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
@@ -394,12 +384,12 @@ public class MainActivity extends FragmentActivity{
     private void setLayout() {
         backKeyName = "";
         mContent = null;
-        surfaceFlag = false;captureFlag=true;
-        indexForTitle = 0;
+        surfaceFlag = false; dialogFlag=true;
         DrawMode.CURRENT.setMode(0);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         viewMode = MyPreferences.USERINFO.getPref().getInt("viewMode", 0);
+        dayIndex = 0;
         ibMenu = (ImageButton) findViewById(R.id.ibMenu);
         ibBack = (ImageButton) findViewById(R.id.ibBack);
         mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
@@ -443,16 +433,19 @@ public class MainActivity extends FragmentActivity{
                 EventBus.getDefault().post(new ClearNormalEvent());
                 llTitle.setVisibility(View.VISIBLE);
                 initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
-                indexForTitle = 0;
+                dayIndex = 0;
                 Common.stateFilter(Common.getTempTimePos(), viewMode);
                 switch (position) {
                     case 0: //주
+                        viewMode = 0;
+                        SharedPreferences.Editor wEditor = MyPreferences.USERINFO.getEditor();
+                        wEditor.putInt("viewMode", viewMode);
+                        wEditor.commit();
                         EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
                         barText = CurrentTime.getTitleMonthWeek(MainActivity.this);
                         switcher.setText("");
                         switcher.setText(barText);
                         tvTitleYear.setVisibility(View.VISIBLE);
-                        viewMode = 0;
                         changeFragment(TimetableFragment.class, "");
                         flSurface.setVisibility(View.VISIBLE);
                         frame_container.setVisibility(View.GONE);
@@ -469,13 +462,16 @@ public class MainActivity extends FragmentActivity{
                         changeFragment(InitDayFragment.class, "일");
                         break;
                     case 2: // 월
+                        viewMode = 2;
+                        SharedPreferences.Editor mEditor = MyPreferences.USERINFO.getEditor();
+                        mEditor.putInt("viewMode", viewMode);
+                        mEditor.commit();
                         EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
                         barText = CurrentTime.getTitleYearMonth(MainActivity.this);
                         switcher.setText("");
                         switcher.setText(barText);
                         tvTitleYear.setVisibility(View.GONE);
                         DrawMode.CURRENT.setMode(0);
-                        viewMode = 2;
                         changeFragment(TimetableFragment.class, "");
                         flSurface.setVisibility(View.VISIBLE);
                         frame_container.setVisibility(View.GONE);
@@ -505,13 +501,13 @@ public class MainActivity extends FragmentActivity{
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
     private String backKeyName, korName, engName, barText;
-    private Boolean surfaceFlag,captureFlag;
+    private Boolean surfaceFlag,dialogFlag;
     private Spinner spinner;
     private ArrayAdapter<CharSequence> spinnerAdapter;
     private TextSwitcher switcher;
     private static MainActivity singleton;
     private int viewMode;
-    private static int indexForTitle;
+    private static int dayIndex;
     public ImageButton getIbBack() {
         return ibBack;
     }
@@ -535,6 +531,7 @@ public class MainActivity extends FragmentActivity{
             btPlus.setVisibility(View.VISIBLE);
         else
             btPlus.setVisibility(View.GONE);
+        dialogFlag = true;
     }
     public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();

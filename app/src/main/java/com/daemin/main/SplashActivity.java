@@ -3,18 +3,17 @@ package com.daemin.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.widget.Toast;
 
 import com.daemin.common.Common;
-import com.daemin.common.CurrentTime;
+import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.User;
-import com.daemin.event.SetTitleTImeEvent;
 import com.daemin.timetable.R;
-
-import de.greenrobot.event.EventBus;
 
 public class SplashActivity extends Activity {
 	static SplashActivity singleton;
@@ -26,7 +25,6 @@ public class SplashActivity extends Activity {
 			super.onCreate(savedInstanceState);
 			singleton = this;
 			setContentView(R.layout.activity_splash);
-			EventBus.getDefault().postSticky(new SetTitleTImeEvent(CurrentTime.getTitleMonthWeek(this)));
 			initialize();
 
 		}
@@ -44,6 +42,14 @@ public class SplashActivity extends Activity {
 		else{
 			Toast.makeText(this, this.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
 		}
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		int deviceWidth = displayMetrics.widthPixels;
+		int deviceHeight =displayMetrics.heightPixels;
+		SharedPreferences.Editor wEditor = MyPreferences.USERINFO.getEditor();
+		wEditor.putInt("deviceWidth", deviceWidth);
+		wEditor.putInt("deviceHeight", deviceHeight);
+		wEditor.commit();
 		//MyRequest.test(singleton);
 		Handler handler = new Handler() {
 

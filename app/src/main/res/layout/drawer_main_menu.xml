@@ -44,7 +44,7 @@
                     android:layout_margin="@dimen/margin_default"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="choz@"
+                    android:text="daul@"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/textsize_l"
                     android:textStyle="bold" />

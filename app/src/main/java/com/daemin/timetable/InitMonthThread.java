@@ -37,7 +37,6 @@ public class InitMonthThread extends InitThread {
 	static int tempxth;
 	static int tempyth;
 	Canvas canvas;
-	Thread th = null;
 	public InitMonthThread(SurfaceHolder holder, Context context) {
 		this.mholder = holder;
 		this.context = context;
@@ -223,7 +222,7 @@ public class InitMonthThread extends InitThread {
 		}
 
 	}
-	public Bitmap captureImg() {
+	/*public Bitmap captureImg() {
 		isLoop=false;
 		Bitmap bm = null;
 		try{
@@ -243,5 +242,5 @@ public class InitMonthThread extends InitThread {
 		}
 		isLoop=true;
 		return bm;
-	}
+	}*/
 }

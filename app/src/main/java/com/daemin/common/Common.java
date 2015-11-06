@@ -23,9 +23,15 @@ import java.util.Hashtable;
 public class Common {
 
 	/* BroadCastReceiver Filter */
-	public static final String ACTION_UPDATE = "com.daemin.widget.widget.ACTION_UPDATE";
-	public static final String ACTION_REFRESH = "com.daemin.widget.widget.ACTION_REFRESH";
-	public static final String ACTION_DIALOGFINISH = "com.daemin.widget.widget.ACTION_DIALOGFINISH";
+	public static final String ACTION_UPDATE = "com.daemin.widget.ACTION_UPDATE";
+	public static final String ACTION_WEEK5_5 = "com.daemin.widget.ACTION_WEEK5_5";
+	public static final String ACTION_MONTH5_5 = "com.daemin.widget.ACTION_MONTH5_5";
+	public static final String ACTION_BACK5_5 = "com.daemin.widget.ACTION_BACK5_5";
+	public static final String ACTION_FORWARD5_5 = "com.daemin.widget.ACTION_FORWARD5_5";
+	public static final String ACTION_WEEK4_4 = "com.daemin.widget.ACTION_WEEK4_4";
+	public static final String ACTION_MONTH4_4 = "com.daemin.widget.ACTION_MONTH4_4";
+	public static final String ACTION_BACK4_4 = "com.daemin.widget.ACTION_BACK4_4";
+	public static final String ACTION_FORWARD4_4 = "com.daemin.widget.ACTION_FORWARD4_4";
 	public static final String CAPTURE = Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg";
 	public static final String MAIN_COLOR = AppController.getInstance().getResources().getString(R.color.maincolor);
 
