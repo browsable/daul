@@ -2,23 +2,18 @@ package com.daemin.dialog;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -27,58 +22,39 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.daemin.adapter.BottomNormalListAdapter;
-import com.daemin.adapter.HorizontalListAdapter;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
-import com.daemin.common.CurrentTime;
 import com.daemin.common.DatabaseHandler;
 import com.daemin.common.HorizontalListView;
 import com.daemin.data.BottomNormalData;
-import com.daemin.data.SubjectData;
-import com.daemin.enumclass.DayOfMonthPos;
-import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
-import com.daemin.enumclass.User;
 import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetAlarmEvent;
 import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
-import com.daemin.event.SetBtUnivNoticeEvent;
 import com.daemin.event.SetPlaceEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
 import com.daemin.event.UpdateNormalEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.map.MapActivity;
-import com.daemin.timetable.InitMonthThread;
-import com.daemin.timetable.InitSurfaceView;
-import com.daemin.timetable.InitWeekThread;
 import com.daemin.timetable.R;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class DialSchedule extends Activity implements View.OnClickListener, View.OnTouchListener{
+public class DialWidgetSchedule extends Activity implements View.OnClickListener, View.OnTouchListener{
     public void onBackPressed() {
         EventBus.getDefault().post(new SetBtPlusEvent(true));
         switch (DrawMode.CURRENT.getMode()) {
@@ -117,21 +93,21 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         makeNormalList();
         window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(
-                android.graphics.Color.TRANSPARENT));
+                Color.TRANSPARENT));
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
         lp = window.getAttributes();
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels *3/5;
-        lp.width = lp.MATCH_PARENT;
+        lp.width = dm.widthPixels * 23 / 24;
         lp.height = screenHeight*2/3;
         window.setAttributes(lp);
         window.setGravity(Gravity.BOTTOM);
-        if(viewMode==0)
+        /*if(viewMode==0)
             updateWeekList();
         else
-            updateMonthList();
+            updateMonthList();*/
         backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
@@ -168,11 +144,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         String startMin = ((TextView) view.findViewById(R.id.tvStartMin)).getText().toString();
                         String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
                         String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
-                        DialWeekPicker dwp = new DialWeekPicker(DialSchedule.this, position, xth, startHour, startMin, endHour, endMin);
+                        DialWeekPicker dwp = new DialWeekPicker(DialWidgetSchedule.this, position, xth, startHour, startMin, endHour, endMin);
                         dwp.show();
                         break;
                     case 2:
-                        DialMonthPicker dmp = new DialMonthPicker(DialSchedule.this);
+                        DialMonthPicker dmp = new DialMonthPicker(DialWidgetSchedule.this);
                         dmp.show();
                         break;
                 }
@@ -221,14 +197,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
     }
     public void removeMonth(int xth, int day){
-        InitMonthThread im = (InitMonthThread)initSurfaceView.getInitThread();
+       /* InitMonthThread im = (InitMonthThread)initSurfaceView.getInitThread();
         int yth = (im.getDayOfWeekOfLastMonth()+day)/7+1;
         DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
         if (DOMP.getPosState() != DayOfMonthPosState.NO_PAINT) {
             DOMP.setPosState(DayOfMonthPosState.NO_PAINT);
-        }
+        }*/
     }
-    public void updateWeekList(){
+    /*public void updateWeekList(){
         normalList.clear();
         int startYth=0,startMin=0,endYth=0,endMin=0,tmpXth=0;
         int tmpStartYth=0, tmpStartMin=0, tmpEndYth=0, tmpEndMin=0;
@@ -272,8 +248,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
         normalAdapter.notifyDataSetChanged();
 
-    }
-    public void updateMonthList(){
+    }*/
+   /* public void updateMonthList(){
         normalList.clear();
         int tmpXth=0,tmpYth=0;
         String YMD="";
@@ -286,81 +262,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             }
         }
         normalAdapter.notifyDataSetChanged();
-    }
+    }*/
     public void clearView(){
         normalList.clear();
         normalAdapter.notifyDataSetChanged();
         Common.stateFilter(Common.getTempTimePos(), viewMode);
     }
 
-    class DownloadFileFromURL extends AsyncTask<String, String, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-        @Override
-        protected String doInBackground(String ...univName) {
-            int count;
-            try {
-                URL url = new URL("http://hernia.cafe24.com/android/db/"+univName[0]+"/subject.sqlite");
-                URLConnection conection = url.openConnection();
-                conection.connect();
-                // input stream to read file - with 8k buffer
-                createFolder();
-                InputStream input = new BufferedInputStream(url.openStream(), 8192);
-                OutputStream output = new FileOutputStream("/sdcard/.TimeDAO/subject.sqlite");
-                ///data/data/com.daemin.timetable/databases
-                byte data[] = new byte[2048];
-                while ((count = input.read(data)) != -1) {
-                    // writing data to file
-                    output.write(data, 0, count);
-                }
-                // flushing output
-                output.flush();
-                // closing streams
-                output.close();
-                input.close();
-            } catch (Exception e) {
-                Log.e("Error: ", e.getMessage());
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(String param) {
-            User.USER.setSubjectDownloadState(true);
-            llDep.setVisibility(View.VISIBLE);
-        }
 
-    }
-    public static void createFolder(){
-        try{
-            //check sdcard mount state
-            String str = Environment.getExternalStorageState();
-            if ( str.equals(Environment.MEDIA_MOUNTED)) {
-                String mTargetDirPath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                        +      "/.TimeDAO/";
-
-                File file = new File(mTargetDirPath);
-                if(!file.exists()){
-                    file.mkdirs();
-                }
-            }else{
-            }
-        }catch(Exception e){
-        }
-    }
-    private String[] getTimeList(String time){
-        String[] timeList=null; //요일 인덱스와 이벤트에 따른 시간(시작~끝)으로 자름, 예)3:9:00:10:00/3:14:00:15:00을 분리
-        try {
-            if(!time.equals(null))
-                timeList = time.split("/");
-            else
-                return timeList;
-        }catch(NullPointerException e){
-            Toast.makeText(DialSchedule.this, getString(R.string.e_learning), Toast.LENGTH_SHORT).show();
-        }
-        return timeList;
-    }
     //3:9:00:10:00 , 3:9:00:11:00, 3:9:00:11:30
     public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin){
         if(endMin!=0) ++endHour;
@@ -392,82 +301,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         switch (v.getId()) {
             case R.id.btNormal:
                 clearView();
-                DrawMode.CURRENT.setMode(0);
                 btColor.setVisibility(View.VISIBLE);
-                llNormal.setVisibility(View.VISIBLE);
-                llUniv.setVisibility(View.GONE);
-                btColor.setVisibility(View.VISIBLE);
-                btNormal.setTextColor(getResources().getColor(
-                        android.R.color.white));
-                btUniv.setTextColor(getResources().getColor(
-                        R.color.gray));
-                break;
-            case R.id.btUniv:
-                clearView();
-                DrawMode.CURRENT.setMode(1);
-                llNormal.setVisibility(View.GONE);
-                llUniv.setVisibility(View.VISIBLE);
-                /*if (User.USER.isSubjectDownloadState()) {
-                    llSelectUniv.setVisibility(View.GONE);
-                    llDep.setVisibility(View.VISIBLE);
-                }
-                else {
-                    llSelectUniv.setVisibility(View.VISIBLE);
-                    llDep.setVisibility(View.GONE);
-                }*/
-                btNormal.setTextColor(getResources().getColor(
-                        R.color.gray));
-                btUniv.setTextColor(getResources().getColor(
-                        android.R.color.white));
-                break;
-            case R.id.btShowUniv:
-                if (univFlag) {
-                    actvUniv.dismissDropDown();
-                    univFlag = false;
-                } else {
-                    actvUniv.showDropDown();
-                    btShowUniv.setBackgroundResource(R.drawable.ic_collapse);
-                    univFlag = true;
-                }
-                break;
-            case R.id.btShowDep:
-                if (depFlag) {
-                    actvDep.dismissDropDown();
-                    depFlag = false;
-                } else {
-                    actvDep.showDropDown();
-                    btShowDep.setBackgroundResource(R.drawable.ic_collapse);
-                    depFlag = true;
-                }
-                break;
-           case R.id.btShowGrade:
-               if (gradeFlag) {
-                   actvGrade.dismissDropDown();
-                   gradeFlag = false;
-               } else {
-                   actvGrade.showDropDown();
-                   btShowGrade.setBackgroundResource(R.drawable.ic_collapse);
-                   gradeFlag = true;
-               }
-               break;
-            case R.id.btEnter:
-                Toast.makeText(DialSchedule.this, getString(R.string.univ_notice_setting), Toast.LENGTH_SHORT).show();
-                if (Common.isOnline()) {
-                    if (User.USER.isSubjectDownloadState()) {
-                        Toast.makeText(DialSchedule.this, "다운로드 되어 있음", Toast.LENGTH_SHORT).show();
-                        llDep.setVisibility(View.VISIBLE);
-                    } else {
-                        Toast.makeText(DialSchedule.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
-                        new DownloadFileFromURL().execute("koreatech");
-                    }
-                } else {
-                    if (User.USER.isSubjectDownloadState()) {
-                        Toast.makeText(DialSchedule.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
-                        llDep.setVisibility(View.VISIBLE);
-                    } else {
-                        Toast.makeText(DialSchedule.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-                    }
-                }
                 break;
             case R.id.btColor:
                 if (btColor.isChecked()) {
@@ -498,30 +332,30 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             case R.id.btRemove:
                 break;
             case R.id.btNew1:case R.id.btNew2:
-                DialAddTimePicker datp = null;
+               /* DialAddTimePicker datp = null;
                 switch(viewMode) {
                     case 0:
                         InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
-                        datp = new DialAddTimePicker(DialSchedule.this, iw.getAllMonthAndDay());
+                        datp = new DialAddTimePicker(DialWidgetSchedule.this, iw.getAllMonthAndDay());
                         break;
                     case 2:
                         InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
-                        datp = new DialAddTimePicker(DialSchedule.this, im.getMonthData(),im.getDayOfWeekOfLastMonth());
+                        datp = new DialAddTimePicker(DialWidgetSchedule.this, im.getMonthData(),im.getDayOfWeekOfLastMonth());
                         break;
                 }
-                datp.show();
+                datp.show();*/
                 break;
             case R.id.btPlace:
-                Intent in = new Intent(DialSchedule.this, MapActivity.class);
+                Intent in = new Intent(DialWidgetSchedule.this, MapActivity.class);
                 startActivity(in);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.btShare:
-                DialShare ds = new DialShare(DialSchedule.this);
+                DialShare ds = new DialShare(DialWidgetSchedule.this);
                 ds.show();
                 break;
             case R.id.btAlarm:
-                DialAlarm da = new DialAlarm(DialSchedule.this);
+                DialAlarm da = new DialAlarm(DialWidgetSchedule.this);
                 da.show();
                 break;
             case R.id.btRepeat:
@@ -530,14 +364,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     if(!dayIndex.containsKey(d.getXth()))
                         dayIndex.put(d.getXth(),d.getXth());
                 }
-                DialRepeat dr = new DialRepeat(DialSchedule.this,dayIndex);
+                DialRepeat dr = new DialRepeat(DialWidgetSchedule.this,dayIndex);
                 dr.show();
-                break;
-            case R.id.btUnivNotice:
-                btUnivNotice.setTextColor(Color.BLACK);
-                btUnivNotice.setBackgroundResource(R.drawable.bg_black_bottomline);
-                DialUnivNotice du = new DialUnivNotice(DialSchedule.this);
-                du.show();
                 break;
         }
     }
@@ -546,7 +374,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public boolean onTouch(View v, MotionEvent event) {
         switch(v.getId()){
             case R.id.dragToggle:
-                univFlag = false; depFlag = false; gradeFlag = false;
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         dy = mPosY + (int) event.getRawY();
@@ -564,9 +391,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         break;
                 }
                 break;
-            case R.id.llSelectUniv:
-                univFlag = false;
-                break;
         }
         return true;
     }
@@ -574,59 +398,41 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private void setLayout() {
         db = new DatabaseHandler(this);
         main = MainActivity.getInstance();
-        initSurfaceView = main.getInitSurfaceView();
-        viewMode = main.getViewMode();
+    //    initSurfaceView = main.getInitSurfaceView();
+        viewMode = 0; //main.getViewMode();
         btNormal = (Button) findViewById(R.id.btNormal);
         btUniv = (Button) findViewById(R.id.btUniv);
+        btUniv.setVisibility(View.INVISIBLE);
         btAddSchedule = (Button) findViewById(R.id.btAddSchedule);
         btCancel = (Button) findViewById(R.id.btCancel);
         btCommunity = (Button) findViewById(R.id.btCommunity);
         btInvite = (Button) findViewById(R.id.btInvite);
         btRemove = (Button) findViewById(R.id.btRemove);
-        btEnter = (Button) findViewById(R.id.btEnter);
-        btShowUniv = findViewById(R.id.btShowUniv);
-        btShowDep = findViewById(R.id.btShowDep);
-        btShowGrade = findViewById(R.id.btShowGrade);
         btColor = (ToggleButton) findViewById(R.id.btColor);
         llColor = (LinearLayout) findViewById(R.id.llColor);
         llNormal = (LinearLayout) findViewById(R.id.llNormal);
         llButtonArea = (LinearLayout) findViewById(R.id.llButtonArea);
-        llUniv = (LinearLayout) findViewById(R.id.llUniv);
         btNew1 = (LinearLayout) findViewById(R.id.btNew1);
         btNew2 = (LinearLayout) findViewById(R.id.btNew2);
         btPlace = (LinearLayout) findViewById(R.id.btPlace);
         btShare = (LinearLayout) findViewById(R.id.btShare);
         btAlarm = (LinearLayout) findViewById(R.id.btAlarm);
         btRepeat = (LinearLayout) findViewById(R.id.btRepeat);
-        llDep = (LinearLayout) findViewById(R.id.llDep);
-        llSelectUniv= (LinearLayout) findViewById(R.id.llSelectUniv);
         dragToggle = findViewById(R.id.dragToggle);
         tvShare = (TextView) findViewById(R.id.tvShare);
         tvAlarm = (TextView) findViewById(R.id.tvAlarm);
         tvRepeat = (TextView) findViewById(R.id.tvRepeat);
-        btUnivNotice = (TextView) findViewById(R.id.btUnivNotice);
         etName = (EditText) findViewById(R.id.etName);
         etPlace = (EditText) findViewById(R.id.etPlace);
         etMemo = (EditText) findViewById(R.id.etMemo);
         lvTime = (HorizontalListView) findViewById(R.id.lvTime);
-        hlv = (HorizontalListView) findViewById(R.id.hlv);
-        actvUniv = (AutoCompleteTextView) findViewById(R.id.actvUniv);
-        actvDep = (AutoCompleteTextView) findViewById(R.id.actvDep);
-        actvGrade = (AutoCompleteTextView) findViewById(R.id.actvGrade);
-        actvSub = (AutoCompleteTextView) findViewById(R.id.actvSub);
         btNormal.setOnClickListener(this);
-        btUniv.setOnClickListener(this);
         btColor.setOnClickListener(this);
         btAddSchedule.setOnClickListener(this);
         btCancel.setOnClickListener(this);
         btCommunity.setOnClickListener(this);
         btInvite.setOnClickListener(this);
         btRemove.setOnClickListener(this);
-        btUnivNotice.setOnClickListener(this);
-        btShowUniv.setOnClickListener(this);
-        btShowDep.setOnClickListener(this);
-        btShowGrade.setOnClickListener(this);
-        btEnter.setOnClickListener(this);
         btNew1.setOnClickListener(this);
         btNew2.setOnClickListener(this);
         btPlace.setOnClickListener(this);
@@ -634,164 +440,29 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btAlarm.setOnClickListener(this);
         btRepeat.setOnClickListener(this);
         dragToggle.setOnTouchListener(this);
-        llSelectUniv.setOnTouchListener(this);
-        univFlag=false;depFlag=false;gradeFlag=false;
         colorName = Common.MAIN_COLOR;
         dy =mPosY = 0;
         dayIndex = new HashMap<>();
-        //ArrayAdapter<String> univAdapter = new ArrayAdapter<>(this,R.layout.dropdown_univ, MyRequest.getGroupListFromLocal());
-        ArrayList<String>
-                univList = new ArrayList<>(),
-                depList = new ArrayList<>(),
-                gradeList = new ArrayList<>(),
-                subOrProfList = new ArrayList<>();
-        //임시목록
-        univList.add("한국기술교육대학교");
-        univList.add("공주대학교");
-        univList.add("충남대학교");
-        depList.addAll(db.getDepList());
-        gradeList.add("학년 : 전체");
-        gradeList.add("1학년");
-        gradeList.add("2학년");
-        gradeList.add("3학년");
-        gradeList.add("4학년");
-        subOrProfList.addAll(db.getSubOrProfList());
-        ArrayAdapter<String>
-                univAdapter = new ArrayAdapter<>(this, R.layout.dropdown_univ, univList),
-                depAdapter = new ArrayAdapter<>(this,R.layout.dropdown_dep, depList),
-                gradeAdapter = new ArrayAdapter<>(this,R.layout.dropdown_dep, gradeList),
-                subAdapter = new ArrayAdapter<>(this,R.layout.dropdown_dep, subOrProfList);
-        SettingACTV(actvUniv, univAdapter);
-        SettingACTV(actvDep, depAdapter);
-        SettingACTV(actvGrade, gradeAdapter);
-        SettingACTV(actvSub, subAdapter);
-
-        //subject
-        final List<SubjectData> subjects = db.getAllSubjectDatas();
-        hoAdapter = new HorizontalListAdapter(this, subjects);
-        hlv.setAdapter(hoAdapter);
-        hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[] temps = null;
-                Common.stateFilter(Common.getTempTimePos(), viewMode);
-                for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
-                        .toString())) {
-                    temps = timePos.split(":");
-                    if (!temps[0].equals(" ")) {
-                        addWeek(Integer.parseInt(temps[0])
-                                , Integer.parseInt(temps[1])
-                                , Integer.parseInt(temps[2])
-                                , Integer.parseInt(temps[3])
-                                , Integer.parseInt(temps[4]));
-                    } else {
-                        Toast.makeText(DialSchedule.this, main.getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                }
-            }
-        });
-        actvUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-						/*korName = actvUniv.getText().toString();
-						User.USER.setKorUnivName(korName);
-						engName = GroupListFromServerRepository
-								.getEngByKor(MainActivity.this, korName);
-						User.USER.setEngUnivName(engName);*/
-                // 열려있는 키패드 닫기
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(actvUniv.getWindowToken(), 0);
-                btShowUniv.setVisibility(View.GONE);
-                btEnter.setVisibility(View.VISIBLE);
-            }
-        });
-        actvDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                depFlag = false;
-                actvSub.setText("");
-                subjects.clear();
-                subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(),Convert.indexOfGrade(actvGrade.getText().toString())));
-                hoAdapter.notifyDataSetChanged();
-            }
-        });
-        actvGrade.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                gradeFlag = false;
-                subjects.clear();
-                subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(), Convert.indexOfGrade(actvGrade.getText().toString())));
-                //actvSub.setText("");
-                hoAdapter.notifyDataSetChanged();
-            }
-        });
-        actvSub.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                actvDep.setText("");
-                actvGrade.setText("");
-                subjects.clear();
-                subjects.addAll(db.getAllWithSubOrProf(actvSub.getText().toString()));
-                hoAdapter.notifyDataSetChanged();
-            }
-        });
-        actvUniv.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                btShowUniv.setBackgroundResource(R.drawable.ic_expand);
-            }
-        });
-        actvDep.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                btShowDep.setBackgroundResource(R.drawable.ic_expand);
-            }
-        });
-        actvGrade.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                btShowGrade.setBackgroundResource(R.drawable.ic_expand);
-            }
-        });
-        SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
-        if(sbue != null){
-            EventBus.getDefault().removeStickyEvent(sbue);
-            if(sbue.isSetVisable())
-                btUniv.setVisibility(View.VISIBLE);
-            else
-                btUniv.setVisibility(View.INVISIBLE);
-        }
-        /*switch (viewMode){
-            case 0:
-                btUniv.setVisibility(View.VISIBLE);
-            case 2:
-                btUniv.setVisibility(View.INVISIBLE);
-        }*/
     }
-    private Button btNormal, btUniv, btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter;
+    private Button btNormal, btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btUniv;
     private ToggleButton btColor;
-    private LinearLayout llColor, llNormal, llButtonArea, llUniv,llSelectUniv, llDep, btNew1, btNew2, btPlace, btShare, btAlarm, btRepeat;
-    private TextView tvShare, tvAlarm, tvRepeat, btUnivNotice;
+    private LinearLayout llColor, llNormal, llButtonArea,btNew1, btNew2, btPlace, btShare, btAlarm, btRepeat;
+    private TextView tvShare, tvAlarm, tvRepeat;
     private EditText etName, etPlace, etMemo;
-    private View dragToggle,btShowUniv,btShowDep,btShowGrade;
-    private HorizontalListView lvTime,hlv;
-    private HorizontalListAdapter hoAdapter;
+    private View dragToggle;
+    private HorizontalListView lvTime;
     private Window window;
     private GradientDrawable gd;
     private String colorName;
-    private InitSurfaceView initSurfaceView;
+    //private InitSurfaceView initSurfaceView;
     private MainActivity main;
     private WindowManager.LayoutParams lp;
     private ArrayList<BottomNormalData> normalList;
     private ArrayAdapter normalAdapter;
     private HashMap<Integer,Integer> dayIndex;//어느 요일이 선택됬는지
-    private AutoCompleteTextView actvUniv,actvDep,actvGrade,actvSub;
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight,viewMode;
-    private boolean univFlag,depFlag,gradeFlag;
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
         EventBus.getDefault().post(new SetBtPlusEvent(true));
@@ -808,10 +479,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onEventMainThread(SetPlaceEvent e){
         etPlace.setText(e.getPlace());
     }
-    public void onEventMainThread(SetBtUnivNoticeEvent e) {
-        btUnivNotice.setTextColor(Color.GRAY);
-        btUnivNotice.setBackgroundResource(R.drawable.bg_lightgray_bottomline);
-    }
     public void onEventMainThread(BottomNormalData e){
         normalList.add(e);
         normalAdapter.notifyDataSetChanged();
@@ -821,16 +488,16 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         normalAdapter.notifyDataSetChanged();
     }
     public void onEventMainThread(UpdateNormalEvent e){
-        normalList.remove(e.getPosition());
+       /* normalList.remove(e.getPosition());
         normalList.add(e.getPosition(), new BottomNormalData(
                 initSurfaceView.getInitThread().getMonthAndDay(e.getXth()), e.getStartHour(), e.getStartMin(),
                 e.getEndHour(), e.getEndMin(), e.getXth()));
-        normalAdapter.notifyDataSetChanged();
+        normalAdapter.notifyDataSetChanged();*/
     }
     public void onEventMainThread(ExcuteMethodEvent e){
         try {
-            Method m = DialSchedule.this.getClass().getDeclaredMethod(e.getMethodName());
-            m.invoke(DialSchedule.this);
+            Method m = DialWidgetSchedule.this.getClass().getDeclaredMethod(e.getMethodName());
+            m.invoke(DialWidgetSchedule.this);
         } catch(Exception ex) {
             ex.printStackTrace();
         }

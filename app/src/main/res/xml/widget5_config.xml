@@ -3,7 +3,7 @@
     android:minWidth="330dp"
     android:minHeight="330dp"
     android:previewImage="@drawable/appwidget"
-    android:initialLayout="@layout/widget"
+    android:initialLayout="@layout/widget5_5"
     android:updatePeriodMillis="21600000"
     />
   <!--android:previewImage="@drawable/"

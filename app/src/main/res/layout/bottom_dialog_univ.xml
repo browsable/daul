@@ -50,7 +50,7 @@
             android:text="@string/univ_notice_enroll"
             android:textColor="@android:color/black"
             android:textSize="@dimen/textsize_s"
-            android:layout_marginTop="@dimen/margin_l"
+            android:layout_marginTop="@dimen/margin_xxl"
             android:background="@drawable/bg_black_bottomline"
             android:layout_gravity="top|right"/>
 </LinearLayout>

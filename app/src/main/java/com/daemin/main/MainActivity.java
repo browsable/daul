@@ -57,6 +57,7 @@ import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.InitWeekThread;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
+import com.daemin.widget.WidgetUpdateService;
 
 import java.io.File;
 
@@ -86,10 +87,18 @@ public class MainActivity extends FragmentActivity{
     protected void onPause() {
         super.onPause();
         if(dialogFlag) {
-            Intent intent = new Intent();
-            intent.setAction(Common.ACTION_UPDATE);
-            intent.putExtra("viewMode", viewMode);
-            sendBroadcast(intent);
+            if (widget5_5) {
+                Intent update = new Intent(this, WidgetUpdateService.class);
+                update.putExtra("action","update5_5");
+                update.putExtra("viewMode",viewMode);
+                this.startService(update);
+            }
+            if (widget4_4){
+                Intent update = new Intent(this, WidgetUpdateService.class);
+                update.putExtra("action","update4_4");
+                update.putExtra("viewMode",viewMode);
+                this.startService(update);
+            }
         }
     }
     @Override
@@ -389,6 +398,8 @@ public class MainActivity extends FragmentActivity{
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         viewMode = MyPreferences.USERINFO.getPref().getInt("viewMode", 0);
+        widget5_5 = MyPreferences.USERINFO.getPref().getBoolean("widget5_5", false);
+        widget4_4 = MyPreferences.USERINFO.getPref().getBoolean("widget4_4", false);
         dayIndex = 0;
         ibMenu = (ImageButton) findViewById(R.id.ibMenu);
         ibBack = (ImageButton) findViewById(R.id.ibBack);
@@ -501,7 +512,7 @@ public class MainActivity extends FragmentActivity{
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
     private String backKeyName, korName, engName, barText;
-    private Boolean surfaceFlag,dialogFlag;
+    private Boolean surfaceFlag,dialogFlag,widget5_5,widget4_4;
     private Spinner spinner;
     private ArrayAdapter<CharSequence> spinnerAdapter;
     private TextSwitcher switcher;

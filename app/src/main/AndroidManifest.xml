@@ -24,7 +24,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_SERVICE" />
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -55,23 +57,23 @@
             </intent-filter>
         </activity>
         <activity android:name="com.daemin.map.MapActivity" />
-        <activity android:name="com.daemin.dialog.DialSchedule" android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity android:name="com.daemin.community.github.GithubActivity" />
         <activity android:name="com.daemin.community.amazon.AmazonActivity" />
         <activity android:name="com.daemin.community.lib.DoubleTapZoomNetworkImageViewActivity" />
         <activity android:name="com.daemin.community.lib.SingleTapZoomNetworkImageViewActivity" />
-
+        <activity android:name="com.daemin.dialog.DialSchedule" android:theme="@android:style/Theme.Holo.Light.Dialog" />
+        <activity android:name="com.daemin.dialog.DialWidgetSchedule" android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <receiver android:name="com.daemin.widget.Widget4_4">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget4_config" />
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.daemin.widget.ACTION_UPDATE" />
                 <action android:name="com.daemin.widget.ACTION_WEEK4_4" />
                 <action android:name="com.daemin.widget.ACTION_MONTH4_4" />
                 <action android:name="com.daemin.widget.ACTION_BACK4_4" />
                 <action android:name="com.daemin.widget.ACTION_FORWARD4_4" />
+                <action android:name="com.daemin.widget.ACTION_DIAL4_4" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.daemin.widget.Widget5_5">
@@ -80,26 +82,18 @@
                 android:resource="@xml/widget5_config" />
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.daemin.widget.ACTION_UPDATE" />
                 <action android:name="com.daemin.widget.ACTION_WEEK5_5" />
                 <action android:name="com.daemin.widget.ACTION_MONTH5_5" />
                 <action android:name="com.daemin.widget.ACTION_BACK5_5" />
                 <action android:name="com.daemin.widget.ACTION_FORWARD5_5" />
+                <action android:name="com.daemin.widget.ACTION_DIAL5_5" />
             </intent-filter>
         </receiver>
 
         <service
             android:name="com.daemin.widget.WidgetUpdateService"
             android:enabled="true"
-            />
-        <service
-            android:name="com.daemin.widget.WidgetChangeDateService4_4"
-            android:enabled="true"
-            />
-        <service
-            android:name="com.daemin.widget.WidgetChangeDateService5_5"
-            android:enabled="true"
-            />
+        />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD-Z1E0xalbR8VYjJ_W2xMzZwLUQU8tJCg" />

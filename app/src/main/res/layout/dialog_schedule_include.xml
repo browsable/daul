@@ -30,6 +30,63 @@
             android:background="@color/lightgray"
             />
         <LinearLayout
+            android:id="@+id/btNew1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:onClick="mOnClick"
+            android:background="@drawable/bt_click"
+            >
+            <LinearLayout
+                android:layout_width="32dp"
+                android:layout_height="38dp"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/ic_time"/>
+            </LinearLayout>
+            <com.daemin.common.HorizontalListView
+                android:id="@+id/lvTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:divider="@color/lightgray"
+                android:fadingEdgeLength="1dp"
+                android:requiresFadingEdge="horizontal"
+                widget:dividerWidth="0dp"
+                />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray"
+                />
+            <LinearLayout
+                android:id="@+id/btNew2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5.2"
+                android:gravity="center"
+                android:background="@color/whitesmoke"
+                android:onClick="mOnClick"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bt_new" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray"
+            />
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -106,63 +163,6 @@
                     android:background="@drawable/ic_map" />
             </LinearLayout>
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray"
-            />
-        <LinearLayout
-            android:id="@+id/btNew1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:onClick="mOnClick"
-            android:background="@drawable/bt_click"
-            >
-            <LinearLayout
-                android:layout_width="32dp"
-                android:layout_height="38dp"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:background="@drawable/ic_time"/>
-            </LinearLayout>
-            <com.daemin.common.HorizontalListView
-                android:id="@+id/lvTime"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:divider="@color/lightgray"
-                android:fadingEdgeLength="1dp"
-                android:requiresFadingEdge="horizontal"
-                widget:dividerWidth="0dp"
-                />
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/lightgray"
-                />
-            <LinearLayout
-                android:id="@+id/btNew2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5.2"
-                android:gravity="center"
-                android:background="@color/whitesmoke"
-                android:onClick="mOnClick"
-                android:orientation="vertical">
-                <View
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:scaleType="fitXY"
-                    android:layout_gravity="center"
-                    android:background="@drawable/bt_new" />
-            </LinearLayout>
-        </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
