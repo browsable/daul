@@ -322,11 +322,13 @@ public class WidgetUpdateService extends Service {
             --mIndex5_5;
             if (mIndex5_5 < 0) {
                 views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYearMonth(this, -mIndex5_5));
+                im.setTodayIndex(mIndex5_5);
                 im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-mIndex5_5),
                         CurrentTime.getBackDayOfWeekOfLastMonth(-mIndex5_5),
                         CurrentTime.getBackDayNumOfMonth(-mIndex5_5));
             } else {
                 views.setTextViewText(R.id.tvYear, CurrentTime.preTitleYearMonth(this, mIndex5_5));
+                im.setTodayIndex(mIndex5_5);
                 im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(mIndex5_5),
                         CurrentTime.getPreDayOfWeekOfLastMonth(mIndex5_5),
                         CurrentTime.getPreDayNumOfMonth(mIndex5_5));
@@ -374,11 +376,13 @@ public class WidgetUpdateService extends Service {
             ++mIndex5_5;
             if (mIndex5_5 < 0) {
                 views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYearMonth(this, -mIndex5_5));
+                im.setTodayIndex(mIndex5_5);
                 im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-mIndex5_5),
                         CurrentTime.getBackDayOfWeekOfLastMonth(-mIndex5_5),
                         CurrentTime.getBackDayNumOfMonth(-mIndex5_5));
             } else {
                 views.setTextViewText(R.id.tvYear, CurrentTime.preTitleYearMonth(this, mIndex5_5));
+                im.setTodayIndex(mIndex5_5);
                 im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(mIndex5_5),
                         CurrentTime.getPreDayOfWeekOfLastMonth(mIndex5_5),
                         CurrentTime.getPreDayNumOfMonth(mIndex5_5));
@@ -425,11 +429,13 @@ public class WidgetUpdateService extends Service {
             --mIndex4_4;
             if (mIndex4_4 < 0) {
                 views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYearMonth(this, -mIndex4_4));
+                im.setTodayIndex(mIndex4_4);
                 im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-mIndex4_4),
                         CurrentTime.getBackDayOfWeekOfLastMonth(-mIndex4_4),
                         CurrentTime.getBackDayNumOfMonth(-mIndex4_4));
             } else {
                 views.setTextViewText(R.id.tvYear, CurrentTime.preTitleYearMonth(this, mIndex4_4));
+                im.setTodayIndex(mIndex4_4);
                 im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(mIndex4_4),
                         CurrentTime.getPreDayOfWeekOfLastMonth(mIndex4_4),
                         CurrentTime.getPreDayNumOfMonth(mIndex4_4));
@@ -477,11 +483,13 @@ public class WidgetUpdateService extends Service {
             ++mIndex4_4;
             if (mIndex4_4 < 0) {
                 views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYearMonth(this, -mIndex4_4));
+                im.setTodayIndex(mIndex4_4);
                 im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-mIndex4_4),
                         CurrentTime.getBackDayOfWeekOfLastMonth(-mIndex4_4),
                         CurrentTime.getBackDayNumOfMonth(-mIndex4_4));
             } else {
                 views.setTextViewText(R.id.tvYear, CurrentTime.preTitleYearMonth(this, mIndex4_4));
+                im.setTodayIndex(mIndex4_4);
                 im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(mIndex4_4),
                         CurrentTime.getPreDayOfWeekOfLastMonth(mIndex4_4),
                         CurrentTime.getPreDayNumOfMonth(mIndex4_4));

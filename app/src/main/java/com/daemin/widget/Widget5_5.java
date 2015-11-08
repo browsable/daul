@@ -1,5 +1,7 @@
 package com.daemin.widget;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -8,6 +10,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.daemin.common.Common;
+import com.daemin.common.CurrentTime;
 import com.daemin.dialog.DialWidgetSchedule;
 import com.daemin.enumclass.MyPreferences;
 
@@ -15,15 +18,18 @@ public class Widget5_5 extends AppWidgetProvider {
 	@Override
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
+		registerAlarm(context);
 		SharedPreferences.Editor editor = MyPreferences.USERINFO.getEditor();
 		editor.putBoolean("widget5_5", true);
 		editor.commit();
+
 	}
 
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		super.onDeleted(context, appWidgetIds);
 		Log.i("widget", "service end");
+		unregisterAlarm(context);
 		context.stopService(new Intent(context, WidgetUpdateService.class));
 		SharedPreferences.Editor editor = MyPreferences.USERINFO.getEditor();
 		editor.putBoolean("widget5_5", false);
@@ -71,5 +77,30 @@ public class Widget5_5 extends AppWidgetProvider {
 				context.startActivity(dial);
 				break;
 		}
+	}
+
+	public static void registerAlarm(Context context)
+	{
+		Log.i("widget", "alarm register");
+		Intent init = new Intent(context, WidgetUpdateService.class);
+		init.putExtra("action","update5_5");
+		PendingIntent sender
+				= PendingIntent.getService(context, 0, init, 0);
+		AlarmManager manager
+				= (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+		//Log.i("widget", String.valueOf(CurrentTime.getMidnight()));
+		//Log.i("widget", String.valueOf(CurrentTime.getNowMillis()));
+		manager.setRepeating(AlarmManager.RTC_WAKEUP, CurrentTime.getMidnight(),AlarmManager.INTERVAL_DAY, sender);
+	}
+	public static void unregisterAlarm(Context context)
+	{
+		Log.i("widget", "alarm unregister");
+		Intent intent = new Intent();
+		PendingIntent sender
+				= PendingIntent.getBroadcast(context, 0, intent, 0);
+		AlarmManager manager =
+				(AlarmManager)context
+						.getSystemService(Context.ALARM_SERVICE);
+		manager.cancel(sender);
 	}
 }

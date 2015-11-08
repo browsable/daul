@@ -57,7 +57,6 @@ import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.InitWeekThread;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
-import com.daemin.widget.WidgetUpdateService;
 
 import java.io.File;
 
@@ -86,7 +85,7 @@ public class MainActivity extends FragmentActivity{
     @Override
     protected void onPause() {
         super.onPause();
-        if(dialogFlag) {
+        /*if(dialogFlag) {
             if (widget5_5) {
                 Intent update = new Intent(this, WidgetUpdateService.class);
                 update.putExtra("action","update5_5");
@@ -100,6 +99,7 @@ public class MainActivity extends FragmentActivity{
                 this.startService(update);
             }
         }
+        System.gc();*/
     }
     @Override
     protected void onDestroy() {
@@ -277,12 +277,14 @@ public class MainActivity extends FragmentActivity{
                 if (dayIndex < 0) {
                     barText = CurrentTime.backTitleYearMonth(this, -dayIndex);
                     switcher.setText(barText);
+                    im.setTodayIndex(dayIndex);
                     im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-dayIndex),
                             CurrentTime.getBackDayOfWeekOfLastMonth(-dayIndex),
                             CurrentTime.getBackDayNumOfMonth(-dayIndex));
                 } else {
                     barText = CurrentTime.preTitleYearMonth(this, dayIndex);
                     switcher.setText(barText);
+                    im.setTodayIndex(dayIndex);
                     im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(dayIndex),
                             CurrentTime.getPreDayOfWeekOfLastMonth(dayIndex),
                             CurrentTime.getPreDayNumOfMonth(dayIndex));
@@ -313,12 +315,14 @@ public class MainActivity extends FragmentActivity{
                 if (dayIndex < 0) {
                     barText = CurrentTime.backTitleYearMonth(this, -dayIndex);
                     switcher.setText(barText);
+                    im.setTodayIndex(dayIndex);
                     im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-dayIndex),
                             CurrentTime.getBackDayOfWeekOfLastMonth(-dayIndex),
                             CurrentTime.getBackDayNumOfMonth(-dayIndex));
                 } else {
                     barText = CurrentTime.preTitleYearMonth(this, dayIndex);
                     switcher.setText(barText);
+                    im.setTodayIndex(dayIndex);
                     im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(dayIndex),
                             CurrentTime.getPreDayOfWeekOfLastMonth(dayIndex),
                             CurrentTime.getPreDayNumOfMonth(dayIndex));
@@ -370,7 +374,7 @@ public class MainActivity extends FragmentActivity{
                 break;
             case R.id.btPlus:
                 dialogFlag =false;
-                 Intent i = new Intent(MainActivity.this, DialSchedule.class);
+                Intent i = new Intent(MainActivity.this, DialSchedule.class);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
@@ -409,8 +413,6 @@ public class MainActivity extends FragmentActivity{
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
         btPlus = (Button) findViewById(R.id.btPlus);
-        btBack = (Button) findViewById(R.id.btBack);
-        btForward = (Button) findViewById(R.id.btForward);
         ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
         ivProfile.setImageUrl(SAMPLE_IMAGE_URL, MyVolley.getImageLoader());
         switcher = (TextSwitcher) findViewById(R.id.switcher);
@@ -507,7 +509,7 @@ public class MainActivity extends FragmentActivity{
     private LinearLayout mLeftDrawer, llTitle, llSpinner;
     private ImageButton ibMenu, ibBack;
     private TextView tvTitle, tvTitleYear;
-    private Button btPlus,btBack,btForward;
+    private Button btPlus;
     private FrameLayout flSurface, frame_container;
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
@@ -543,6 +545,7 @@ public class MainActivity extends FragmentActivity{
         else
             btPlus.setVisibility(View.GONE);
         dialogFlag = true;
+        System.gc();
     }
     public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();

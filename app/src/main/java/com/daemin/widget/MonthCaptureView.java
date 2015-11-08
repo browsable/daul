@@ -18,6 +18,7 @@ import com.daemin.timetable.R;
  * Created by hernia on 2015-11-05.
  */
 public class MonthCaptureView extends ImageView {
+    private boolean isToday;
     private int width;
     private int height;
     private int dayOfWeekOfLastMonth;
@@ -25,8 +26,8 @@ public class MonthCaptureView extends ImageView {
     private int dayOfMonth;
     private int tmp;
     private int tx;//이전달의 마지막날 요일
+    private int todayIndex;
     private String[] monthData;
-    private Context context;
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
     private Paint tp,tpred,tpblue,tpgray,rp; // 시간 텍스트
@@ -36,11 +37,12 @@ public class MonthCaptureView extends ImageView {
     public MonthCaptureView(Context context)
     {
         super(context);
-        this.context = context;
         this.monthData = CurrentTime.getDayOfLastMonth();
         this.dayOfWeekOfLastMonth = CurrentTime.getDayOfWeekOfLastMonth();
         this.dayNumOfMonth = CurrentTime.getDayNumOfMonth();
         this.dayOfMonth = CurrentTime.getDayOfMonth();
+        isToday = true;
+        todayIndex=0;
         tempxth = 0;
         tempyth = 0;
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -81,10 +83,15 @@ public class MonthCaptureView extends ImageView {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
     }
+    public void setTodayIndex(int todayIndex) {
+        this.todayIndex = todayIndex;
+    }
     public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth){
         this.monthData = monthData;
         this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
         this.dayNumOfMonth = dayNumOfMonth;
+        if(todayIndex==0) isToday= true;
+        else isToday=false;
     }
     @Override
     protected void onDraw(Canvas canvas)
@@ -170,8 +177,7 @@ public class MonthCaptureView extends ImageView {
         canvas.drawLines(hp_hour, hp);
         canvas.drawLines(vp, hpvp);
         hp.setAlpha(40);
-        canvas.drawRect(width * (tx - 1) / 7, height * ((tmp / 7) * 10 + 2) / 64 + 6,
-                width * tx / 7, height * ((tmp / 7 + 1) * 10 + 2) / 64 + 6, hp);
+        if(isToday)canvas.drawRect(width * (tx - 1) / 7, height * ((tmp / 7) * 10 + 2) / 64 + 6,width * tx / 7, height * ((tmp / 7 + 1) * 10 + 2) / 64 + 6, hp);
         hp.setAlpha(100);
         canvas.drawText("SUN", width * 1 / 14, height * 2 / 62 - 1, tpred);
         canvas.drawText("MON", width * 3 / 14, height * 2/ 62 - 1, tp);

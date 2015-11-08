@@ -2,10 +2,10 @@ package com.daemin.timetable;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
@@ -23,7 +23,7 @@ import de.greenrobot.event.EventBus;
 @SuppressLint("DefaultLocale")
 public class InitWeekThread extends InitThread {
     SurfaceHolder mholder;
-    private boolean isLoop = true;
+    private boolean isLoop = true, isToday;
     private int width, height, dayOfWeek; //화면의 전체 너비, 높이
     private String sun, mon, tue, wed, thr, fri, sat;
     Context context;
@@ -44,6 +44,7 @@ public class InitWeekThread extends InitThread {
         this.fri = dowd.getFri();
         this.sat = dowd.getSat();
         this.dayOfWeek = CurrentTime.getDayOfWeek();
+        isToday = true;
         tempxth = 0;
         tempyth = 0;
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -103,6 +104,10 @@ public class InitWeekThread extends InitThread {
         this.thr = dowd.getThr();
         this.fri = dowd.getFri();
         this.sat = dowd.getSat();
+        Log.i("test 1",CurrentTime.getToday());
+        Log.i("test 2",getMonthAndDay(2*dayOfWeek+1));
+        if(CurrentTime.getToday().equals(getMonthAndDay(2*dayOfWeek+1))) isToday = true;
+        else isToday = false;
     }
 
     public void setRunning(boolean isLoop) {
@@ -135,6 +140,7 @@ public class InitWeekThread extends InitThread {
                 if (canvas != null)
                     mholder.unlockCanvasAndPost(canvas);
             }
+            //System.gc();
         }
     }
     public void getDownXY(int xth, int yth) {
@@ -153,6 +159,7 @@ public class InitWeekThread extends InitThread {
 
     public void getActionUp() {
         EventBus.getDefault().post(new ExcuteMethodEvent("updateWeekList"));
+        System.gc();
     }
 
     public void makeTimePos(int xth, int yth) {
@@ -248,7 +255,7 @@ public class InitWeekThread extends InitThread {
         canvas.drawText("FRI", width * 12 / 15, (height / 32 + 18) * 15 / 16, tp);
         canvas.drawText("SAT", width * 14 / 15, (height / 32 + 18) * 15 / 16, tpblue);
         hp.setAlpha(40);
-        canvas.drawRect(width * (2 * day + 1) / 15, ((height * 2) - 10) / 64 + 18, width * (2 * day + 3) / 15, height * 62 / 64 + 18, hp);
+        if(isToday)canvas.drawRect(width * (2 * day + 1) / 15, ((height * 2) - 10) / 64 + 18, width * (2 * day + 3) / 15, height * 62 / 64 + 18, hp);
         hp.setAlpha(100);
     }
     /*public Bitmap captureImg() {

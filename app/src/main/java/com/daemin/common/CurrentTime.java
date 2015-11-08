@@ -26,6 +26,18 @@ public class CurrentTime {
     public static LocalDate getNow() {
         return now;
     }
+    public static String getMonth() {
+        return String.valueOf(now.getMonthOfYear());
+    }
+    public static String getToday(){
+        return now.getMonthOfYear()+"/"+now.getDayOfMonth();
+    }
+    public static long getNowMillis() {
+        return new DateTime().getMillis();
+    }
+    public static long getMidnight(){
+        return new DateTime().plusDays(1).withTimeAtStartOfDay().getMillis();
+    }
     public static void setTitleMonth(int titleMonth) {
         CurrentTime.titleMonth = titleMonth;
 

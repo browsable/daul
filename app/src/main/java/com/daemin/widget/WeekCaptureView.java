@@ -19,9 +19,9 @@ import com.daemin.timetable.R;
  * Created by hernia on 2015-11-05.
  */
 public class WeekCaptureView extends ImageView {
+    private boolean isToday;
     private int width, height, dayOfWeek; //화면의 전체 너비, 높이
     private String sun, mon, tue, wed, thr, fri, sat;
-    private Context context;
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
     private Paint tp, tpred, tpblue, rp; // 시간 텍스트
@@ -31,7 +31,6 @@ public class WeekCaptureView extends ImageView {
     {
         super(context);
         DayOfWeekData dowd = CurrentTime.getDateOfWeek();
-        this.context = context;
         this.sun = dowd.getSun();
         this.mon = dowd.getMon();
         this.tue = dowd.getTue();
@@ -40,6 +39,7 @@ public class WeekCaptureView extends ImageView {
         this.fri = dowd.getFri();
         this.sat = dowd.getSat();
         this.dayOfWeek = CurrentTime.getDayOfWeek();
+        isToday = true;
         tempxth = 0;
         tempyth = 0;
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -70,6 +70,26 @@ public class WeekCaptureView extends ImageView {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
     }
+    public String getMonthAndDay(int... index) {
+        switch (index[0]) {
+            case 1:
+                return sun;
+            case 3:
+                return mon;
+            case 5:
+                return tue;
+            case 7:
+                return wed;
+            case 9:
+                return thr;
+            case 11:
+                return fri;
+            case 13:
+                return sat;
+            default:
+                return "";
+        }
+    }
     public void setCurrentTime(DayOfWeekData dowd) {
         this.sun = dowd.getSun();
         this.mon = dowd.getMon();
@@ -78,6 +98,8 @@ public class WeekCaptureView extends ImageView {
         this.thr = dowd.getThr();
         this.fri = dowd.getFri();
         this.sat = dowd.getSat();
+        if(CurrentTime.getToday().equals(getMonthAndDay(2*dayOfWeek+1))) isToday = true;
+        else isToday = false;
     }
     @Override
     protected void onDraw(Canvas canvas)
@@ -186,7 +208,7 @@ public class WeekCaptureView extends ImageView {
         canvas.drawText("FRI", width * 12 / 15, (height / 32 + 18) * 15 / 16, tp);
         canvas.drawText("SAT", width * 14 / 15, (height / 32 + 18) * 15 / 16, tpblue);
         hp.setAlpha(40);
-        canvas.drawRect(width * (2 * day + 1) / 15, ((height * 2) - 10) / 64 + 18, width * (2 * day + 3) / 15, height * 62 / 64 + 18, hp);
+        if(isToday)canvas.drawRect(width * (2 * day + 1) / 15, ((height * 2) - 10) / 64 + 18, width * (2 * day + 3) / 15, height * 62 / 64 + 18, hp);
         hp.setAlpha(100);
     }
 }

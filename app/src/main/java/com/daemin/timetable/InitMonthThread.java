@@ -2,7 +2,6 @@ package com.daemin.timetable;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,7 +20,8 @@ import de.greenrobot.event.EventBus;
 @SuppressLint("DefaultLocale")
 public class InitMonthThread extends InitThread {
 	SurfaceHolder mholder;
-	private boolean isLoop = true;
+	private boolean isLoop = true, isToday;
+	private int todayIndex;
 	private int width;
 	private int height;
 	private int dayOfWeekOfLastMonth;
@@ -44,6 +44,8 @@ public class InitMonthThread extends InitThread {
 		this.dayOfWeekOfLastMonth = CurrentTime.getDayOfWeekOfLastMonth();
 		this.dayNumOfMonth = CurrentTime.getDayNumOfMonth();
 		this.dayOfMonth = CurrentTime.getDayOfMonth();
+		isToday  = true;
+		todayIndex=0;
 		tempxth = 0;
 		tempyth = 0;
 		hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -75,10 +77,15 @@ public class InitMonthThread extends InitThread {
 	public int getDayOfWeekOfLastMonth() {
 		return dayOfWeekOfLastMonth;
 	}
+	public void setTodayIndex(int todayIndex) {
+		this.todayIndex = todayIndex;
+	}
 	public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth){
 		this.monthData = monthData;
 		this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
 		this.dayNumOfMonth = dayNumOfMonth;
+		if(todayIndex==0) isToday= true;
+		else isToday=false;
 	}
 	public void setRunning(boolean isLoop) {
 		this.isLoop = isLoop;
@@ -104,12 +111,9 @@ public class InitMonthThread extends InitThread {
 	public int getHeight() {
 		return height;
 	}
-	@Override
 	public String getMonthAndDay(int... index) {
 		return monthData[index[0]+index[1]];
 	}
-
-
 
 	public void run() {
 		while (isLoop) {
@@ -130,6 +134,7 @@ public class InitMonthThread extends InitThread {
 				if (canvas != null)
 					mholder.unlockCanvasAndPost(canvas);
 			}
+			//System.gc();
 		}
 	}
 	public void getDownXY(int xth, int yth) {
@@ -151,6 +156,7 @@ public class InitMonthThread extends InitThread {
 	}
 	public void getActionUp() {
 		EventBus.getDefault().post(new ExcuteMethodEvent("updateMonthList"));
+		System.gc();
 	}
 
 	public void makeTimePos(int xth, int yth) {
@@ -189,8 +195,7 @@ public class InitMonthThread extends InitThread {
 		canvas.drawLines(hp_hour, hp);
 		canvas.drawLines(vp, hpvp);
 		hp.setAlpha(40);
-		canvas.drawRect(width * (tx - 1) / 7, height * ((tmp / 7) * 10 + 2) / 64 + 6,
-				width * tx / 7, height * ((tmp / 7 + 1) * 10 + 2) / 64 + 6, hp);
+		if(isToday)canvas.drawRect(width * (tx - 1) / 7, height * ((tmp / 7) * 10 + 2) / 64 + 6,width * tx / 7, height * ((tmp / 7 + 1) * 10 + 2) / 64 + 6, hp);
 		hp.setAlpha(100);
 		canvas.drawText("SUN", width * 1 / 14, height * 2 / 62 - 1, tpred);
 		canvas.drawText("MON", width * 3 / 14, height * 2/ 62 - 1, tp);
