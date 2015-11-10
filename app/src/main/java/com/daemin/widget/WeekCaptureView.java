@@ -110,8 +110,8 @@ public class WeekCaptureView extends ImageView {
         width = canvas.getWidth();
         height = canvas.getHeight();
         initScreen(dayOfWeek);
-        canvas.drawRect(width * 3 / 15, height * 5 / 32 + 18,
-                width * (5 + 2) / 15, height * (7 + 2) / 32 + 18, rp);
+        /*canvas.drawRect(width * 3 / 15, height * 5 / 32 + 18,
+                width * (5 + 2) / 15, height * (7 + 2) / 32 + 18, rp);*/
     }
     @Override
     public boolean onTouchEvent(MotionEvent event)

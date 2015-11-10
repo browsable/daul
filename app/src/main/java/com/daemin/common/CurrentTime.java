@@ -35,6 +35,10 @@ public class CurrentTime {
     public static long getNowMillis() {
         return new DateTime().getMillis();
     }
+    public static long getDateMillis(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour) {
+        DateTime dt = new DateTime(year,monthOfYear,dayOfMonth,hourOfDay,minuteOfHour);
+        return dt.getMillis();
+    }
     public static long getMidnight(){
         return new DateTime().plusDays(1).withTimeAtStartOfDay().getMillis();
     }

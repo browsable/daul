@@ -6,22 +6,19 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
 import com.daemin.dialog.DialWidgetSchedule;
-import com.daemin.enumclass.MyPreferences;
+import com.daemin.enumclass.User;
 
 public class Widget4_4 extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
         registerAlarm(context);
-        SharedPreferences.Editor editor = MyPreferences.USERINFO.getEditor();
-        editor.putBoolean("widget4_4", true);
-        editor.commit();
+        User.INFO.getEditor().putBoolean("widget4_4", true).commit();
     }
 
     @Override
@@ -30,9 +27,7 @@ public class Widget4_4 extends AppWidgetProvider {
         Log.i("widget", "service end");
         unregisterAlarm(context);
         context.stopService(new Intent(context, WidgetUpdateService.class));
-        SharedPreferences.Editor editor = MyPreferences.USERINFO.getEditor();
-        editor.putBoolean("widget4_4", false);
-        editor.commit();
+        User.INFO.getEditor().putBoolean("widget4_4", false).commit();
     }
 
     @Override

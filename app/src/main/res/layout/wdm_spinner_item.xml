@@ -3,5 +3,5 @@
     android:singleLine="true"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textColor="@color/dimgray"
+    android:textColor="@android:color/black"
     android:ellipsize="marquee" />

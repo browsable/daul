@@ -59,12 +59,10 @@
                 android:background="@color/lightgray"/>
             <Button
                 android:id="@+id/btSavePlace"
-                android:layout_width="18dp"
-                android:layout_height="12dp"
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginRight="@dimen/margin_s"
-                android:layout_marginLeft="@dimen/margin_s"
-                android:background="@drawable/ic_accept" />
+                android:background="@drawable/ic_expand2" />
         </LinearLayout>
     <View
         android:layout_width="match_parent"

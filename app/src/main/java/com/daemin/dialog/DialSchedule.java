@@ -295,6 +295,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
     class DownloadFileFromURL extends AsyncTask<String, String, String> {
         @Override
+
         protected void onPreExecute() {
             super.onPreExecute();
         }
@@ -325,10 +326,112 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             }
             return null;
         }
+
         @Override
         protected void onPostExecute(String param) {
-            User.USER.setSubjectDownloadState(true);
-            llDep.setVisibility(View.VISIBLE);
+            User.INFO.getEditor().putBoolean("subjectDown", true).commit();
+            settingUniv();
+        }
+
+    }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public void settingUniv(){
+        llDep.setVisibility(View.VISIBLE);
+        ArrayList<String>
+                depList = new ArrayList<>(),
+                gradeList = new ArrayList<>(),
+                subOrProfList = new ArrayList<>();
+        depList.addAll(db.getDepList());
+        gradeList.add("학년 : 전체");
+        gradeList.add("1학년");
+        gradeList.add("2학년");
+        gradeList.add("3학년");
+        gradeList.add("4학년");
+        subOrProfList.addAll(db.getSubOrProfList());
+        ArrayAdapter<String>
+                depAdapter = new ArrayAdapter<>(this,R.layout.dropdown_dep, depList),
+                gradeAdapter = new ArrayAdapter<>(this,R.layout.dropdown_dep, gradeList),
+                subAdapter = new ArrayAdapter<>(this,R.layout.dropdown_dep, subOrProfList);
+        SettingACTV(actvDep, depAdapter);
+        SettingACTV(actvGrade, gradeAdapter);
+        SettingACTV(actvSub, subAdapter);
+
+        //subject
+        final List<SubjectData> subjects = db.getAllSubjectDatas();
+        hoAdapter = new HorizontalListAdapter(this, subjects);
+        hlv.setAdapter(hoAdapter);
+        hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String[] temps = null;
+                Common.stateFilter(Common.getTempTimePos(), viewMode);
+                for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
+                        .toString())) {
+                    temps = timePos.split(":");
+                    if (!temps[0].equals(" ")) {
+                        addWeek(Integer.parseInt(temps[0])
+                                , Integer.parseInt(temps[1])
+                                , Integer.parseInt(temps[2])
+                                , Integer.parseInt(temps[3])
+                                , Integer.parseInt(temps[4]));
+                    } else {
+                        Toast.makeText(DialSchedule.this, main.getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+            }
+        });
+
+        actvDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                depFlag = false;
+                actvSub.setText("");
+                subjects.clear();
+                subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(),Convert.indexOfGrade(actvGrade.getText().toString())));
+                hoAdapter.notifyDataSetChanged();
+            }
+        });
+        actvGrade.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                gradeFlag = false;
+                subjects.clear();
+                subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(), Convert.indexOfGrade(actvGrade.getText().toString())));
+                //actvSub.setText("");
+                hoAdapter.notifyDataSetChanged();
+            }
+        });
+        actvSub.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                actvDep.setText("");
+                actvGrade.setText("");
+                subjects.clear();
+                subjects.addAll(db.getAllWithSubOrProf(actvSub.getText().toString()));
+                hoAdapter.notifyDataSetChanged();
+            }
+        });
+        actvDep.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                btShowDep.setBackgroundResource(R.drawable.ic_expand);
+            }
+        });
+        actvGrade.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                btShowGrade.setBackgroundResource(R.drawable.ic_expand);
+            }
+        });
+        SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
+        if(sbue != null){
+            EventBus.getDefault().removeStickyEvent(sbue);
+            if(sbue.isSetVisable())
+                btUniv.setVisibility(View.VISIBLE);
+            else
+                btUniv.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -387,6 +490,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         actv.setDropDownVerticalOffset(10);
         return actv;
     }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -419,6 +523,35 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         R.color.gray));
                 btUniv.setTextColor(getResources().getColor(
                         android.R.color.white));
+                ArrayList<String> univList = new ArrayList<>();
+                //임시목록
+                univList.add("한국기술교육대학교");
+                univList.add("공주대학교");
+                univList.add("충남대학교");
+                ArrayAdapter<String>
+                        univAdapter = new ArrayAdapter<>(this, R.layout.dropdown_univ, univList);
+                SettingACTV(actvUniv, univAdapter);
+                actvUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View v,
+                                            int position, long id) {
+						/*korName = actvUniv.getText().toString();
+						User.USER.setKorUnivName(korName);
+						engName = GroupListFromServerRepository
+								.getEngByKor(MainActivity.this, korName);
+						User.USER.setEngUnivName(engName);*/
+                        // 열려있는 키패드 닫기
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(actvUniv.getWindowToken(), 0);
+                        btShowUniv.setVisibility(View.GONE);
+                        btEnter.setVisibility(View.VISIBLE);
+                    }
+                });
+               actvUniv.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        btShowUniv.setBackgroundResource(R.drawable.ic_expand);
+                    }
+                });
                 break;
             case R.id.btShowUniv:
                 if (univFlag) {
@@ -453,17 +586,17 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             case R.id.btEnter:
                 Toast.makeText(DialSchedule.this, getString(R.string.univ_notice_setting), Toast.LENGTH_SHORT).show();
                 if (Common.isOnline()) {
-                    if (User.USER.isSubjectDownloadState()) {
+                    if (User.INFO.getSubjectDownFlag()) {
                         Toast.makeText(DialSchedule.this, "다운로드 되어 있음", Toast.LENGTH_SHORT).show();
-                        llDep.setVisibility(View.VISIBLE);
+                        settingUniv();
                     } else {
                         Toast.makeText(DialSchedule.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
                         new DownloadFileFromURL().execute("koreatech");
                     }
                 } else {
-                    if (User.USER.isSubjectDownloadState()) {
+                    if (User.INFO.getSubjectDownFlag()) {
                         Toast.makeText(DialSchedule.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
-                        llDep.setVisibility(View.VISIBLE);
+                        settingUniv();
                     } else {
                         Toast.makeText(DialSchedule.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }
@@ -477,7 +610,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btAddSchedule:
-                //EventBus.getDefault().post(new CaptureEvent());
                 break;
             case R.id.btCancel:
                 EventBus.getDefault().post(new SetBtPlusEvent(true));
@@ -570,7 +702,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
         return true;
     }
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void setLayout() {
         db = new DatabaseHandler(this);
         main = MainActivity.getInstance();
@@ -640,135 +771,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         dy =mPosY = 0;
         dayIndex = new HashMap<>();
         //ArrayAdapter<String> univAdapter = new ArrayAdapter<>(this,R.layout.dropdown_univ, MyRequest.getGroupListFromLocal());
-        ArrayList<String>
-                univList = new ArrayList<>(),
-                depList = new ArrayList<>(),
-                gradeList = new ArrayList<>(),
-                subOrProfList = new ArrayList<>();
-        //임시목록
-        univList.add("한국기술교육대학교");
-        univList.add("공주대학교");
-        univList.add("충남대학교");
-        depList.addAll(db.getDepList());
-        gradeList.add("학년 : 전체");
-        gradeList.add("1학년");
-        gradeList.add("2학년");
-        gradeList.add("3학년");
-        gradeList.add("4학년");
-        subOrProfList.addAll(db.getSubOrProfList());
-        ArrayAdapter<String>
-                univAdapter = new ArrayAdapter<>(this, R.layout.dropdown_univ, univList),
-                depAdapter = new ArrayAdapter<>(this,R.layout.dropdown_dep, depList),
-                gradeAdapter = new ArrayAdapter<>(this,R.layout.dropdown_dep, gradeList),
-                subAdapter = new ArrayAdapter<>(this,R.layout.dropdown_dep, subOrProfList);
-        SettingACTV(actvUniv, univAdapter);
-        SettingACTV(actvDep, depAdapter);
-        SettingACTV(actvGrade, gradeAdapter);
-        SettingACTV(actvSub, subAdapter);
 
-        //subject
-        final List<SubjectData> subjects = db.getAllSubjectDatas();
-        hoAdapter = new HorizontalListAdapter(this, subjects);
-        hlv.setAdapter(hoAdapter);
-        hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[] temps = null;
-                Common.stateFilter(Common.getTempTimePos(), viewMode);
-                for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
-                        .toString())) {
-                    temps = timePos.split(":");
-                    if (!temps[0].equals(" ")) {
-                        addWeek(Integer.parseInt(temps[0])
-                                , Integer.parseInt(temps[1])
-                                , Integer.parseInt(temps[2])
-                                , Integer.parseInt(temps[3])
-                                , Integer.parseInt(temps[4]));
-                    } else {
-                        Toast.makeText(DialSchedule.this, main.getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                }
-            }
-        });
-        actvUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-						/*korName = actvUniv.getText().toString();
-						User.USER.setKorUnivName(korName);
-						engName = GroupListFromServerRepository
-								.getEngByKor(MainActivity.this, korName);
-						User.USER.setEngUnivName(engName);*/
-                // 열려있는 키패드 닫기
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(actvUniv.getWindowToken(), 0);
-                btShowUniv.setVisibility(View.GONE);
-                btEnter.setVisibility(View.VISIBLE);
-            }
-        });
-        actvDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                depFlag = false;
-                actvSub.setText("");
-                subjects.clear();
-                subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(),Convert.indexOfGrade(actvGrade.getText().toString())));
-                hoAdapter.notifyDataSetChanged();
-            }
-        });
-        actvGrade.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                gradeFlag = false;
-                subjects.clear();
-                subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(), Convert.indexOfGrade(actvGrade.getText().toString())));
-                //actvSub.setText("");
-                hoAdapter.notifyDataSetChanged();
-            }
-        });
-        actvSub.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                actvDep.setText("");
-                actvGrade.setText("");
-                subjects.clear();
-                subjects.addAll(db.getAllWithSubOrProf(actvSub.getText().toString()));
-                hoAdapter.notifyDataSetChanged();
-            }
-        });
-        actvUniv.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                btShowUniv.setBackgroundResource(R.drawable.ic_expand);
-            }
-        });
-        actvDep.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                btShowDep.setBackgroundResource(R.drawable.ic_expand);
-            }
-        });
-        actvGrade.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                btShowGrade.setBackgroundResource(R.drawable.ic_expand);
-            }
-        });
-        SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
-        if(sbue != null){
-            EventBus.getDefault().removeStickyEvent(sbue);
-            if(sbue.isSetVisable())
-                btUniv.setVisibility(View.VISIBLE);
-            else
-                btUniv.setVisibility(View.INVISIBLE);
-        }
-        /*switch (viewMode){
-            case 0:
-                btUniv.setVisibility(View.VISIBLE);
-            case 2:
-                btUniv.setVisibility(View.INVISIBLE);
-        }*/
     }
     private Button btNormal, btUniv, btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter;
     private ToggleButton btColor;

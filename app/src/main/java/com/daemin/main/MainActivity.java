@@ -2,7 +2,6 @@ package com.daemin.main;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -29,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.daemin.area.AreaFragment;
@@ -41,7 +39,6 @@ import com.daemin.common.RoundedCornerNetworkImageView;
 import com.daemin.community.CommunityFragment2;
 import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.DrawMode;
-import com.daemin.enumclass.MyPreferences;
 import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
@@ -57,6 +54,7 @@ import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.InitWeekThread;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
+import com.daemin.widget.WidgetUpdateService;
 
 import java.io.File;
 
@@ -66,7 +64,6 @@ public class MainActivity extends FragmentActivity{
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
             mDrawerLayout.closeDrawer(mLeftDrawer);
-            Toast.makeText(MainActivity.this, "open", Toast.LENGTH_SHORT).show();
         } else {
             backPressCloseHandler.onBackPressed(backKeyName);
         }
@@ -85,7 +82,7 @@ public class MainActivity extends FragmentActivity{
     @Override
     protected void onPause() {
         super.onPause();
-        /*if(dialogFlag) {
+        if(dialogFlag) {
             if (widget5_5) {
                 Intent update = new Intent(this, WidgetUpdateService.class);
                 update.putExtra("action","update5_5");
@@ -99,17 +96,11 @@ public class MainActivity extends FragmentActivity{
                 this.startService(update);
             }
         }
-        System.gc();*/
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         //appcontroller에서 앱 실행시 초기에 불러오게될 정보를 저장함
-        SharedPreferences.Editor editor = MyPreferences.USERINFO.getEditor();
-        editor.putBoolean("GroupListDownloadState", User.USER.isGroupListDownloadState());
-        editor.putBoolean("SubjectDownloadState", User.USER.isSubjectDownloadState());
-        editor.putString("EngUnivName", User.USER.getEngUnivName());
-        editor.commit();
         Common.stateFilter(Common.getTempTimePos(), viewMode);
         CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
         clearApplicationCache(getExternalCacheDir());
@@ -401,9 +392,9 @@ public class MainActivity extends FragmentActivity{
         DrawMode.CURRENT.setMode(0);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        viewMode = MyPreferences.USERINFO.getPref().getInt("viewMode", 0);
-        widget5_5 = MyPreferences.USERINFO.getPref().getBoolean("widget5_5", false);
-        widget4_4 = MyPreferences.USERINFO.getPref().getBoolean("widget4_4", false);
+        viewMode = User.INFO.getViewMode();
+        widget5_5 = User.INFO.getWidget5_5();
+        widget4_4 = User.INFO.getWidget4_4();
         dayIndex = 0;
         ibMenu = (ImageButton) findViewById(R.id.ibMenu);
         ibBack = (ImageButton) findViewById(R.id.ibBack);
@@ -450,10 +441,7 @@ public class MainActivity extends FragmentActivity{
                 Common.stateFilter(Common.getTempTimePos(), viewMode);
                 switch (position) {
                     case 0: //주
-                        viewMode = 0;
-                        SharedPreferences.Editor wEditor = MyPreferences.USERINFO.getEditor();
-                        wEditor.putInt("viewMode", viewMode);
-                        wEditor.commit();
+                        User.INFO.getEditor().putInt("viewMode", 0).commit();
                         EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
                         barText = CurrentTime.getTitleMonthWeek(MainActivity.this);
                         switcher.setText("");
@@ -462,7 +450,7 @@ public class MainActivity extends FragmentActivity{
                         changeFragment(TimetableFragment.class, "");
                         flSurface.setVisibility(View.VISIBLE);
                         frame_container.setVisibility(View.GONE);
-                        initSurfaceView.setMode(viewMode);
+                        initSurfaceView.setMode(0);
                         break;
                     case 1: // 일
                         barText = CurrentTime.getTitleMonthWeek(MainActivity.this);
@@ -475,10 +463,7 @@ public class MainActivity extends FragmentActivity{
                         changeFragment(InitDayFragment.class, "일");
                         break;
                     case 2: // 월
-                        viewMode = 2;
-                        SharedPreferences.Editor mEditor = MyPreferences.USERINFO.getEditor();
-                        mEditor.putInt("viewMode", viewMode);
-                        mEditor.commit();
+                        User.INFO.getEditor().putInt("viewMode", 2).commit();
                         EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
                         barText = CurrentTime.getTitleYearMonth(MainActivity.this);
                         switcher.setText("");
@@ -488,7 +473,7 @@ public class MainActivity extends FragmentActivity{
                         changeFragment(TimetableFragment.class, "");
                         flSurface.setVisibility(View.VISIBLE);
                         frame_container.setVisibility(View.GONE);
-                        initSurfaceView.setMode(viewMode);
+                        initSurfaceView.setMode(2);
                         break;
                 }
                 initSurfaceView.surfaceCreated(initSurfaceView.getHolder());

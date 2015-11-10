@@ -1,41 +1,69 @@
 package com.daemin.enumclass;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.daemin.common.AppController;
+
 /**
  * Created by hernia on 2015-06-27.
  */
 public enum User {
-    USER;
-
-    User() {}
-
-    private String korUnivName;
-    private String engUnivName;
-    private boolean groupListDownloadState = false;
-    private boolean subjectDownloadState = false;
-
-
-    public boolean isGroupListDownloadState() {
-        return groupListDownloadState;
+    INFO(AppController.getInstance());
+    User(Context context){
+        editor = context.getSharedPreferences("USERINFO", context.MODE_PRIVATE).edit();
+        latitude=0;
+        longitude=0;
     }
-    public void setGroupListDownloadState(boolean groupListDownload) {
-        this.groupListDownloadState = groupListDownload;
+    SharedPreferences.Editor editor;
+    double latitude, longitude;
+    public SharedPreferences.Editor getEditor() {
+        return editor;
     }
-    public boolean isSubjectDownloadState() {
-        return subjectDownloadState;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
-    public void setSubjectDownloadState(boolean subjectDownload) {
-        this.subjectDownloadState = subjectDownload;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
-    public String getKorUnivName() {
-        return korUnivName;
+    public double getLongitude() {
+        return longitude;
     }
-    public void setKorUnivName(String korUnivName) {
-        this.korUnivName = korUnivName;
+    public double getLatitude() {
+        return latitude;
     }
-    public String getEngUnivName() {
-        return engUnivName;
+    //Pref Getter
+    public boolean getFirstFlag(){
+        return pref.getBoolean("firstFlag",true);
     }
-    public void setEngUnivName(String engUnivName) {
-        this.engUnivName = engUnivName;
+    public int getDeviceWidth(){
+        return pref.getInt("deviceWidth", 0);
+    }
+    public int getDeviceHeight(){
+        return pref.getInt("deviceHeight", 0);
+    }
+    public String getUserPK(){
+        return pref.getString("userPK", "0");
+    }
+    public String getKorGroupName(){
+        return pref.getString("korGroupName", "");
+    }
+    public String getEngGroupName(){
+        return pref.getString("engGroupName", "");
+    }
+    public int getGroupPK(){
+        return pref.getInt("groupPK", 0);
+    }
+    public boolean getSubjectDownFlag(){
+        return pref.getBoolean("subjectDown", false);
+    }
+    public int getViewMode(){
+        return pref.getInt("viewMode", 0);
+    }
+    public boolean getWidget5_5(){
+        return pref.getBoolean("widget5_5", false);
+    }
+    public boolean getWidget4_4(){
+        return pref.getBoolean("widget4_4",false);
     }
 }

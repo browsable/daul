@@ -6,7 +6,6 @@ import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.IBinder;
@@ -17,7 +16,8 @@ import android.widget.RemoteViews;
 
 import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
-import com.daemin.enumclass.MyPreferences;
+import com.daemin.enumclass.User;
+import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
 
 /**
@@ -30,8 +30,8 @@ public class WidgetUpdateService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.i("widget", "service start");
-        deviceWidth = MyPreferences.USERINFO.getPref().getInt("deviceWidth", 0);
-        deviceHeight= MyPreferences.USERINFO.getPref().getInt("deviceHeight", 0);
+        deviceWidth = User.INFO.getDeviceWidth();
+        deviceHeight= User.INFO.getDeviceHeight();
         wIndex5_5=0;
         mIndex5_5=0;
         wIndex4_4=0;
@@ -48,7 +48,7 @@ public class WidgetUpdateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("widget", "service update");
-        viewMode= MyPreferences.USERINFO.getPref().getInt("viewMode", 0);
+        viewMode= User.INFO.getViewMode();
         //viewMode=intent.getIntExtra("viewMode", 0);
         AppWidgetManager manager = AppWidgetManager.getInstance(this);
         RemoteViews views5_5 = new RemoteViews(getPackageName(), R.layout.widget5_5);
@@ -60,12 +60,14 @@ public class WidgetUpdateService extends Service {
                     wIndex5_5 = 0;
                     mIndex5_5 = 0;
                     if (viewMode == 0) {
-                        views5_5.setViewVisibility(R.id.tvDate, View.VISIBLE);
+                        views5_5.setViewVisibility(R.id.tvYear, View.VISIBLE);
                         iv = new WeekCaptureView(this);
-                        views5_5.setInt(R.id.btWeek, "setBackgroundResource",
+                        views5_5.setViewVisibility(R.id.btWeek, View.GONE);
+                        views5_5.setViewVisibility(R.id.btMonth, View.VISIBLE);
+                        /*views5_5.setInt(R.id.btWeek, "setBackgroundResource",
                                 R.color.maincolor);
                         views5_5.setInt(R.id.btMonth, "setBackgroundResource",
-                                R.color.lightgray);
+                                R.color.lightgray);*/
                         views5_5.setTextViewText(R.id.tvYear, CurrentTime.getYear() + getString(R.string.year));
                         views5_5.setTextViewText(R.id.tvDate, CurrentTime.getTitleMonthWeek(this));
                         iv.layout(0, 0, deviceWidth, deviceHeight);
@@ -75,13 +77,11 @@ public class WidgetUpdateService extends Service {
                         Widget5_5Setting(views5_5, manager);
                         week5_5.recycle();
                     } else {
-                        views5_5.setViewVisibility(R.id.tvDate, View.GONE);
+                        views5_5.setViewVisibility(R.id.tvYear, View.GONE);
                         iv = new MonthCaptureView(this);
-                        views5_5.setInt(R.id.btWeek, "setBackgroundResource",
-                                R.color.lightgray);
-                        views5_5.setInt(R.id.btMonth, "setBackgroundResource",
-                                R.color.maincolor);
-                        views5_5.setTextViewText(R.id.tvYear, CurrentTime.getTitleYearMonth(this));
+                        views5_5.setViewVisibility(R.id.btWeek, View.VISIBLE);
+                        views5_5.setViewVisibility(R.id.btMonth, View.GONE);
+                        views5_5.setTextViewText(R.id.tvDate, CurrentTime.getTitleYearMonth(this));
                         iv.layout(0, 0, deviceWidth, deviceHeight);
                         iv.setDrawingCacheEnabled(true);
                         Bitmap month5_5 = iv.getDrawingCache();
@@ -91,17 +91,13 @@ public class WidgetUpdateService extends Service {
                     }
                     break;
                 case "week5_5":
-                    SharedPreferences.Editor wEditor5 = MyPreferences.USERINFO.getEditor();
-                    wEditor5.putInt("viewMode", 0);
-                    wEditor5.commit();
+                    User.INFO.getEditor().putInt("viewMode", 0).commit();
                     wIndex5_5 = 0;
                     mIndex5_5 = 0;
-                    views5_5.setViewVisibility(R.id.tvDate, View.VISIBLE);
+                    views5_5.setViewVisibility(R.id.tvYear, View.VISIBLE);
                     iv = new WeekCaptureView(this);
-                    views5_5.setInt(R.id.btWeek, "setBackgroundResource",
-                            R.color.maincolor);
-                    views5_5.setInt(R.id.btMonth, "setBackgroundResource",
-                            R.color.lightgray);
+                    views5_5.setViewVisibility(R.id.btWeek, View.GONE);
+                    views5_5.setViewVisibility(R.id.btMonth, View.VISIBLE);
                     views5_5.setTextViewText(R.id.tvYear, CurrentTime.getYear() + getString(R.string.year));
                     views5_5.setTextViewText(R.id.tvDate, CurrentTime.getTitleMonthWeek(this));
                     iv.layout(0, 0, deviceWidth, deviceHeight);
@@ -112,18 +108,14 @@ public class WidgetUpdateService extends Service {
                     week5.recycle();
                     break;
                 case "month5_5":
-                    SharedPreferences.Editor mEditor5 = MyPreferences.USERINFO.getEditor();
-                    mEditor5.putInt("viewMode", 2);
-                    mEditor5.commit();
+                    User.INFO.getEditor().putInt("viewMode", 2).commit();
                     wIndex5_5 = 0;
                     mIndex5_5 = 0;
-                    views5_5.setViewVisibility(R.id.tvDate, View.GONE);
+                    views5_5.setViewVisibility(R.id.tvYear, View.GONE);
                     iv = new MonthCaptureView(this);
-                    views5_5.setInt(R.id.btWeek, "setBackgroundResource",
-                            R.color.lightgray);
-                    views5_5.setInt(R.id.btMonth, "setBackgroundResource",
-                            R.color.maincolor);
-                    views5_5.setTextViewText(R.id.tvYear, CurrentTime.getTitleYearMonth(this));
+                    views5_5.setViewVisibility(R.id.btWeek, View.VISIBLE);
+                    views5_5.setViewVisibility(R.id.btMonth, View.GONE);
+                    views5_5.setTextViewText(R.id.tvDate, CurrentTime.getTitleYearMonth(this));
                     iv.layout(0, 0, deviceWidth, deviceHeight);
                     iv.setDrawingCacheEnabled(true);
                     Bitmap month5 = iv.getDrawingCache();
@@ -141,12 +133,10 @@ public class WidgetUpdateService extends Service {
                     wIndex4_4 = 0;
                     mIndex4_4 = 0;
                     if (viewMode == 0) {
-                        views4_4.setViewVisibility(R.id.tvDate, View.VISIBLE);
+                        views4_4.setViewVisibility(R.id.tvYear, View.VISIBLE);
                         iv = new WeekCaptureView(this);
-                        views4_4.setInt(R.id.btWeek, "setBackgroundResource",
-                                R.color.maincolor);
-                        views4_4.setInt(R.id.btMonth, "setBackgroundResource",
-                                R.color.lightgray);
+                        views4_4.setViewVisibility(R.id.btWeek, View.GONE);
+                        views4_4.setViewVisibility(R.id.btMonth, View.VISIBLE);
                         views4_4.setTextViewText(R.id.tvYear, CurrentTime.getYear() + getString(R.string.year));
                         views4_4.setTextViewText(R.id.tvDate, CurrentTime.getTitleMonthWeek(this));
                         iv.layout(0, 0, deviceWidth, deviceHeight);
@@ -156,13 +146,11 @@ public class WidgetUpdateService extends Service {
                         Widget4_4Setting(views4_4, manager);
                         week4_4.recycle();
                     } else {
-                        views4_4.setViewVisibility(R.id.tvDate, View.GONE);
+                        views4_4.setViewVisibility(R.id.tvYear, View.GONE);
                         iv = new MonthCaptureView(this);
-                        views4_4.setInt(R.id.btWeek, "setBackgroundResource",
-                                R.color.lightgray);
-                        views4_4.setInt(R.id.btMonth, "setBackgroundResource",
-                                R.color.maincolor);
-                        views4_4.setTextViewText(R.id.tvYear, CurrentTime.getTitleYearMonth(this));
+                        views4_4.setViewVisibility(R.id.btWeek, View.VISIBLE);
+                        views4_4.setViewVisibility(R.id.btMonth, View.GONE);
+                        views4_4.setTextViewText(R.id.tvDate, CurrentTime.getTitleYearMonth(this));
                         iv.layout(0, 0, deviceWidth, deviceHeight);
                         iv.setDrawingCacheEnabled(true);
                         Bitmap month4_4 = iv.getDrawingCache();
@@ -172,17 +160,13 @@ public class WidgetUpdateService extends Service {
                     }
                     break;
                 case "week4_4":
-                    SharedPreferences.Editor wEditor4 = MyPreferences.USERINFO.getEditor();
-                    wEditor4.putInt("viewMode", 0);
-                    wEditor4.commit();
+                    User.INFO.getEditor().putInt("viewMode", 0).commit();
                     wIndex4_4 = 0;
                     mIndex4_4 = 0;
-                    views4_4.setViewVisibility(R.id.tvDate, View.VISIBLE);
+                    views4_4.setViewVisibility(R.id.tvYear, View.VISIBLE);
                     iv = new WeekCaptureView(this);
-                    views4_4.setInt(R.id.btWeek, "setBackgroundResource",
-                            R.color.maincolor);
-                    views4_4.setInt(R.id.btMonth, "setBackgroundResource",
-                            R.color.lightgray);
+                    views4_4.setViewVisibility(R.id.btWeek, View.GONE);
+                    views4_4.setViewVisibility(R.id.btMonth, View.VISIBLE);
                     views4_4.setTextViewText(R.id.tvYear, CurrentTime.getYear() + getString(R.string.year));
                     views4_4.setTextViewText(R.id.tvDate, CurrentTime.getTitleMonthWeek(this));
                     iv.layout(0, 0, deviceWidth, deviceHeight);
@@ -193,18 +177,14 @@ public class WidgetUpdateService extends Service {
                     week4.recycle();
                     break;
                 case "month4_4":
-                    SharedPreferences.Editor mEditor4 = MyPreferences.USERINFO.getEditor();
-                    mEditor4.putInt("viewMode", 2);
-                    mEditor4.commit();
+                    User.INFO.getEditor().putInt("viewMode", 2).commit();
                     wIndex4_4 = 0;
                     mIndex4_4 = 0;
-                    views4_4.setViewVisibility(R.id.tvDate, View.GONE);
+                    views4_4.setViewVisibility(R.id.tvYear, View.GONE);
                     iv = new MonthCaptureView(this);
-                    views4_4.setInt(R.id.btWeek, "setBackgroundResource",
-                            R.color.lightgray);
-                    views4_4.setInt(R.id.btMonth, "setBackgroundResource",
-                            R.color.maincolor);
-                    views4_4.setTextViewText(R.id.tvYear, CurrentTime.getTitleYearMonth(this));
+                    views4_4.setViewVisibility(R.id.btWeek, View.VISIBLE);
+                    views4_4.setViewVisibility(R.id.btMonth, View.GONE);
+                    views4_4.setTextViewText(R.id.tvDate, CurrentTime.getTitleYearMonth(this));
                     iv.layout(0, 0, deviceWidth, deviceHeight);
                     iv.setDrawingCacheEnabled(true);
                     Bitmap month4_4 = iv.getDrawingCache();
@@ -221,12 +201,10 @@ public class WidgetUpdateService extends Service {
 
             }
         }catch(NullPointerException e){
-            views5_5.setViewVisibility(R.id.tvDate, View.VISIBLE);
+            views5_5.setViewVisibility(R.id.tvYear, View.VISIBLE);
             iv = new WeekCaptureView(this);
-            views5_5.setInt(R.id.btWeek, "setBackgroundResource",
-                    R.color.maincolor);
-            views5_5.setInt(R.id.btMonth, "setBackgroundResource",
-                    R.color.lightgray);
+            views5_5.setViewVisibility(R.id.btWeek, View.GONE);
+            views5_5.setViewVisibility(R.id.btMonth, View.VISIBLE);
             views5_5.setTextViewText(R.id.tvYear, CurrentTime.getYear() + getString(R.string.year));
             views5_5.setTextViewText(R.id.tvDate, CurrentTime.getTitleMonthWeek(this));
             iv.layout(0, 0, deviceWidth, deviceHeight);
@@ -244,6 +222,11 @@ public class WidgetUpdateService extends Service {
     }
 
     public void Widget5_5Setting(RemoteViews views, AppWidgetManager manager){
+        Intent main5 = new Intent(this, MainActivity.class);
+        main5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        main5.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent mainP5 = PendingIntent.getActivity(this, 0, main5, 0);
+        views.setOnClickPendingIntent(R.id.btHome, mainP5);
         Intent dial = new Intent(Common.ACTION_DIAL5_5);
         PendingIntent dialP = PendingIntent.getBroadcast(this, 0, dial, 0);
         views.setOnClickPendingIntent(R.id.timetableimage, dialP);
@@ -264,11 +247,11 @@ public class WidgetUpdateService extends Service {
         }
     }
     public void Widget4_4Setting(RemoteViews views, AppWidgetManager manager){
-        /*Intent main4 = new Intent(this, DialWidgetSchedule.class);
+        Intent main4 = new Intent(this, MainActivity.class);
         main4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         main4.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent mainP4 = PendingIntent.getActivity(this, 0, main4, 0);
-        views.setOnClickPendingIntent(R.id.timetableimage, mainP4);*/
+        views.setOnClickPendingIntent(R.id.btHome, mainP4);
         Intent dial = new Intent(Common.ACTION_DIAL4_4);
         PendingIntent dialP = PendingIntent.getBroadcast(this, 0, dial, 0);
         views.setOnClickPendingIntent(R.id.timetableimage, dialP);
@@ -289,15 +272,13 @@ public class WidgetUpdateService extends Service {
         }
     }
     public void Widget5_5Back(RemoteViews views, AppWidgetManager manager){
-        int viewMode = MyPreferences.USERINFO.getPref().getInt("viewMode", 0);
+        int viewMode = User.INFO.getViewMode();
         Bitmap bitmap;
         if (viewMode == 0) {
-            views.setViewVisibility(R.id.tvDate, View.VISIBLE);
+            views.setViewVisibility(R.id.tvYear, View.VISIBLE);
             WeekCaptureView iv = new WeekCaptureView(this);
-            views.setInt(R.id.btWeek, "setBackgroundResource",
-                    R.color.maincolor);
-            views.setInt(R.id.btMonth, "setBackgroundResource",
-                    R.color.lightgray);
+            views.setViewVisibility(R.id.btWeek, View.GONE);
+            views.setViewVisibility(R.id.btMonth, View.VISIBLE);
             --wIndex5_5;
             if (wIndex5_5 < 0) {
                 views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYear(-wIndex5_5) + getString(R.string.year));
@@ -313,21 +294,19 @@ public class WidgetUpdateService extends Service {
             bitmap = iv.getDrawingCache();
             views.setImageViewBitmap(R.id.timetableimage, bitmap);
         } else {
-            views.setViewVisibility(R.id.tvDate, View.GONE);
+            views.setViewVisibility(R.id.tvYear, View.GONE);
             MonthCaptureView im = new MonthCaptureView(this);
-            views.setInt(R.id.btWeek, "setBackgroundResource",
-                    R.color.lightgray);
-            views.setInt(R.id.btMonth, "setBackgroundResource",
-                    R.color.maincolor);
+            views.setViewVisibility(R.id.btWeek, View.VISIBLE);
+            views.setViewVisibility(R.id.btMonth, View.GONE);
             --mIndex5_5;
             if (mIndex5_5 < 0) {
-                views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYearMonth(this, -mIndex5_5));
+                views.setTextViewText(R.id.tvDate, CurrentTime.backTitleYearMonth(this, -mIndex5_5));
                 im.setTodayIndex(mIndex5_5);
                 im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-mIndex5_5),
                         CurrentTime.getBackDayOfWeekOfLastMonth(-mIndex5_5),
                         CurrentTime.getBackDayNumOfMonth(-mIndex5_5));
             } else {
-                views.setTextViewText(R.id.tvYear, CurrentTime.preTitleYearMonth(this, mIndex5_5));
+                views.setTextViewText(R.id.tvDate, CurrentTime.preTitleYearMonth(this, mIndex5_5));
                 im.setTodayIndex(mIndex5_5);
                 im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(mIndex5_5),
                         CurrentTime.getPreDayOfWeekOfLastMonth(mIndex5_5),
@@ -342,22 +321,20 @@ public class WidgetUpdateService extends Service {
         bitmap.recycle();
     }
     public void Widget5_5Forward(RemoteViews views, AppWidgetManager manager){
-        int viewMode= MyPreferences.USERINFO.getPref().getInt("viewMode", 0);
+        int viewMode= User.INFO.getViewMode();
         Bitmap bitmap;
         if(viewMode==0) {
-            views.setViewVisibility(R.id.tvDate, View.VISIBLE);
+            views.setViewVisibility(R.id.tvYear, View.VISIBLE);
             WeekCaptureView iv = new WeekCaptureView(this);
-            views.setInt(R.id.btWeek, "setBackgroundResource",
-                    R.color.maincolor);
-            views.setInt(R.id.btMonth, "setBackgroundResource",
-                    R.color.lightgray);
+            views.setViewVisibility(R.id.btWeek, View.GONE);
+            views.setViewVisibility(R.id.btMonth, View.VISIBLE);
             ++wIndex5_5;
             if (wIndex5_5 < 0) {
-                views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYear(-wIndex5_5) + getString(R.string.year));
+                views.setTextViewText(R.id.tvDate, CurrentTime.backTitleYear(-wIndex5_5) + getString(R.string.year));
                 views.setTextViewText(R.id.tvDate, CurrentTime.backTitleMonthWeek(this, -wIndex5_5));
                 iv.setCurrentTime(CurrentTime.getBackDateOfWeek(-wIndex5_5));
             } else {
-                views.setTextViewText(R.id.tvYear, CurrentTime.preTitleYear(wIndex5_5) + getString(R.string.year));
+                views.setTextViewText(R.id.tvDate, CurrentTime.preTitleYear(wIndex5_5) + getString(R.string.year));
                 views.setTextViewText(R.id.tvDate, CurrentTime.preTitleMonthWeek(this, wIndex5_5));
                 iv.setCurrentTime(CurrentTime.getPreDateOfWeek(wIndex5_5));
             }
@@ -367,21 +344,19 @@ public class WidgetUpdateService extends Service {
             views.setImageViewBitmap(R.id.timetableimage, bitmap);
         }
         else {
-            views.setViewVisibility(R.id.tvDate, View.GONE);
+            views.setViewVisibility(R.id.tvYear, View.GONE);
             MonthCaptureView im = new MonthCaptureView(this);
-            views.setInt(R.id.btWeek, "setBackgroundResource",
-                    R.color.lightgray);
-            views.setInt(R.id.btMonth, "setBackgroundResource",
-                    R.color.maincolor);
+            views.setViewVisibility(R.id.btWeek, View.VISIBLE);
+            views.setViewVisibility(R.id.btMonth, View.GONE);
             ++mIndex5_5;
             if (mIndex5_5 < 0) {
-                views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYearMonth(this, -mIndex5_5));
+                views.setTextViewText(R.id.tvDate, CurrentTime.backTitleYearMonth(this, -mIndex5_5));
                 im.setTodayIndex(mIndex5_5);
                 im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-mIndex5_5),
                         CurrentTime.getBackDayOfWeekOfLastMonth(-mIndex5_5),
                         CurrentTime.getBackDayNumOfMonth(-mIndex5_5));
             } else {
-                views.setTextViewText(R.id.tvYear, CurrentTime.preTitleYearMonth(this, mIndex5_5));
+                views.setTextViewText(R.id.tvDate, CurrentTime.preTitleYearMonth(this, mIndex5_5));
                 im.setTodayIndex(mIndex5_5);
                 im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(mIndex5_5),
                         CurrentTime.getPreDayOfWeekOfLastMonth(mIndex5_5),
@@ -396,15 +371,13 @@ public class WidgetUpdateService extends Service {
         bitmap.recycle();
     }
     public void Widget4_4Back(RemoteViews views, AppWidgetManager manager){
-        int viewMode= MyPreferences.USERINFO.getPref().getInt("viewMode", 0);
+        int viewMode= User.INFO.getViewMode();
         Bitmap bitmap;
         if (viewMode == 0) {
-            views.setViewVisibility(R.id.tvDate, View.VISIBLE);
+            views.setViewVisibility(R.id.tvYear, View.VISIBLE);
             WeekCaptureView iv = new WeekCaptureView(this);
-            views.setInt(R.id.btWeek, "setBackgroundResource",
-                    R.color.maincolor);
-            views.setInt(R.id.btMonth, "setBackgroundResource",
-                    R.color.lightgray);
+            views.setViewVisibility(R.id.btWeek, View.GONE);
+            views.setViewVisibility(R.id.btMonth, View.VISIBLE);
             --wIndex4_4;
             if (wIndex4_4 < 0) {
                 views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYear(-wIndex4_4) + getString(R.string.year));
@@ -420,21 +393,19 @@ public class WidgetUpdateService extends Service {
             bitmap = iv.getDrawingCache();
             views.setImageViewBitmap(R.id.timetableimage, bitmap);
         } else {
-            views.setViewVisibility(R.id.tvDate, View.GONE);
+            views.setViewVisibility(R.id.tvYear, View.GONE);
             MonthCaptureView im = new MonthCaptureView(this);
-            views.setInt(R.id.btWeek, "setBackgroundResource",
-                    R.color.lightgray);
-            views.setInt(R.id.btMonth, "setBackgroundResource",
-                    R.color.maincolor);
+            views.setViewVisibility(R.id.btWeek, View.VISIBLE);
+            views.setViewVisibility(R.id.btMonth, View.GONE);
             --mIndex4_4;
             if (mIndex4_4 < 0) {
-                views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYearMonth(this, -mIndex4_4));
+                views.setTextViewText(R.id.tvDate, CurrentTime.backTitleYearMonth(this, -mIndex4_4));
                 im.setTodayIndex(mIndex4_4);
                 im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-mIndex4_4),
                         CurrentTime.getBackDayOfWeekOfLastMonth(-mIndex4_4),
                         CurrentTime.getBackDayNumOfMonth(-mIndex4_4));
             } else {
-                views.setTextViewText(R.id.tvYear, CurrentTime.preTitleYearMonth(this, mIndex4_4));
+                views.setTextViewText(R.id.tvDate, CurrentTime.preTitleYearMonth(this, mIndex4_4));
                 im.setTodayIndex(mIndex4_4);
                 im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(mIndex4_4),
                         CurrentTime.getPreDayOfWeekOfLastMonth(mIndex4_4),
@@ -449,15 +420,13 @@ public class WidgetUpdateService extends Service {
         bitmap.recycle();
     }
     public void Widget4_4Forward(RemoteViews views, AppWidgetManager manager){
-        int viewMode= MyPreferences.USERINFO.getPref().getInt("viewMode", 0);
+        int viewMode= User.INFO.getViewMode();
         Bitmap bitmap;
         if(viewMode==0) {
-            views.setViewVisibility(R.id.tvDate, View.VISIBLE);
+            views.setViewVisibility(R.id.tvYear, View.VISIBLE);
             WeekCaptureView iv = new WeekCaptureView(this);
-            views.setInt(R.id.btWeek, "setBackgroundResource",
-                    R.color.maincolor);
-            views.setInt(R.id.btMonth, "setBackgroundResource",
-                    R.color.lightgray);
+            views.setViewVisibility(R.id.btWeek, View.GONE);
+            views.setViewVisibility(R.id.btMonth, View.VISIBLE);
             ++wIndex4_4;
             if (wIndex4_4 < 0) {
                 views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYear(-wIndex4_4) + getString(R.string.year));
@@ -474,21 +443,19 @@ public class WidgetUpdateService extends Service {
             views.setImageViewBitmap(R.id.timetableimage, bitmap);
         }
         else {
-            views.setViewVisibility(R.id.tvDate, View.GONE);
+            views.setViewVisibility(R.id.tvYear, View.GONE);
             MonthCaptureView im = new MonthCaptureView(this);
-            views.setInt(R.id.btWeek, "setBackgroundResource",
-                    R.color.lightgray);
-            views.setInt(R.id.btMonth, "setBackgroundResource",
-                    R.color.maincolor);
+            views.setViewVisibility(R.id.btWeek, View.VISIBLE);
+            views.setViewVisibility(R.id.btMonth, View.GONE);
             ++mIndex4_4;
             if (mIndex4_4 < 0) {
-                views.setTextViewText(R.id.tvYear, CurrentTime.backTitleYearMonth(this, -mIndex4_4));
+                views.setTextViewText(R.id.tvDate, CurrentTime.backTitleYearMonth(this, -mIndex4_4));
                 im.setTodayIndex(mIndex4_4);
                 im.setCurrentTime(CurrentTime.getBackDayOfLastMonth(-mIndex4_4),
                         CurrentTime.getBackDayOfWeekOfLastMonth(-mIndex4_4),
                         CurrentTime.getBackDayNumOfMonth(-mIndex4_4));
             } else {
-                views.setTextViewText(R.id.tvYear, CurrentTime.preTitleYearMonth(this, mIndex4_4));
+                views.setTextViewText(R.id.tvDate, CurrentTime.preTitleYearMonth(this, mIndex4_4));
                 im.setTodayIndex(mIndex4_4);
                 im.setCurrentTime(CurrentTime.getPreDayOfLastMonth(mIndex4_4),
                         CurrentTime.getPreDayOfWeekOfLastMonth(mIndex4_4),

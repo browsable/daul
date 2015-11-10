@@ -311,7 +311,6 @@ public class DialWidgetSchedule extends Activity implements View.OnClickListener
                 }
                 break;
             case R.id.btAddSchedule:
-                //EventBus.getDefault().post(new CaptureEvent());
                 break;
             case R.id.btCancel:
                 EventBus.getDefault().post(new SetBtPlusEvent(true));

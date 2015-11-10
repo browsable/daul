@@ -16,32 +16,40 @@
             android:layout_height="match_parent"
             android:layout_weight="11"
             android:layout_gravity="center"
-            android:gravity="left|center_vertical"
+            android:gravity="center"
             android:orientation="horizontal"
             android:background="@color/whitesmoke">
             <Button
-                android:id="@+id/btBack"
-                android:layout_width="32dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/margin_default"
-                android:background="@drawable/bt_back"/>
-            <TextView
-                android:id="@+id/tvYear"
+            android:id="@+id/btBack"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/margin_default"
+            android:background="@drawable/bt_back"/>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/textsize_xl"
-                android:layout_marginRight="@dimen/margin_xs"
-                android:textStyle="bold" />
-            <TextView
-                android:id="@+id/tvDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/textsize_xl"
-                android:textStyle="bold" />
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tvYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/textsize_s"
+                    android:layout_gravity="bottom"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/textsize_xl"
+                    android:textStyle="bold" />
+            </LinearLayout>
             <Button
                 android:id="@+id/btForward"
                 android:layout_width="32dp"
@@ -50,27 +58,45 @@
                 android:background="@drawable/bt_forward"/>
         </LinearLayout>
         <Button
-            android:id="@+id/btWeek"
-            android:layout_width="40dp"
-            android:layout_height="20dp"
-            android:layout_toLeftOf="@+id/btMonth"
+            android:id="@+id/btHome"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="@string/week"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textsize_xl"
-            android:background="@color/maincolor"/>
-        <Button
-            android:id="@+id/btMonth"
-            android:layout_width="40dp"
-            android:layout_height="20dp"
+            android:background="@drawable/ic_launcher"/>
+        <LinearLayout
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_xxs"
+            android:background="@drawable/ic_trian"
+            android:gravity="top|left"
+            android:orientation="vertical"
+            android:scaleType="fitXY">
+        <Button
+            android:id="@+id/btWeek"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:gravity="center"
             android:text="@string/month"
             android:textStyle="bold"
-            android:textSize="@dimen/textsize_xl"
-            android:layout_marginRight="@dimen/margin_xs"
-            android:background="@color/lightgray"/>
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textsize_l"
+            android:visibility="gone"
+            android:background="@color/transparency"/>
+        <Button
+            android:id="@+id/btMonth"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:gravity="center"
+            android:text="@string/week"
+            android:textStyle="bold"
+            android:textSize="@dimen/textsize_l"
+            android:textColor="@android:color/black"
+            android:background="@color/transparency"/>
+        </LinearLayout>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"

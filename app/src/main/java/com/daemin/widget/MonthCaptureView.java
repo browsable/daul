@@ -105,8 +105,8 @@ public class MonthCaptureView extends ImageView {
         /*for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
             DOMP.drawTimePos(canvas, width, height);
         }*/
-        canvas.drawRect(width * (3-1) / 7, height * ((3-1)*10+2) / 64 + 6,
-                width * 5 / 7, height * (5*10+2) / 64 + 6, rp);
+       /* canvas.drawRect(width * (3-1) / 7, height * ((3-1)*10+2) / 64 + 6,
+                width * 5 / 7, height * (5*10+2) / 64 + 6, rp);*/
 
     }
     @Override

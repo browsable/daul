@@ -227,7 +227,6 @@ public class MapActivity extends FragmentActivity
     }
 
     private void displayLocation() {
-
         // Get the button view
         // and next place it, for exemple, on bottom right (as Google Maps app)
         mLastLocation = LocationServices.FusedLocationApi

@@ -10,20 +10,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.daemin.community.github.GithubActivity;
-import com.daemin.data.GroupListData;
-import com.daemin.enumclass.User;
-import com.daemin.repository.GroupListFromServerRepository;
-import com.navercorp.volleyextensions.request.Jackson2Request;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import timedao_group.GroupListFromServer;
 
 /**
  * Created by hernia on 2015-07-02.
@@ -33,7 +25,7 @@ public class MyRequest {
 
     public static Context context = AppController.getInstance();
     public static final String GET_GROUPLIST_URL = "http://timedao.heeguchi.me/app/getGroupList";
-    public static ArrayList<String> getGroupListFromLocal() {
+   /* public static ArrayList<String> getGroupListFromLocal() {
         ArrayList<String> groupListFomServer = new ArrayList<>();
         for( GroupListFromServer GLFS : GroupListFromServerRepository.getAllGroupListFromServer(context)){
             groupListFomServer.add(GLFS.getKorname());
@@ -47,9 +39,9 @@ public class MyRequest {
                 new Response.Listener<GroupListData>() {
                     @Override
                     public void onResponse(GroupListData response) {
-                        /*for(GroupListData.Data d : response.getData()){
+                        *//*for(GroupListData.Data d : response.getData()){
                                 Log.i(d.getEngname(),d.getKorname());
-                        }*/
+                        }*//*
                         GroupListFromServerRepository.clearGroupListFromServer(context);
                         for(GroupListData.Data d : response.getData()){
                             GroupListFromServer groupListFromServer = new GroupListFromServer();
@@ -72,7 +64,7 @@ public class MyRequest {
         });
         requestQueue.add(jackson2Request);
     }
-
+*/
     public static final String POST_TEST = "http://54.64.223.92/users/register";
     private static String KEY_SUCCESS = "success";
     public static void test(final Context context){
