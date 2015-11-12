@@ -34,13 +34,13 @@ public class MonthCaptureView extends ImageView {
     static int tempxth;
     static int tempyth;
     private Canvas canvas;
-    public MonthCaptureView(Context context)
+    public MonthCaptureView(Context context, int dayOfMonth)
     {
         super(context);
         this.monthData = CurrentTime.getDayOfLastMonth();
         this.dayOfWeekOfLastMonth = CurrentTime.getDayOfWeekOfLastMonth();
         this.dayNumOfMonth = CurrentTime.getDayNumOfMonth();
-        this.dayOfMonth = CurrentTime.getDayOfMonth();
+        this.dayOfMonth = dayOfMonth;
         isToday = true;
         todayIndex=0;
         tempxth = 0;

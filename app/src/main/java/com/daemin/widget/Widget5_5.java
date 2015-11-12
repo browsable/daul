@@ -86,7 +86,7 @@ public class Widget5_5 extends AppWidgetProvider {
 		/*Log.i("widget", String.valueOf(CurrentTime.getMidnight()));
 		Log.i("widget", String.valueOf(CurrentTime.getNowMillis()));
 		Log.i("widget", CurrentTime.getDatefromMillis(CurrentTime.getMidnight()));*/
-		manager.setRepeating(AlarmManager.RTC_WAKEUP, CurrentTime.getMidnight(), AlarmManager.INTERVAL_DAY, sender);
+		manager.setRepeating(AlarmManager.RTC_WAKEUP, CurrentTime.getMidnight()+5000, AlarmManager.INTERVAL_DAY, sender);
 	}
 	public static void unregisterAlarm(Context context)
 	{

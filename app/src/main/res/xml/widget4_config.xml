@@ -4,7 +4,7 @@
     android:minHeight="250dp"
     android:previewImage="@drawable/appwidget"
     android:initialLayout="@layout/widget4_4"
-    android:updatePeriodMillis="10800000"
+    android:updatePeriodMillis="0"
   />
   <!--android:previewImage="@drawable/"
 	  android:"com.daemin.timetable.MainActivity"

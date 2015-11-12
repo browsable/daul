@@ -14,8 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,7 +24,6 @@ import android.widget.ToggleButton;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
-import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
@@ -35,7 +32,6 @@ import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetAlarmEvent;
 import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
-import com.daemin.event.SetBtUnivNoticeEvent;
 import com.daemin.event.SetPlaceEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
@@ -53,7 +49,6 @@ import timedao.MyTime;
 public class DialWidgetSchedule extends Activity implements View.OnClickListener, View.OnTouchListener{
     public void onBackPressed() {
         EventBus.getDefault().post(new SetBtPlusEvent(true));
-        Common.stateFilter(Common.getTempTimePos(), viewMode);
         finish();
     }
     @Override
@@ -135,14 +130,6 @@ public class DialWidgetSchedule extends Activity implements View.OnClickListener
             ++j;
         }
     }
-    public AutoCompleteTextView SettingACTV(AutoCompleteTextView actv,ArrayAdapter<String> adapter){
-        actv.requestFocus();
-        actv.setThreshold(1);// will start working from first character
-        actv.setAdapter(adapter);// setting the adapter data into the
-        actv.setTextColor(Color.DKGRAY);
-        actv.setDropDownVerticalOffset(10);
-        return actv;
-    }
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onClick(View v) {
@@ -163,13 +150,6 @@ public class DialWidgetSchedule extends Activity implements View.OnClickListener
             case R.id.btCancel:
                 EventBus.getDefault().post(new SetBtPlusEvent(true));
                 EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
-                //btUniv.setVisibility(View.VISIBLE);
-                switch (DrawMode.CURRENT.getMode()) {
-                    case 1:
-                        Common.stateFilter(Common.getTempTimePos(), viewMode);
-                        DrawMode.CURRENT.setMode(0);
-                        break;
-                }
                 finish();
                 break;
             case R.id.btCommunity:
@@ -179,18 +159,6 @@ public class DialWidgetSchedule extends Activity implements View.OnClickListener
             case R.id.btRemove:
                 break;
             case R.id.btNew1:case R.id.btNew2:
-                DialAddTimePicker datp = null;
-                /*switch(viewMode) {
-                    case 0:
-                        InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
-                        datp = new DialAddTimePicker(DialWidgetSchedule.this, iw.getAllMonthAndDay());
-                        break;
-                    case 2:
-                        InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
-                        datp = new DialAddTimePicker(DialWidgetSchedule.this, im.getMonthData(),im.getDayOfWeekOfLastMonth());
-                        break;
-                }*/
-                datp.show();
                 break;
             case R.id.btPlace:
                 Intent in = new Intent(DialWidgetSchedule.this, MapActivity.class);
@@ -243,7 +211,6 @@ public class DialWidgetSchedule extends Activity implements View.OnClickListener
     }
     private void setLayout() {
         main = MainActivity.getInstance();
-        viewMode = main.getViewMode();
         btNormal = (Button) findViewById(R.id.btNormal);
         btUniv = (Button) findViewById(R.id.btUniv);
         btUniv.setVisibility(View.INVISIBLE);
@@ -254,7 +221,6 @@ public class DialWidgetSchedule extends Activity implements View.OnClickListener
         btRemove = (Button) findViewById(R.id.btRemove);
         btColor = (ToggleButton) findViewById(R.id.btColor);
         llColor = (LinearLayout) findViewById(R.id.llColor);
-        llNormal = (LinearLayout) findViewById(R.id.llNormal);
         llButtonArea = (LinearLayout) findViewById(R.id.llButtonArea);
         btNew1 = (LinearLayout) findViewById(R.id.btNew1);
         btNew2 = (LinearLayout) findViewById(R.id.btNew2);
@@ -265,50 +231,42 @@ public class DialWidgetSchedule extends Activity implements View.OnClickListener
         tvShare = (TextView) findViewById(R.id.tvShare);
         tvAlarm = (TextView) findViewById(R.id.tvAlarm);
         tvRepeat = (TextView) findViewById(R.id.tvRepeat);
-        btUnivNotice = (TextView) findViewById(R.id.btUnivNotice);
         etName = (EditText) findViewById(R.id.etName);
         etPlace = (EditText) findViewById(R.id.etPlace);
         etMemo = (EditText) findViewById(R.id.etMemo);
+        dragToggle = findViewById(R.id.dragToggle);
         btNormal.setOnClickListener(this);
-        btUniv.setOnClickListener(this);
         btColor.setOnClickListener(this);
         btAddSchedule.setOnClickListener(this);
         btCancel.setOnClickListener(this);
         btCommunity.setOnClickListener(this);
         btInvite.setOnClickListener(this);
         btRemove.setOnClickListener(this);
-        btUnivNotice.setOnClickListener(this);
         btNew1.setOnClickListener(this);
         btNew2.setOnClickListener(this);
         btPlace.setOnClickListener(this);
         btShare.setOnClickListener(this);
         btAlarm.setOnClickListener(this);
         btRepeat.setOnClickListener(this);
+        dragToggle.setOnTouchListener(this);
         colorName = Common.MAIN_COLOR;
         dy =mPosY = 0;
         dayIndex = new HashMap<>();
-        SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
-        if(sbue != null){
-            EventBus.getDefault().removeStickyEvent(sbue);
-            if(sbue.isSetVisable())
-                btUniv.setVisibility(View.VISIBLE);
-            else
-                btUniv.setVisibility(View.INVISIBLE);
-        }
     }
     private Button btNormal, btUniv, btAddSchedule, btCancel, btCommunity, btInvite, btRemove;
     private ToggleButton btColor;
-    private LinearLayout llColor, llNormal, llButtonArea, btNew1, btNew2, btPlace, btShare, btAlarm, btRepeat;
-    private TextView tvShare, tvAlarm, tvRepeat, btUnivNotice;
+    private LinearLayout llColor, llButtonArea, btNew1, btNew2, btPlace, btShare, btAlarm, btRepeat;
+    private TextView tvShare, tvAlarm, tvRepeat;
     private EditText etName, etPlace, etMemo;
     private Window window;
+    private View dragToggle;
     private GradientDrawable gd;
     private String colorName;
     private MainActivity main;
     private WindowManager.LayoutParams lp;
     private HashMap<Integer,Integer> dayIndex;//어느 요일이 선택됬는지
     private BackPressCloseHandler backPressCloseHandler;
-    private int dy, mPosY, screenHeight,viewMode;
+    private int dy, mPosY, screenHeight;
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
         EventBus.getDefault().post(new SetBtPlusEvent(true));
@@ -325,13 +283,8 @@ public class DialWidgetSchedule extends Activity implements View.OnClickListener
     public void onEventMainThread(SetRepeatEvent e) {
         tvRepeat.setText(e.toString());
     }
-    public void onEventMainThread(SetPlaceEvent e){
+    public void onEventMainThread(SetPlaceEvent e) {
         etPlace.setText(e.getPlace());
-    }
-
-    public void onEventMainThread(SetBtUnivNoticeEvent e) {
-        btUnivNotice.setTextColor(Color.GRAY);
-        btUnivNotice.setBackgroundResource(R.drawable.bg_lightgray_bottomline);
     }
     public void onEventMainThread(ExcuteMethodEvent e){
         try {

@@ -54,13 +54,14 @@ public class WidgetUpdateService extends Service {
         RemoteViews views5_5 = new RemoteViews(getPackageName(), R.layout.widget5_5);
         RemoteViews views4_4 = new RemoteViews(getPackageName(), R.layout.widget4_4);
         ImageView iv;
+        try {
             switch (intent.getStringExtra("action")) {
                 case "update5_5":
                     wIndex5_5 = 0;
                     mIndex5_5 = 0;
                     if (viewMode == 0) {
                         views5_5.setViewVisibility(R.id.tvYear, View.VISIBLE);
-                        iv = new WeekCaptureView(this);
+                        iv = new WeekCaptureView(this,CurrentTime.getDayOfWeek());
                         views5_5.setViewVisibility(R.id.btWeek, View.GONE);
                         views5_5.setViewVisibility(R.id.btMonth, View.VISIBLE);
                         /*views5_5.setInt(R.id.btWeek, "setBackgroundResource",
@@ -77,7 +78,7 @@ public class WidgetUpdateService extends Service {
                         week5_5.recycle();
                     } else {
                         views5_5.setViewVisibility(R.id.tvYear, View.GONE);
-                        iv = new MonthCaptureView(this);
+                        iv = new MonthCaptureView(this,CurrentTime.getDayOfMonth());
                         views5_5.setViewVisibility(R.id.btWeek, View.VISIBLE);
                         views5_5.setViewVisibility(R.id.btMonth, View.GONE);
                         views5_5.setTextViewText(R.id.tvDate, CurrentTime.getTitleYearMonth(this));
@@ -94,7 +95,7 @@ public class WidgetUpdateService extends Service {
                     wIndex5_5 = 0;
                     mIndex5_5 = 0;
                     views5_5.setViewVisibility(R.id.tvYear, View.VISIBLE);
-                    iv = new WeekCaptureView(this);
+                    iv = new WeekCaptureView(this,CurrentTime.getDayOfWeek());
                     views5_5.setViewVisibility(R.id.btWeek, View.GONE);
                     views5_5.setViewVisibility(R.id.btMonth, View.VISIBLE);
                     views5_5.setTextViewText(R.id.tvYear, CurrentTime.getYear() + getString(R.string.year));
@@ -111,7 +112,7 @@ public class WidgetUpdateService extends Service {
                     wIndex5_5 = 0;
                     mIndex5_5 = 0;
                     views5_5.setViewVisibility(R.id.tvYear, View.GONE);
-                    iv = new MonthCaptureView(this);
+                    iv = new MonthCaptureView(this,CurrentTime.getDayOfMonth());
                     views5_5.setViewVisibility(R.id.btWeek, View.VISIBLE);
                     views5_5.setViewVisibility(R.id.btMonth, View.GONE);
                     views5_5.setTextViewText(R.id.tvDate, CurrentTime.getTitleYearMonth(this));
@@ -133,7 +134,7 @@ public class WidgetUpdateService extends Service {
                     mIndex4_4 = 0;
                     if (viewMode == 0) {
                         views4_4.setViewVisibility(R.id.tvYear, View.VISIBLE);
-                        iv = new WeekCaptureView(this);
+                        iv = new WeekCaptureView(this,CurrentTime.getDayOfWeek());
                         views4_4.setViewVisibility(R.id.btWeek, View.GONE);
                         views4_4.setViewVisibility(R.id.btMonth, View.VISIBLE);
                         views4_4.setTextViewText(R.id.tvYear, CurrentTime.getYear() + getString(R.string.year));
@@ -146,7 +147,7 @@ public class WidgetUpdateService extends Service {
                         week4_4.recycle();
                     } else {
                         views4_4.setViewVisibility(R.id.tvYear, View.GONE);
-                        iv = new MonthCaptureView(this);
+                        iv = new MonthCaptureView(this,CurrentTime.getDayOfMonth());
                         views4_4.setViewVisibility(R.id.btWeek, View.VISIBLE);
                         views4_4.setViewVisibility(R.id.btMonth, View.GONE);
                         views4_4.setTextViewText(R.id.tvDate, CurrentTime.getTitleYearMonth(this));
@@ -163,7 +164,7 @@ public class WidgetUpdateService extends Service {
                     wIndex4_4 = 0;
                     mIndex4_4 = 0;
                     views4_4.setViewVisibility(R.id.tvYear, View.VISIBLE);
-                    iv = new WeekCaptureView(this);
+                    iv = new WeekCaptureView(this,CurrentTime.getDayOfWeek());
                     views4_4.setViewVisibility(R.id.btWeek, View.GONE);
                     views4_4.setViewVisibility(R.id.btMonth, View.VISIBLE);
                     views4_4.setTextViewText(R.id.tvYear, CurrentTime.getYear() + getString(R.string.year));
@@ -180,7 +181,7 @@ public class WidgetUpdateService extends Service {
                     wIndex4_4 = 0;
                     mIndex4_4 = 0;
                     views4_4.setViewVisibility(R.id.tvYear, View.GONE);
-                    iv = new MonthCaptureView(this);
+                    iv = new MonthCaptureView(this,CurrentTime.getDayOfMonth());
                     views4_4.setViewVisibility(R.id.btWeek, View.VISIBLE);
                     views4_4.setViewVisibility(R.id.btMonth, View.GONE);
                     views4_4.setTextViewText(R.id.tvDate, CurrentTime.getTitleYearMonth(this));
@@ -197,8 +198,43 @@ public class WidgetUpdateService extends Service {
                 case "forward4_4":
                     Widget4_4Forward(views4_4, manager);
                     break;
-
             }
+        }catch(NullPointerException e){
+            if(User.INFO.getWidget5_5()) {
+                User.INFO.getEditor().putInt("viewMode", 0).commit();
+                wIndex5_5 = 0;
+                mIndex5_5 = 0;
+                views5_5.setViewVisibility(R.id.tvYear, View.VISIBLE);
+                iv = new WeekCaptureView(this,CurrentTime.getDayOfWeek());
+                views5_5.setViewVisibility(R.id.btWeek, View.GONE);
+                views5_5.setViewVisibility(R.id.btMonth, View.VISIBLE);
+                views5_5.setTextViewText(R.id.tvYear, CurrentTime.getYear() + getString(R.string.year));
+                views5_5.setTextViewText(R.id.tvDate, CurrentTime.getTitleMonthWeek(this));
+                iv.layout(0, 0, deviceWidth, deviceHeight);
+                iv.setDrawingCacheEnabled(true);
+                Bitmap week5 = iv.getDrawingCache();
+                views5_5.setImageViewBitmap(R.id.timetableimage, week5);
+                Widget5_5Setting(views5_5, manager);
+                week5.recycle();
+            }
+            if(User.INFO.getWidget4_4()){
+                User.INFO.getEditor().putInt("viewMode", 0).commit();
+                wIndex4_4 = 0;
+                mIndex4_4 = 0;
+                views4_4.setViewVisibility(R.id.tvYear, View.VISIBLE);
+                iv = new WeekCaptureView(this,CurrentTime.getDayOfWeek());
+                views4_4.setViewVisibility(R.id.btWeek, View.GONE);
+                views4_4.setViewVisibility(R.id.btMonth, View.VISIBLE);
+                views4_4.setTextViewText(R.id.tvYear, CurrentTime.getYear() + getString(R.string.year));
+                views4_4.setTextViewText(R.id.tvDate, CurrentTime.getTitleMonthWeek(this));
+                iv.layout(0, 0, deviceWidth, deviceHeight);
+                iv.setDrawingCacheEnabled(true);
+                Bitmap week4 = iv.getDrawingCache();
+                views4_4.setImageViewBitmap(R.id.timetableimage, week4);
+                Widget4_4Setting(views4_4, manager);
+                week4.recycle();
+            }
+        }
         return START_STICKY;
     }
     @Override
@@ -261,7 +297,7 @@ public class WidgetUpdateService extends Service {
         Bitmap bitmap;
         if (viewMode == 0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);
-            WeekCaptureView iv = new WeekCaptureView(this);
+            WeekCaptureView iv = new WeekCaptureView(this,CurrentTime.getDayOfWeek());
             views.setViewVisibility(R.id.btWeek, View.GONE);
             views.setViewVisibility(R.id.btMonth, View.VISIBLE);
             --wIndex5_5;
@@ -280,7 +316,7 @@ public class WidgetUpdateService extends Service {
             views.setImageViewBitmap(R.id.timetableimage, bitmap);
         } else {
             views.setViewVisibility(R.id.tvYear, View.GONE);
-            MonthCaptureView im = new MonthCaptureView(this);
+            MonthCaptureView im = new MonthCaptureView(this,CurrentTime.getDayOfMonth());
             views.setViewVisibility(R.id.btWeek, View.VISIBLE);
             views.setViewVisibility(R.id.btMonth, View.GONE);
             --mIndex5_5;
@@ -310,7 +346,7 @@ public class WidgetUpdateService extends Service {
         Bitmap bitmap;
         if(viewMode==0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);
-            WeekCaptureView iv = new WeekCaptureView(this);
+            WeekCaptureView iv = new WeekCaptureView(this,CurrentTime.getDayOfWeek());
             views.setViewVisibility(R.id.btWeek, View.GONE);
             views.setViewVisibility(R.id.btMonth, View.VISIBLE);
             ++wIndex5_5;
@@ -330,7 +366,7 @@ public class WidgetUpdateService extends Service {
         }
         else {
             views.setViewVisibility(R.id.tvYear, View.GONE);
-            MonthCaptureView im = new MonthCaptureView(this);
+            MonthCaptureView im = new MonthCaptureView(this,CurrentTime.getDayOfMonth());
             views.setViewVisibility(R.id.btWeek, View.VISIBLE);
             views.setViewVisibility(R.id.btMonth, View.GONE);
             ++mIndex5_5;
@@ -360,7 +396,7 @@ public class WidgetUpdateService extends Service {
         Bitmap bitmap;
         if (viewMode == 0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);
-            WeekCaptureView iv = new WeekCaptureView(this);
+            WeekCaptureView iv = new WeekCaptureView(this,CurrentTime.getDayOfWeek());
             views.setViewVisibility(R.id.btWeek, View.GONE);
             views.setViewVisibility(R.id.btMonth, View.VISIBLE);
             --wIndex4_4;
@@ -379,7 +415,7 @@ public class WidgetUpdateService extends Service {
             views.setImageViewBitmap(R.id.timetableimage, bitmap);
         } else {
             views.setViewVisibility(R.id.tvYear, View.GONE);
-            MonthCaptureView im = new MonthCaptureView(this);
+            MonthCaptureView im = new MonthCaptureView(this,CurrentTime.getDayOfMonth());
             views.setViewVisibility(R.id.btWeek, View.VISIBLE);
             views.setViewVisibility(R.id.btMonth, View.GONE);
             --mIndex4_4;
@@ -409,7 +445,7 @@ public class WidgetUpdateService extends Service {
         Bitmap bitmap;
         if(viewMode==0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);
-            WeekCaptureView iv = new WeekCaptureView(this);
+            WeekCaptureView iv = new WeekCaptureView(this,CurrentTime.getDayOfWeek());
             views.setViewVisibility(R.id.btWeek, View.GONE);
             views.setViewVisibility(R.id.btMonth, View.VISIBLE);
             ++wIndex4_4;
@@ -429,7 +465,7 @@ public class WidgetUpdateService extends Service {
         }
         else {
             views.setViewVisibility(R.id.tvYear, View.GONE);
-            MonthCaptureView im = new MonthCaptureView(this);
+            MonthCaptureView im = new MonthCaptureView(this,CurrentTime.getDayOfMonth());
             views.setViewVisibility(R.id.btWeek, View.VISIBLE);
             views.setViewVisibility(R.id.btMonth, View.GONE);
             ++mIndex4_4;

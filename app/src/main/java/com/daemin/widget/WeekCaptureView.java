@@ -27,7 +27,7 @@ public class WeekCaptureView extends ImageView {
     private Paint tp, tpred, tpblue, rp; // 시간 텍스트
     static int tempxth, tempyth;
     private Canvas canvas;
-    public WeekCaptureView(Context context)
+    public WeekCaptureView(Context context, int dayOfMonth)
     {
         super(context);
         DayOfWeekData dowd = CurrentTime.getDateOfWeek();
@@ -38,7 +38,7 @@ public class WeekCaptureView extends ImageView {
         this.thr = dowd.getThr();
         this.fri = dowd.getFri();
         this.sat = dowd.getSat();
-        this.dayOfWeek = CurrentTime.getDayOfWeek();
+        this.dayOfWeek = dayOfMonth;
         isToday = true;
         tempxth = 0;
         tempyth = 0;

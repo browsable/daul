@@ -77,12 +77,12 @@ public class Widget4_4 extends AppWidgetProvider {
         Intent init = new Intent(context, WidgetUpdateService.class);
         init.putExtra("action","update4_4");
         PendingIntent sender
-                = PendingIntent.getService(context, 0, init, PendingIntent.FLAG_CANCEL_CURRENT);
+                = PendingIntent.getService(context, 0, init, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager manager
                 = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         //Log.i("widget", String.valueOf(CurrentTime.getMidnight()));
         //Log.i("widget", String.valueOf(CurrentTime.getNowMillis()));
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, CurrentTime.getMidnight(), AlarmManager.INTERVAL_DAY, sender);
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, CurrentTime.getMidnight()+5000, AlarmManager.INTERVAL_DAY, sender);
     }
     public static void unregisterAlarm(Context context)
     {

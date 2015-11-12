@@ -62,11 +62,11 @@ public class CurrentTime {
         return titleMonth;
     }
     public static int getDayOfWeek() {
-        int dayOfWeek = now.getDayOfWeek();
+        int dayOfWeek = LocalDate.now().getDayOfWeek();
         if(dayOfWeek==7) dayOfWeek=0;
         return dayOfWeek;
     }
-    public static int getDayOfMonth(){ return now.getDayOfMonth();}
+    public static int getDayOfMonth(){ return LocalDate.now().getDayOfMonth();}
     public static LocalDate getLastDayOfWeek(){
         if(now.getDayOfWeek()==7) return now.plusDays(1).withDayOfWeek(6);
         else return now.withDayOfWeek(6);
