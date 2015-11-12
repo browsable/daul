@@ -115,9 +115,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_schedule);
         EventBus.getDefault().post(new SetBtPlusEvent(false));
-        if(!getIntent().equals(null)){
-            widgetFlag = getIntent().getBooleanExtra("widgetFlag",false);
-        }
         setLayout();
         colorButtonSetting();
         makeNormalList();
@@ -130,9 +127,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         lp = window.getAttributes();
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels *3/5;
-        if(widgetFlag)
-            lp.width = dm.widthPixels*24/25;
-        else lp.width = lp.MATCH_PARENT;
+        lp.width = lp.MATCH_PARENT;
         lp.height = screenHeight*2/3;
         window.setAttributes(lp);
         window.setGravity(Gravity.BOTTOM);
@@ -714,7 +709,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         viewMode = main.getViewMode();
         btNormal = (Button) findViewById(R.id.btNormal);
         btUniv = (Button) findViewById(R.id.btUniv);
-        if(widgetFlag) btUniv.setVisibility(View.INVISIBLE);
         btAddSchedule = (Button) findViewById(R.id.btAddSchedule);
         btCancel = (Button) findViewById(R.id.btCancel);
         btCommunity = (Button) findViewById(R.id.btCommunity);
@@ -806,7 +800,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight,viewMode;
-    private boolean univFlag,depFlag,gradeFlag,widgetFlag;
+    private boolean univFlag,depFlag,gradeFlag;
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
         EventBus.getDefault().post(new SetBtPlusEvent(true));
