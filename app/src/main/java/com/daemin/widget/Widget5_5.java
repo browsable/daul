@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
-import com.daemin.dialog.DialWidgetSchedule;
+import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.User;
 
 public class Widget5_5 extends AppWidgetProvider {
@@ -62,11 +62,12 @@ public class Widget5_5 extends AppWidgetProvider {
 				break;
 			case Common.ACTION_FORWARD5_5:
 				Intent forward = new Intent(context, WidgetUpdateService.class);
-				forward.putExtra("action","forward5_5");
+				forward.putExtra("action", "forward5_5");
 				context.startService(forward);
 				break;
 			case Common.ACTION_DIAL5_5:
-				Intent dial = new Intent(context, DialWidgetSchedule.class);
+				Intent dial = new Intent(context, DialSchedule.class);
+				dial.putExtra("widgetFlag",true);
 				dial.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(dial);
@@ -80,12 +81,13 @@ public class Widget5_5 extends AppWidgetProvider {
 		Intent init = new Intent(context, WidgetUpdateService.class);
 		init.putExtra("action","update5_5");
 		PendingIntent sender
-				= PendingIntent.getService(context, 0, init, 0);
+				= PendingIntent.getService(context, 0, init, PendingIntent.FLAG_CANCEL_CURRENT);
 		AlarmManager manager
 				= (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-		//Log.i("widget", String.valueOf(CurrentTime.getMidnight()));
-		//Log.i("widget", String.valueOf(CurrentTime.getNowMillis()));
-		manager.setRepeating(AlarmManager.RTC_WAKEUP, CurrentTime.getMidnight(),AlarmManager.INTERVAL_DAY, sender);
+		/*Log.i("widget", String.valueOf(CurrentTime.getMidnight()));
+		Log.i("widget", String.valueOf(CurrentTime.getNowMillis()));
+		Log.i("widget", CurrentTime.getDatefromMillis(CurrentTime.getMidnight()));*/
+		manager.setRepeating(AlarmManager.RTC_WAKEUP, CurrentTime.getMidnight(), AlarmManager.INTERVAL_DAY, sender);
 	}
 	public static void unregisterAlarm(Context context)
 	{

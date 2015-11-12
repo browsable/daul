@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
-import com.daemin.dialog.DialWidgetSchedule;
+import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.User;
 
 public class Widget4_4 extends AppWidgetProvider {
@@ -61,11 +61,12 @@ public class Widget4_4 extends AppWidgetProvider {
                 break;
             case Common.ACTION_FORWARD4_4:
                 Intent forward = new Intent(context, WidgetUpdateService.class);
-                forward.putExtra("action","forward4_4");
+                forward.putExtra("action", "forward4_4");
                 context.startService(forward);
                 break;
             case Common.ACTION_DIAL4_4:
-                Intent dial = new Intent(context, DialWidgetSchedule.class);
+                Intent dial = new Intent(context, DialSchedule.class);
+                dial.putExtra("widgetFlag",true);
                 dial.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(dial);
@@ -77,7 +78,7 @@ public class Widget4_4 extends AppWidgetProvider {
         Intent init = new Intent(context, WidgetUpdateService.class);
         init.putExtra("action","update4_4");
         PendingIntent sender
-                = PendingIntent.getService(context, 0, init, 0);
+                = PendingIntent.getService(context, 0, init, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager manager
                 = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         //Log.i("widget", String.valueOf(CurrentTime.getMidnight()));

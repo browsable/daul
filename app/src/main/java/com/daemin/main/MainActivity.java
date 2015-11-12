@@ -60,7 +60,7 @@ import java.io.File;
 
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends FragmentActivity{
+public class MainActivity extends FragmentActivity {
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
             mDrawerLayout.closeDrawer(mLeftDrawer);
@@ -82,21 +82,22 @@ public class MainActivity extends FragmentActivity{
     @Override
     protected void onPause() {
         super.onPause();
-        if(dialogFlag) {
+        if (dialogFlag) {
             if (widget5_5) {
                 Intent update = new Intent(this, WidgetUpdateService.class);
-                update.putExtra("action","update5_5");
-                update.putExtra("viewMode",viewMode);
+                update.putExtra("action", "update5_5");
+                update.putExtra("viewMode", viewMode);
                 this.startService(update);
             }
-            if (widget4_4){
+            if (widget4_4) {
                 Intent update = new Intent(this, WidgetUpdateService.class);
-                update.putExtra("action","update4_4");
-                update.putExtra("viewMode",viewMode);
+                update.putExtra("action", "update4_4");
+                update.putExtra("viewMode", viewMode);
                 this.startService(update);
             }
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -130,6 +131,7 @@ public class MainActivity extends FragmentActivity{
         //Log.i("phone", User.USER.getPhoneNum());
         backPressCloseHandler = new BackPressCloseHandler(this);
     }
+
     /*private void screenshot() {
         Log.i("widget", "capture start");
         Bitmap bm = initSurfaceView.getInitThread().captureImg();
@@ -169,8 +171,9 @@ public class MainActivity extends FragmentActivity{
         Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
         switcher.setInAnimation(in);
         switcher.setOutAnimation(out);
-        switcher.setText(CurrentTime.getTitleMonthWeek(this));
-        if (viewMode == 2) {
+        if (viewMode == 0) {
+            switcher.setText(CurrentTime.getTitleMonthWeek(this));
+        } else {
             barText = CurrentTime.getTitleYearMonth(this);
             switcher.setText(barText);
             tvTitleYear.setVisibility(View.GONE);
@@ -245,7 +248,8 @@ public class MainActivity extends FragmentActivity{
         surfaceFlag = true;
         initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
     }
-    public void btBackEvent(){
+
+    public void btBackEvent() {
         switch (viewMode) {
             case 0:
                 InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
@@ -283,7 +287,8 @@ public class MainActivity extends FragmentActivity{
                 break;
         }
     }
-    public void btForwardEvent(){
+
+    public void btForwardEvent() {
         switch (viewMode) {
             case 0:
                 InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
@@ -321,6 +326,7 @@ public class MainActivity extends FragmentActivity{
                 break;
         }
     }
+
     // 드로어 메뉴 버튼 클릭 리스너
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void mOnClick(View v) {
@@ -364,7 +370,7 @@ public class MainActivity extends FragmentActivity{
                 changeFragment(SettingFragment.class, "설정");
                 break;
             case R.id.btPlus:
-                dialogFlag =false;
+                dialogFlag = false;
                 Intent i = new Intent(MainActivity.this, DialSchedule.class);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -388,7 +394,8 @@ public class MainActivity extends FragmentActivity{
     private void setLayout() {
         backKeyName = "";
         mContent = null;
-        surfaceFlag = false; dialogFlag=true;
+        surfaceFlag = false;
+        dialogFlag = true;
         DrawMode.CURRENT.setMode(0);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -441,7 +448,8 @@ public class MainActivity extends FragmentActivity{
                 Common.stateFilter(Common.getTempTimePos(), viewMode);
                 switch (position) {
                     case 0: //주
-                        User.INFO.getEditor().putInt("viewMode", 0).commit();
+                        viewMode = 0;
+                        User.INFO.getEditor().putInt("viewMode", viewMode).commit();
                         EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
                         barText = CurrentTime.getTitleMonthWeek(MainActivity.this);
                         switcher.setText("");
@@ -450,7 +458,7 @@ public class MainActivity extends FragmentActivity{
                         changeFragment(TimetableFragment.class, "");
                         flSurface.setVisibility(View.VISIBLE);
                         frame_container.setVisibility(View.GONE);
-                        initSurfaceView.setMode(0);
+                        initSurfaceView.setMode(viewMode);
                         break;
                     case 1: // 일
                         barText = CurrentTime.getTitleMonthWeek(MainActivity.this);
@@ -463,7 +471,8 @@ public class MainActivity extends FragmentActivity{
                         changeFragment(InitDayFragment.class, "일");
                         break;
                     case 2: // 월
-                        User.INFO.getEditor().putInt("viewMode", 2).commit();
+                        viewMode = 2;
+                        User.INFO.getEditor().putInt("viewMode", viewMode).commit();
                         EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
                         barText = CurrentTime.getTitleYearMonth(MainActivity.this);
                         switcher.setText("");
@@ -473,7 +482,7 @@ public class MainActivity extends FragmentActivity{
                         changeFragment(TimetableFragment.class, "");
                         flSurface.setVisibility(View.VISIBLE);
                         frame_container.setVisibility(View.GONE);
-                        initSurfaceView.setMode(2);
+                        initSurfaceView.setMode(viewMode);
                         break;
                 }
                 initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
@@ -499,42 +508,51 @@ public class MainActivity extends FragmentActivity{
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
     private String backKeyName, korName, engName, barText;
-    private Boolean surfaceFlag,dialogFlag,widget5_5,widget4_4;
+    private Boolean surfaceFlag, dialogFlag, widget5_5, widget4_4;
     private Spinner spinner;
     private ArrayAdapter<CharSequence> spinnerAdapter;
     private TextSwitcher switcher;
     private static MainActivity singleton;
     private int viewMode;
     private static int dayIndex;
+
     public ImageButton getIbBack() {
         return ibBack;
     }
+
     public ImageButton getIbMenu() {
         return ibMenu;
     }
+
     public String getBarText() {
         return barText;
     }
+
     public InitSurfaceView getInitSurfaceView() {
         return initSurfaceView;
     }
+
     public static MainActivity getInstance() {
         return singleton;
     }
+
     public int getViewMode() {
         return viewMode;
     }
+
     public void onEventMainThread(SetBtPlusEvent e) {
-        if(e.isSetVisable())
+        if (e.isSetVisable())
             btPlus.setVisibility(View.VISIBLE);
         else
             btPlus.setVisibility(View.GONE);
         dialogFlag = true;
         System.gc();
     }
+
     public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();
     }
+
     public void onEventMainThread(ChangeFragEvent e) {
         changeFragment(e.getCl(), e.getTitleName());
     }

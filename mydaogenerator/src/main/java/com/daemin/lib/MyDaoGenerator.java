@@ -8,28 +8,28 @@ public class MyDaoGenerator {
 
     public static void main(String args[]) throws Exception {
         Schema schema = new Schema(1, "timedao");
-        Entity normal = schema.addEntity("Normal");
-        normal.addIdProperty();
-        normal.addStringProperty("timecode");
-        normal.addStringProperty("name");
-        normal.addIntProperty("year");
-        normal.addIntProperty("monthofyear");
-        normal.addIntProperty("dayofmonth");
-        normal.addIntProperty("dayofweek");
-        normal.addIntProperty("starthour");
-        normal.addIntProperty("startmin");
-        normal.addIntProperty("endhour");
-        normal.addIntProperty("endmin");
-        normal.addIntProperty("startmillis");
-        normal.addIntProperty("endmillis");
-        normal.addStringProperty("memo");
-        normal.addStringProperty("place");
-        normal.addIntProperty("lat");
-        normal.addIntProperty("lng");
-        normal.addIntProperty("share");
-        normal.addStringProperty("alarm");
-        normal.addStringProperty("repeat");
-        normal.addStringProperty("color");
+        Entity MyTime = schema.addEntity("MyTime");
+        MyTime.addIdProperty().autoincrement();
+        MyTime.addStringProperty("timecode");
+        MyTime.addStringProperty("name");
+        MyTime.addIntProperty("year");
+        MyTime.addIntProperty("monthofyear");
+        MyTime.addIntProperty("dayofmonth");
+        MyTime.addIntProperty("dayofweek");
+        MyTime.addIntProperty("starthour");
+        MyTime.addIntProperty("startmin");
+        MyTime.addIntProperty("endhour");
+        MyTime.addIntProperty("endmin");
+        MyTime.addIntProperty("startmillis");
+        MyTime.addIntProperty("endmillis");
+        MyTime.addStringProperty("memo");
+        MyTime.addStringProperty("place");
+        MyTime.addDoubleProperty("lat");
+        MyTime.addDoubleProperty("lng");
+        MyTime.addIntProperty("share");
+        MyTime.addStringProperty("alarm");
+        MyTime.addStringProperty("repeat");
+        MyTime.addStringProperty("color");
 
         new DaoGenerator().generateAll(schema, args[0]);
     }

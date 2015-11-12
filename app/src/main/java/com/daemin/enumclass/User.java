@@ -11,12 +11,18 @@ import com.daemin.common.AppController;
 public enum User {
     INFO(AppController.getInstance());
     User(Context context){
-        editor = context.getSharedPreferences("USERINFO", context.MODE_PRIVATE).edit();
+        pref = context.getSharedPreferences("USERINFO", context.MODE_PRIVATE);
+        editor = pref.edit();
         latitude=0;
         longitude=0;
+        userPK = getUserPK();
+        groupPK = getGroupPK();
     }
+    SharedPreferences pref;
     SharedPreferences.Editor editor;
-    double latitude, longitude;
+    public double latitude, longitude;
+    public String userPK;
+    public int groupPK;
     public SharedPreferences.Editor getEditor() {
         return editor;
     }

@@ -42,6 +42,13 @@ public class CurrentTime {
     public static long getMidnight(){
         return new DateTime().plusDays(1).withTimeAtStartOfDay().getMillis();
     }
+    public static String getDatefromMillis(long millis){
+        DateTime now = new DateTime(millis);
+        String pattern = "yyyy-MM-dd hh.mm.ss";
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+        String formatted = formatter.print(now);
+        return formatted;
+    }
     public static void setTitleMonth(int titleMonth) {
         CurrentTime.titleMonth = titleMonth;
 

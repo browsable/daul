@@ -20,7 +20,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "/sdcard/.TimeDAO/";
 
 	// SubjectDatas table name
-	private static final String TABLE_SCHEDULE = "schedule";
+	private static final String TABLE_SCHEDULE = "schedule";//subject로 바꾸자
 	List<SubjectData> subjectDataList = new ArrayList<>();
 	List<String> stringList = new ArrayList<>();
 	public DatabaseHandler(Context context) {

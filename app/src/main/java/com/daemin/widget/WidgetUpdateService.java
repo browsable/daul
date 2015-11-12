@@ -54,8 +54,7 @@ public class WidgetUpdateService extends Service {
         RemoteViews views5_5 = new RemoteViews(getPackageName(), R.layout.widget5_5);
         RemoteViews views4_4 = new RemoteViews(getPackageName(), R.layout.widget4_4);
         ImageView iv;
-        try {
-            switch (intent.getStringExtra("action")) {
+            switch (intent.getExtras().getString("action")) {
                 case "update5_5":
                     wIndex5_5 = 0;
                     mIndex5_5 = 0;
@@ -200,20 +199,6 @@ public class WidgetUpdateService extends Service {
                     break;
 
             }
-        }catch(NullPointerException e){
-            views5_5.setViewVisibility(R.id.tvYear, View.VISIBLE);
-            iv = new WeekCaptureView(this);
-            views5_5.setViewVisibility(R.id.btWeek, View.GONE);
-            views5_5.setViewVisibility(R.id.btMonth, View.VISIBLE);
-            views5_5.setTextViewText(R.id.tvYear, CurrentTime.getYear() + getString(R.string.year));
-            views5_5.setTextViewText(R.id.tvDate, CurrentTime.getTitleMonthWeek(this));
-            iv.layout(0, 0, deviceWidth, deviceHeight);
-            iv.setDrawingCacheEnabled(true);
-            Bitmap week5_5 = iv.getDrawingCache();
-            views5_5.setImageViewBitmap(R.id.timetableimage, week5_5);
-            Widget5_5Setting(views5_5, manager);
-            week5_5.recycle();
-        }
         return START_STICKY;
     }
     @Override

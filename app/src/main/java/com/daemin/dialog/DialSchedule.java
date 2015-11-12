@@ -59,6 +59,7 @@ import com.daemin.event.SetShareEvent;
 import com.daemin.event.UpdateNormalEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.map.MapActivity;
+import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.InitMonthThread;
 import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.InitWeekThread;
@@ -77,6 +78,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import timedao.MyTime;
 
 public class DialSchedule extends Activity implements View.OnClickListener, View.OnTouchListener{
     public void onBackPressed() {
@@ -104,6 +106,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        System.gc();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +115,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_schedule);
         EventBus.getDefault().post(new SetBtPlusEvent(false));
+        if(!getIntent().equals(null)){
+            widgetFlag = getIntent().getBooleanExtra("widgetFlag",false);
+        }
         setLayout();
         colorButtonSetting();
         makeNormalList();
@@ -124,7 +130,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         lp = window.getAttributes();
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels *3/5;
-        lp.width = lp.MATCH_PARENT;
+        if(widgetFlag)
+            lp.width = dm.widthPixels*24/25;
+        else lp.width = lp.MATCH_PARENT;
         lp.height = screenHeight*2/3;
         window.setAttributes(lp);
         window.setGravity(Gravity.BOTTOM);
@@ -425,14 +433,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 btShowGrade.setBackgroundResource(R.drawable.ic_expand);
             }
         });
-        SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
-        if(sbue != null){
-            EventBus.getDefault().removeStickyEvent(sbue);
-            if(sbue.isSetVisable())
-                btUniv.setVisibility(View.VISIBLE);
-            else
-                btUniv.setVisibility(View.INVISIBLE);
-        }
 
     }
     public static void createFolder(){
@@ -523,6 +523,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         R.color.gray));
                 btUniv.setTextColor(getResources().getColor(
                         android.R.color.white));
+                //ArrayAdapter<String> univAdapter = new ArrayAdapter<>(this,R.layout.dropdown_univ, MyRequest.getGroupListFromLocal());
                 ArrayList<String> univList = new ArrayList<>();
                 //임시목록
                 univList.add("한국기술교육대학교");
@@ -610,6 +611,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btAddSchedule:
+                MyTime myTime = new MyTime(null,User.INFO.userPK,etName.getText().toString(),
+                        2015,10,11,3,9,30,10,30,0,0,etMemo.getText().toString(),etPlace.getText().toString(),
+                        User.INFO.latitude,User.INFO.longitude,0,"10","10:10","#000000");
+                MyTimeRepo.insertOrUpdate(this,myTime);
                 break;
             case R.id.btCancel:
                 EventBus.getDefault().post(new SetBtPlusEvent(true));
@@ -709,6 +714,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         viewMode = main.getViewMode();
         btNormal = (Button) findViewById(R.id.btNormal);
         btUniv = (Button) findViewById(R.id.btUniv);
+        if(widgetFlag) btUniv.setVisibility(View.INVISIBLE);
         btAddSchedule = (Button) findViewById(R.id.btAddSchedule);
         btCancel = (Button) findViewById(R.id.btCancel);
         btCommunity = (Button) findViewById(R.id.btCommunity);
@@ -770,8 +776,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         colorName = Common.MAIN_COLOR;
         dy =mPosY = 0;
         dayIndex = new HashMap<>();
-        //ArrayAdapter<String> univAdapter = new ArrayAdapter<>(this,R.layout.dropdown_univ, MyRequest.getGroupListFromLocal());
-
+        SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
+        if(sbue != null){
+            EventBus.getDefault().removeStickyEvent(sbue);
+            if(sbue.isSetVisable())
+                btUniv.setVisibility(View.VISIBLE);
+            else
+                btUniv.setVisibility(View.INVISIBLE);
+        }
     }
     private Button btNormal, btUniv, btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter;
     private ToggleButton btColor;
@@ -794,7 +806,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight,viewMode;
-    private boolean univFlag,depFlag,gradeFlag;
+    private boolean univFlag,depFlag,gradeFlag,widgetFlag;
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
         EventBus.getDefault().post(new SetBtPlusEvent(true));

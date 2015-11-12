@@ -17,8 +17,19 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.daemin.common.GPSInfo;
+import com.daemin.encryption.MyHash;
 import com.daemin.enumclass.User;
 import com.daemin.timetable.R;
+
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class SplashActivity extends Activity{
 	static SplashActivity singleton;
@@ -45,6 +56,7 @@ public class SplashActivity extends Activity{
 		else{
 			Toast.makeText(this, this.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
 		}*/
+		Log.i("userPK",User.INFO.getUserPK());
 		if(User.INFO.getFirstFlag()) {
 			Toast.makeText(
 					this,
@@ -112,8 +124,26 @@ public class SplashActivity extends Activity{
 		editor.putBoolean("firstFlag", false);
 		editor.putInt("deviceWidth", deviceWidth);
 		editor.putInt("deviceHeight", deviceHeight);
-		editor.putString("userPK", phoneNum + macAddress);
+		try {
+			MyHash myHash = new MyHash();
+			editor.putString("userPK", myHash.encrypt(phoneNum + macAddress));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
+		}
 		editor.commit();
-		Log.i("start", phoneNum + macAddress);
 	}
 }
