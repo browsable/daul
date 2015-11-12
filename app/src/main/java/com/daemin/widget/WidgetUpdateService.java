@@ -54,7 +54,7 @@ public class WidgetUpdateService extends Service {
         RemoteViews views5_5 = new RemoteViews(getPackageName(), R.layout.widget5_5);
         RemoteViews views4_4 = new RemoteViews(getPackageName(), R.layout.widget4_4);
         ImageView iv;
-            switch (intent.getExtras().getString("action")) {
+            switch (intent.getStringExtra("action")) {
                 case "update5_5":
                     wIndex5_5 = 0;
                     mIndex5_5 = 0;
