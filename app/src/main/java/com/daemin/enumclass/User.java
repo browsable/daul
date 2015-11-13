@@ -22,7 +22,9 @@ public enum User {
     SharedPreferences.Editor editor;
     public double latitude, longitude;
     public String userPK;
+    public String[] wData, mData;
     public int groupPK;
+    public int dayOfWeekOfLastMonth;
     public SharedPreferences.Editor getEditor() {
         return editor;
     }
@@ -37,6 +39,27 @@ public enum User {
     }
     public double getLatitude() {
         return latitude;
+    }
+    public String[] getwData() {
+        return wData;
+    }
+    public int getDayOfWeekOfLastMonth() {
+        return dayOfWeekOfLastMonth;
+    }
+
+    public void setDayOfWeekOfLastMonth(int dayOfWeekOfLastMonth) {
+        this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
+    }
+    public void setwData(String[] wData) {
+        this.wData = wData;
+    }
+
+    public String[] getmData() {
+        return mData;
+    }
+
+    public void setmData(String[] mData) {
+        this.mData = mData;
     }
     //Pref Getter
     public boolean getFirstFlag(){

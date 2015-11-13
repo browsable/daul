@@ -62,7 +62,6 @@ import com.daemin.map.MapActivity;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.InitMonthThread;
 import com.daemin.timetable.InitSurfaceView;
-import com.daemin.timetable.InitWeekThread;
 import com.daemin.timetable.R;
 
 import java.io.BufferedInputStream;
@@ -115,6 +114,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_schedule);
         EventBus.getDefault().post(new SetBtPlusEvent(false));
+        if(!getIntent().equals(null))//widget에서 Dialog 호출한 경우
+            widgetFlag = getIntent().getBooleanExtra("widgetFlag", false);
         setLayout();
         colorButtonSetting();
         makeNormalList();
@@ -633,12 +634,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 DialAddTimePicker datp = null;
                 switch(viewMode) {
                     case 0:
-                        InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
-                        datp = new DialAddTimePicker(DialSchedule.this, iw.getAllMonthAndDay());
+                            datp = new DialAddTimePicker(DialSchedule.this, User.INFO.getwData());
                         break;
                     case 2:
-                        InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
-                        datp = new DialAddTimePicker(DialSchedule.this, im.getMonthData(),im.getDayOfWeekOfLastMonth());
+                            datp = new DialAddTimePicker(DialSchedule.this, User.INFO.getmData(),User.INFO.getDayOfWeekOfLastMonth());
                         break;
                 }
                 datp.show();
@@ -704,11 +703,18 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
     private void setLayout() {
         db = new DatabaseHandler(this);
-        main = MainActivity.getInstance();
-        initSurfaceView = main.getInitSurfaceView();
-        viewMode = main.getViewMode();
-        btNormal = (Button) findViewById(R.id.btNormal);
         btUniv = (Button) findViewById(R.id.btUniv);
+        if(widgetFlag) {
+            viewMode = User.INFO.getViewMode();
+            initSurfaceView = new InitSurfaceView(this, viewMode);
+            btUniv.setVisibility(View.INVISIBLE);
+        }
+        else {
+            main = MainActivity.getInstance();
+            viewMode = main.getViewMode();
+            initSurfaceView = main.getInitSurfaceView();
+        }
+        btNormal = (Button) findViewById(R.id.btNormal);
         btAddSchedule = (Button) findViewById(R.id.btAddSchedule);
         btCancel = (Button) findViewById(R.id.btCancel);
         btCommunity = (Button) findViewById(R.id.btCommunity);
@@ -770,13 +776,15 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         colorName = Common.MAIN_COLOR;
         dy =mPosY = 0;
         dayIndex = new HashMap<>();
-        SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
-        if(sbue != null){
-            EventBus.getDefault().removeStickyEvent(sbue);
-            if(sbue.isSetVisable())
-                btUniv.setVisibility(View.VISIBLE);
-            else
-                btUniv.setVisibility(View.INVISIBLE);
+        if(!widgetFlag) {
+            SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
+            if (sbue != null) {
+                EventBus.getDefault().removeStickyEvent(sbue);
+                if (sbue.isSetVisable())
+                    btUniv.setVisibility(View.VISIBLE);
+                else
+                    btUniv.setVisibility(View.INVISIBLE);
+            }
         }
     }
     private Button btNormal, btUniv, btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter;
@@ -800,7 +808,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight,viewMode;
-    private boolean univFlag,depFlag,gradeFlag;
+    private boolean univFlag,depFlag,gradeFlag,widgetFlag;
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
         EventBus.getDefault().post(new SetBtPlusEvent(true));

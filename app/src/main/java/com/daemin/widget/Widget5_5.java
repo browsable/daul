@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
-import com.daemin.dialog.DialWidgetSchedule;
+import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.User;
 
 public class Widget5_5 extends AppWidgetProvider {
@@ -66,9 +66,10 @@ public class Widget5_5 extends AppWidgetProvider {
 				context.startService(forward);
 				break;
 			case Common.ACTION_DIAL5_5:
-				Intent dial = new Intent(context, DialWidgetSchedule.class);
+				Intent dial = new Intent(context, DialSchedule.class);
 				dial.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				dial.putExtra("widgetFlag",true);
 				context.startActivity(dial);
 				break;
 		}
@@ -80,7 +81,7 @@ public class Widget5_5 extends AppWidgetProvider {
 		Intent init = new Intent(context, WidgetUpdateService.class);
 		init.putExtra("action","update5_5");
 		PendingIntent sender
-				= PendingIntent.getService(context, 0, init, PendingIntent.FLAG_CANCEL_CURRENT);
+				= PendingIntent.getService(context, 0, init, PendingIntent.FLAG_ONE_SHOT);
 		AlarmManager manager
 				= (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		/*Log.i("widget", String.valueOf(CurrentTime.getMidnight()));

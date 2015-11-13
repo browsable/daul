@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
@@ -16,6 +15,7 @@ import com.daemin.data.DayOfWeekData;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
+import com.daemin.enumclass.User;
 import com.daemin.event.ExcuteMethodEvent;
 
 import de.greenrobot.event.EventBus;
@@ -44,6 +44,7 @@ public class InitWeekThread extends InitThread {
         this.fri = dowd.getFri();
         this.sat = dowd.getSat();
         this.dayOfWeek = CurrentTime.getDayOfWeek();
+        postWeekData();
         isToday = true;
         tempxth = 0;
         tempyth = 0;
@@ -85,17 +86,6 @@ public class InitWeekThread extends InitThread {
                 return "";
         }
     }
-    public String[] getAllMonthAndDay() {
-        String[] MD = new String[7];
-        MD[0] = sun;
-        MD[1] = mon;
-        MD[2] = tue;
-        MD[3] = wed;
-        MD[4] = thr;
-        MD[5] = fri;
-        MD[6] = sat;
-        return MD;
-    }
     public void setCurrentTime(DayOfWeekData dowd) {
         this.sun = dowd.getSun();
         this.mon = dowd.getMon();
@@ -104,12 +94,21 @@ public class InitWeekThread extends InitThread {
         this.thr = dowd.getThr();
         this.fri = dowd.getFri();
         this.sat = dowd.getSat();
-        Log.i("test 1",CurrentTime.getToday());
-        Log.i("test 2",getMonthAndDay(2*dayOfWeek+1));
         if(CurrentTime.getToday().equals(getMonthAndDay(2*dayOfWeek+1))) isToday = true;
         else isToday = false;
+        postWeekData();
     }
-
+    public void postWeekData(){
+        String[] wData = new String[7];
+        wData[0] = sun;
+        wData[1] = mon;
+        wData[2] = tue;
+        wData[3] = wed;
+        wData[4] = thr;
+        wData[5] = fri;
+        wData[6] = sat;
+        User.INFO.setwData(wData);
+    }
     public void setRunning(boolean isLoop) {
         this.isLoop = isLoop;
     }

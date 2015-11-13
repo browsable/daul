@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
 import com.daemin.data.DayOfWeekData;
+import com.daemin.enumclass.User;
 import com.daemin.timetable.R;
 
 /**
@@ -39,6 +40,7 @@ public class WeekCaptureView extends ImageView {
         this.fri = dowd.getFri();
         this.sat = dowd.getSat();
         this.dayOfWeek = dayOfMonth;
+        postWeekData();
         isToday = true;
         tempxth = 0;
         tempyth = 0;
@@ -100,6 +102,18 @@ public class WeekCaptureView extends ImageView {
         this.sat = dowd.getSat();
         if(CurrentTime.getToday().equals(getMonthAndDay(2*dayOfWeek+1))) isToday = true;
         else isToday = false;
+        postWeekData();
+    }
+    public void postWeekData(){
+        String[] wData = new String[7];
+        wData[0] = sun;
+        wData[1] = mon;
+        wData[2] = tue;
+        wData[3] = wed;
+        wData[4] = thr;
+        wData[5] = fri;
+        wData[6] = sat;
+        User.INFO.setwData(wData);
     }
     @Override
     protected void onDraw(Canvas canvas)

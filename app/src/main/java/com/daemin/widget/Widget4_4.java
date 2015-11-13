@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
-import com.daemin.dialog.DialWidgetSchedule;
+import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.User;
 
 public class Widget4_4 extends AppWidgetProvider {
@@ -65,9 +65,10 @@ public class Widget4_4 extends AppWidgetProvider {
                 context.startService(forward);
                 break;
             case Common.ACTION_DIAL4_4:
-                Intent dial = new Intent(context, DialWidgetSchedule.class);
+                Intent dial = new Intent(context, DialSchedule.class);
                 dial.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                dial.putExtra("widgetFlag",true);
                 context.startActivity(dial);
                 break;
         }

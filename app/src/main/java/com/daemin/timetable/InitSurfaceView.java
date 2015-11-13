@@ -176,11 +176,15 @@ public class InitSurfaceView extends SurfaceView implements
 				}
 				break;
 			case 2:
-				//화면에 x축으로 7등분 중 몇번째에 위치하는지
-				xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 7 / initThread.getWidth()+1;
-				//화면에 y축으로 6등분 중 몇번째에 위치하는지
-				yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * 6 / initThread.getHeight()+1;
-				break;
+				try{
+					//화면에 x축으로 7등분 중 몇번째에 위치하는지
+					xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 7 / initThread.getWidth()+1;
+					//화면에 y축으로 6등분 중 몇번째에 위치하는지
+					yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * 6 / initThread.getHeight()+1;
+					break;
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			}
 		return;
 	}

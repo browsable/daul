@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
+import com.daemin.enumclass.User;
 import com.daemin.timetable.R;
 
 /**
@@ -28,6 +29,7 @@ public class MonthCaptureView extends ImageView {
     private int tx;//이전달의 마지막날 요일
     private int todayIndex;
     private String[] monthData;
+    private String barText;
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
     private Paint tp,tpred,tpblue,tpgray,rp; // 시간 텍스트
@@ -73,6 +75,19 @@ public class MonthCaptureView extends ImageView {
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
         rp.setColor(Color.parseColor(Common.MAIN_COLOR));
         rp.setAlpha(100);
+        int cnt =0;
+        for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+            ++cnt;
+        }
+        String[] mData = new String[cnt];
+        int j =0;
+        for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+            String str = CurrentTime.getTitleYearMonth(context);
+            mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
+            j++;
+        }
+        User.INFO.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
+        User.INFO.setmData(mData);
     }
     public MonthCaptureView(Context context, AttributeSet attrs)
     {
@@ -86,12 +101,31 @@ public class MonthCaptureView extends ImageView {
     public void setTodayIndex(int todayIndex) {
         this.todayIndex = todayIndex;
     }
+    public void setBarText(String barText) {
+        this.barText = barText;
+    }
     public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth){
         this.monthData = monthData;
         this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
         this.dayNumOfMonth = dayNumOfMonth;
         if(todayIndex==0) isToday= true;
         else isToday=false;
+        postMonthData();
+    }
+    public void postMonthData(){
+        int cnt =0;
+        for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+            ++cnt;
+        }
+        String[] mData = new String[cnt];
+        int j =0;
+        for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+            String str = barText;
+            mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
+            j++;
+        }
+        User.INFO.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
+        User.INFO.setmData(mData);
     }
     @Override
     protected void onDraw(Canvas canvas)

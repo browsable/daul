@@ -12,6 +12,7 @@ import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
+import com.daemin.enumclass.User;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.main.MainActivity;
 
@@ -73,6 +74,19 @@ public class InitMonthThread extends InitThread {
 			--tmp;
 			tx = 7;
 		}
+		int cnt =0;
+		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+			++cnt;
+		}
+		String[] mData = new String[cnt];
+		int j =0;
+		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+			String str = CurrentTime.getTitleYearMonth(context);
+			mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
+			j++;
+		}
+		User.INFO.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
+		User.INFO.setmData(mData);
 	}
 	public int getDayOfWeekOfLastMonth() {
 		return dayOfWeekOfLastMonth;
@@ -86,11 +100,9 @@ public class InitMonthThread extends InitThread {
 		this.dayNumOfMonth = dayNumOfMonth;
 		if(todayIndex==0) isToday= true;
 		else isToday=false;
+		postMonthData();
 	}
-	public void setRunning(boolean isLoop) {
-		this.isLoop = isLoop;
-	}
-	public String[] getMonthData() {
+	public void postMonthData(){
 		int cnt =0;
 		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
 			++cnt;
@@ -102,7 +114,11 @@ public class InitMonthThread extends InitThread {
 			mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
 			j++;
 		}
-		return mData;
+		User.INFO.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
+		User.INFO.setmData(mData);
+	}
+	public void setRunning(boolean isLoop) {
+		this.isLoop = isLoop;
 	}
 	public int getWidth() {
 		return width;
