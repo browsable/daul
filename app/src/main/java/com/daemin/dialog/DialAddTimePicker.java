@@ -231,10 +231,10 @@ public class DialAddTimePicker extends Dialog {
             for (int i = 0; i < tpSize; i++) {
                 if (i == 0) {
                     tp[i].setMin(startMin, 60);
-                    tp[i].setPosState(PosState.ADJUST);
+                    tp[i].setPosState(PosState.ENROLL);
                 } else if (i == tpSize - 1) {
                     tp[i].setMin(0, endMin);
-                    tp[i].setPosState(PosState.ADJUST);
+                    tp[i].setPosState(PosState.ENROLL);
                 } else {
                     tp[i].setPosState(PosState.PAINT);
                 }
@@ -244,7 +244,7 @@ public class DialAddTimePicker extends Dialog {
         }else{
             TimePos tp = TimePos.valueOf(Convert.getxyMerge(2 * npMD.getValue() + 1, Convert.HourOfDayToYth(startHour)));
             tp.setMin(startMin, endMin);
-            tp.setPosState(PosState.ADJUST);
+            tp.setPosState(PosState.ENROLL);
         }
         EventBus.getDefault().post(new BottomNormalData(MD[npMD.getValue()],
                 String.valueOf(npStartHour.getValue()),

@@ -113,7 +113,7 @@ public class MyRequest {
                 params.put("tag", "register");
                 params.put("email", "hernia@koreatech.ac.kr");
                 params.put("username", "daemin");
-                params.put("password", Common.md5("qlalfqjsgh"));
+                //params.put("password", Common.md5("qlalfqjsgh"));
                 return params;
             }
 

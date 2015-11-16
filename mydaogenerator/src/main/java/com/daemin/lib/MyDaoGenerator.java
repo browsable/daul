@@ -10,7 +10,6 @@ public class MyDaoGenerator {
         Schema schema = new Schema(1, "timedao");
         Entity MyTime = schema.addEntity("MyTime");
         MyTime.addIdProperty().autoincrement();
-        MyTime.addStringProperty("timecode");
         MyTime.addStringProperty("name");
         MyTime.addIntProperty("year");
         MyTime.addIntProperty("monthofyear");
@@ -20,14 +19,14 @@ public class MyDaoGenerator {
         MyTime.addIntProperty("startmin");
         MyTime.addIntProperty("endhour");
         MyTime.addIntProperty("endmin");
-        MyTime.addIntProperty("startmillis");
-        MyTime.addIntProperty("endmillis");
+        MyTime.addLongProperty("startmillis");
+        MyTime.addLongProperty("endmillis");
         MyTime.addStringProperty("memo");
         MyTime.addStringProperty("place");
         MyTime.addDoubleProperty("lat");
         MyTime.addDoubleProperty("lng");
         MyTime.addIntProperty("share");
-        MyTime.addStringProperty("alarm");
+        MyTime.addLongProperty("alarm");
         MyTime.addStringProperty("repeat");
         MyTime.addStringProperty("color");
 

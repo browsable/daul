@@ -155,7 +155,6 @@ public class MainActivity extends FragmentActivity {
         sendBroadcast(intent);
     }*/
     public void setTitle() {
-        tvTitleYear.setText(CurrentTime.getYear() + getString(R.string.year));
         switcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
@@ -172,7 +171,10 @@ public class MainActivity extends FragmentActivity {
         switcher.setInAnimation(in);
         switcher.setOutAnimation(out);
         if (viewMode == 0) {
+            int year = CurrentTime.getYear();
             switcher.setText(CurrentTime.getTitleMonthWeek(this));
+            tvTitleYear.setText(year + getString(R.string.year));
+            User.INFO.setYear(year);
         } else {
             barText = CurrentTime.getTitleYearMonth(this);
             switcher.setText(barText);
@@ -255,12 +257,16 @@ public class MainActivity extends FragmentActivity {
                 InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
                 --dayIndex;
                 if (dayIndex < 0) {
-                    tvTitleYear.setText(CurrentTime.backTitleYear(-dayIndex) + getString(R.string.year));
+                    int year = CurrentTime.backTitleYear(-dayIndex);
+                    User.INFO.setYear(year);
+                    tvTitleYear.setText(year + getString(R.string.year));
                     barText = CurrentTime.backTitleMonthWeek(this, -dayIndex);
                     switcher.setText(barText);
                     iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-dayIndex));
                 } else {
-                    tvTitleYear.setText(CurrentTime.preTitleYear(dayIndex) + getString(R.string.year));
+                    int year = CurrentTime.preTitleYear(dayIndex);
+                    User.INFO.setYear(year);
+                    tvTitleYear.setText(year + getString(R.string.year));
                     barText = CurrentTime.preTitleMonthWeek(this, dayIndex);
                     switcher.setText(barText);
                     iw.setCurrentTime(CurrentTime.getPreDateOfWeek(dayIndex));
@@ -294,12 +300,16 @@ public class MainActivity extends FragmentActivity {
                 InitWeekThread iw = (InitWeekThread) initSurfaceView.getInitThread();
                 ++dayIndex;
                 if (dayIndex < 0) {
-                    tvTitleYear.setText(CurrentTime.backTitleYear(-dayIndex) + getString(R.string.year));
+                    int year = CurrentTime.backTitleYear(-dayIndex);
+                    User.INFO.setYear(year);
+                    tvTitleYear.setText(year + getString(R.string.year));
                     barText = CurrentTime.backTitleMonthWeek(this, -dayIndex);
                     switcher.setText(barText);
                     iw.setCurrentTime(CurrentTime.getBackDateOfWeek(-dayIndex));
                 } else {
-                    tvTitleYear.setText(CurrentTime.preTitleYear(dayIndex) + getString(R.string.year));
+                    int year = CurrentTime.preTitleYear(dayIndex);
+                    User.INFO.setYear(year);
+                    tvTitleYear.setText(year + getString(R.string.year));
                     barText = CurrentTime.preTitleMonthWeek(this, dayIndex);
                     switcher.setText(barText);
                     iw.setCurrentTime(CurrentTime.getPreDateOfWeek(dayIndex));

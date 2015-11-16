@@ -131,5 +131,53 @@ public class Convert {
 		}
 		return index;
 	}
+	public static int Share(String grade) {
+		int index=0;
+		switch (grade) {
+			case "비공개":
+				index = 0;
+				break;
+			case "친구공개":
+				index=1;
+				break;
+			case "전체공개":
+				index=2;
+				break;
+		}
+		return index;
+	}
+	public static long Alarm(long startmillis , String grade) {
+		long alarmMillis=0;
+		switch (grade) {
+			case "알람 없음":
+				alarmMillis=startmillis-0;
+				break;
+			case "3분 전":
+				alarmMillis=startmillis-3*60*1000;
+				break;
+			case "5분 전":
+				alarmMillis=startmillis-5*60*1000;
+				break;
+			case "10분 전":
+				alarmMillis=startmillis-10*60*1000;
+				break;
+			case "15분 전":
+				alarmMillis=startmillis-15*60*1000;
+				break;
+			case "20분 전":
+				alarmMillis=startmillis-20*60*1000;
+				break;
+			case "30분 전":
+				alarmMillis=startmillis-30*60*1000;
+				break;
+			case "1시간 전":
+				alarmMillis=startmillis-60*60*1000;
+				break;
+			case "1일 전":
+				alarmMillis=startmillis-24*60*60*1000;
+				break;
+		}
+		return alarmMillis;
+	}
 }
 

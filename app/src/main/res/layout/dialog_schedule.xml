@@ -10,7 +10,7 @@
         android:id="@+id/llColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4"
+        android:layout_weight="3.8"
         android:background="@android:color/white"
         android:clickable="true"
         android:gravity="center"
@@ -87,7 +87,25 @@
         android:background="@color/dimgray"
         android:paddingLeft="@dimen/margin_s"
         android:orientation="horizontal">
-
+        <EditText
+            android:id="@+id/etSavedName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_xxxs"
+            android:layout_weight="0.6"
+            android:hint="@string/normal_name"
+            android:background="@color/transparency"
+            android:padding="@dimen/margin_xs"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:enabled="false"
+            android:text="프로그래밍언어론"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textsize_l"
+            android:visibility="gone"
+            />
         <Button
             android:id="@+id/btNormal"
             android:layout_width="match_parent"
@@ -97,7 +115,8 @@
             android:text="일반"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textsize_l"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
         <Button
             android:id="@+id/btUniv"
@@ -108,7 +127,8 @@
             android:text="대학"
             android:textColor="@color/gray"
             android:textSize="@dimen/textsize_l"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
         <View
             android:id="@+id/dragToggle"
@@ -158,39 +178,7 @@
         android:visibility="visible"
         android:background="@color/transparency"
         android:orientation="vertical">
-
         <include layout="@layout/dialog_schedule_include" />
-
-        <LinearLayout
-            android:id="@+id/llButtonArea"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="@dimen/margin_xl"
-            android:visibility="gone">
-
-            <Button
-                android:id="@+id/btCommunity"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_marginRight="@dimen/margin_xxl"
-                android:background="@drawable/ic_community_black" />
-
-            <Button
-                android:id="@+id/btInvite"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_marginRight="@dimen/margin_xxl"
-                android:background="@drawable/ic_invite" />
-
-            <Button
-                android:id="@+id/btRemove"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/ic_remove" />
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

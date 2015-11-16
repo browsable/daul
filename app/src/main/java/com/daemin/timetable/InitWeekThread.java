@@ -2,6 +2,7 @@ package com.daemin.timetable;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,13 +13,17 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.data.DayOfWeekData;
+import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.ExcuteMethodEvent;
+import com.daemin.event.FinishDialogEvent;
+import com.daemin.repository.MyTimeRepo;
 
 import de.greenrobot.event.EventBus;
+import timedao.MyTime;
 
 @SuppressLint("DefaultLocale")
 public class InitWeekThread extends InitThread {
@@ -44,7 +49,7 @@ public class InitWeekThread extends InitThread {
         this.fri = dowd.getFri();
         this.sat = dowd.getSat();
         this.dayOfWeek = CurrentTime.getDayOfWeek();
-        postWeekData();
+        postData();
         isToday = true;
         tempxth = 0;
         tempyth = 0;
@@ -63,7 +68,6 @@ public class InitWeekThread extends InitThread {
         tpblue.setTextSize(30);
         tpblue.setTextAlign(Paint.Align.CENTER);
         tpblue.setColor(context.getResources().getColor(R.color.blue));
-
     }
 
     public String getMonthAndDay(int... index) {
@@ -96,9 +100,10 @@ public class InitWeekThread extends InitThread {
         this.sat = dowd.getSat();
         if(CurrentTime.getToday().equals(getMonthAndDay(2*dayOfWeek+1))) isToday = true;
         else isToday = false;
-        postWeekData();
+        postData();
     }
-    public void postWeekData(){
+    public void postData(){
+        Common.cleanTable();
         String[] wData = new String[7];
         wData[0] = sun;
         wData[1] = mon;
@@ -108,6 +113,22 @@ public class InitWeekThread extends InitThread {
         wData[5] = fri;
         wData[6] = sat;
         User.INFO.setwData(wData);
+        int week_startMonth = Integer.parseInt(sun.split("/")[0]);
+        int week_startDay = Integer.parseInt(sun.split("/")[1]);
+        int week_endMonth = Integer.parseInt(sat.split("/")[0]);
+        int week_endDay = Integer.parseInt(sat.split("/")[1]);
+        int week_startYear;
+        int week_endYear;
+        if(week_startMonth==12&&week_endMonth==1){
+            week_endYear=User.INFO.year;
+            week_startYear=week_endYear-1;
+        }else
+            week_endYear=week_startYear=User.INFO.year;
+        long week_startMillies = CurrentTime.getDateMillis(week_startYear,week_startMonth,week_startDay,8,0);
+        long week_endMillies = CurrentTime.getDateMillis(week_endYear,week_endMonth,week_endDay,23,0);
+        for(MyTime mt :  MyTimeRepo.getWeekTime(context,week_startMillies,week_endMillies)){
+            Common.addWeek(mt.getDayofweek(),mt.getStarthour(),mt.getStartmin(),mt.getEndhour(),mt.getEndmin(),mt.getColor());
+        }
     }
     public void setRunning(boolean isLoop) {
         this.isLoop = isLoop;
@@ -172,10 +193,15 @@ public class InitWeekThread extends InitThread {
                     ETP.setPosState(PosState.PAINT);
                     if(!Common.getTempTimePos().contains(ETP.name()))
                     Common.getTempTimePos().add(ETP.name());
-                } else {
+                }else if(ETP.getPosState() == PosState.PAINT){
                     ETP.setMin(0,60);
                     ETP.setPosState(PosState.NO_PAINT);
                     Common.getTempTimePos().remove(ETP.name());
+                }else{
+                    EventBus.getDefault().post(new FinishDialogEvent());
+                    Intent i = new Intent(context, DialSchedule.class);
+                    i.putExtra("enrollFlag",true);
+                    context.startActivity(i);
                 }
                 break;
             case 1: //대학

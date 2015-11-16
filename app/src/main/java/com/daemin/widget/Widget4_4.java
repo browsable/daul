@@ -12,6 +12,7 @@ import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
 import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.User;
+import com.daemin.main.MainActivity;
 
 public class Widget4_4 extends AppWidgetProvider {
     @Override
@@ -71,22 +72,31 @@ public class Widget4_4 extends AppWidgetProvider {
                 dial.putExtra("widgetFlag",true);
                 context.startActivity(dial);
                 break;
+            case Common.ACTION_HOME4_4:
+                Intent main4 = new Intent(context, MainActivity.class);
+                main4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                main4.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(main4);
+                break;
         }
     }
     public static void registerAlarm(Context context)
     {
+        Log.i("widget", "alarm register");
         Intent init = new Intent(context, WidgetUpdateService.class);
         init.putExtra("action","update4_4");
         PendingIntent sender
                 = PendingIntent.getService(context, 0, init, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager manager
                 = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        //Log.i("widget", String.valueOf(CurrentTime.getMidnight()));
-        //Log.i("widget", String.valueOf(CurrentTime.getNowMillis()));
+		/*Log.i("widget", String.valueOf(CurrentTime.getMidnight()));
+		Log.i("widget", String.valueOf(CurrentTime.getNowMillis()));
+		Log.i("widget", CurrentTime.getDatefromMillis(CurrentTime.getMidnight()));*/
         manager.setRepeating(AlarmManager.RTC_WAKEUP, CurrentTime.getMidnight()+5000, AlarmManager.INTERVAL_DAY, sender);
     }
     public static void unregisterAlarm(Context context)
     {
+        Log.i("widget", "alarm unregister");
         Intent intent = new Intent();
         PendingIntent sender
                 = PendingIntent.getBroadcast(context, 0, intent, 0);

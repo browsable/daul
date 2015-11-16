@@ -12,6 +12,7 @@ import com.daemin.common.Common;
 import com.daemin.common.CurrentTime;
 import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.User;
+import com.daemin.main.MainActivity;
 
 public class Widget5_5 extends AppWidgetProvider {
 	@Override
@@ -71,6 +72,12 @@ public class Widget5_5 extends AppWidgetProvider {
 				dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				dial.putExtra("widgetFlag",true);
 				context.startActivity(dial);
+				break;
+			case Common.ACTION_HOME5_5:
+				Intent main5 = new Intent(context, MainActivity.class);
+				main5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				main5.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(main5);
 				break;
 		}
 	}

@@ -9,6 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
         <LinearLayout
+            android:id="@+id/llEtName"
             android:layout_width="match_parent"
             android:layout_height="34dp"
             android:orientation="horizontal">
@@ -30,12 +31,10 @@
             android:background="@color/lightgray"
             />
         <LinearLayout
-            android:id="@+id/btNew1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:onClick="mOnClick"
             android:background="@drawable/bt_click"
             >
             <LinearLayout
@@ -64,7 +63,7 @@
                 android:background="@color/lightgray"
                 />
             <LinearLayout
-                android:id="@+id/btNew2"
+                android:id="@+id/btNew"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5.2"
@@ -283,5 +282,35 @@
             android:layout_height="1dp"
             android:background="@color/lightgray"
             />
+        <LinearLayout
+            android:id="@+id/llButtonArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_lightgray_bottomline"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_l"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btCommunity"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginRight="@dimen/margin_xxl"
+                android:background="@drawable/ic_community_black" />
+
+            <Button
+                android:id="@+id/btInvite"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginRight="@dimen/margin_xxl"
+                android:background="@drawable/ic_invite" />
+
+            <Button
+                android:id="@+id/btRemove"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/ic_remove" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

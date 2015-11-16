@@ -11,6 +11,7 @@ public abstract class InitThread extends Thread {
     public abstract int getWidth();
     public abstract int getHeight();
     public abstract String getMonthAndDay(int... index);
+    public abstract void postData();
     //public abstract Bitmap captureImg();
 
 }

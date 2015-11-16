@@ -114,8 +114,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_schedule);
         EventBus.getDefault().post(new SetBtPlusEvent(false));
-        if(!getIntent().equals(null))//widget에서 Dialog 호출한 경우
+        if(!getIntent().equals(null)) {//widget에서 Dialog 호출한 경우
             widgetFlag = getIntent().getBooleanExtra("widgetFlag", false);
+            enrollFlag = getIntent().getBooleanExtra("enrollFlag", false);
+        }
         setLayout();
         colorButtonSetting();
         makeNormalList();
@@ -126,12 +128,24 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
         lp = window.getAttributes();
+
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels *3/5;
-        lp.width = lp.MATCH_PARENT;
         lp.height = screenHeight*2/3;
-        window.setAttributes(lp);
+        lp.width = lp.MATCH_PARENT;
+        if(enrollFlag) {
+            llButtonArea.setVisibility(View.VISIBLE);
+            etSavedName.setVisibility(View.VISIBLE);
+            llEtName.setVisibility(View.GONE);
+            btUniv.setVisibility(View.GONE);
+            btNormal.setVisibility(View.GONE);
+            btNew.setVisibility(View.GONE);
+            lp.height = lp.WRAP_CONTENT;
+        }
         window.setGravity(Gravity.BOTTOM);
+        window.setAttributes(lp);
+
+
         if(viewMode==0)
             updateWeekList();
         else
@@ -238,7 +252,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         int tmpStartYth=0, tmpStartMin=0, tmpEndYth=0, tmpEndMin=0;
         String YMD="";
         for (TimePos ETP : TimePos.values()) {
-            if(ETP.getPosState()==PosState.PAINT||ETP.getPosState()==PosState.ADJUST){
+            if(ETP.getPosState()==PosState.PAINT){
                 if(tmpXth!=ETP.getXth()){
                     tmpXth = ETP.getXth();
                     YMD = initSurfaceView.getInitThread().getMonthAndDay(tmpXth);
@@ -337,6 +351,23 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             settingUniv();
         }
 
+    }
+    public static void addWeek(int xth, int startHour, int startMin, int endHour, int endMin){
+        if(endMin!=0) ++endHour;
+        else endMin=60;
+
+        TimePos[] tp = new TimePos[endHour - startHour];
+        int j = 0;
+        for (int i = startHour; i < endHour; i++) {
+            tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+            if (tp[j].getPosState() == PosState.NO_PAINT) {
+                if(i==startHour && startMin!=0) tp[j].setMin(startMin, 60);
+                if(i==endHour-1) tp[j].setMin(0, endMin);
+                tp[j].setPosState(PosState.PAINT);
+                Common.getTempTimePos().add(tp[j].name());
+            }
+            ++j;
+        }
     }
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void settingUniv(){
@@ -459,24 +490,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             Toast.makeText(DialSchedule.this, getString(R.string.e_learning), Toast.LENGTH_SHORT).show();
         }
         return timeList;
-    }
-    //3:9:00:10:00 , 3:9:00:11:00, 3:9:00:11:30
-    public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin){
-        if(endMin!=0) ++endHour;
-        else endMin=60;
-
-        TimePos[] tp = new TimePos[endHour - startHour];
-        int j = 0;
-        for (int i = startHour; i < endHour; i++) {
-            tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
-            if (tp[j].getPosState() == PosState.NO_PAINT) {
-                if(i==startHour && startMin!=0) tp[j].setMin(startMin, 60);
-                if(i==endHour-1) tp[j].setMin(0, endMin);
-                tp[j].setPosState(PosState.ADJUST);
-                Common.getTempTimePos().add(tp[j].name());
-            }
-            ++j;
-        }
     }
     public AutoCompleteTextView SettingACTV(AutoCompleteTextView actv,ArrayAdapter<String> adapter){
         actv.requestFocus();
@@ -607,10 +620,62 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btAddSchedule:
-                MyTime myTime = new MyTime(null,User.INFO.userPK,etName.getText().toString(),
-                        2015,10,11,3,9,30,10,30,0,0,etMemo.getText().toString(),etPlace.getText().toString(),
-                        User.INFO.latitude,User.INFO.longitude,0,"10","10:10","#000000");
-                MyTimeRepo.insertOrUpdate(this,myTime);
+                Common.stateFilter(Common.getTempTimePos(), viewMode);
+                if(viewMode==0) {
+                    for (BottomNormalData d : normalList) {
+                        int week_endMonth = Integer.parseInt(User.INFO.getwData()[6].split("/")[0]);
+                        int monthOfYear = Integer.parseInt(d.getYMD().split("/")[0]);
+                        int year;
+                        if(week_endMonth != monthOfYear) year = User.INFO.getYear()-1;
+                        else year = User.INFO.getYear();
+                        int dayOfMonth = Integer.parseInt(d.getYMD().split("/")[1]);
+                        int startHour = Integer.parseInt(d.getStartHour());
+                        int startMin = Integer.parseInt(d.getStartMin());
+                        int endHour = Integer.parseInt(d.getEndHour());
+                        int endMin = Integer.parseInt(d.getEndMin());
+                        long startmillis = CurrentTime.getDateMillis(year, monthOfYear, dayOfMonth, startHour, startMin);
+                        long endmillis = CurrentTime.getDateMillis(year,monthOfYear,dayOfMonth,endHour,endMin);
+                        MyTime myTime = new MyTime(null,
+                                etName.getText().toString(),
+                                year,monthOfYear,dayOfMonth,
+                                d.getXth(),startHour,startMin,endHour,endMin,
+                                startmillis,endmillis,
+                                etMemo.getText().toString(),
+                                etPlace.getText().toString(),
+                                User.INFO.latitude, User.INFO.longitude,
+                                Convert.Share(tvShare.getText().toString()),
+                                Convert.Alarm(startmillis, tvAlarm.getText().toString()),
+                                "10:10",
+                                colorName);
+                        MyTimeRepo.insertOrUpdate(this, myTime);
+                        initSurfaceView.getInitThread().postData();
+                    }
+                }else{
+                    for (BottomNormalData d : normalList) {
+                        int year = User.INFO.getYear();
+                        int monthOfYear = Integer.parseInt(d.getYMD().split("/")[0]);
+                        int dayOfMonth = Integer.parseInt(d.getYMD().split("/")[1]);
+                        int startHour = Integer.parseInt(d.getStartHour());
+                        int startMin = Integer.parseInt(d.getStartMin());
+                        int endHour = Integer.parseInt(d.getEndHour());
+                        int endMin = Integer.parseInt(d.getEndMin());
+                        long startmillis = CurrentTime.getDateMillis(year, monthOfYear, dayOfMonth, startHour, startMin);
+                        long endmillis = CurrentTime.getDateMillis(year,monthOfYear,dayOfMonth,endHour,endMin);
+                        MyTime myTime = new MyTime(null,
+                                etName.getText().toString(),
+                                year,monthOfYear,dayOfMonth,
+                                d.getXth(),startHour,startMin,endHour,endMin,
+                                startmillis,endmillis,
+                                etMemo.getText().toString(),
+                                etPlace.getText().toString(),
+                                User.INFO.latitude, User.INFO.longitude,
+                                Convert.Share(tvShare.getText().toString()),
+                                Convert.Alarm(startmillis, tvAlarm.getText().toString()),
+                                "10:10",
+                                colorName);
+                        MyTimeRepo.insertOrUpdate(this, myTime);
+                    }
+                }
                 break;
             case R.id.btCancel:
                 EventBus.getDefault().post(new SetBtPlusEvent(true));
@@ -630,7 +695,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 break;
             case R.id.btRemove:
                 break;
-            case R.id.btNew1:case R.id.btNew2:
+            case R.id.btNew:
                 DialAddTimePicker datp = null;
                 switch(viewMode) {
                     case 0:
@@ -728,9 +793,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         llColor = (LinearLayout) findViewById(R.id.llColor);
         llNormal = (LinearLayout) findViewById(R.id.llNormal);
         llButtonArea = (LinearLayout) findViewById(R.id.llButtonArea);
+        llEtName = (LinearLayout) findViewById(R.id.llEtName);
         llUniv = (LinearLayout) findViewById(R.id.llUniv);
-        btNew1 = (LinearLayout) findViewById(R.id.btNew1);
-        btNew2 = (LinearLayout) findViewById(R.id.btNew2);
+        btNew = (LinearLayout) findViewById(R.id.btNew);
         btPlace = (LinearLayout) findViewById(R.id.btPlace);
         btShare = (LinearLayout) findViewById(R.id.btShare);
         btAlarm = (LinearLayout) findViewById(R.id.btAlarm);
@@ -745,6 +810,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         etName = (EditText) findViewById(R.id.etName);
         etPlace = (EditText) findViewById(R.id.etPlace);
         etMemo = (EditText) findViewById(R.id.etMemo);
+        etSavedName = (EditText) findViewById(R.id.etSavedName);
         lvTime = (HorizontalListView) findViewById(R.id.lvTime);
         hlv = (HorizontalListView) findViewById(R.id.hlv);
         actvUniv = (AutoCompleteTextView) findViewById(R.id.actvUniv);
@@ -764,8 +830,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btShowDep.setOnClickListener(this);
         btShowGrade.setOnClickListener(this);
         btEnter.setOnClickListener(this);
-        btNew1.setOnClickListener(this);
-        btNew2.setOnClickListener(this);
+        btNew.setOnClickListener(this);
         btPlace.setOnClickListener(this);
         btShare.setOnClickListener(this);
         btAlarm.setOnClickListener(this);
@@ -789,9 +854,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
     private Button btNormal, btUniv, btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter;
     private ToggleButton btColor;
-    private LinearLayout llColor, llNormal, llButtonArea, llUniv,llSelectUniv, llDep, btNew1, btNew2, btPlace, btShare, btAlarm, btRepeat;
+    private LinearLayout llColor, llNormal, llButtonArea, llUniv,llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat,llEtName;
     private TextView tvShare, tvAlarm, tvRepeat, btUnivNotice;
-    private EditText etName, etPlace, etMemo;
+    private EditText etName, etPlace, etMemo,etSavedName;
     private View dragToggle,btShowUniv,btShowDep,btShowGrade;
     private HorizontalListView lvTime,hlv;
     private HorizontalListAdapter hoAdapter;
@@ -808,7 +873,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight,viewMode;
-    private boolean univFlag,depFlag,gradeFlag,widgetFlag;
+    private boolean univFlag,depFlag,gradeFlag,widgetFlag,enrollFlag;
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
         EventBus.getDefault().post(new SetBtPlusEvent(true));

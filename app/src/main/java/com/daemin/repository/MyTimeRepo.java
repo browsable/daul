@@ -32,6 +32,12 @@ public class MyTimeRepo {
     public static MyTime getMyTimeForId(Context context, long id) {
         return getMyTimeDao(context).load(id);
     }
+    public static List<MyTime> getWeekTime(Context context, long week_startMillies, long week_endMillies){
+        return getMyTimeDao(context)
+                .queryBuilder()
+                .where(MyTimeDao.Properties.Startmillis.between(week_startMillies, week_endMillies))
+                .list();
+    }
    /* public static String getEngByKor(Context context, String key) {
         return getNormalDao(context)
                 .queryBuilder()

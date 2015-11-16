@@ -2,6 +2,8 @@ package com.daemin.enumclass;
 
 import android.graphics.Canvas;
 
+import com.daemin.common.Common;
+
 /**
  * Created by hernia on 2015-06-27.
  */
@@ -19,6 +21,7 @@ public enum TimePos {
     private int yth;
     private int startMin;
     private int endMin;
+    private String color;
     TimePos() {
     }
 
@@ -28,6 +31,7 @@ public enum TimePos {
         this.posState = PosState.NO_PAINT;
         startMin =0;
         endMin = 60;
+        color = Common.MAIN_COLOR;
     }
     public int getXth() {
         return xth;
@@ -52,8 +56,10 @@ public enum TimePos {
     public PosState getPosState() {
         return posState;
     }
-
+    public void setColor(String color){
+        this.color = color;
+    }
     public void drawTimePos(Canvas canvas, int width, int height) {
-        posState.drawTimePos(canvas, width, height, xth, yth, startMin , endMin);
+        posState.drawTimePos(canvas, width, height, xth, yth, startMin , endMin, color);
     }
 }

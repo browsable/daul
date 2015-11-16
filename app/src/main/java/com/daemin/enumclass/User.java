@@ -23,7 +23,7 @@ public enum User {
     public double latitude, longitude;
     public String userPK;
     public String[] wData, mData;
-    public int groupPK;
+    public int groupPK,year,month;
     public int dayOfWeekOfLastMonth;
     public SharedPreferences.Editor getEditor() {
         return editor;
@@ -40,13 +40,24 @@ public enum User {
     public double getLatitude() {
         return latitude;
     }
+    public int getYear() {
+        return year;
+    }
+    public void setYear(int year) {
+        this.year = year;
+    }
+    public int getMonth() {
+        return month;
+    }
+    public void setMonth(int month) {
+        this.month = month;
+    }
     public String[] getwData() {
         return wData;
     }
     public int getDayOfWeekOfLastMonth() {
         return dayOfWeekOfLastMonth;
     }
-
     public void setDayOfWeekOfLastMonth(int dayOfWeekOfLastMonth) {
         this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
     }
@@ -63,7 +74,7 @@ public enum User {
     }
     //Pref Getter
     public boolean getFirstFlag(){
-        return pref.getBoolean("firstFlag",true);
+        return pref.getBoolean("firstFlag", true);
     }
     public int getDeviceWidth(){
         return pref.getInt("deviceWidth", 0);

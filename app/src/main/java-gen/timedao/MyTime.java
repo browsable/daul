@@ -7,7 +7,6 @@ package timedao;
 public class MyTime {
 
     private Long id;
-    private String timecode;
     private String name;
     private Integer year;
     private Integer monthofyear;
@@ -17,14 +16,14 @@ public class MyTime {
     private Integer startmin;
     private Integer endhour;
     private Integer endmin;
-    private Integer startmillis;
-    private Integer endmillis;
+    private Long startmillis;
+    private Long endmillis;
     private String memo;
     private String place;
     private Double lat;
     private Double lng;
     private Integer share;
-    private String alarm;
+    private Long alarm;
     private String repeat;
     private String color;
 
@@ -35,9 +34,8 @@ public class MyTime {
         this.id = id;
     }
 
-    public MyTime(Long id, String timecode, String name, Integer year, Integer monthofyear, Integer dayofmonth, Integer dayofweek, Integer starthour, Integer startmin, Integer endhour, Integer endmin, Integer startmillis, Integer endmillis, String memo, String place, Double lat, Double lng, Integer share, String alarm, String repeat, String color) {
+    public MyTime(Long id, String name, Integer year, Integer monthofyear, Integer dayofmonth, Integer dayofweek, Integer starthour, Integer startmin, Integer endhour, Integer endmin, Long startmillis, Long endmillis, String memo, String place, Double lat, Double lng, Integer share, Long alarm, String repeat, String color) {
         this.id = id;
-        this.timecode = timecode;
         this.name = name;
         this.year = year;
         this.monthofyear = monthofyear;
@@ -65,14 +63,6 @@ public class MyTime {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTimecode() {
-        return timecode;
-    }
-
-    public void setTimecode(String timecode) {
-        this.timecode = timecode;
     }
 
     public String getName() {
@@ -147,19 +137,19 @@ public class MyTime {
         this.endmin = endmin;
     }
 
-    public Integer getStartmillis() {
+    public Long getStartmillis() {
         return startmillis;
     }
 
-    public void setStartmillis(Integer startmillis) {
+    public void setStartmillis(Long startmillis) {
         this.startmillis = startmillis;
     }
 
-    public Integer getEndmillis() {
+    public Long getEndmillis() {
         return endmillis;
     }
 
-    public void setEndmillis(Integer endmillis) {
+    public void setEndmillis(Long endmillis) {
         this.endmillis = endmillis;
     }
 
@@ -203,11 +193,11 @@ public class MyTime {
         this.share = share;
     }
 
-    public String getAlarm() {
+    public Long getAlarm() {
         return alarm;
     }
 
-    public void setAlarm(String alarm) {
+    public void setAlarm(Long alarm) {
         this.alarm = alarm;
     }
 

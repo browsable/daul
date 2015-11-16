@@ -14,8 +14,6 @@ import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.timetable.R;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -23,11 +21,13 @@ import java.util.Hashtable;
 public class Common {
 
 	/* BroadCastReceiver Filter */
+	public static final String ACTION_HOME5_5 = "com.daemin.widget.ACTION_HOME5_5";
 	public static final String ACTION_DIAL5_5 = "com.daemin.widget.ACTION_DIAL5_5";
 	public static final String ACTION_WEEK5_5 = "com.daemin.widget.ACTION_WEEK5_5";
 	public static final String ACTION_MONTH5_5 = "com.daemin.widget.ACTION_MONTH5_5";
 	public static final String ACTION_BACK5_5 = "com.daemin.widget.ACTION_BACK5_5";
 	public static final String ACTION_FORWARD5_5 = "com.daemin.widget.ACTION_FORWARD5_5";
+	public static final String ACTION_HOME4_4 = "com.daemin.widget.ACTION_HOME4_4";
 	public static final String ACTION_WEEK4_4 = "com.daemin.widget.ACTION_WEEK4_4";
 	public static final String ACTION_MONTH4_4 = "com.daemin.widget.ACTION_MONTH4_4";
 	public static final String ACTION_BACK4_4 = "com.daemin.widget.ACTION_BACK4_4";
@@ -53,6 +53,29 @@ public class Common {
 		}
 		return false;
 	}
+	//3:9:00:10:00 , 3:9:00:11:00, 3:9:00:11:30
+	public static void addWeek(int xth, int startHour, int startMin, int endHour, int endMin, String color){
+		if(endMin!=0) ++endHour;
+		else endMin=60;
+
+		TimePos[] tp = new TimePos[endHour - startHour];
+		int j = 0;
+		for (int i = startHour; i < endHour; i++) {
+			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+			if (tp[j].getPosState() == PosState.NO_PAINT) {
+				if(i==startHour && startMin!=0) tp[j].setMin(startMin, 60);
+				if(i==endHour-1) tp[j].setMin(0, endMin);
+				tp[j].setColor(color);
+				tp[j].setPosState(PosState.ENROLL);
+			}
+			++j;
+		}
+	}
+	public static void cleanTable(){
+		for (TimePos ETP : TimePos.values()) {
+			ETP.setPosState(PosState.NO_PAINT);
+		}
+	}
 	public static boolean isTableEmpty(){
 		boolean empty = true;
 		for (TimePos ETP : TimePos.values()) {
@@ -64,16 +87,16 @@ public class Common {
 	public static ArrayList<String> getTempTimePos(){
 		return tempTimePos;
 	}
-	public static void setTempTimePos(ArrayList<String> tempTimePos) {
-		Common.tempTimePos = tempTimePos;
-	}
 	public static void stateFilter(ArrayList<String> tempTimePos,int viewMode){
 		if(tempTimePos!=null) {
 			switch(viewMode){
 				case 0:
 					for(String t : tempTimePos){
-						TimePos.valueOf(t).setMin(0,60);
-						TimePos.valueOf(t).setPosState(PosState.NO_PAINT);
+						TimePos tp= TimePos.valueOf(t);
+						if(tp.getPosState()!=PosState.ENROLL) {
+							tp.setMin(0, 60);
+							tp.setPosState(PosState.NO_PAINT);
+						}
 					}
 					break;
 				case 2:
@@ -123,27 +146,5 @@ public class Common {
 			fontCache.put(name, tf);
 		}
 		return tf;
-	}
-
-	public static final String md5(final String password) {
-		try {
-
-			MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-			digest.update(password.getBytes());
-			byte messageDigest[] = digest.digest();
-
-			StringBuffer hexString = new StringBuffer();
-			for (int i = 0; i < messageDigest.length; i++) {
-				String h = Integer.toHexString(0xFF & messageDigest[i]);
-				while (h.length() < 2)
-					h = "0" + h;
-				hexString.append(h);
-			}
-			return hexString.toString();
-
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return "";
 	}
 }

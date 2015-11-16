@@ -130,6 +130,10 @@ public class InitMonthThread extends InitThread {
 	public String getMonthAndDay(int... index) {
 		return monthData[index[0]+index[1]];
 	}
+	@Override
+	public void postData() {
+
+	}
 
 	public void run() {
 		while (isLoop) {
