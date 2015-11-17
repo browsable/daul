@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_black_border"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_weight="2"
+        android:text="@string/tvDialColor"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:textSize="@dimen/textsize_l"
+        android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/margin_default"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btcolor1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/btcolor1" />
+
+            <Button
+                android:id="@+id/btcolor2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/btcolor2" />
+
+            <Button
+                android:id="@+id/btcolor3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/btcolor3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btcolor4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/btcolor4" />
+
+            <Button
+                android:id="@+id/btcolor5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/btcolor5" />
+
+            <Button
+                android:id="@+id/btcolor6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/btcolor6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btcolor7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/btcolor7" />
+
+            <Button
+                android:id="@+id/btcolor8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/btcolor8" />
+
+            <Button
+                android:id="@+id/btcolor9"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/btcolor9" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:layout_marginRight="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_xxxs"
+        >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5" />
+
+        <Button
+            android:id="@+id/btDialCancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@android:color/white"
+            android:text="@string/btDialCancel"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btDialSetting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@android:color/white"
+            android:text="@string/btDialSetting"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

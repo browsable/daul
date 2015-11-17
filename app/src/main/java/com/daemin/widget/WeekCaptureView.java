@@ -10,17 +10,21 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-import com.daemin.common.Common;
+import com.daemin.common.Convert;
 import com.daemin.common.CurrentTime;
 import com.daemin.data.DayOfWeekData;
 import com.daemin.enumclass.User;
+import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
+
+import timedao.MyTime;
 
 /**
  * Created by hernia on 2015-11-05.
  */
 public class WeekCaptureView extends ImageView {
     private boolean isToday;
+    private Context context;
     private int width, height, dayOfWeek; //화면의 전체 너비, 높이
     private String sun, mon, tue, wed, thr, fri, sat;
     private Paint hp; // 1시간 간격 수평선
@@ -31,6 +35,7 @@ public class WeekCaptureView extends ImageView {
     public WeekCaptureView(Context context, int dayOfMonth)
     {
         super(context);
+        this.context = context;
         DayOfWeekData dowd = CurrentTime.getDateOfWeek();
         this.sun = dowd.getSun();
         this.mon = dowd.getMon();
@@ -40,6 +45,7 @@ public class WeekCaptureView extends ImageView {
         this.fri = dowd.getFri();
         this.sat = dowd.getSat();
         this.dayOfWeek = dayOfMonth;
+        rp = new Paint(Paint.ANTI_ALIAS_FLAG);
         postWeekData();
         isToday = true;
         tempxth = 0;
@@ -59,9 +65,6 @@ public class WeekCaptureView extends ImageView {
         tpblue.setTextSize(30);
         tpblue.setTextAlign(Paint.Align.CENTER);
         tpblue.setColor(context.getResources().getColor(R.color.blue));
-        rp = new Paint(Paint.ANTI_ALIAS_FLAG);
-        rp.setColor(Color.parseColor(Common.MAIN_COLOR));
-        rp.setAlpha(100);
     }
     public WeekCaptureView(Context context, AttributeSet attrs)
     {
@@ -124,8 +127,30 @@ public class WeekCaptureView extends ImageView {
         width = canvas.getWidth();
         height = canvas.getHeight();
         initScreen(dayOfWeek);
-        /*canvas.drawRect(width * 3 / 15, height * 5 / 32 + 18,
-                width * (5 + 2) / 15, height * (7 + 2) / 32 + 18, rp);*/
+        int week_startMonth = Integer.parseInt(sun.split("/")[0]);
+        int week_startDay = Integer.parseInt(sun.split("/")[1]);
+        int week_endMonth = Integer.parseInt(sat.split("/")[0]);
+        int week_endDay = Integer.parseInt(sat.split("/")[1]);
+        int week_startYear;
+        int week_endYear;
+        if(week_startMonth==12&&week_endMonth==1){
+            week_endYear=User.INFO.year;
+            week_startYear=week_endYear-1;
+        }else
+            week_endYear=week_startYear=User.INFO.year;
+        long week_startMillies = CurrentTime.getDateMillis(week_startYear,week_startMonth,week_startDay,8,0);
+        long week_endMillies = CurrentTime.getDateMillis(week_endYear,week_endMonth,week_endDay,23,0);
+        for(MyTime mt :  MyTimeRepo.getWeekTime(context, week_startMillies, week_endMillies)) {
+            rp.setColor(Color.parseColor(mt.getColor()));
+            rp.setAlpha(130);
+            int xth = mt.getDayofweek();
+            int startMin = mt.getStartmin();
+            int endMin = mt.getEndmin();
+            int startYth = Convert.HourOfDayToYth(mt.getStarthour());
+            int endYth = Convert.HourOfDayToYth(mt.getEndhour());
+                canvas.drawRect(width * xth / 15, (height * startYth / 32 + 18) + (2 * height / 32) * startMin / 60,
+                        width * (xth + 2) / 15, (height * endYth / 32 + 18) + (2 * height / 32) * endMin / 60, rp);
+        }
     }
     @Override
     public boolean onTouchEvent(MotionEvent event)

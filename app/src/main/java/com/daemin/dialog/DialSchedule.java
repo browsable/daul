@@ -24,8 +24,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -53,6 +53,7 @@ import com.daemin.event.SetAlarmEvent;
 import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
 import com.daemin.event.SetBtUnivNoticeEvent;
+import com.daemin.event.SetColorEvent;
 import com.daemin.event.SetPlaceEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
@@ -63,6 +64,7 @@ import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.InitMonthThread;
 import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.R;
+import com.daemin.widget.WidgetUpdateService;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -119,7 +121,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             enrollFlag = getIntent().getBooleanExtra("enrollFlag", false);
         }
         setLayout();
-        colorButtonSetting();
         makeNormalList();
         window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(
@@ -131,11 +132,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels *3/5;
-        lp.height = screenHeight*2/3;
+        lp.height = screenHeight*23/36;
         lp.width = lp.MATCH_PARENT;
         if(enrollFlag) {
             llButtonArea.setVisibility(View.VISIBLE);
-            etSavedName.setVisibility(View.VISIBLE);
+            rlEdit.setVisibility(View.VISIBLE);
             llEtName.setVisibility(View.GONE);
             btUniv.setVisibility(View.GONE);
             btNormal.setVisibility(View.GONE);
@@ -145,32 +146,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         window.setGravity(Gravity.BOTTOM);
         window.setAttributes(lp);
 
-
         if(viewMode==0)
             updateWeekList();
         else
             updateMonthList();
         backPressCloseHandler = new BackPressCloseHandler(this);
-    }
-
-    public void colorButtonSetting() {
-        gd = (GradientDrawable) btColor.getBackground().mutate();
-        String[] dialogColorBtn = getResources().getStringArray(R.array.dialogColorBtn);
-        for (int i = 0; i < dialogColorBtn.length; i++) {
-            int resID = getResources().getIdentifier(dialogColorBtn[i], "id", getPackageName());
-            final int resColor = getResources().getIdentifier(dialogColorBtn[i], "color", getPackageName());
-            ImageButton B = (ImageButton) findViewById(resID);
-            B.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    btColor.setChecked(false);
-                    llColor.setVisibility(View.INVISIBLE);
-                    colorName = getResources().getString(resColor);
-                    gd.setColor(getResources().getColor(resColor));
-                    gd.invalidateSelf();
-                }
-            });
-        }
     }
     public void makeNormalList(){
         normalList = new ArrayList<>();
@@ -299,7 +279,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             if (DOMP.getPosState() == DayOfMonthPosState.PAINT) {
                 tmpXth = DOMP.getXth();
                 tmpYth = DOMP.getYth();
-                YMD = CurrentTime.getTitleMonth()+"/"+initSurfaceView.getInitThread().getMonthAndDay(tmpXth - 1, 7 * (tmpYth - 1));
+                YMD = User.INFO.getMonth()+"/"+initSurfaceView.getInitThread().getMonthAndDay(tmpXth - 1, 7 * (tmpYth - 1));
                 normalList.add(new BottomNormalData(YMD,"8","00","9","00",tmpXth));
             }
         }
@@ -509,7 +489,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 btColor.setVisibility(View.VISIBLE);
                 llNormal.setVisibility(View.VISIBLE);
                 llUniv.setVisibility(View.GONE);
-                btColor.setVisibility(View.VISIBLE);
                 btNormal.setTextColor(getResources().getColor(
                         android.R.color.white));
                 btUniv.setTextColor(getResources().getColor(
@@ -613,10 +592,19 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btColor:
-                if (btColor.isChecked()) {
-                    llColor.setVisibility(View.VISIBLE);
-                } else {
-                    llColor.setVisibility(View.INVISIBLE);
+                DialColor dc = new DialColor(DialSchedule.this);
+                dc.show();
+                break;
+            case R.id.btEdit:
+                if (btEdit.isChecked()) {
+                    etSavedName.setEnabled(true);
+                    etSavedName.requestFocus();
+                    etSavedName.setSelection(etSavedName.length());
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                }else{
+                    etSavedName.setSelection(0);
+                    etSavedName.setEnabled(false);
                 }
                 break;
             case R.id.btAddSchedule:
@@ -674,6 +662,20 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 "10:10",
                                 colorName);
                         MyTimeRepo.insertOrUpdate(this, myTime);
+                    }
+                }
+                if(widgetFlag){
+                    if (User.INFO.getWidget5_5()) {
+                        Intent update = new Intent(this, WidgetUpdateService.class);
+                        update.putExtra("action", "update5_5");
+                        update.putExtra("viewMode", viewMode);
+                        this.startService(update);
+                    }
+                    if (User.INFO.getWidget4_4()) {
+                        Intent update = new Intent(this, WidgetUpdateService.class);
+                        update.putExtra("action", "update4_4");
+                        update.putExtra("viewMode", viewMode);
+                        this.startService(update);
                     }
                 }
                 break;
@@ -786,11 +788,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btInvite = (Button) findViewById(R.id.btInvite);
         btRemove = (Button) findViewById(R.id.btRemove);
         btEnter = (Button) findViewById(R.id.btEnter);
+        btColor = (Button) findViewById(R.id.btColor);
         btShowUniv = findViewById(R.id.btShowUniv);
         btShowDep = findViewById(R.id.btShowDep);
         btShowGrade = findViewById(R.id.btShowGrade);
-        btColor = (ToggleButton) findViewById(R.id.btColor);
-        llColor = (LinearLayout) findViewById(R.id.llColor);
+        btEdit = (ToggleButton) findViewById(R.id.btEdit);
         llNormal = (LinearLayout) findViewById(R.id.llNormal);
         llButtonArea = (LinearLayout) findViewById(R.id.llButtonArea);
         llEtName = (LinearLayout) findViewById(R.id.llEtName);
@@ -802,6 +804,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btRepeat = (LinearLayout) findViewById(R.id.btRepeat);
         llDep = (LinearLayout) findViewById(R.id.llDep);
         llSelectUniv= (LinearLayout) findViewById(R.id.llSelectUniv);
+        rlEdit = (RelativeLayout) findViewById(R.id.rlEdit);
         dragToggle = findViewById(R.id.dragToggle);
         tvShare = (TextView) findViewById(R.id.tvShare);
         tvAlarm = (TextView) findViewById(R.id.tvAlarm);
@@ -817,9 +820,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         actvDep = (AutoCompleteTextView) findViewById(R.id.actvDep);
         actvGrade = (AutoCompleteTextView) findViewById(R.id.actvGrade);
         actvSub = (AutoCompleteTextView) findViewById(R.id.actvSub);
+        gd = (GradientDrawable) btColor.getBackground().mutate();
         btNormal.setOnClickListener(this);
         btUniv.setOnClickListener(this);
         btColor.setOnClickListener(this);
+        btEdit.setOnClickListener(this);
         btAddSchedule.setOnClickListener(this);
         btCancel.setOnClickListener(this);
         btCommunity.setOnClickListener(this);
@@ -852,9 +857,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             }
         }
     }
-    private Button btNormal, btUniv, btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter;
-    private ToggleButton btColor;
-    private LinearLayout llColor, llNormal, llButtonArea, llUniv,llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat,llEtName;
+    private Button btNormal, btUniv, btAddSchedule, btCancel, btCommunity, btInvite, btRemove,btEnter,btColor;
+    private ToggleButton btEdit;
+    private LinearLayout llNormal, llButtonArea, llUniv,llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat,llEtName;
+    private RelativeLayout rlEdit;
     private TextView tvShare, tvAlarm, tvRepeat, btUnivNotice;
     private EditText etName, etPlace, etMemo,etSavedName;
     private View dragToggle,btShowUniv,btShowDep,btShowGrade;
@@ -889,6 +895,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
     public void onEventMainThread(SetPlaceEvent e){
         etPlace.setText(e.getPlace());
+    }
+    public void onEventMainThread(SetColorEvent e) {
+        colorName = getResources().getString(e.getResColor());
+        gd.setColor(getResources().getColor(e.getResColor()));
+        gd.invalidateSelf();
     }
     public void onEventMainThread(SetBtUnivNoticeEvent e) {
         btUnivNotice.setTextColor(Color.GRAY);

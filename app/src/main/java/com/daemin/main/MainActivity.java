@@ -103,7 +103,7 @@ public class MainActivity extends FragmentActivity {
         super.onDestroy();
         //appcontroller에서 앱 실행시 초기에 불러오게될 정보를 저장함
         Common.stateFilter(Common.getTempTimePos(), viewMode);
-        CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
+        //CurrentTime.setTitleMonth(CurrentTime.getNow().getMonthOfYear());
         clearApplicationCache(getExternalCacheDir());
         EventBus.getDefault().unregister(this);
     }
@@ -408,7 +408,9 @@ public class MainActivity extends FragmentActivity {
         dialogFlag = true;
         DrawMode.CURRENT.setMode(0);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
+                GravityCompat.START);
         viewMode = User.INFO.getViewMode();
         widget5_5 = User.INFO.getWidget5_5();
         widget4_4 = User.INFO.getWidget4_4();
@@ -428,8 +430,6 @@ public class MainActivity extends FragmentActivity {
         frame_container = (FrameLayout) findViewById(R.id.frame_container);
         initSurfaceView = new InitSurfaceView(this, viewMode);
         flSurface.addView(initSurfaceView);
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-                GravityCompat.START);
         spinner = (Spinner) findViewById(R.id.spinner);
         spinnerAdapter = ArrayAdapter
                 .createFromResource(this, R.array.wdm,
@@ -465,6 +465,9 @@ public class MainActivity extends FragmentActivity {
                         switcher.setText("");
                         switcher.setText(barText);
                         tvTitleYear.setVisibility(View.VISIBLE);
+                        int year = CurrentTime.getYear();
+                        tvTitleYear.setText(year + getString(R.string.year));
+                        User.INFO.setYear(year);
                         changeFragment(TimetableFragment.class, "");
                         flSurface.setVisibility(View.VISIBLE);
                         frame_container.setVisibility(View.GONE);

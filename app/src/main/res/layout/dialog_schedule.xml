@@ -1,111 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/llDialog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparency"
     android:orientation="vertical">
-    <LinearLayout
-        android:id="@+id/llColor"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="3.8"
-        android:background="@android:color/white"
-        android:clickable="true"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="invisible">
-
-        <ImageButton
-            android:id="@+id/btcolor1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/btcolor1" />
-
-        <ImageButton
-            android:id="@+id/btcolor2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/btcolor2" />
-
-        <ImageButton
-            android:id="@+id/btcolor3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/btcolor3" />
-
-        <ImageButton
-            android:id="@+id/btcolor4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/btcolor4" />
-
-        <ImageButton
-            android:id="@+id/btcolor5"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/btcolor5" />
-
-        <ImageButton
-            android:id="@+id/btcolor6"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/btcolor6" />
-
-        <ImageButton
-            android:id="@+id/btcolor7"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/btcolor7" />
-
-        <ImageButton
-            android:id="@+id/btcolor8"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/btcolor8" />
-
-        <ImageButton
-            android:id="@+id/btcolor9"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/btcolor9" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/dimgray"
-        android:paddingLeft="@dimen/margin_s"
-        android:orientation="horizontal">
-        <EditText
-            android:id="@+id/etSavedName"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_s">
+
+        <RelativeLayout
+            android:id="@+id/rlEdit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin_xxxs"
-            android:layout_weight="0.6"
-            android:hint="@string/normal_name"
-            android:background="@color/transparency"
-            android:padding="@dimen/margin_xs"
-            android:singleLine="true"
-            android:textStyle="bold"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:enabled="false"
-            android:text="프로그래밍언어론"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textsize_l"
-            android:visibility="gone"
-            />
+            android:layout_weight="0.5"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/etSavedName"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin_xxxs"
+                android:background="@color/transparency"
+                android:ellipsize="end"
+                android:enabled="false"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textsize_l"
+                android:textStyle="bold"
+                android:paddingRight="36dp"
+                />
+            <ToggleButton
+                android:id="@+id/btEdit"
+                android:layout_width="26dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_l"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:background="@drawable/ic_edit"
+                android:textOff=""
+                android:textOn=""
+                android:layout_alignTop="@+id/etSavedName"
+                android:layout_alignBottom="@+id/etSavedName"
+                android:layout_alignRight="@+id/etSavedName"
+                android:scaleType="fitXY" />
+        </RelativeLayout>
+
         <Button
             android:id="@+id/btNormal"
             android:layout_width="match_parent"
@@ -115,8 +60,7 @@
             android:text="일반"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textsize_l"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btUniv"
@@ -127,8 +71,7 @@
             android:text="대학"
             android:textColor="@color/gray"
             android:textSize="@dimen/textsize_l"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <View
             android:id="@+id/dragToggle"
@@ -136,13 +79,11 @@
             android:layout_height="match_parent"
             android:layout_weight="0.7" />
 
-        <ToggleButton
+        <Button
             android:id="@+id/btColor"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_gravity="center"
-            android:textOn=""
-            android:textOff=""
             android:layout_marginBottom="@dimen/margin_s"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_marginTop="@dimen/margin_s"
@@ -175,9 +116,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:visibility="visible"
         android:background="@color/transparency"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
+
         <include layout="@layout/dialog_schedule_include" />
     </LinearLayout>
 

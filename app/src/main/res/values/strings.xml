@@ -41,6 +41,7 @@
     <!--다이얼 -->
     <string name="tvDialTime">시간설정</string>
     <string name="tvDialShare">공유설정</string>
+    <string name="tvDialColor">색상선택</string>
     <string name="tvDialAlarm">알람설정</string>
     <string name="tvDialRepeat">반복설정</string>
     <string name="tvDialAddGroup">그룹추가</string>
@@ -112,6 +113,7 @@
     <string name="setting_mailpassword">비밀번호 변경</string>
     <string name="setting_univ">학교/학과 변경</string>
     <string name="setting_timeinfo">시간표 표시정보</string>
+    <string name="setting_inittable">시간표 초기화</string>
     <string name="setting_backup">백업</string>
     <string name="setting_devinfo">개발자 정보</string>
     <string name="setting_password">암호잠금</string>

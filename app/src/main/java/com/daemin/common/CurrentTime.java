@@ -16,15 +16,8 @@ import org.joda.time.format.DateTimeFormatter;
  * Created by hernia on 2015-08-07.
  */
 public class CurrentTime {
-    static int titleMonth = LocalDate.now().getMonthOfYear();
     //static LocalDate now = new LocalDate(2015,11,29);
     static LocalDate fst; //해당날짜의 첫째 date
-    public static LocalDate getNow() {
-        return LocalDate.now();
-    }
-    public static String getMonth() {
-        return String.valueOf(LocalDate.now().getMonthOfYear());
-    }
     public static String getToday(){
         return LocalDate.now().getMonthOfYear()+"/"+LocalDate.now().getDayOfMonth();
     }
@@ -45,17 +38,10 @@ public class CurrentTime {
         String formatted = formatter.print(now);
         return formatted;
     }
-    public static void setTitleMonth(int titleMonth) {
-        CurrentTime.titleMonth = titleMonth;
-
-    }
     public static String getMD(){
         DateTime dt = DateTime.now();
         DateTimeFormatter fmt = DateTimeFormat.forPattern("MM.dd HH:mm");
         return fmt.print(dt);
-    }
-    public static int getTitleMonth() {
-        return titleMonth;
     }
     public static int getDayOfWeek() {
         int dayOfWeek = LocalDate.now().getDayOfWeek();
@@ -144,7 +130,7 @@ public class CurrentTime {
     }
     public static String preTitleYearMonth(Context context, int indexForTitle) {
         int year = getLastDayOfWeek().plusMonths(indexForTitle).getYear();
-        titleMonth = LocalDate.now().plusMonths(indexForTitle).getMonthOfYear();
+        int titleMonth = LocalDate.now().plusMonths(indexForTitle).getMonthOfYear();
         User.INFO.setYear(year);
         User.INFO.setMonth(titleMonth);
         return " " + year + context.getString(R.string.year) + " "
@@ -152,7 +138,7 @@ public class CurrentTime {
     }
     public static String backTitleYearMonth(Context context, int indexForTitle) {
         int year = getLastDayOfWeek().minusMonths(indexForTitle).getYear();
-        titleMonth = LocalDate.now().minusMonths(indexForTitle).getMonthOfYear();
+        int titleMonth = LocalDate.now().minusMonths(indexForTitle).getMonthOfYear();
         User.INFO.setYear(year);
         User.INFO.setMonth(titleMonth);
         return " " + year + context.getString(R.string.year) + " "

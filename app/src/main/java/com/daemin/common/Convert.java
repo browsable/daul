@@ -107,6 +107,8 @@ public class Convert {
 				return 27;
 			case 22:
 				return 29;
+			case 23:
+				return 31;
 			default:
 				return 0;
 		}

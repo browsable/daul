@@ -24,7 +24,9 @@ public class MyTimeRepo {
     public static void deleteMyTimeWithId(Context context, long id) {
         getMyTimeDao(context).delete(getMyTimeForId(context, id));
     }
-
+    public static void deleteAll(Context context) {
+        getMyTimeDao(context).deleteAll();
+    }
     public static List<MyTime> getAllMyTime(Context context) {
         return getMyTimeDao(context).loadAll();
     }

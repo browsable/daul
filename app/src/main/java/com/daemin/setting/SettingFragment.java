@@ -32,80 +32,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import de.greenrobot.event.EventBus;
 
-public class SettingFragment extends BasicFragment {
-
-    private ImageView ivProfile;
-    private LinearLayout btSettingUnivActivity;
-    private LinearLayout btSettingIdActivity;
-    private LinearLayout btSettingCustomerActivity;
-
+public class SettingFragment extends BasicFragment implements View.OnClickListener{
     public SettingFragment() {
         super(R.layout.fragment_setting, "SettingFragment");
     }
-
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_IMAGE_ALBUM = 2;
-    private static final int REQUEST_IMAGE_CROP = 3;
-    private static final int REQUEST_SETTING_UNIV = 4;
-    private String mCurrentPhotoPath;
-    private Uri contentUri;
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        if (layoutId > 0) {
-            mCurrentPhotoPath = null;
-            ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
-            btSettingUnivActivity = (LinearLayout)root.findViewById(R.id.btSettingUnivActivity);
-            btSettingIdActivity = (LinearLayout)root.findViewById(R.id.btSettingIdActivity);
-            btSettingCustomerActivity = (LinearLayout)root.findViewById(R.id.btSettingCustomerActivity);
-
-            File path = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES);
-
-            if(!path.exists()) {
-                path.mkdirs();
-            }
-        }
-
-        btSettingUnivActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new ChangeFragEvent(SettingUnivFragment.class, "학교/학과 변경"));
-            }
-        });
-
-        btSettingIdActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                EventBus.getDefault().post(new ChangeFragEvent(SettingIdFragment.class, "메일주소 변경"));
-            }
-        });
-
-        btSettingCustomerActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new ChangeFragEvent(SettingCustomerFragment.class, "고객센터"));
-            }
-        });
-
-        ivProfile.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQUEST_IMAGE_ALBUM);
-            }
-        });
-
-
+            setLayout(root);
         return root;
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -157,31 +96,6 @@ public class SettingFragment extends BasicFragment {
         }
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        mCurrentPhotoPath = image.getAbsolutePath(); //���߿� Rotate�ϱ� ���� ���� ���.
-
-        return image;
-    }
-
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(mCurrentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.getActivity().sendBroadcast(mediaScanIntent);
-    }
-
     private void cropImage(Uri contentUri) {
         Intent cropIntent = new Intent("com.android.camera.action.CROP");
         //indicate image type and Uri of image
@@ -206,9 +120,7 @@ public class SettingFragment extends BasicFragment {
         options.inTempStorage=new byte[32 * 1024];
         options.inPurgeable = true;
         options.inJustDecodeBounds = false;
-
         File f = new File(mCurrentPhotoPath);
-
         FileInputStream fs=null;
         try {
             fs = new FileInputStream(f);
@@ -216,9 +128,7 @@ public class SettingFragment extends BasicFragment {
             //TODO do something intelligent
             e.printStackTrace();
         }
-
         Bitmap bm = null;
-
         try {
             if(fs!=null) bm=BitmapFactory.decodeFileDescriptor(fs.getFD(), null, options);
         } catch (IOException e) {
@@ -256,7 +166,6 @@ public class SettingFragment extends BasicFragment {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
     public int exifOrientationToDegrees(int exifOrientation)
@@ -282,17 +191,14 @@ public class SettingFragment extends BasicFragment {
         {
             Matrix m = new Matrix();
             m.setRotate(degrees, (float)image.getWidth(), (float)image.getHeight());
-
             try
             {
                 Bitmap b = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), m, true);
-
                 if(image != b)
                 {
                     image.recycle();
                     image = b;
                 }
-
                 image = b;
             }
             catch(OutOfMemoryError ex)
@@ -321,5 +227,55 @@ public class SettingFragment extends BasicFragment {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        bitmap.recycle();
     }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ivProfile:
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_IMAGE_ALBUM);
+                break;
+            case R.id.btSettingId:
+                EventBus.getDefault().post(new ChangeFragEvent(SettingIdFragment.class, "메일주소 변경"));
+                break;
+            case R.id.btSettingUniv:
+                EventBus.getDefault().post(new ChangeFragEvent(SettingUnivFragment.class, "학교/학과 변경"));
+                break;
+            case R.id.btSettingInit:
+                EventBus.getDefault().post(new ChangeFragEvent(SettingInitFragment.class, "시간표 초기화"));
+                break;
+            case R.id.btSettingCustomer:
+                EventBus.getDefault().post(new ChangeFragEvent(SettingCustomerFragment.class, "고객센터"));
+                break;
+        }
+    }
+    public void setLayout(View root){
+        mCurrentPhotoPath = null;
+        ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
+        btSettingId= (LinearLayout)root.findViewById(R.id.btSettingId);
+        btSettingUniv = (LinearLayout)root.findViewById(R.id.btSettingUniv);
+        btSettingInit = (LinearLayout)root.findViewById(R.id.btSettingInit);
+        btSettingCustomer = (LinearLayout)root.findViewById(R.id.btSettingCustomer);
+        File path = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        if(!path.exists()) {
+            path.mkdirs();
+        }
+        ivProfile.setOnClickListener(this);
+        btSettingId.setOnClickListener(this);
+        btSettingUniv.setOnClickListener(this);
+        btSettingInit.setOnClickListener(this);
+        btSettingCustomer.setOnClickListener(this);
+    }
+    private ImageView ivProfile;
+    private LinearLayout btSettingId,btSettingUniv,btSettingInit,btSettingCustomer;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_ALBUM = 2;
+    private static final int REQUEST_IMAGE_CROP = 3;
+    private static final int REQUEST_SETTING_UNIV = 4;
+    private String mCurrentPhotoPath;
+    private Uri contentUri;
+
+
 }
