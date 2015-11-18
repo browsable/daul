@@ -7,15 +7,18 @@ package timedao;
 public class MyTime {
 
     private Long id;
+    /** Not-null value. */
+    private String timecode;
+    private int timetype;
     private String name;
     private Integer year;
     private Integer monthofyear;
     private Integer dayofmonth;
-    private Integer dayofweek;
-    private Integer starthour;
-    private Integer startmin;
-    private Integer endhour;
-    private Integer endmin;
+    private int dayofweek;
+    private int starthour;
+    private int startmin;
+    private int endhour;
+    private int endmin;
     private Long startmillis;
     private Long endmillis;
     private String memo;
@@ -34,8 +37,10 @@ public class MyTime {
         this.id = id;
     }
 
-    public MyTime(Long id, String name, Integer year, Integer monthofyear, Integer dayofmonth, Integer dayofweek, Integer starthour, Integer startmin, Integer endhour, Integer endmin, Long startmillis, Long endmillis, String memo, String place, Double lat, Double lng, Integer share, Long alarm, String repeat, String color) {
+    public MyTime(Long id, String timecode, int timetype, String name, Integer year, Integer monthofyear, Integer dayofmonth, int dayofweek, int starthour, int startmin, int endhour, int endmin, Long startmillis, Long endmillis, String memo, String place, Double lat, Double lng, Integer share, Long alarm, String repeat, String color) {
         this.id = id;
+        this.timecode = timecode;
+        this.timetype = timetype;
         this.name = name;
         this.year = year;
         this.monthofyear = monthofyear;
@@ -63,6 +68,24 @@ public class MyTime {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /** Not-null value. */
+    public String getTimecode() {
+        return timecode;
+    }
+
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setTimecode(String timecode) {
+        this.timecode = timecode;
+    }
+
+    public int getTimetype() {
+        return timetype;
+    }
+
+    public void setTimetype(int timetype) {
+        this.timetype = timetype;
     }
 
     public String getName() {
@@ -97,43 +120,43 @@ public class MyTime {
         this.dayofmonth = dayofmonth;
     }
 
-    public Integer getDayofweek() {
+    public int getDayofweek() {
         return dayofweek;
     }
 
-    public void setDayofweek(Integer dayofweek) {
+    public void setDayofweek(int dayofweek) {
         this.dayofweek = dayofweek;
     }
 
-    public Integer getStarthour() {
+    public int getStarthour() {
         return starthour;
     }
 
-    public void setStarthour(Integer starthour) {
+    public void setStarthour(int starthour) {
         this.starthour = starthour;
     }
 
-    public Integer getStartmin() {
+    public int getStartmin() {
         return startmin;
     }
 
-    public void setStartmin(Integer startmin) {
+    public void setStartmin(int startmin) {
         this.startmin = startmin;
     }
 
-    public Integer getEndhour() {
+    public int getEndhour() {
         return endhour;
     }
 
-    public void setEndhour(Integer endhour) {
+    public void setEndhour(int endhour) {
         this.endhour = endhour;
     }
 
-    public Integer getEndmin() {
+    public int getEndmin() {
         return endmin;
     }
 
-    public void setEndmin(Integer endmin) {
+    public void setEndmin(int endmin) {
         this.endmin = endmin;
     }
 

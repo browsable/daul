@@ -148,6 +148,21 @@ public class Convert {
 		}
 		return index;
 	}
+	public static String revertShare(int index) {
+		String share="";
+		switch (index) {
+			case 0:
+				share = "비공개";
+				break;
+			case 1:
+				share="친구공개";
+				break;
+			case 2:
+				share="전체공개";
+				break;
+		}
+		return share;
+	}
 	public static long Alarm(long startmillis , String grade) {
 		long alarmMillis=0;
 		switch (grade) {

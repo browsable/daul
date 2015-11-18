@@ -9,8 +9,8 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.daemin.common.Common;
-import com.daemin.common.CurrentTime;
 import com.daemin.dialog.DialSchedule;
+import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.User;
 import com.daemin.main.MainActivity;
 
@@ -89,10 +89,10 @@ public class Widget4_4 extends AppWidgetProvider {
                 = PendingIntent.getService(context, 0, init, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager manager
                 = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-		/*Log.i("widget", String.valueOf(CurrentTime.getMidnight()));
-		Log.i("widget", String.valueOf(CurrentTime.getNowMillis()));
-		Log.i("widget", CurrentTime.getDatefromMillis(CurrentTime.getMidnight()));*/
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, CurrentTime.getMidnight()+5000, AlarmManager.INTERVAL_DAY, sender);
+		/*Log.i("widget", String.valueOf(CalTime.getMidnight()));
+		Log.i("widget", String.valueOf(CalTime.getNowMillis()));
+		Log.i("widget", CalTime.getDatefromMillis(CalTime.getMidnight()));*/
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, Dates.NOW.getMidnight()+5000, AlarmManager.INTERVAL_DAY, sender);
     }
     public static void unregisterAlarm(Context context)
     {

@@ -6,6 +6,7 @@ import com.daemin.common.AppController;
 
 import java.util.List;
 
+import de.greenrobot.dao.query.QueryBuilder;
 import timedao.MyTime;
 import timedao.MyTimeDao;
 
@@ -16,16 +17,16 @@ public class MyTimeRepo {
     public static void insertOrUpdate(Context context, MyTime myTime) {
         getMyTimeDao(context).insertOrReplace(myTime);
     }
-
+    /*public static void updateSubjectDate(Context context, MyTime myTime) {
+        Query query = getMyTimeDao(context).queryBuilder().queryRawCreate(
+                ", GROUP G WHERE G.NAME=? AND T.GROUP_ID=G._ID", "admin");
+    }*/
     public static void clearMyTime(Context context) {
         getMyTimeDao(context).deleteAll();
     }
 
     public static void deleteMyTimeWithId(Context context, long id) {
         getMyTimeDao(context).delete(getMyTimeForId(context, id));
-    }
-    public static void deleteAll(Context context) {
-        getMyTimeDao(context).deleteAll();
     }
     public static List<MyTime> getAllMyTime(Context context) {
         return getMyTimeDao(context).loadAll();
@@ -34,11 +35,25 @@ public class MyTimeRepo {
     public static MyTime getMyTimeForId(Context context, long id) {
         return getMyTimeDao(context).load(id);
     }
-    public static List<MyTime> getWeekTime(Context context, long week_startMillies, long week_endMillies){
-        return getMyTimeDao(context)
-                .queryBuilder()
-                .where(MyTimeDao.Properties.Startmillis.between(week_startMillies, week_endMillies))
-                .list();
+    public static List<MyTime> getWeekTimes(Context context, long week_startMillies, long week_endMillies){
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+        qb.where(qb.or(MyTimeDao.Properties.Startmillis.between(week_startMillies, week_endMillies),
+                MyTimeDao.Properties.Timetype.eq(1)));
+        return qb.list();
+    }
+    public static MyTime getEnrollTime(Context context,long startmillis, int xth, int startHour,int startMin){
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+        qb.where(
+                qb.or(
+                qb.and(MyTimeDao.Properties.Timetype.eq(0),
+                        MyTimeDao.Properties.Startmillis.le(startmillis),
+                        MyTimeDao.Properties.Endmillis.ge(startmillis)),
+                qb.and(MyTimeDao.Properties.Timetype.eq(1),MyTimeDao.Properties.Dayofweek.eq(xth),
+                        MyTimeDao.Properties.Starthour.le(startHour),
+                        MyTimeDao.Properties.Endhour.ge(startHour))),
+                        MyTimeDao.Properties.Startmin.le(startMin),
+                        MyTimeDao.Properties.Endmin.ge(startMin));
+        return (MyTime) qb.unique();
     }
    /* public static String getEngByKor(Context context, String key) {
         return getNormalDao(context)

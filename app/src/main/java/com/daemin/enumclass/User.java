@@ -22,9 +22,7 @@ public enum User {
     SharedPreferences.Editor editor;
     public double latitude, longitude;
     public String userPK;
-    public String[] wData, mData;
-    public int groupPK,year,month;
-    public int dayOfWeekOfLastMonth;
+    public int groupPK;
     public SharedPreferences.Editor getEditor() {
         return editor;
     }
@@ -40,38 +38,7 @@ public enum User {
     public double getLatitude() {
         return latitude;
     }
-    public int getYear() {
-        return year;
-    }
-    public void setYear(int year) {
-        this.year = year;
-    }
-    public int getMonth() {
-        return month;
-    }
-    public void setMonth(int month) {
-        this.month = month;
-    }
-    public String[] getwData() {
-        return wData;
-    }
-    public int getDayOfWeekOfLastMonth() {
-        return dayOfWeekOfLastMonth;
-    }
-    public void setDayOfWeekOfLastMonth(int dayOfWeekOfLastMonth) {
-        this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
-    }
-    public void setwData(String[] wData) {
-        this.wData = wData;
-    }
 
-    public String[] getmData() {
-        return mData;
-    }
-
-    public void setmData(String[] mData) {
-        this.mData = mData;
-    }
     //Pref Getter
     public boolean getFirstFlag(){
         return pref.getBoolean("firstFlag", true);
@@ -83,7 +50,8 @@ public enum User {
         return pref.getInt("deviceHeight", 0);
     }
     public String getUserPK(){
-        return pref.getString("userPK", "0");
+        String userPK = pref.getString("userPK", "0");
+        return userPK.substring(0, userPK.length() / 2);
     }
     public String getKorGroupName(){
         return pref.getString("korGroupName", "");
@@ -99,6 +67,9 @@ public enum User {
     }
     public int getViewMode(){
         return pref.getInt("viewMode", 0);
+    }
+    public String getCreditSum(){
+        return pref.getString("creditSum", "0");
     }
     public boolean getWidget5_5(){
         return pref.getBoolean("widget5_5", false);

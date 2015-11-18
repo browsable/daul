@@ -46,28 +46,49 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		//SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
-
 		// looping through all rows and adding to list
 		if (cursor.moveToFirst()) {
 			do {
-				SubjectData SubjectData = new SubjectData();
-				SubjectData.set_id(cursor.getInt(0));
-				SubjectData.setSubnum(cursor.getString(1));
-				SubjectData.setSubtitle(cursor.getString(2));
-				SubjectData.setCredit(cursor.getString(3));
-				SubjectData.setClassnum(cursor.getString(4));
-				SubjectData.setLimitnum(cursor.getString(5));
-				SubjectData.setDep(cursor.getString(6));
-				SubjectData.setDep_grade(cursor.getString(7));
-				SubjectData.setDep_detail(cursor.getString(8));
-				SubjectData.setTime(cursor.getString(9));
-				SubjectData.setProf(cursor.getString(10));
-				subjectDataList.add(SubjectData);
+				SubjectData subjectData = new SubjectData();
+				subjectData.set_id(cursor.getInt(0));
+				subjectData.setSubnum(cursor.getString(1));
+				subjectData.setSubtitle(cursor.getString(2));
+				subjectData.setCredit(cursor.getString(3));
+				subjectData.setClassnum(cursor.getString(4));
+				subjectData.setLimitnum(cursor.getString(5));
+				subjectData.setDep(cursor.getString(6));
+				subjectData.setDep_grade(cursor.getString(7));
+				subjectData.setDep_detail(cursor.getString(8));
+				subjectData.setTime(cursor.getString(9));
+				subjectData.setProf(cursor.getString(10));
+				subjectDataList.add(subjectData);
 			} while (cursor.moveToNext());
 		}
 
 		// return SubjectData list
 		return subjectDataList;
+	}
+	public SubjectData getSubjectData(String id) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE _id='"+id+"'";
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		SubjectData subjectData = new SubjectData();
+		if (cursor.moveToFirst()) {
+			do {
+				subjectData.set_id(cursor.getInt(0));
+				subjectData.setSubnum(cursor.getString(1));
+				subjectData.setSubtitle(cursor.getString(2));
+				subjectData.setCredit(cursor.getString(3));
+				subjectData.setClassnum(cursor.getString(4));
+				subjectData.setLimitnum(cursor.getString(5));
+				subjectData.setDep(cursor.getString(6));
+				subjectData.setDep_grade(cursor.getString(7));
+				subjectData.setDep_detail(cursor.getString(8));
+				subjectData.setTime(cursor.getString(9));
+				subjectData.setProf(cursor.getString(10));
+			} while (cursor.moveToNext());
+		}
+		return subjectData;
 	}
 	public List<SubjectData> getAllWithDepAndGrade(String depName,String depgrade) {
 		SQLiteDatabase db = this.getWritableDatabase();

@@ -11,9 +11,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import com.daemin.common.Convert;
-import com.daemin.common.CurrentTime;
-import com.daemin.data.DayOfWeekData;
-import com.daemin.enumclass.User;
+import com.daemin.enumclass.Dates;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
@@ -25,28 +23,18 @@ import timedao.MyTime;
 public class WeekCaptureView extends ImageView {
     private boolean isToday;
     private Context context;
-    private int width, height, dayOfWeek; //화면의 전체 너비, 높이
-    private String sun, mon, tue, wed, thr, fri, sat;
+    private int width, height,dayOfWeek; //화면의 전체 너비, 높이
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
     private Paint tp, tpred, tpblue, rp; // 시간 텍스트
     static int tempxth, tempyth;
     private Canvas canvas;
-    public WeekCaptureView(Context context, int dayOfMonth)
+    public WeekCaptureView(Context context)
     {
         super(context);
         this.context = context;
-        DayOfWeekData dowd = CurrentTime.getDateOfWeek();
-        this.sun = dowd.getSun();
-        this.mon = dowd.getMon();
-        this.tue = dowd.getTue();
-        this.wed = dowd.getWed();
-        this.thr = dowd.getThr();
-        this.fri = dowd.getFri();
-        this.sat = dowd.getSat();
-        this.dayOfWeek = dayOfMonth;
+        this.dayOfWeek = Dates.NOW.dayOfWeek;
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
-        postWeekData();
         isToday = true;
         tempxth = 0;
         tempyth = 0;
@@ -75,49 +63,6 @@ public class WeekCaptureView extends ImageView {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
     }
-    public String getMonthAndDay(int... index) {
-        switch (index[0]) {
-            case 1:
-                return sun;
-            case 3:
-                return mon;
-            case 5:
-                return tue;
-            case 7:
-                return wed;
-            case 9:
-                return thr;
-            case 11:
-                return fri;
-            case 13:
-                return sat;
-            default:
-                return "";
-        }
-    }
-    public void setCurrentTime(DayOfWeekData dowd) {
-        this.sun = dowd.getSun();
-        this.mon = dowd.getMon();
-        this.tue = dowd.getTue();
-        this.wed = dowd.getWed();
-        this.thr = dowd.getThr();
-        this.fri = dowd.getFri();
-        this.sat = dowd.getSat();
-        if(CurrentTime.getToday().equals(getMonthAndDay(2*dayOfWeek+1))) isToday = true;
-        else isToday = false;
-        postWeekData();
-    }
-    public void postWeekData(){
-        String[] wData = new String[7];
-        wData[0] = sun;
-        wData[1] = mon;
-        wData[2] = tue;
-        wData[3] = wed;
-        wData[4] = thr;
-        wData[5] = fri;
-        wData[6] = sat;
-        User.INFO.setwData(wData);
-    }
     @Override
     protected void onDraw(Canvas canvas)
     {
@@ -126,21 +71,21 @@ public class WeekCaptureView extends ImageView {
         this.canvas = canvas;
         width = canvas.getWidth();
         height = canvas.getHeight();
-        initScreen(dayOfWeek);
-        int week_startMonth = Integer.parseInt(sun.split("/")[0]);
-        int week_startDay = Integer.parseInt(sun.split("/")[1]);
-        int week_endMonth = Integer.parseInt(sat.split("/")[0]);
-        int week_endDay = Integer.parseInt(sat.split("/")[1]);
+        initScreen();
+        int week_startMonth = Dates.NOW.monthOfSun;
+        int week_startDay = Dates.NOW.dayOfSun;
+        int week_endMonth = Dates.NOW.monthOfSat;
+        int week_endDay = Dates.NOW.dayOfSat;
         int week_startYear;
         int week_endYear;
         if(week_startMonth==12&&week_endMonth==1){
-            week_endYear=User.INFO.year;
+            week_endYear=Dates.NOW.year;
             week_startYear=week_endYear-1;
         }else
-            week_endYear=week_startYear=User.INFO.year;
-        long week_startMillies = CurrentTime.getDateMillis(week_startYear,week_startMonth,week_startDay,8,0);
-        long week_endMillies = CurrentTime.getDateMillis(week_endYear,week_endMonth,week_endDay,23,0);
-        for(MyTime mt :  MyTimeRepo.getWeekTime(context, week_startMillies, week_endMillies)) {
+            week_endYear=week_startYear=Dates.NOW.year;
+        long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
+        long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
+        for(MyTime mt :  MyTimeRepo.getWeekTimes(context, week_startMillies, week_endMillies)) {
             rp.setColor(Color.parseColor(mt.getColor()));
             rp.setAlpha(130);
             int xth = mt.getDayofweek();
@@ -196,7 +141,7 @@ public class WeekCaptureView extends ImageView {
     protected void onLayout(boolean changed, int left, int top, int right,
                             int bottom) {
     }
-    public void initScreen(int day) {
+    public void initScreen() {
 
         float[] hp_hour = {
                 // 가로선 : 1시간 간격
@@ -231,13 +176,13 @@ public class WeekCaptureView extends ImageView {
             canvas.drawText(String.valueOf(i + 8), width / 40,
                     ((2 * i + 1) * height / 32) + 26, tp);
         }
-        canvas.drawText(sun, width * 2 / 15, (height / 32 + 18) * 7 / 16, tpred);
-        canvas.drawText(mon, width * 4 / 15, (height / 32 + 18) * 7 / 16, tp);
-        canvas.drawText(tue, width * 6 / 15, (height / 32 + 18) * 7 / 16, tp);
-        canvas.drawText(wed, width * 8 / 15, (height / 32 + 18) * 7 / 16, tp);
-        canvas.drawText(thr, width * 10 / 15, (height / 32 + 18) * 7 / 16, tp);
-        canvas.drawText(fri, width * 12 / 15, (height / 32 + 18) * 7 / 16, tp);
-        canvas.drawText(sat, width * 14 / 15, (height / 32 + 18) * 7 / 16, tpblue);
+        canvas.drawText(Dates.NOW.mdOfSun, width * 2 / 15, (height / 32 + 18) * 7 / 16, tpred);
+        canvas.drawText(Dates.NOW.mdOfMon, width * 4 / 15, (height / 32 + 18) * 7 / 16, tp);
+        canvas.drawText(Dates.NOW.mdOfTue, width * 6 / 15, (height / 32 + 18) * 7 / 16, tp);
+        canvas.drawText(Dates.NOW.mdOfWed, width * 8 / 15, (height / 32 + 18) * 7 / 16, tp);
+        canvas.drawText(Dates.NOW.mdOfThr, width * 10 / 15, (height / 32 + 18) * 7 / 16, tp);
+        canvas.drawText(Dates.NOW.mdOfFri, width * 12 / 15, (height / 32 + 18) * 7 / 16, tp);
+        canvas.drawText(Dates.NOW.mdOfSat, width * 14 / 15, (height / 32 + 18) * 7 / 16, tpblue);
 
         canvas.drawText("SUN", width * 2 / 15, (height / 32 + 18) * 15 / 16, tpred);
         canvas.drawText("MON", width * 4 / 15, (height / 32 + 18) * 15 / 16, tp);
@@ -247,7 +192,7 @@ public class WeekCaptureView extends ImageView {
         canvas.drawText("FRI", width * 12 / 15, (height / 32 + 18) * 15 / 16, tp);
         canvas.drawText("SAT", width * 14 / 15, (height / 32 + 18) * 15 / 16, tpblue);
         hp.setAlpha(40);
-        if(isToday)canvas.drawRect(width * (2 * day + 1) / 15, ((height * 2) - 10) / 64 + 18, width * (2 * day + 3) / 15, height * 62 / 64 + 18, hp);
+        if(Dates.NOW.isToday)canvas.drawRect(width * (2 * dayOfWeek + 1) / 15, ((height * 2) - 10) / 64 + 18, width * (2 * dayOfWeek + 3) / 15, height * 62 / 64 + 18, hp);
         hp.setAlpha(100);
     }
 }

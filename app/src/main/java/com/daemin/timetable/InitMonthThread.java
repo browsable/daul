@@ -9,10 +9,9 @@ import android.view.SurfaceHolder;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
-import com.daemin.common.CurrentTime;
+import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
-import com.daemin.enumclass.User;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.main.MainActivity;
 
@@ -41,10 +40,10 @@ public class InitMonthThread extends InitThread {
 	public InitMonthThread(SurfaceHolder holder, Context context) {
 		this.mholder = holder;
 		this.context = context;
-		this.monthData = CurrentTime.getDayOfLastMonth();
-		this.dayOfWeekOfLastMonth = CurrentTime.getDayOfWeekOfLastMonth();
-		this.dayNumOfMonth = CurrentTime.getDayNumOfMonth();
-		this.dayOfMonth = CurrentTime.getDayOfMonth();
+		this.monthData = Dates.NOW.getDayOfLastMonth();
+		this.dayOfWeekOfLastMonth = Dates.NOW.getDayOfWeekOfLastMonth();
+		this.dayNumOfMonth = Dates.NOW.getDayNumOfMonth();
+		this.dayOfMonth = Dates.NOW.getDayOfMonth();
 		isToday  = true;
 		todayIndex=0;
 		tempxth = 0;
@@ -80,13 +79,13 @@ public class InitMonthThread extends InitThread {
 		}
 		String[] mData = new String[cnt];
 		int j =0;
-		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
-			String str = CurrentTime.getTitleYearMonth(context);
+		/*for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+			String str = Dates.NOW.setTitleYearMonth();
 			mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
 			j++;
-		}
-		User.INFO.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
-		User.INFO.setmData(mData);
+		}*/
+		Dates.NOW.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
+		Dates.NOW.setmData(mData);
 	}
 	public int getDayOfWeekOfLastMonth() {
 		return dayOfWeekOfLastMonth;
@@ -114,8 +113,8 @@ public class InitMonthThread extends InitThread {
 			mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
 			j++;
 		}
-		User.INFO.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
-		User.INFO.setmData(mData);
+		Dates.NOW.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
+		Dates.NOW.setmData(mData);
 	}
 	public void setRunning(boolean isLoop) {
 		this.isLoop = isLoop;
@@ -130,11 +129,6 @@ public class InitMonthThread extends InitThread {
 	public String getMonthAndDay(int... index) {
 		return monthData[index[0]+index[1]];
 	}
-	@Override
-	public void postData() {
-
-	}
-
 	public void run() {
 		while (isLoop) {
 			canvas = null;

@@ -11,8 +11,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import com.daemin.common.Common;
-import com.daemin.common.CurrentTime;
-import com.daemin.enumclass.User;
+import com.daemin.enumclass.Dates;
 import com.daemin.timetable.R;
 
 /**
@@ -24,7 +23,6 @@ public class MonthCaptureView extends ImageView {
     private int height;
     private int dayOfWeekOfLastMonth;
     private int dayNumOfMonth;
-    private int dayOfMonth;
     private int tmp;
     private int tx;//이전달의 마지막날 요일
     private int todayIndex;
@@ -36,13 +34,12 @@ public class MonthCaptureView extends ImageView {
     static int tempxth;
     static int tempyth;
     private Canvas canvas;
-    public MonthCaptureView(Context context, int dayOfMonth)
+    public MonthCaptureView(Context context)
     {
         super(context);
-        this.monthData = CurrentTime.getDayOfLastMonth();
-        this.dayOfWeekOfLastMonth = CurrentTime.getDayOfWeekOfLastMonth();
-        this.dayNumOfMonth = CurrentTime.getDayNumOfMonth();
-        this.dayOfMonth = dayOfMonth;
+        this.monthData = Dates.NOW.getDayOfLastMonth();
+        this.dayOfWeekOfLastMonth = Dates.NOW.getDayOfWeekOfLastMonth();
+        this.dayNumOfMonth = Dates.NOW.getDayNumOfMonth();
         isToday = true;
         todayIndex=0;
         tempxth = 0;
@@ -66,7 +63,7 @@ public class MonthCaptureView extends ImageView {
         tpgray.setTextSize(38);
         tpgray.setTextAlign(Paint.Align.CENTER);
         tpgray.setColor(context.getResources().getColor(R.color.middlegray));
-        tmp = dayOfWeekOfLastMonth+dayOfMonth+1;
+        //tmp = dayOfWeekOfLastMonth+dayOfMonth+1;
         tx = tmp%7;
         if(tx==0){
             --tmp;
@@ -81,13 +78,13 @@ public class MonthCaptureView extends ImageView {
         }
         String[] mData = new String[cnt];
         int j =0;
-        for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
-            String str = CurrentTime.getTitleYearMonth(context);
+       /* for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+            String str = CalTime.getTitleYearMonth(context);
             mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
             j++;
-        }
-        User.INFO.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
-        User.INFO.setmData(mData);
+        }*/
+        Dates.NOW.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
+        Dates.NOW.setmData(mData);
     }
     public MonthCaptureView(Context context, AttributeSet attrs)
     {
@@ -124,8 +121,8 @@ public class MonthCaptureView extends ImageView {
             mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
             j++;
         }
-        User.INFO.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
-        User.INFO.setmData(mData);
+        Dates.NOW.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
+        Dates.NOW.setmData(mData);
     }
     @Override
     protected void onDraw(Canvas canvas)

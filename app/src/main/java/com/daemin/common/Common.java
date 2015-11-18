@@ -8,14 +8,18 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
 
+import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
+import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+
+import timedao.MyTime;
 
 
 public class Common {
@@ -53,7 +57,27 @@ public class Common {
 		}
 		return false;
 	}
-	//3:9:00:10:00 , 3:9:00:11:00, 3:9:00:11:30
+	public static void postWeekData(){
+		for (TimePos ETP : TimePos.values()) {
+			ETP.setPosState(PosState.NO_PAINT);
+		}
+		int week_startMonth = Dates.NOW.monthOfSun;
+		int week_startDay = Dates.NOW.dayOfSun;
+		int week_endMonth = Dates.NOW.monthOfSat;
+		int week_endDay = Dates.NOW.dayOfSat;
+		int week_startYear;
+		int week_endYear;
+		if(week_startMonth==12&&week_endMonth==1){
+			week_endYear= Dates.NOW.year;
+			week_startYear=week_endYear-1;
+		}else
+			week_endYear=week_startYear=Dates.NOW.year;
+		long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
+		long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
+		for(MyTime mt :  MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies)){
+			addWeek(mt.getDayofweek(),mt.getStarthour(),mt.getStartmin(),mt.getEndhour(),mt.getEndmin(),mt.getColor());
+		}
+	}
 	public static void addWeek(int xth, int startHour, int startMin, int endHour, int endMin, String color){
 		if(endMin!=0) ++endHour;
 		else endMin=60;
@@ -69,11 +93,6 @@ public class Common {
 				tp[j].setPosState(PosState.ENROLL);
 			}
 			++j;
-		}
-	}
-	public static void cleanTable(){
-		for (TimePos ETP : TimePos.values()) {
-			ETP.setPosState(PosState.NO_PAINT);
 		}
 	}
 	public static boolean isTableEmpty(){

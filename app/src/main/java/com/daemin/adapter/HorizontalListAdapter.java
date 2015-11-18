@@ -29,6 +29,7 @@ public class HorizontalListAdapter extends ArrayAdapter<SubjectData> {
         if (convertView == null) {
             holder = new Holder();
             convertView = mInflater.inflate(R.layout.listitem_subject, parent, false);
+            holder.id = (TextView) convertView.findViewById(R.id._id);
             holder.time = (TextView) convertView.findViewById(R.id.time);
             holder.subtitle = (TextView) convertView.findViewById(R.id.subtitle);
             holder.prof = (TextView) convertView.findViewById(R.id.prof);
@@ -43,6 +44,7 @@ public class HorizontalListAdapter extends ArrayAdapter<SubjectData> {
         }
 
         // Populate the text
+        holder.id.setText(getItem(position).get_id());
         holder.time.setText(getItem(position).getTime());
         holder.subtitle.setText(getItem(position).getSubtitle());
         holder.prof.setText(getItem(position).getProf());
@@ -57,6 +59,7 @@ public class HorizontalListAdapter extends ArrayAdapter<SubjectData> {
 
     /** View holder for the views we need access to */
     private static class Holder {
+        public TextView id;
         public TextView time;
         public TextView subtitle;
         public TextView prof;

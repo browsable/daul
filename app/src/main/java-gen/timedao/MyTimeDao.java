@@ -22,25 +22,27 @@ public class MyTimeDao extends AbstractDao<MyTime, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-        public final static Property Year = new Property(2, Integer.class, "year", false, "YEAR");
-        public final static Property Monthofyear = new Property(3, Integer.class, "monthofyear", false, "MONTHOFYEAR");
-        public final static Property Dayofmonth = new Property(4, Integer.class, "dayofmonth", false, "DAYOFMONTH");
-        public final static Property Dayofweek = new Property(5, Integer.class, "dayofweek", false, "DAYOFWEEK");
-        public final static Property Starthour = new Property(6, Integer.class, "starthour", false, "STARTHOUR");
-        public final static Property Startmin = new Property(7, Integer.class, "startmin", false, "STARTMIN");
-        public final static Property Endhour = new Property(8, Integer.class, "endhour", false, "ENDHOUR");
-        public final static Property Endmin = new Property(9, Integer.class, "endmin", false, "ENDMIN");
-        public final static Property Startmillis = new Property(10, Long.class, "startmillis", false, "STARTMILLIS");
-        public final static Property Endmillis = new Property(11, Long.class, "endmillis", false, "ENDMILLIS");
-        public final static Property Memo = new Property(12, String.class, "memo", false, "MEMO");
-        public final static Property Place = new Property(13, String.class, "place", false, "PLACE");
-        public final static Property Lat = new Property(14, Double.class, "lat", false, "LAT");
-        public final static Property Lng = new Property(15, Double.class, "lng", false, "LNG");
-        public final static Property Share = new Property(16, Integer.class, "share", false, "SHARE");
-        public final static Property Alarm = new Property(17, Long.class, "alarm", false, "ALARM");
-        public final static Property Repeat = new Property(18, String.class, "repeat", false, "REPEAT");
-        public final static Property Color = new Property(19, String.class, "color", false, "COLOR");
+        public final static Property Timecode = new Property(1, String.class, "timecode", false, "TIMECODE");
+        public final static Property Timetype = new Property(2, int.class, "timetype", false, "TIMETYPE");
+        public final static Property Name = new Property(3, String.class, "name", false, "NAME");
+        public final static Property Year = new Property(4, Integer.class, "year", false, "YEAR");
+        public final static Property Monthofyear = new Property(5, Integer.class, "monthofyear", false, "MONTHOFYEAR");
+        public final static Property Dayofmonth = new Property(6, Integer.class, "dayofmonth", false, "DAYOFMONTH");
+        public final static Property Dayofweek = new Property(7, int.class, "dayofweek", false, "DAYOFWEEK");
+        public final static Property Starthour = new Property(8, int.class, "starthour", false, "STARTHOUR");
+        public final static Property Startmin = new Property(9, int.class, "startmin", false, "STARTMIN");
+        public final static Property Endhour = new Property(10, int.class, "endhour", false, "ENDHOUR");
+        public final static Property Endmin = new Property(11, int.class, "endmin", false, "ENDMIN");
+        public final static Property Startmillis = new Property(12, Long.class, "startmillis", false, "STARTMILLIS");
+        public final static Property Endmillis = new Property(13, Long.class, "endmillis", false, "ENDMILLIS");
+        public final static Property Memo = new Property(14, String.class, "memo", false, "MEMO");
+        public final static Property Place = new Property(15, String.class, "place", false, "PLACE");
+        public final static Property Lat = new Property(16, Double.class, "lat", false, "LAT");
+        public final static Property Lng = new Property(17, Double.class, "lng", false, "LNG");
+        public final static Property Share = new Property(18, Integer.class, "share", false, "SHARE");
+        public final static Property Alarm = new Property(19, Long.class, "alarm", false, "ALARM");
+        public final static Property Repeat = new Property(20, String.class, "repeat", false, "REPEAT");
+        public final static Property Color = new Property(21, String.class, "color", false, "COLOR");
     };
 
 
@@ -57,25 +59,27 @@ public class MyTimeDao extends AbstractDao<MyTime, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'MY_TIME' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "'NAME' TEXT," + // 1: name
-                "'YEAR' INTEGER," + // 2: year
-                "'MONTHOFYEAR' INTEGER," + // 3: monthofyear
-                "'DAYOFMONTH' INTEGER," + // 4: dayofmonth
-                "'DAYOFWEEK' INTEGER," + // 5: dayofweek
-                "'STARTHOUR' INTEGER," + // 6: starthour
-                "'STARTMIN' INTEGER," + // 7: startmin
-                "'ENDHOUR' INTEGER," + // 8: endhour
-                "'ENDMIN' INTEGER," + // 9: endmin
-                "'STARTMILLIS' INTEGER," + // 10: startmillis
-                "'ENDMILLIS' INTEGER," + // 11: endmillis
-                "'MEMO' TEXT," + // 12: memo
-                "'PLACE' TEXT," + // 13: place
-                "'LAT' REAL," + // 14: lat
-                "'LNG' REAL," + // 15: lng
-                "'SHARE' INTEGER," + // 16: share
-                "'ALARM' INTEGER," + // 17: alarm
-                "'REPEAT' TEXT," + // 18: repeat
-                "'COLOR' TEXT);"); // 19: color
+                "'TIMECODE' TEXT NOT NULL ," + // 1: timecode
+                "'TIMETYPE' INTEGER NOT NULL ," + // 2: timetype
+                "'NAME' TEXT," + // 3: name
+                "'YEAR' INTEGER," + // 4: year
+                "'MONTHOFYEAR' INTEGER," + // 5: monthofyear
+                "'DAYOFMONTH' INTEGER," + // 6: dayofmonth
+                "'DAYOFWEEK' INTEGER NOT NULL ," + // 7: dayofweek
+                "'STARTHOUR' INTEGER NOT NULL ," + // 8: starthour
+                "'STARTMIN' INTEGER NOT NULL ," + // 9: startmin
+                "'ENDHOUR' INTEGER NOT NULL ," + // 10: endhour
+                "'ENDMIN' INTEGER NOT NULL ," + // 11: endmin
+                "'STARTMILLIS' INTEGER," + // 12: startmillis
+                "'ENDMILLIS' INTEGER," + // 13: endmillis
+                "'MEMO' TEXT," + // 14: memo
+                "'PLACE' TEXT," + // 15: place
+                "'LAT' REAL," + // 16: lat
+                "'LNG' REAL," + // 17: lng
+                "'SHARE' INTEGER," + // 18: share
+                "'ALARM' INTEGER," + // 19: alarm
+                "'REPEAT' TEXT," + // 20: repeat
+                "'COLOR' TEXT);"); // 21: color
     }
 
     /** Drops the underlying database table. */
@@ -93,100 +97,82 @@ public class MyTimeDao extends AbstractDao<MyTime, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
+        stmt.bindString(2, entity.getTimecode());
+        stmt.bindLong(3, entity.getTimetype());
  
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(2, name);
+            stmt.bindString(4, name);
         }
  
         Integer year = entity.getYear();
         if (year != null) {
-            stmt.bindLong(3, year);
+            stmt.bindLong(5, year);
         }
  
         Integer monthofyear = entity.getMonthofyear();
         if (monthofyear != null) {
-            stmt.bindLong(4, monthofyear);
+            stmt.bindLong(6, monthofyear);
         }
  
         Integer dayofmonth = entity.getDayofmonth();
         if (dayofmonth != null) {
-            stmt.bindLong(5, dayofmonth);
+            stmt.bindLong(7, dayofmonth);
         }
- 
-        Integer dayofweek = entity.getDayofweek();
-        if (dayofweek != null) {
-            stmt.bindLong(6, dayofweek);
-        }
- 
-        Integer starthour = entity.getStarthour();
-        if (starthour != null) {
-            stmt.bindLong(7, starthour);
-        }
- 
-        Integer startmin = entity.getStartmin();
-        if (startmin != null) {
-            stmt.bindLong(8, startmin);
-        }
- 
-        Integer endhour = entity.getEndhour();
-        if (endhour != null) {
-            stmt.bindLong(9, endhour);
-        }
- 
-        Integer endmin = entity.getEndmin();
-        if (endmin != null) {
-            stmt.bindLong(10, endmin);
-        }
+        stmt.bindLong(8, entity.getDayofweek());
+        stmt.bindLong(9, entity.getStarthour());
+        stmt.bindLong(10, entity.getStartmin());
+        stmt.bindLong(11, entity.getEndhour());
+        stmt.bindLong(12, entity.getEndmin());
  
         Long startmillis = entity.getStartmillis();
         if (startmillis != null) {
-            stmt.bindLong(11, startmillis);
+            stmt.bindLong(13, startmillis);
         }
  
         Long endmillis = entity.getEndmillis();
         if (endmillis != null) {
-            stmt.bindLong(12, endmillis);
+            stmt.bindLong(14, endmillis);
         }
  
         String memo = entity.getMemo();
         if (memo != null) {
-            stmt.bindString(13, memo);
+            stmt.bindString(15, memo);
         }
  
         String place = entity.getPlace();
         if (place != null) {
-            stmt.bindString(14, place);
+            stmt.bindString(16, place);
         }
  
         Double lat = entity.getLat();
         if (lat != null) {
-            stmt.bindDouble(15, lat);
+            stmt.bindDouble(17, lat);
         }
  
         Double lng = entity.getLng();
         if (lng != null) {
-            stmt.bindDouble(16, lng);
+            stmt.bindDouble(18, lng);
         }
  
         Integer share = entity.getShare();
         if (share != null) {
-            stmt.bindLong(17, share);
+            stmt.bindLong(19, share);
         }
  
         Long alarm = entity.getAlarm();
         if (alarm != null) {
-            stmt.bindLong(18, alarm);
+            stmt.bindLong(20, alarm);
         }
  
         String repeat = entity.getRepeat();
         if (repeat != null) {
-            stmt.bindString(19, repeat);
+            stmt.bindString(21, repeat);
         }
  
         String color = entity.getColor();
         if (color != null) {
-            stmt.bindString(20, color);
+            stmt.bindString(22, color);
         }
     }
 
@@ -201,25 +187,27 @@ public class MyTimeDao extends AbstractDao<MyTime, Long> {
     public MyTime readEntity(Cursor cursor, int offset) {
         MyTime entity = new MyTime( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // year
-            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // monthofyear
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // dayofmonth
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // dayofweek
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // starthour
-            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // startmin
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // endhour
-            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // endmin
-            cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10), // startmillis
-            cursor.isNull(offset + 11) ? null : cursor.getLong(offset + 11), // endmillis
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // memo
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // place
-            cursor.isNull(offset + 14) ? null : cursor.getDouble(offset + 14), // lat
-            cursor.isNull(offset + 15) ? null : cursor.getDouble(offset + 15), // lng
-            cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16), // share
-            cursor.isNull(offset + 17) ? null : cursor.getLong(offset + 17), // alarm
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // repeat
-            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19) // color
+            cursor.getString(offset + 1), // timecode
+            cursor.getInt(offset + 2), // timetype
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // name
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // year
+            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // monthofyear
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // dayofmonth
+            cursor.getInt(offset + 7), // dayofweek
+            cursor.getInt(offset + 8), // starthour
+            cursor.getInt(offset + 9), // startmin
+            cursor.getInt(offset + 10), // endhour
+            cursor.getInt(offset + 11), // endmin
+            cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12), // startmillis
+            cursor.isNull(offset + 13) ? null : cursor.getLong(offset + 13), // endmillis
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // memo
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // place
+            cursor.isNull(offset + 16) ? null : cursor.getDouble(offset + 16), // lat
+            cursor.isNull(offset + 17) ? null : cursor.getDouble(offset + 17), // lng
+            cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18), // share
+            cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19), // alarm
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // repeat
+            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21) // color
         );
         return entity;
     }
@@ -228,25 +216,27 @@ public class MyTimeDao extends AbstractDao<MyTime, Long> {
     @Override
     public void readEntity(Cursor cursor, MyTime entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setYear(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setMonthofyear(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
-        entity.setDayofmonth(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setDayofweek(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setStarthour(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setStartmin(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setEndhour(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setEndmin(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setStartmillis(cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10));
-        entity.setEndmillis(cursor.isNull(offset + 11) ? null : cursor.getLong(offset + 11));
-        entity.setMemo(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setPlace(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setLat(cursor.isNull(offset + 14) ? null : cursor.getDouble(offset + 14));
-        entity.setLng(cursor.isNull(offset + 15) ? null : cursor.getDouble(offset + 15));
-        entity.setShare(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
-        entity.setAlarm(cursor.isNull(offset + 17) ? null : cursor.getLong(offset + 17));
-        entity.setRepeat(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
-        entity.setColor(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setTimecode(cursor.getString(offset + 1));
+        entity.setTimetype(cursor.getInt(offset + 2));
+        entity.setName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setYear(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setMonthofyear(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
+        entity.setDayofmonth(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setDayofweek(cursor.getInt(offset + 7));
+        entity.setStarthour(cursor.getInt(offset + 8));
+        entity.setStartmin(cursor.getInt(offset + 9));
+        entity.setEndhour(cursor.getInt(offset + 10));
+        entity.setEndmin(cursor.getInt(offset + 11));
+        entity.setStartmillis(cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12));
+        entity.setEndmillis(cursor.isNull(offset + 13) ? null : cursor.getLong(offset + 13));
+        entity.setMemo(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setPlace(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setLat(cursor.isNull(offset + 16) ? null : cursor.getDouble(offset + 16));
+        entity.setLng(cursor.isNull(offset + 17) ? null : cursor.getDouble(offset + 17));
+        entity.setShare(cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18));
+        entity.setAlarm(cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19));
+        entity.setRepeat(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setColor(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
      }
     
     /** @inheritdoc */

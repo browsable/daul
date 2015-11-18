@@ -51,7 +51,7 @@ public class SettingInitFragment extends BasicFragment {
         btInitTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyTimeRepo.deleteAll(getActivity());
+                MyTimeRepo.clearMyTime(getActivity());
             }
         });
         return root;
