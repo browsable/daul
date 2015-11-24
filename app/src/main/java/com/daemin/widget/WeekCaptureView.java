@@ -33,7 +33,7 @@ public class WeekCaptureView extends ImageView {
     {
         super(context);
         this.context = context;
-        this.dayOfWeek = Dates.NOW.dayOfWeek;
+        this.dayOfWeek = Dates.NOW.getDayOfWeek();
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
         isToday = true;
         tempxth = 0;

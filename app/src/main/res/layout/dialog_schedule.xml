@@ -37,8 +37,8 @@
                 />
             <ToggleButton
                 android:id="@+id/btEdit"
-                android:layout_width="26dp"
-                android:layout_height="20dp"
+                android:layout_width="28dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/margin_l"
                 android:layout_marginBottom="@dimen/margin_default"
@@ -49,6 +49,11 @@
                 android:layout_alignBottom="@+id/etSavedName"
                 android:layout_alignRight="@+id/etSavedName"
                 android:scaleType="fitXY" />
+            <TextView
+                android:id="@+id/tvTimeCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <Button

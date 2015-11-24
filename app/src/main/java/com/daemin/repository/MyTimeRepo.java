@@ -6,6 +6,7 @@ import com.daemin.common.AppController;
 
 import java.util.List;
 
+import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 import timedao.MyTime;
 import timedao.MyTimeDao;
@@ -17,23 +18,32 @@ public class MyTimeRepo {
     public static void insertOrUpdate(Context context, MyTime myTime) {
         getMyTimeDao(context).insertOrReplace(myTime);
     }
-    /*public static void updateSubjectDate(Context context, MyTime myTime) {
-        Query query = getMyTimeDao(context).queryBuilder().queryRawCreate(
-                ", GROUP G WHERE G.NAME=? AND T.GROUP_ID=G._ID", "admin");
-    }*/
     public static void clearMyTime(Context context) {
         getMyTimeDao(context).deleteAll();
     }
 
-    public static void deleteMyTimeWithId(Context context, long id) {
+    public static void deleteWithId(Context context, long id) {
         getMyTimeDao(context).delete(getMyTimeForId(context, id));
+    }
+    public static MyTime getMyTimeForId(Context context, long id) {
+        return getMyTimeDao(context).load(id);
+    }
+    public static void deleteWithTimeCode(Context context, String timeCode) {
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+        qb.where(MyTimeDao.Properties.Timecode.eq(timeCode));
+        qb.buildDelete().executeDeleteWithoutDetachingEntities();
     }
     public static List<MyTime> getAllMyTime(Context context) {
         return getMyTimeDao(context).loadAll();
     }
-
-    public static MyTime getMyTimeForId(Context context, long id) {
-        return getMyTimeDao(context).load(id);
+    public static String getCreditSum(Context context){
+        Query query = getMyTimeDao(context).queryRawCreate(
+                " WHERE T.'TYMETYPE'=1", "CREDIT");
+        int cSum=0;
+        for(Object c : query.list()){
+            cSum+=(int)c;
+        }
+        return String.valueOf(cSum);
     }
     public static List<MyTime> getWeekTimes(Context context, long week_startMillies, long week_endMillies){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
@@ -55,6 +65,22 @@ public class MyTimeRepo {
                         MyTimeDao.Properties.Endmin.ge(startMin));
         return (MyTime) qb.unique();
     }
+    /*public static MyTime getEnroll(Context context,long startmillis, int xth, int startHour,int startMin){
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+        qb.where(
+                qb.or(
+                        qb.and(MyTimeDao.Properties.Timetype.eq(0),
+                                MyTimeDao.Properties.Startmillis.le(startmillis),
+                                MyTimeDao.Properties.Endmillis.ge(startmillis)),
+                        qb.and(MyTimeDao.Properties.Timetype.eq(1), MyTimeDao.Properties.Dayofweek.eq(xth),
+                                MyTimeDao.Properties.Starthour.le(startHour),
+                                MyTimeDao.Properties.Endhour.ge(startHour))),
+                MyTimeDao.Properties.Startmin.le(startMin),
+                MyTimeDao.Properties.Endmin.ge(startMin),
+                new WhereCondition.StringCondition("_ID IN " +
+                        "(SELECT T.'TIMECODE' FROM MY_TIME WHERE (TIMETYPE=0 and STARTMILLIS=)")).build();
+        return (MyTime) qb.unique();
+    }*/
    /* public static String getEngByKor(Context context, String key) {
         return getNormalDao(context)
                 .queryBuilder()

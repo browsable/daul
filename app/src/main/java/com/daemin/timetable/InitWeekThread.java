@@ -35,8 +35,8 @@ public class InitWeekThread extends InitThread {
     public InitWeekThread(SurfaceHolder holder, Context context) {
         this.mholder = holder;
         this.context = context;
-        Common.postWeekData();
-        this.dayOfWeek = Dates.NOW.dayOfWeek;
+        Common.fetchWeekData();
+        this.dayOfWeek = Dates.NOW.getDayOfWeek();
         tempxth = 0;
         tempyth = 0;
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -65,11 +65,6 @@ public class InitWeekThread extends InitThread {
 
     public int getHeight() {
         return height;
-    }
-
-    @Override
-    public String getMonthAndDay(int... index) {
-        return null;
     }
 
     public void run() {
@@ -143,26 +138,21 @@ public class InitWeekThread extends InitThread {
                 if (Common.isTableEmpty()){
                     Toast.makeText(context, "과목을 선택하세요", Toast.LENGTH_SHORT).show();
                 } else {
-                    Common.stateFilter(Common.getTempTimePos(), 0);
+                    Common.stateFilter(0);
+                }
+                if (ETP.getPosState() == PosState.ENROLL) {
+                    EventBus.getDefault().post(new FinishDialogEvent());
+                    Intent i = new Intent(context, DialSchedule.class);
+                    i.putExtra("enrollFlag",true);
+                    i.putExtra("xth",xth);
+                    i.putExtra("yth",tmpYth);
+                    i.putExtra("startMin",ETP.getStartMin());
+                    context.startActivity(i);
                 }
                 break;
-           /* case 2: //추천
-                if (ETP.getPosState() == PosState.NO_PAINT||ETP.getPosState() == PosState.ADJUST) {
-                    Common.stateFilter(Common.getTempTimePos(), "week");
-                    if (ryth == 0) ETP.setMin(30, 60);
-                    else ETP.setMin(0, 30);
-                    ETP.setPosState(PosState.ADJUST);
-                    if(!Common.getTempTimePos().contains(ETP.name()))
-                    Common.getTempTimePos().add(ETP.name());
-                    MainActivity.getInstance().setupRecommendDatas(ETP.name());
-                }else {
-                    Common.stateFilter(Common.getTempTimePos(), "week");
-                }
-                break;*/
         }
         return;
     }
-
     public void initScreen() {
 
         float[] hp_hour = {
@@ -216,25 +206,4 @@ public class InitWeekThread extends InitThread {
         if(Dates.NOW.isToday)canvas.drawRect(width * (2 * dayOfWeek + 1) / 15, ((height * 2) - 10) / 64 + 18, width * (2 * dayOfWeek + 3) / 15, height * 62 / 64 + 18, hp);
         hp.setAlpha(100);
     }
-    /*public Bitmap captureImg() {
-        isLoop=false;
-        Bitmap bm = null;
-        try{
-        Canvas canvas = mholder.lockCanvas();
-        bm = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
-        canvas.setBitmap(bm);
-        synchronized (mholder) {
-                initScreen(dayOfWeek);
-                for (TimePos ETP : TimePos.values()) {
-                    ETP.drawTimePos(canvas, width, height);
-                }
-            }
-        } catch (Exception e) {
-        } finally {
-            if (canvas != null)
-                mholder.unlockCanvasAndPost(canvas);
-        }
-        isLoop=true;
-        return bm;
-    }*/
 }

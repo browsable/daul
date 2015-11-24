@@ -18,16 +18,10 @@ import com.daemin.timetable.R;
  * Created by hernia on 2015-11-05.
  */
 public class MonthCaptureView extends ImageView {
-    private boolean isToday;
     private int width;
     private int height;
-    private int dayOfWeekOfLastMonth;
-    private int dayNumOfMonth;
-    private int tmp;
+    private int ty;
     private int tx;//이전달의 마지막날 요일
-    private int todayIndex;
-    private String[] monthData;
-    private String barText;
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
     private Paint tp,tpred,tpblue,tpgray,rp; // 시간 텍스트
@@ -37,11 +31,6 @@ public class MonthCaptureView extends ImageView {
     public MonthCaptureView(Context context)
     {
         super(context);
-        this.monthData = Dates.NOW.getDayOfLastMonth();
-        this.dayOfWeekOfLastMonth = Dates.NOW.getDayOfWeekOfLastMonth();
-        this.dayNumOfMonth = Dates.NOW.getDayNumOfMonth();
-        isToday = true;
-        todayIndex=0;
         tempxth = 0;
         tempyth = 0;
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -63,28 +52,15 @@ public class MonthCaptureView extends ImageView {
         tpgray.setTextSize(38);
         tpgray.setTextAlign(Paint.Align.CENTER);
         tpgray.setColor(context.getResources().getColor(R.color.middlegray));
-        //tmp = dayOfWeekOfLastMonth+dayOfMonth+1;
-        tx = tmp%7;
+        ty = Dates.NOW.getDayOfWeekOfLastMonth()+Dates.NOW.dayOfMonth+1;
+        tx = ty%7;
         if(tx==0){
-            --tmp;
+            --ty;
             tx = 7;
         }
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
         rp.setColor(Color.parseColor(Common.MAIN_COLOR));
         rp.setAlpha(100);
-        int cnt =0;
-        for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
-            ++cnt;
-        }
-        String[] mData = new String[cnt];
-        int j =0;
-       /* for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
-            String str = CalTime.getTitleYearMonth(context);
-            mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
-            j++;
-        }*/
-        Dates.NOW.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
-        Dates.NOW.setmData(mData);
     }
     public MonthCaptureView(Context context, AttributeSet attrs)
     {
@@ -95,35 +71,6 @@ public class MonthCaptureView extends ImageView {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
     }
-    public void setTodayIndex(int todayIndex) {
-        this.todayIndex = todayIndex;
-    }
-    public void setBarText(String barText) {
-        this.barText = barText;
-    }
-    public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth){
-        this.monthData = monthData;
-        this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
-        this.dayNumOfMonth = dayNumOfMonth;
-        if(todayIndex==0) isToday= true;
-        else isToday=false;
-        postMonthData();
-    }
-    public void postMonthData(){
-        int cnt =0;
-        for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
-            ++cnt;
-        }
-        String[] mData = new String[cnt];
-        int j =0;
-        for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
-            String str = barText;
-            mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
-            j++;
-        }
-        Dates.NOW.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
-        Dates.NOW.setmData(mData);
-    }
     @Override
     protected void onDraw(Canvas canvas)
     {
@@ -133,11 +80,6 @@ public class MonthCaptureView extends ImageView {
         width = canvas.getWidth();
         height = canvas.getHeight();
         initScreen();
-        /*for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
-            DOMP.drawTimePos(canvas, width, height);
-        }*/
-       /* canvas.drawRect(width * (3-1) / 7, height * ((3-1)*10+2) / 64 + 6,
-                width * 5 / 7, height * (5*10+2) / 64 + 6, rp);*/
 
     }
     @Override
@@ -208,7 +150,7 @@ public class MonthCaptureView extends ImageView {
         canvas.drawLines(hp_hour, hp);
         canvas.drawLines(vp, hpvp);
         hp.setAlpha(40);
-        if(isToday)canvas.drawRect(width * (tx - 1) / 7, height * ((tmp / 7) * 10 + 2) / 64 + 6,width * tx / 7, height * ((tmp / 7 + 1) * 10 + 2) / 64 + 6, hp);
+        if(Dates.NOW.isToday)canvas.drawRect(width * (tx - 1) / 7, height * ((ty / 7) * 10 + 2) / 64 + 6,width * tx / 7, height * ((ty / 7 + 1) * 10 + 2) / 64 + 6, hp);
         hp.setAlpha(100);
         canvas.drawText("SUN", width * 1 / 14, height * 2 / 62 - 1, tpred);
         canvas.drawText("MON", width * 3 / 14, height * 2/ 62 - 1, tp);
@@ -218,25 +160,25 @@ public class MonthCaptureView extends ImageView {
         canvas.drawText("FRI", width * 11 / 14, height * 2 / 62 - 1, tp);
         canvas.drawText("SAT", width * 13 / 14, height * 2 / 62 - 1, tpblue);
 
-        for(int i = 0; i<dayOfWeekOfLastMonth+1; i++){
-            canvas.drawText(monthData[i], width * (4 * (i % 7) + 1) / 28 - 6, height * ((10 * (i / 7)) + 4) / 64, tpgray);
+        for(int i = 0; i<Dates.NOW.dayOfWeek+1; i++){
+            canvas.drawText(Dates.NOW.mData[i], width * (4 * (i % 7) + 1) / 28 - 6, height * ((10 * (i / 7)) + 4) / 64, tpgray);
         }
-        for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+        for(int i = Dates.NOW.dayOfWeek+1; i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1; i++){
             int j = i%7;
             switch(j){
                 case 0:
-                    canvas.drawText(monthData[i], width * 1 / 28-6, height* (( 10 * (i/7)) + 4) / 64, tpred);
+                    canvas.drawText(Dates.NOW.mData[i], width * 1 / 28-6, height* (( 10 * (i/7)) + 4) / 64, tpred);
                     break;
                 case 6:
-                    canvas.drawText(monthData[i], width * 25 / 28-6, height * ((10 * (i/7)) + 4) / 64, tpblue);
+                    canvas.drawText(Dates.NOW.mData[i], width * 25 / 28-6, height * ((10 * (i/7)) + 4) / 64, tpblue);
                     break;
                 default:
-                    canvas.drawText(monthData[i], width * (4*j+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tp);
+                    canvas.drawText(Dates.NOW.mData[i], width * (4*j+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tp);
                     break;
             }
         }
-        for(int i = dayOfWeekOfLastMonth + dayNumOfMonth + 1; i < 42; i++) {
-            canvas.drawText(monthData[i], width * (4 * (i%7)+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tpgray);
+        for(int i = Dates.NOW.dayOfWeek + Dates.NOW.dayNumOfMonth + 1; i < 42; i++) {
+            canvas.drawText(Dates.NOW.mData[i], width * (4 * (i%7)+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tpgray);
         }
 
     }

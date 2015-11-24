@@ -1,9 +1,5 @@
 package com.daemin.enumclass;
 
-import android.content.Context;
-
-import com.daemin.timetable.R;
-
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -15,11 +11,14 @@ import org.joda.time.format.DateTimeFormatter;
 public enum Dates {
     NOW();
     Dates(){
+        mData = new String[42];
         dayOfWeek = getDayOfWeek();
-        getWeekData();
+        dayOfMonth = getDayOfMonth();
+        setWeekData();
+
     }
     public String[] mData;
-    public int dayOfWeek,dayOfWeekOfLastMonth,year,month,weekOfMonth; // DrawMode가 월인 상태에서의 month 값
+    public int dayOfWeek,dayOfMonth,year,month,weekOfMonth,dayNumOfMonth,todayIndex;
     public int monthOfSun,monthOfMon,monthOfTue,monthOfWed,monthOfThr,monthOfFri,monthOfSat,
             dayOfSun,dayOfMon,dayOfTue,dayOfWed,dayOfThr,dayOfFri,dayOfSat;
     public String mdOfSun,mdOfMon,mdOfTue,mdOfWed,mdOfThr,mdOfFri,mdOfSat;
@@ -66,7 +65,7 @@ public enum Dates {
         wData[6] = mdOfSat;
         return wData;
     }
-    public String getMonthDay(int xth) {
+    public String getwMonthDay(int xth) {
         switch (xth) {
             case 1:
                 return mdOfSun;
@@ -85,6 +84,9 @@ public enum Dates {
             default:
                 return "";
         }
+    }
+    public String getmMonthDay(int... index) {
+        return mData[index[0]+index[1]];
     }
     public int getXthToDay(int xth) {
         switch (xth) {
@@ -126,21 +128,13 @@ public enum Dates {
                 return 0;
         }
     }
-    public void setDayOfWeekOfLastMonth(int dayOfWeekOfLastMonth) {
-        this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
-    }
-    public void setmData(String[] mData) {
-        this.mData = mData;
-    }
-
-
-
     static LocalDate fst; //해당날짜의 첫째 date
-    public String getToday(){
-        return LocalDate.now().getMonthOfYear()+"."+LocalDate.now().getDayOfMonth();
+    public int getYear() {
+        return getLastDayOfWeek().getYear();
     }
+    public int getDayOfMonth(){ return LocalDate.now().getDayOfMonth();}
     public void setToday(){
-        if(getToday().equals(getMonthDay(2 * dayOfWeek + 1))) isToday = true;
+        if(todayIndex==0) isToday = true;
         else isToday = false;
     }
     public long getNowMillis() {
@@ -165,12 +159,6 @@ public enum Dates {
         DateTimeFormatter fmt = DateTimeFormat.forPattern("MM.dd HH:mm");
         return fmt.print(dt);
     }
-    public int getDayOfWeek() {
-        int dayOfWeek = LocalDate.now().getDayOfWeek();
-        if(dayOfWeek==7) dayOfWeek=0;
-        return dayOfWeek;
-    }
-    public int getDayOfMonth(){ return LocalDate.now().getDayOfMonth();}
     public LocalDate getLastDayOfWeek(){
         if(LocalDate.now().getDayOfWeek()==7) return LocalDate.now().plusDays(1).withDayOfWeek(6);
         else return LocalDate.now().withDayOfWeek(6);
@@ -199,7 +187,14 @@ public enum Dates {
         if(getMinusDayOfWeek(minus).withDayOfMonth(1).getDayOfWeek()==7) return getMinusDayOfWeek(minus).withDayOfMonth(1).plusDays(1).withDayOfWeek(6);
         else return getMinusDayOfWeek(minus).withDayOfMonth(1).withDayOfWeek(6);
     }
-    public void getWeekData() {
+    //week
+    public int getDayOfWeek() {
+        int dayOfWeek = LocalDate.now().getDayOfWeek();
+        if(dayOfWeek==7) dayOfWeek=0;
+        return dayOfWeek;
+    }
+    public void setWeekData() {
+        todayIndex = 0;
         year = getYear();
         int lastDayofWeek = getLastDayOfWeek().getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
         int firstDayOfMonth = getFirstDayOfWeekYear().getWeekOfWeekyear();
@@ -224,17 +219,18 @@ public enum Dates {
                 fst.plusDays(5).getMonthOfYear(),
                 fst.plusDays(6).getMonthOfYear()
         );
-        setToday();
+        isToday=true;
     }
-    public void getPreWeekData(int indexForTitle) {
-        year = getLastDayOfWeek().plusWeeks(indexForTitle).getYear();
-        int lastDayofWeek = getPlusDayOfWeek(indexForTitle).getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
-        int firstDayOfMonth = getPlusFirstDayOfWeek(indexForTitle).getWeekOfWeekyear();
+    public void setPreWeekData(int index) {
+        todayIndex = index;
+        year = getLastDayOfWeek().plusWeeks(index).getYear();
+        int lastDayofWeek = getPlusDayOfWeek(index).getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
+        int firstDayOfMonth = getPlusFirstDayOfWeek(index).getWeekOfWeekyear();
         int calWeekOfMonth = lastDayofWeek-firstDayOfMonth+1;
         if(calWeekOfMonth < 0) calWeekOfMonth = lastDayofWeek+1;
-        month = getPlusDayOfWeek(indexForTitle).getMonthOfYear();
+        month = getPlusDayOfWeek(index).getMonthOfYear();
         weekOfMonth = calWeekOfMonth;
-        LocalDate pre = fst.plusWeeks(indexForTitle);
+        LocalDate pre = fst.plusWeeks(index);
         setMD(pre.getDayOfMonth(),
                 pre.plusDays(1).getDayOfMonth(),
                 pre.plusDays(2).getDayOfMonth(),
@@ -252,15 +248,16 @@ public enum Dates {
         );
         setToday();
     }
-    public void getBackWeekData(int indexForTitle) {
-        year = getLastDayOfWeek().minusWeeks(indexForTitle).getYear();
-        int lastDayofWeek = getMinusDayOfWeek(indexForTitle).getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
-        int firstDayOfMonth = getMinusFirstDayOfWeek(indexForTitle).getWeekOfWeekyear();
+    public void setBackWeekData(int index) {
+        todayIndex = index;
+        year = getLastDayOfWeek().minusWeeks(index).getYear();
+        int lastDayofWeek = getMinusDayOfWeek(index).getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
+        int firstDayOfMonth = getMinusFirstDayOfWeek(index).getWeekOfWeekyear();
         int calWeekOfMonth = lastDayofWeek - firstDayOfMonth + 1;
         if (calWeekOfMonth < 0) calWeekOfMonth = lastDayofWeek + 1;
-        month = getMinusDayOfWeek(indexForTitle).getMonthOfYear();
+        month = getMinusDayOfWeek(index).getMonthOfYear();
         weekOfMonth = calWeekOfMonth;
-        LocalDate back = fst.minusWeeks(indexForTitle);
+        LocalDate back = fst.minusWeeks(index);
         setMD(back.getDayOfMonth(),
                 back.plusDays(1).getDayOfMonth(),
                 back.plusDays(2).getDayOfMonth(),
@@ -278,77 +275,46 @@ public enum Dates {
         );
         setToday();
     }
-    public void setTitleYearMonth() {
-        year = getYear();
-        month = LocalDate.now().getMonthOfYear();
-    }
-    public String preTitleYearMonth(Context context, int indexForTitle) {
-        int year = getLastDayOfWeek().plusMonths(indexForTitle).getYear();
-        int titleMonth = LocalDate.now().plusMonths(indexForTitle).getMonthOfYear();
-        setYear(year);
-        setMonth(titleMonth);
-        return " " + year + context.getString(R.string.year) + " "
-                + titleMonth + context.getString((R.string.month));
-    }
-    public String backTitleYearMonth(Context context, int indexForTitle) {
-        int year = getLastDayOfWeek().minusMonths(indexForTitle).getYear();
-        int titleMonth = LocalDate.now().minusMonths(indexForTitle).getMonthOfYear();
-        setYear(year);
-        setMonth(titleMonth);
-        return " " + year + context.getString(R.string.year) + " "
-                + titleMonth + context.getString((R.string.month));
-    }
-    public int getYear() {
-        return getLastDayOfWeek().getYear();
-    }
     //month
-    public String[] getDayOfLastMonth(){
-        String monthData[] = new String[42];
-        LocalDate firstDay = LocalDate.now().minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
-        for(int i =0; i<42; i++){
-            monthData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
-        }
-        return monthData;
-    }
     public int getDayOfWeekOfLastMonth(){
         int dayOfWeek = LocalDate.now().minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
         return dayOfWeek;
     }
-
-    public int getDayNumOfMonth(){
-        return LocalDate.now().dayOfMonth().withMaximumValue().getDayOfMonth();
-    }
-    //pre
-    public String[] getPreDayOfLastMonth(int indexForTitle){
-        String monthData[] = new String[42];
-        LocalDate firstDay = LocalDate.now().plusMonths(indexForTitle).minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
+    public void setMonthData() {
+        todayIndex = 0;
+        year = getYear();
+        month = LocalDate.now().getMonthOfYear();
+        LocalDate firstDay = LocalDate.now().minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
         for(int i =0; i<42; i++){
-            monthData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
+            mData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
         }
-        return monthData;
+        dayOfWeek = LocalDate.now().minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
+        dayNumOfMonth = LocalDate.now().dayOfMonth().withMaximumValue().getDayOfMonth();
+        isToday=true;
     }
-    public int getPreDayOfWeekOfLastMonth(int indexForTitle){
-        int dayOfWeek = LocalDate.now().plusMonths(indexForTitle).minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
-        return dayOfWeek;
-    }
-    public int getPreDayNumOfMonth(int indexForTitle){
-        return LocalDate.now().plusMonths(indexForTitle).dayOfMonth().withMaximumValue().getDayOfMonth();
-    }
-    //back
-    public String[] getBackDayOfLastMonth(int indexForTitle){
-        String monthData[] = new String[42];
-        LocalDate firstDay = LocalDate.now().minusMonths(indexForTitle).minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
+    public void setPreMonthData(int index) {
+        todayIndex = index;
+        year = getLastDayOfWeek().plusMonths(index).getYear();
+        month = LocalDate.now().plusMonths(index).getMonthOfYear();
+        LocalDate firstDay = LocalDate.now().plusMonths(index).minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
         for(int i =0; i<42; i++){
-            monthData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
+            mData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
         }
-        return monthData;
+        dayOfWeek = LocalDate.now().plusMonths(index).minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
+        dayNumOfMonth = LocalDate.now().plusMonths(index).dayOfMonth().withMaximumValue().getDayOfMonth();
+        setToday();
     }
-    public int getBackDayOfWeekOfLastMonth(int indexForTitle){
-        int dayOfWeek = LocalDate.now().minusMonths(indexForTitle).minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
-        return dayOfWeek;
-    }
-    public int getBackDayNumOfMonth(int indexForTitle){
-        return LocalDate.now().minusMonths(indexForTitle).dayOfMonth().withMaximumValue().getDayOfMonth();
+    public void setBackMonthData(int index) {
+        todayIndex = index;
+        year = getLastDayOfWeek().minusMonths(index).getYear();
+        month = LocalDate.now().minusMonths(index).getMonthOfYear();
+       LocalDate firstDay = LocalDate.now().minusMonths(index).minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
+        for(int i =0; i<42; i++){
+            mData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
+        }
+        dayOfWeek = LocalDate.now().minusMonths(index).minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
+        dayNumOfMonth = LocalDate.now().minusMonths(index).dayOfMonth().withMaximumValue().getDayOfMonth();
+        setToday();
     }
 
 }

@@ -22,7 +22,7 @@ public enum User {
     SharedPreferences.Editor editor;
     public double latitude, longitude;
     public String userPK;
-    public int groupPK;
+    public int groupPK,credit;
     public SharedPreferences.Editor getEditor() {
         return editor;
     }

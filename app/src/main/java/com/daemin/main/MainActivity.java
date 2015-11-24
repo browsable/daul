@@ -100,7 +100,7 @@ public class MainActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         //appcontroller에서 앱 실행시 초기에 불러오게될 정보를 저장함
-        Common.stateFilter(Common.getTempTimePos(), viewMode);
+        Common.stateFilter(viewMode);
         //CalTime.setTitleMonth(CalTime.getNow().getMonthOfYear());
         clearApplicationCache(getExternalCacheDir());
         EventBus.getDefault().unregister(this);
@@ -169,11 +169,11 @@ public class MainActivity extends FragmentActivity {
         switcher.setInAnimation(in);
         switcher.setOutAnimation(out);
         if (viewMode == 0) {
-            Dates.NOW.getWeekData();
+            Dates.NOW.setWeekData();
             switcher.setText(setMonthWeek());
             tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
         } else {
-            Dates.NOW.setTitleYearMonth();
+            Dates.NOW.setMonthData();
             switcher.setText(setYearMonth());
             tvTitleYear.setVisibility(View.GONE);
         }
@@ -260,34 +260,25 @@ public class MainActivity extends FragmentActivity {
             case 0:
                 --dayIndex;
                 if (dayIndex < 0) {
-                    Dates.NOW.getBackWeekData(-dayIndex);
+                    Dates.NOW.setBackWeekData(-dayIndex);
                     tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
                     switcher.setText(setMonthWeek());
                 } else {
-                    Dates.NOW.getPreWeekData(dayIndex);
+                    Dates.NOW.setPreWeekData(dayIndex);
                     tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
                     switcher.setText(setMonthWeek());
                 }
-                Common.postWeekData();
+                Common.fetchWeekData();
                 break;
             case 2:
-                /*InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
                 --dayIndex;
                 if (dayIndex < 0) {
-                    barText = CalTime.backTitleYearMonth(this, -dayIndex);
-                    switcher.setText(barText);
-                    im.setTodayIndex(dayIndex);
-                    im.setCurrentTime(CalTime.getBackDayOfLastMonth(-dayIndex),
-                            CalTime.getBackDayOfWeekOfLastMonth(-dayIndex),
-                            CalTime.getBackDayNumOfMonth(-dayIndex));
+                    Dates.NOW.setBackMonthData(-dayIndex);
+                    switcher.setText(setYearMonth());
                 } else {
-                    barText = CalTime.preTitleYearMonth(this, dayIndex);
-                    switcher.setText(barText);
-                    im.setTodayIndex(dayIndex);
-                    im.setCurrentTime(CalTime.getPreDayOfLastMonth(dayIndex),
-                            CalTime.getPreDayOfWeekOfLastMonth(dayIndex),
-                            CalTime.getPreDayNumOfMonth(dayIndex));
-                }*/
+                    Dates.NOW.setPreMonthData(dayIndex);
+                    switcher.setText(setYearMonth());
+                }
                 break;
         }
     }
@@ -297,34 +288,25 @@ public class MainActivity extends FragmentActivity {
             case 0:
                 ++dayIndex;
                 if (dayIndex < 0) {
-                    Dates.NOW.getBackWeekData(-dayIndex);
+                    Dates.NOW.setBackWeekData(-dayIndex);
                     tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
                     switcher.setText(setMonthWeek());
                 } else {
-                    Dates.NOW.getPreWeekData(dayIndex);
+                    Dates.NOW.setPreWeekData(dayIndex);
                     tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
                     switcher.setText(setMonthWeek());
                 }
-                Common.postWeekData();
+                Common.fetchWeekData();
                 break;
             case 2:
-                /*InitMonthThread im = (InitMonthThread) initSurfaceView.getInitThread();
                 ++dayIndex;
                 if (dayIndex < 0) {
-                    barText = CalTime.backTitleYearMonth(this, -dayIndex);
-                    switcher.setText(barText);
-                    im.setTodayIndex(dayIndex);
-                    im.setCurrentTime(CalTime.getBackDayOfLastMonth(-dayIndex),
-                            CalTime.getBackDayOfWeekOfLastMonth(-dayIndex),
-                            CalTime.getBackDayNumOfMonth(-dayIndex));
+                    Dates.NOW.setBackMonthData(-dayIndex);
+                    switcher.setText(setYearMonth());
                 } else {
-                    barText = CalTime.preTitleYearMonth(this, dayIndex);
-                    switcher.setText(barText);
-                    im.setTodayIndex(dayIndex);
-                    im.setCurrentTime(CalTime.getPreDayOfLastMonth(dayIndex),
-                            CalTime.getPreDayOfWeekOfLastMonth(dayIndex),
-                            CalTime.getPreDayNumOfMonth(dayIndex));
-                }*/
+                    Dates.NOW.setPreMonthData(dayIndex);
+                    switcher.setText(setYearMonth());
+                }
                 break;
         }
     }
@@ -378,12 +360,12 @@ public class MainActivity extends FragmentActivity {
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.btBack:
-                Common.stateFilter(Common.getTempTimePos(), viewMode);
+                Common.stateFilter(viewMode);
                 EventBus.getDefault().post(new ClearNormalEvent());
                 btBackEvent();
                 break;
             case R.id.btForward:
-                Common.stateFilter(Common.getTempTimePos(), viewMode);
+                Common.stateFilter(viewMode);
                 EventBus.getDefault().post(new ClearNormalEvent());
                 btForwardEvent();
                 break;
@@ -447,11 +429,11 @@ public class MainActivity extends FragmentActivity {
                 llTitle.setVisibility(View.VISIBLE);
                 initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
                 dayIndex = 0;
-                Common.stateFilter(Common.getTempTimePos(), viewMode);
+                Common.stateFilter(viewMode);
                 switch (position) {
                     case 0: //주
                         viewMode = 0;
-                        Dates.NOW.getWeekData();
+                        Dates.NOW.setWeekData();
                         User.INFO.getEditor().putInt("viewMode", viewMode).commit();
                         EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
                         tvTitleYear.setVisibility(View.VISIBLE);
@@ -477,9 +459,9 @@ public class MainActivity extends FragmentActivity {
                         viewMode = 2;
                         User.INFO.getEditor().putInt("viewMode", viewMode).commit();
                         EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
-                       // barText = CalTime.getTitleYearMonth(MainActivity.this);
+                        Dates.NOW.setMonthData();
                         switcher.setText("");
-                        switcher.setText(barText);
+                        switcher.setText(setYearMonth());
                         tvTitleYear.setVisibility(View.GONE);
                         DrawMode.CURRENT.setMode(0);
                         changeFragment(TimetableFragment.class, "");

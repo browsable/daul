@@ -20,16 +20,11 @@ import de.greenrobot.event.EventBus;
 @SuppressLint("DefaultLocale")
 public class InitMonthThread extends InitThread {
 	SurfaceHolder mholder;
-	private boolean isLoop = true, isToday;
-	private int todayIndex;
+	private boolean isLoop = true;
 	private int width;
 	private int height;
-	private int dayOfWeekOfLastMonth;
-	private int dayNumOfMonth;
-	private int dayOfMonth;
-	private int tmp;
+	private int ty;
 	private int tx;//이전달의 마지막날 요일
-	private String[] monthData;
 	Context context;
 	private Paint hp; // 1시간 간격 수평선
 	private Paint hpvp; // 30분 간격 수평선, 수직선
@@ -40,12 +35,6 @@ public class InitMonthThread extends InitThread {
 	public InitMonthThread(SurfaceHolder holder, Context context) {
 		this.mholder = holder;
 		this.context = context;
-		this.monthData = Dates.NOW.getDayOfLastMonth();
-		this.dayOfWeekOfLastMonth = Dates.NOW.getDayOfWeekOfLastMonth();
-		this.dayNumOfMonth = Dates.NOW.getDayNumOfMonth();
-		this.dayOfMonth = Dates.NOW.getDayOfMonth();
-		isToday  = true;
-		todayIndex=0;
 		tempxth = 0;
 		tempyth = 0;
 		hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -67,54 +56,38 @@ public class InitMonthThread extends InitThread {
 		tpgray.setTextSize(38);
 		tpgray.setTextAlign(Paint.Align.CENTER);
 		tpgray.setColor(context.getResources().getColor(R.color.middlegray));
-		tmp = dayOfWeekOfLastMonth+dayOfMonth+1;
-		tx = tmp%7;
+		ty = Dates.NOW.dayOfWeek+Dates.NOW.dayOfMonth+1;
+		tx = ty%7;
 		if(tx==0){
-			--tmp;
+			--ty;
 			tx = 7;
 		}
-		int cnt =0;
-		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+		/*int cnt =0;
+		for(int i = Dates.NOW.dayOfWeek+1; i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1; i++){
 			++cnt;
 		}
 		String[] mData = new String[cnt];
 		int j =0;
-		/*for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
 			String str = Dates.NOW.setTitleYearMonth();
 			mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
 			j++;
 		}*/
-		Dates.NOW.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
-		Dates.NOW.setmData(mData);
-	}
-	public int getDayOfWeekOfLastMonth() {
-		return dayOfWeekOfLastMonth;
-	}
-	public void setTodayIndex(int todayIndex) {
-		this.todayIndex = todayIndex;
-	}
-	public void setCurrentTime(String[] monthData, int dayOfWeekOfLastMonth, int dayNumOfMonth){
-		this.monthData = monthData;
-		this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
-		this.dayNumOfMonth = dayNumOfMonth;
-		if(todayIndex==0) isToday= true;
-		else isToday=false;
-		postMonthData();
 	}
 	public void postMonthData(){
 		int cnt =0;
-		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+		for(int i = Dates.NOW.dayOfWeek+1; i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1; i++){
 			++cnt;
 		}
 		String[] mData = new String[cnt];
 		int j =0;
-		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+		for(int i = Dates.NOW.dayOfWeek+1; i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1; i++){
 			String str = MainActivity.getInstance().getBarText();
-			mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
+			mData[j] = str.substring(6,str.length()-1)+"/"+mData[i];
 			j++;
 		}
-		Dates.NOW.setDayOfWeekOfLastMonth(dayOfWeekOfLastMonth);
-		Dates.NOW.setmData(mData);
+		//Dates.NOW.setDayOfWeekOfLastMonth(Dates.NOW.dayOfWeek);
+		//Dates.NOW.setmData(mData);
 	}
 	public void setRunning(boolean isLoop) {
 		this.isLoop = isLoop;
@@ -122,12 +95,8 @@ public class InitMonthThread extends InitThread {
 	public int getWidth() {
 		return width;
 	}
-
 	public int getHeight() {
 		return height;
-	}
-	public String getMonthAndDay(int... index) {
-		return monthData[index[0]+index[1]];
 	}
 	public void run() {
 		while (isLoop) {
@@ -152,7 +121,7 @@ public class InitMonthThread extends InitThread {
 		}
 	}
 	public void getDownXY(int xth, int yth) {
-		if(!(xth>0&&xth+7*(yth-1)<dayOfWeekOfLastMonth+2 || xth+7*(yth-1)>dayOfWeekOfLastMonth + dayNumOfMonth + 1)) {
+		if(!(xth>0&&xth+7*(yth-1)<Dates.NOW.dayOfWeek+2 || xth+7*(yth-1)>Dates.NOW.dayOfWeek + Dates.NOW.dayNumOfMonth + 1)) {
 			makeTimePos(xth, yth);
 			tempxth = xth;
 			tempyth = yth;
@@ -161,7 +130,7 @@ public class InitMonthThread extends InitThread {
 
 	public void getMoveXY(int xth, int yth) {
 		if (tempxth != xth || tempyth != yth) {
-			if(!(xth>0&&xth+7*(yth-1)<dayOfWeekOfLastMonth+2 || xth+7*(yth-1)>dayOfWeekOfLastMonth + dayNumOfMonth + 1)) {
+			if(!(xth>0&&xth+7*(yth-1)<Dates.NOW.dayOfWeek+2 || xth+7*(yth-1)>Dates.NOW.dayOfWeek + Dates.NOW.dayNumOfMonth + 1)) {
 				makeTimePos(xth, yth);
 				tempxth = xth;
 				tempyth = yth;
@@ -209,7 +178,7 @@ public class InitMonthThread extends InitThread {
 		canvas.drawLines(hp_hour, hp);
 		canvas.drawLines(vp, hpvp);
 		hp.setAlpha(40);
-		if(isToday)canvas.drawRect(width * (tx - 1) / 7, height * ((tmp / 7) * 10 + 2) / 64 + 6,width * tx / 7, height * ((tmp / 7 + 1) * 10 + 2) / 64 + 6, hp);
+		if(Dates.NOW.isToday)canvas.drawRect(width * (tx - 1) / 7, height * ((ty / 7) * 10 + 2) / 64 + 6,width * tx / 7, height * ((ty / 7 + 1) * 10 + 2) / 64 + 6, hp);
 		hp.setAlpha(100);
 		canvas.drawText("SUN", width * 1 / 14, height * 2 / 62 - 1, tpred);
 		canvas.drawText("MON", width * 3 / 14, height * 2/ 62 - 1, tp);
@@ -219,47 +188,25 @@ public class InitMonthThread extends InitThread {
 		canvas.drawText("FRI", width * 11 / 14, height * 2 / 62 - 1, tp);
 		canvas.drawText("SAT", width * 13 / 14, height * 2 / 62 - 1, tpblue);
 
-		for(int i = 0; i<dayOfWeekOfLastMonth+1; i++){
-			canvas.drawText(monthData[i], width * (4 * (i % 7) + 1) / 28 - 6, height * ((10 * (i / 7)) + 4) / 64, tpgray);
+		for(int i = 0; i<Dates.NOW.dayOfWeek+1; i++){
+			canvas.drawText(Dates.NOW.mData[i], width * (4 * (i % 7) + 1) / 28 - 6, height * ((10 * (i / 7)) + 4) / 64, tpgray);
 		}
-		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
+		for(int i = Dates.NOW.dayOfWeek+1; i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1; i++){
 			int j = i%7;
 			switch(j){
 				case 0:
-					canvas.drawText(monthData[i], width * 1 / 28-6, height* (( 10 * (i/7)) + 4) / 64, tpred);
+					canvas.drawText(Dates.NOW.mData[i], width * 1 / 28-6, height* (( 10 * (i/7)) + 4) / 64, tpred);
 					break;
 				case 6:
-					canvas.drawText(monthData[i], width * 25 / 28-6, height * ((10 * (i/7)) + 4) / 64, tpblue);
+					canvas.drawText(Dates.NOW.mData[i], width * 25 / 28-6, height * ((10 * (i/7)) + 4) / 64, tpblue);
 					break;
 				default:
-					canvas.drawText(monthData[i], width * (4*j+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tp);
+					canvas.drawText(Dates.NOW.mData[i], width * (4*j+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tp);
 					break;
 			}
 		}
-		for(int i = dayOfWeekOfLastMonth + dayNumOfMonth + 1; i < 42; i++) {
-			canvas.drawText(monthData[i], width * (4 * (i%7)+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tpgray);
+		for(int i = Dates.NOW.dayOfWeek + Dates.NOW.dayNumOfMonth + 1; i < 42; i++) {
+			canvas.drawText(Dates.NOW.mData[i], width * (4 * (i%7)+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tpgray);
 		}
-
 	}
-	/*public Bitmap captureImg() {
-		isLoop=false;
-		Bitmap bm = null;
-		try{
-			Canvas canvas = mholder.lockCanvas();
-			bm = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
-			canvas.setBitmap(bm);
-			synchronized (mholder) {
-				initScreen();
-				for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
-					DOMP.drawTimePos(canvas, width, height);
-				}
-			}
-		} catch (Exception e) {
-		} finally {
-			if (canvas != null)
-				mholder.unlockCanvasAndPost(canvas);
-		}
-		isLoop=true;
-		return bm;
-	}*/
 }

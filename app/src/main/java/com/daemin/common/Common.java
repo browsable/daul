@@ -57,7 +57,7 @@ public class Common {
 		}
 		return false;
 	}
-	public static void postWeekData(){
+	public static void fetchWeekData(){
 		for (TimePos ETP : TimePos.values()) {
 			ETP.setPosState(PosState.NO_PAINT);
 		}
@@ -106,7 +106,7 @@ public class Common {
 	public static ArrayList<String> getTempTimePos(){
 		return tempTimePos;
 	}
-	public static void stateFilter(ArrayList<String> tempTimePos,int viewMode){
+	public static void stateFilter(int viewMode){
 		if(tempTimePos!=null) {
 			switch(viewMode){
 				case 0:
