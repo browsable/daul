@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.daemin.data.SubjectData;
 
@@ -171,7 +172,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String selectQuery = "SELECT DISTINCT * FROM " + TABLE_SCHEDULE + " WHERE (subtitle LIKE '%"+subOrProf+"%' or prof LIKE '%"+subOrProf+"%')";
 		//SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
-
 		// looping through all rows and adding to list
 		if (cursor.moveToFirst()) {
 			do {
@@ -187,9 +187,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SubjectData.setDep_detail(cursor.getString(8));
 				SubjectData.setTime(cursor.getString(9));
 				SubjectData.setProf(cursor.getString(10));
+				Log.i("test", SubjectData.getSubtitle());
 				subjectDataList.add(SubjectData);
 			} while (cursor.moveToNext());
 		}
+
 
 		// return SubjectData list
 		return subjectDataList;

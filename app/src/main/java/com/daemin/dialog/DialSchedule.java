@@ -433,7 +433,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 depFlag = false;
                 actvSub.setText("");
                 subjects.clear();
-                subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(), Convert.indexOfGrade(actvGrade.getText().toString())));
+                subjects.add(db.getAllWithDepAndGrade(actvDep.getText().toString(), Convert.indexOfGrade(actvGrade.getText().toString())).remove(0));
                 hoAdapter.notifyDataSetChanged();
             }
         });
@@ -442,7 +442,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                     int position, long id) {
                 gradeFlag = false;
                 subjects.clear();
-                subjects.addAll(db.getAllWithDepAndGrade(actvDep.getText().toString(), Convert.indexOfGrade(actvGrade.getText().toString())));
+                subjects.add(db.getAllWithDepAndGrade(actvDep.getText().toString(), Convert.indexOfGrade(actvGrade.getText().toString())).remove(0));
                 //actvSub.setText("");
                 hoAdapter.notifyDataSetChanged();
             }
@@ -454,7 +454,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 actvDep.setText("");
                 actvGrade.setText("");
                 subjects.clear();
-                subjects.addAll(db.getAllWithSubOrProf(actvSub.getText().toString()));
+                subjects.add(db.getAllWithSubOrProf(actvSub.getText().toString()).remove(0));
+                for(SubjectData s : subjects){
+                    Log.i("test2", s.getSubtitle());
+                }
                 hoAdapter.notifyDataSetChanged();
             }
         });
