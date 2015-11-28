@@ -103,6 +103,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        User.INFO.getEditor().putString("creditSum", tvCreditSum.getText().toString()).commit();
         Common.stateFilter(viewMode);
         DrawMode.CURRENT.setMode(0);
         System.gc();
@@ -131,12 +132,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels * 3 / 5;
-        lp.height = screenHeight * 23 / 36;
+        lp.height = screenHeight * 22 / 36;
         lp.width = lp.MATCH_PARENT;
         if (enrollFlag) {
             llButtonArea.setVisibility(View.VISIBLE);
             rlEdit.setVisibility(View.VISIBLE);
             llEtName.setVisibility(View.GONE);
+            llTime.setVisibility(View.GONE);
             btUniv.setVisibility(View.GONE);
             btNormal.setVisibility(View.GONE);
             btNew.setVisibility(View.GONE);
@@ -355,7 +357,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
     }
 
-    public static void addWeek(int xth, int startHour, int startMin, int endHour, int endMin) {
+    public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin) {
         if (endMin != 0) ++endHour;
         else endMin = 60;
 
@@ -368,6 +370,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (i == endHour - 1) tp[j].setMin(0, endMin);
                 tp[j].setPosState(PosState.PAINT);
                 Common.getTempTimePos().add(tp[j].name());
+            }else if(tp[j].getPosState() == PosState.ENROLL){
+                tp[j].setColor("#FF0000");//RED
+                overlapFlag = true;
             }
             ++j;
         }
@@ -402,7 +407,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[] temps = null;
+                String[] temps;
                 subId = ((TextView) view.findViewById(R.id._id)).getText().toString();
                 Common.stateFilter(viewMode);
                 for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
@@ -679,7 +684,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         }
                         break;
                     case 1:
-                        if (!subId.equals(null)) {
+                        if (subId!=null) {
                             SubjectData subjectData = db.getSubjectData(subId);
                             String[] temps;
                             String subtitle = subjectData.getSubtitle();
@@ -712,8 +717,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                     break;
                                 }
                             }
+                            tvCreditSum.setText(String.valueOf(Integer.parseInt(tvCreditSum.getText().toString())
+                                    +Integer.parseInt(credit)));
                             Common.fetchWeekData();
-                            //tvCreditSum.setText( MyTimeRepo.getCreditSum(this));
                         }
                         break;
                 }
@@ -745,6 +751,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 break;
             case R.id.btRemove:
                 MyTimeRepo.deleteWithTimeCode(this, tvTimeCode.getText().toString());
+                String creditSum = String.valueOf(Integer.parseInt(User.INFO.getCreditSum())
+                                -Integer.parseInt(etMemo.getText().toString().split("/")[1].substring(0, 1)));
+                User.INFO.getEditor().putString("creditSum",creditSum).commit();
+                tvCreditSum.setText(creditSum);
                 Common.fetchWeekData();
                 EventBus.getDefault().post(new SetBtPlusEvent(true));
                 EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
@@ -859,6 +869,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btRepeat = (LinearLayout) findViewById(R.id.btRepeat);
         llDep = (LinearLayout) findViewById(R.id.llDep);
         llSelectUniv = (LinearLayout) findViewById(R.id.llSelectUniv);
+        llTime = (LinearLayout) findViewById(R.id.llTime);
         rlEdit = (RelativeLayout) findViewById(R.id.rlEdit);
         dragToggle = findViewById(R.id.dragToggle);
         tvShare = (TextView) findViewById(R.id.tvShare);
@@ -867,6 +878,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         tvTimeCode = (TextView) findViewById(R.id.tvTimeCode);
         btUnivNotice = (TextView) findViewById(R.id.btUnivNotice);
         tvCreditSum = (TextView) findViewById(R.id.tvCreditSum);
+        tvCreditSum.setText(User.INFO.getCreditSum());
         etName = (EditText) findViewById(R.id.etName);
         etPlace = (EditText) findViewById(R.id.etPlace);
         etMemo = (EditText) findViewById(R.id.etMemo);
@@ -902,6 +914,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         univFlag = false;
         depFlag = false;
         gradeFlag = false;
+        overlapFlag = false;
         colorName = Common.MAIN_COLOR;
         dy = mPosY = 0;
         dayIndex = new HashMap<>();
@@ -919,7 +932,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
     private Button btNormal, btUniv, btAddSchedule, btCancel, btCommunity, btInvite, btRemove, btEnter, btColor;
     private ToggleButton btEdit;
-    private LinearLayout llNormal, llButtonArea, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat, llEtName;
+    private LinearLayout llNormal, llButtonArea, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat, llEtName,llTime;
     private RelativeLayout rlEdit;
     private TextView tvShare, tvAlarm, tvRepeat, btUnivNotice,tvCreditSum,tvTimeCode;
     private EditText etName, etPlace, etMemo, etSavedName;
@@ -939,7 +952,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight, viewMode;
-    private boolean univFlag, depFlag, gradeFlag, widgetFlag, enrollFlag;
+    private boolean univFlag, depFlag, gradeFlag, widgetFlag, enrollFlag,overlapFlag;
 
     public void onEventMainThread(FinishDialogEvent e) {
         finish();

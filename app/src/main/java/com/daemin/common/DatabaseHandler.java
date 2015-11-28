@@ -97,15 +97,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String selectQuery;
 		if(depName.equals("")||depName.equals("전체")) {
 			if(depgrade.equals("0")) {
-				selectQuery = "SELECT * FROM " + TABLE_SCHEDULE;
+				selectQuery = "SELECT DISTINCT * FROM " + TABLE_SCHEDULE;
 			}else{
-				selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE dep_grade LIKE '%"+depgrade+"%'";
+				selectQuery = "SELECT DISTINCT * FROM " + TABLE_SCHEDULE + " WHERE dep_grade LIKE '%"+depgrade+"%'";
 			}
 		}else{
 			if(depgrade.equals("0")) {
-				selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE dep LIKE '%" + depName + "%'";
+				selectQuery = "SELECT DISTINCT * FROM " + TABLE_SCHEDULE + " WHERE dep LIKE '%" + depName + "%'";
 			}else{
-				selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE (dep LIKE '%"+depName+"%' and dep_grade LIKE '%"+depgrade+"%')";
+				selectQuery = "SELECT DISTINCT * FROM " + TABLE_SCHEDULE + " WHERE (dep LIKE '%"+depName+"%' and dep_grade LIKE '%"+depgrade+"%')";
 			}
 		}
 		//SQLiteDatabase db = this.getWritableDatabase();
@@ -168,7 +168,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		subjectDataList.clear();
 		// Select All Query
-		String selectQuery = "SELECT * FROM " + TABLE_SCHEDULE + " WHERE (subtitle LIKE '%"+subOrProf+"%' or prof LIKE '%"+subOrProf+"%')";
+		String selectQuery = "SELECT DISTINCT * FROM " + TABLE_SCHEDULE + " WHERE (subtitle LIKE '%"+subOrProf+"%' or prof LIKE '%"+subOrProf+"%')";
 		//SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 

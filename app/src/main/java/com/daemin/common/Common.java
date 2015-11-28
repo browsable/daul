@@ -37,8 +37,8 @@ public class Common {
 	public static final String ACTION_BACK4_4 = "com.daemin.widget.ACTION_BACK4_4";
 	public static final String ACTION_FORWARD4_4 = "com.daemin.widget.ACTION_FORWARD4_4";
 	public static final String ACTION_DIAL4_4 = "com.daemin.widget.ACTION_DIAL4_4";
-	public static final String CAPTURE = Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg";
-	public static final String MAIN_COLOR = AppController.getInstance().getResources().getString(R.color.maincolor);
+	//public static final String CAPTURE = Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg";
+	public static final String MAIN_COLOR = "#73C8BA";
 
 	public static boolean isOnline() { // network 연결 상태 확인
 		try {

@@ -21,7 +21,6 @@ public class MyTimeRepo {
     public static void clearMyTime(Context context) {
         getMyTimeDao(context).deleteAll();
     }
-
     public static void deleteWithId(Context context, long id) {
         getMyTimeDao(context).delete(getMyTimeForId(context, id));
     }
@@ -35,15 +34,6 @@ public class MyTimeRepo {
     }
     public static List<MyTime> getAllMyTime(Context context) {
         return getMyTimeDao(context).loadAll();
-    }
-    public static String getCreditSum(Context context){
-        Query query = getMyTimeDao(context).queryRawCreate(
-                " WHERE T.'TYMETYPE'=1", "CREDIT");
-        int cSum=0;
-        for(Object c : query.list()){
-            cSum+=(int)c;
-        }
-        return String.valueOf(cSum);
     }
     public static List<MyTime> getWeekTimes(Context context, long week_startMillies, long week_endMillies){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
