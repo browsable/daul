@@ -131,9 +131,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         lp = window.getAttributes();
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
-        screenHeight = dm.heightPixels * 3 / 5;
-        lp.height = screenHeight * 22 / 36;
+        lp.height = lp.WRAP_CONTENT;
         lp.width = lp.MATCH_PARENT;
+        screenHeight = dm.heightPixels -lp.height;
         if (enrollFlag) {
             llButtonArea.setVisibility(View.VISIBLE);
             rlEdit.setVisibility(View.VISIBLE);
@@ -370,16 +370,17 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (i == endHour - 1) tp[j].setMin(0, endMin);
                 tp[j].setPosState(PosState.PAINT);
                 Common.getTempTimePos().add(tp[j].name());
-            }else if(tp[j].getPosState() == PosState.ENROLL){
+            }/*else if(tp[j].getPosState() == PosState.ENROLL){
                 tp[j].setColor("#FF0000");//RED
                 overlapFlag = true;
-            }
+            }*/
             ++j;
         }
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void settingUniv() {
+        llSelectUniv.setVisibility(View.GONE);
         llDep.setVisibility(View.VISIBLE);
         ArrayList<String>
                 depList = new ArrayList<>(),
@@ -653,12 +654,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     case 0:
                         if (viewMode == 0) {
                             for (BottomNormalData d : normalList) {
-                                int week_endMonth = Dates.NOW.monthOfSat;
-                                int monthOfYear = Dates.NOW.month;
+                                String[] tmp = d.getYMD().split("\\.");
                                 int year;
-                                if (week_endMonth != monthOfYear) year = Dates.NOW.year - 1;
+                                int titleMonth = Dates.NOW.month;
+                                int monthOfYear = Integer.parseInt(tmp[0]);
+                                if (monthOfYear != titleMonth && titleMonth==1) year = Dates.NOW.year - 1;
                                 else year = Dates.NOW.year;
-                                int dayOfMonth = Integer.parseInt(d.getYMD().split("\\.")[1]);
+                                int dayOfMonth = Integer.parseInt(tmp[1]);
                                 int startHour = Integer.parseInt(d.getStartHour());
                                 int startMin = Integer.parseInt(d.getStartMin());
                                 int endHour = Integer.parseInt(d.getEndHour());
@@ -754,10 +756,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 break;
             case R.id.btRemove:
                 MyTimeRepo.deleteWithTimeCode(this, tvTimeCode.getText().toString());
-                String creditSum = String.valueOf(Integer.parseInt(User.INFO.getCreditSum())
+               /* String creditSum = String.valueOf(Integer.parseInt(User.INFO.getCreditSum())
                                 -Integer.parseInt(etMemo.getText().toString().split("/")[1].substring(0, 1)));
                 User.INFO.getEditor().putString("creditSum",creditSum).commit();
-                tvCreditSum.setText(creditSum);
+                tvCreditSum.setText(creditSum);*/
                 Common.fetchWeekData();
                 EventBus.getDefault().post(new SetBtPlusEvent(true));
                 EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
@@ -798,8 +800,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 dr.show();
                 break;
             case R.id.btUnivNotice:
-                btUnivNotice.setTextColor(Color.BLACK);
-                btUnivNotice.setBackgroundResource(R.drawable.bg_black_bottomline);
+                btUnivNotice.setTextColor(Color.GRAY);
                 DialUnivNotice du = new DialUnivNotice(DialSchedule.this);
                 du.show();
                 break;
@@ -985,8 +986,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
 
     public void onEventMainThread(SetBtUnivNoticeEvent e) {
-        btUnivNotice.setTextColor(Color.GRAY);
-        btUnivNotice.setBackgroundResource(R.drawable.bg_lightgray_bottomline);
+        btUnivNotice.setTextColor(Color.BLACK);
     }
 
     public void onEventMainThread(BottomNormalData e) {
@@ -1002,7 +1002,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onEventMainThread(UpdateNormalEvent e) {
         normalList.remove(e.getPosition());
         normalList.add(e.getPosition(), new BottomNormalData(
-                Dates.NOW.getmMonthDay(e.getXth()), e.getStartHour(), e.getStartMin(),
+                Dates.NOW.getwMonthDay(e.getXth()), e.getStartHour(), e.getStartMin(),
                 e.getEndHour(), e.getEndMin(), e.getXth()));
         normalAdapter.notifyDataSetChanged();
     }
