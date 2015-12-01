@@ -398,7 +398,7 @@ public class MainActivity extends FragmentActivity {
         tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
         btPlus = (Button) findViewById(R.id.btPlus);
         ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
-        ivProfile.setImageUrl(SAMPLE_IMAGE_URL, MyVolley.getImageLoader());
+        //ivProfile.setImageUrl(SAMPLE_IMAGE_URL, MyVolley.getImageLoader());
         switcher = (TextSwitcher) findViewById(R.id.switcher);
         flSurface = (FrameLayout) findViewById(R.id.flSurface);
         frame_container = (FrameLayout) findViewById(R.id.frame_container);
@@ -446,14 +446,16 @@ public class MainActivity extends FragmentActivity {
                         initSurfaceView.setMode(viewMode);
                         break;
                     case 1: // 일
+                        viewMode = 1;
                         //barText = CalTime.getTitleMonthWeek(MainActivity.this);
                         switcher.setText("");
                         switcher.setText(barText);
                         tvTitleYear.setVisibility(View.GONE);
                         DrawMode.CURRENT.setMode(0);
-                        flSurface.setVisibility(View.GONE);
-                        frame_container.setVisibility(View.VISIBLE);
-                        changeFragment(InitDayFragment.class, "일");
+                        flSurface.setVisibility(View.VISIBLE);
+                        frame_container.setVisibility(View.GONE);
+                        initSurfaceView.setMode(viewMode);
+                        //changeFragment(InitDayFragment.class, "일");
                         break;
                     case 2: // 월
                         viewMode = 2;

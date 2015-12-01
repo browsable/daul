@@ -33,6 +33,9 @@ public class InitSurfaceView extends SurfaceView implements
 			case 0:
 				initThread = new InitWeekThread(holder, context);
 				break;
+			case 1:
+				initThread = new InitHourThread(holder, context);
+				break;
 			case 2:
 				initThread = new InitMonthThread(holder, context);
 				break;
@@ -50,6 +53,9 @@ public class InitSurfaceView extends SurfaceView implements
 		switch (mode){
 			case 0:
 				initThread = new InitWeekThread(holder, context);
+				break;
+			case 1:
+				initThread = new InitHourThread(holder, context);
 				break;
 			case 2:
 				initThread = new InitMonthThread(holder, context);

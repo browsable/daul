@@ -90,7 +90,7 @@ public class DialWeekPicker extends Dialog {
         npStartMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                if(startHour==String.valueOf(Integer.parseInt(endHour) - 1)) {
+                if (startHour == String.valueOf(Integer.parseInt(endHour) - 1)) {
                     if (newVal < 59) {
                         npEndMin.setMinValue(newVal + 1);
                     }
@@ -101,21 +101,35 @@ public class DialWeekPicker extends Dialog {
         npEndMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                if (newVal == 60) {
-                    tvDialEndTime.setText(endHour);
-                    npStartMin.setMaxValue(59);
-                }else {
-                    tvDialEndTime.setText(String.valueOf(String.valueOf(Integer.parseInt(endHour) - 1)));
-                    if (tvDialStartTime.getText().toString().equals(tvDialEndTime.getText().toString())) {
-                        picker.setMinValue(npStartMin.getValue() + 1);
-                        npStartMin.setMaxValue(newVal - 1);
-                    }else{
-                        picker.setMaxValue(60);
-                        picker.setMinValue(1);
+                if (startHour.equals(endHour)) {
+                    if (newVal == 60) {
+                        tvDialEndTime.setText(String.valueOf(Integer.parseInt(endHour) + 1));
+                    } else {
+                        tvDialEndTime.setText(String.valueOf(endHour));
                     }
-                }
+                    picker.setMinValue(npStartMin.getValue() + 1);
+                    npStartMin.setMaxValue(newVal - 1);
+
+                }else {
+                    if(startMin.equals(endMin)&&startMin.equals("00")) {
+                        if (newVal == 60) {
+                            tvDialEndTime.setText(String.valueOf(endHour));
+                        } else {
+                            tvDialEndTime.setText(String.valueOf(Integer.parseInt(endHour) - 1));
+                        }
+                    }else{
+                        if (newVal == 60) {
+                            tvDialEndTime.setText(String.valueOf(Integer.parseInt(endHour) + 1));
+                        } else {
+                            tvDialEndTime.setText(endHour);
+                        }
+                    }
+                    picker.setMaxValue(60);
+                    picker.setMinValue(1);
             }
-        });
+        }
+
+    });
         btDialCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,16 +139,12 @@ public class DialWeekPicker extends Dialog {
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int endMin = npEndMin.getValue();
-                Log.i("test", String.valueOf(endMin));
-                //if(endMin==60) endMin=0;
-                //Log.i("test", String.valueOf(endMin));
                 weekSetting(Integer.parseInt(xth),
                         Integer.parseInt(tvDialStartTime.getText().toString()),
                         npStartMin.getValue(),
                         Integer.parseInt(tvDialEndTime.getText().toString()),
-                        endMin
-                        );
+                        npEndMin.getValue()
+                );
 
                 cancel();
             }
@@ -172,9 +182,9 @@ public class DialWeekPicker extends Dialog {
             }
             if(endMin==60)endMin=0;
             EventBus.getDefault().post(new UpdateNormalEvent(
-                String.valueOf(startHour),
+                    tvDialStartTime.getText().toString(),
                 Convert.IntToString(startMin),
-                    String.valueOf(endHour),
+                    tvDialEndTime.getText().toString(),
                 Convert.IntToString(endMin),
                 xth,position));
             cancel();
@@ -187,8 +197,8 @@ public class DialWeekPicker extends Dialog {
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
         npStartMin = (NumberPicker) findViewById(R.id.npStartMin);
         npEndMin = (NumberPicker) findViewById(R.id.npEndMin);
-        npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        /*npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);*/
     }
 
 }
