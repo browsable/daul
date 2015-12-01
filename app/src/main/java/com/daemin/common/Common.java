@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+import android.util.Log;
 
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
@@ -75,7 +76,7 @@ public class Common {
 		long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
 		long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
 		for(MyTime mt :  MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies)){
-			addWeek(mt.getDayofweek(),mt.getStarthour(),mt.getStartmin(),mt.getEndhour(),mt.getEndmin(),mt.getColor());
+			addWeek(mt.getDayofweek(), mt.getStarthour(), mt.getStartmin(), mt.getEndhour(), mt.getEndmin(), mt.getColor());
 		}
 	}
 	public static void addWeek(int xth, int startHour, int startMin, int endHour, int endMin, String color){
@@ -87,8 +88,8 @@ public class Common {
 		for (int i = startHour; i < endHour; i++) {
 			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
 			if (tp[j].getPosState() == PosState.NO_PAINT) {
-				if(i==startHour && startMin!=0) tp[j].setMin(startMin, 60);
-				if(i==endHour-1) tp[j].setMin(0, endMin);
+				if(i==startHour && startMin!=0)tp[j].setMin(startMin, 60);
+				else if(i==endHour-1)tp[j].setMin(0, endMin);
 				tp[j].setColor(color);
 				tp[j].setPosState(PosState.ENROLL);
 			}

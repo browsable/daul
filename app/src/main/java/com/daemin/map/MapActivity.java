@@ -86,7 +86,12 @@ public class MapActivity extends FragmentActivity
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,
                 null);
         mAutocompleteView.setAdapter(mAdapter);
-        initSetting();
+        try {
+            initSetting();
+        }catch(Exception e){
+            Toast.makeText(MapActivity.this, getResources().getString(R.string.search_notwork), Toast.LENGTH_SHORT).show();
+            finish();
+        }
         mAutocompleteView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

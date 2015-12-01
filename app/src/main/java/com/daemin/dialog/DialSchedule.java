@@ -143,15 +143,29 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             btNormal.setVisibility(View.GONE);
             btNew.setVisibility(View.GONE);
             lp.height = lp.WRAP_CONTENT;
+            int xth = getIntent().getIntExtra("xth", 0);
             int startHour = Integer.parseInt(Convert.YthToHourOfDay(getIntent().getIntExtra("yth", 0)));
             int startMin = getIntent().getIntExtra("startMin", 0);
+            String wMonthDay = Dates.NOW.getwMonthDay(xth);
+            String [] tmp = wMonthDay.split("\\.");
+            int year;
+            int titleMonth = Dates.NOW.month;
+            int monthOfYear = Integer.parseInt(tmp[0]);
+            if (monthOfYear != titleMonth && titleMonth==1) year = Dates.NOW.year - 1;
+            else year = Dates.NOW.year;
+            int dayOfMonth = Integer.parseInt(tmp[1]);
             long startmillis = Dates.NOW.getDateMillis(
-                    Dates.NOW.year,
-                    Dates.NOW.month,
-                    Dates.NOW.getXthToDay(getIntent().getIntExtra("xth", 0)),
+                    year,
+                    monthOfYear,
+                    dayOfMonth,
                     startHour, startMin);
-            MyTime mt = MyTimeRepo.getEnrollTime(this, startmillis,getIntent().getIntExtra("xth", 0),startHour,startMin);
+            Log.i("test startmillis", String.valueOf(startmillis));
+            Log.i("test xth", String.valueOf(xth));
+            Log.i("test startHour", String.valueOf(startHour));
+            Log.i("test startMin", String.valueOf(startMin));
+            MyTime mt = MyTimeRepo.getEnrollTime(this, startmillis,xth,startHour,startMin);
             tvTimeCode.setText(mt.getTimecode());
+            tvTimeType.setText(String.valueOf(mt.getTimetype()));
             etSavedName.setText(mt.getName());
             etMemo.setText(mt.getMemo());
             etPlace.setText(mt.getPlace());
@@ -756,11 +770,17 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 break;
             case R.id.btRemove:
                 MyTimeRepo.deleteWithTimeCode(this, tvTimeCode.getText().toString());
-               /* String creditSum = String.valueOf(Integer.parseInt(User.INFO.getCreditSum())
-                                -Integer.parseInt(etMemo.getText().toString().split("/")[1].substring(0, 1)));
-                User.INFO.getEditor().putString("creditSum",creditSum).commit();
-                tvCreditSum.setText(creditSum);*/
+                if(tvTimeType.getText().toString().equals("1")){
+                    Log.i("test","remove");
+                    String creditSum = String.valueOf(Integer.parseInt(User.INFO.getCreditSum())
+                            -Integer.parseInt(etMemo.getText().toString().split("/")[1].substring(0, 1)));
+                    User.INFO.getEditor().putString("creditSum",creditSum).commit();
+                    tvCreditSum.setText(creditSum);
+                }
                 Common.fetchWeekData();
+                for (TimePos ETP : TimePos.values()) {
+                    if(ETP.getPosState()!=PosState.ENROLL)ETP.setMin(0, 60);
+                }
                 EventBus.getDefault().post(new SetBtPlusEvent(true));
                 EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
                 finish();
@@ -880,6 +900,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         tvAlarm = (TextView) findViewById(R.id.tvAlarm);
         tvRepeat = (TextView) findViewById(R.id.tvRepeat);
         tvTimeCode = (TextView) findViewById(R.id.tvTimeCode);
+        tvTimeType = (TextView) findViewById(R.id.tvTimeType);
         btUnivNotice = (TextView) findViewById(R.id.btUnivNotice);
         tvCreditSum = (TextView) findViewById(R.id.tvCreditSum);
         tvCreditSum.setText(User.INFO.getCreditSum());
@@ -920,7 +941,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         gradeFlag = false;
         overlapFlag = false;
         colorName = Common.MAIN_COLOR;
-        dy = mPosY = 0;
+        dy=mPosY=0;
         dayIndex = new HashMap<>();
         if (!widgetFlag) {
             SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
@@ -938,7 +959,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private ToggleButton btEdit;
     private LinearLayout llNormal, llButtonArea, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat, llEtName,llTime;
     private RelativeLayout rlEdit;
-    private TextView tvShare, tvAlarm, tvRepeat, btUnivNotice,tvCreditSum,tvTimeCode;
+    private TextView tvShare, tvAlarm, tvRepeat, btUnivNotice,tvCreditSum,tvTimeCode,tvTimeType;
     private EditText etName, etPlace, etMemo, etSavedName;
     private View dragToggle, btShowUniv, btShowDep, btShowGrade;
     private HorizontalListView lvTime, hlv;

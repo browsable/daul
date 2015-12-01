@@ -48,11 +48,14 @@ public class MyTimeRepo {
                 qb.and(MyTimeDao.Properties.Timetype.eq(0),
                         MyTimeDao.Properties.Startmillis.le(startmillis),
                         MyTimeDao.Properties.Endmillis.ge(startmillis)),
-                qb.and(MyTimeDao.Properties.Timetype.eq(1),MyTimeDao.Properties.Dayofweek.eq(xth),
+                qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                        MyTimeDao.Properties.Dayofweek.eq(xth),
                         MyTimeDao.Properties.Starthour.le(startHour),
-                        MyTimeDao.Properties.Endhour.ge(startHour))),
-                        MyTimeDao.Properties.Startmin.le(startMin),
-                        MyTimeDao.Properties.Endmin.ge(startMin));
+                        MyTimeDao.Properties.Endhour.ge(startHour),
+                        MyTimeDao.Properties.Startmin.ge(startMin),
+                        MyTimeDao.Properties.Endmin.le(startMin))
+                       )
+                );
         return (MyTime) qb.unique();
     }
     /*public static MyTime getEnroll(Context context,long startmillis, int xth, int startHour,int startMin){

@@ -49,6 +49,7 @@
     <string name="btDialSetting">확인</string>
     <!--지도-->
     <string name="search_place">장소 검색</string>
+    <string name="search_notwork">GPS 기능을 사용할 수 없습니다.</string>
     <!--공유 -->
     <string name="share_radio0">비공개</string>
     <string name="share_radio1">친구공개</string>
