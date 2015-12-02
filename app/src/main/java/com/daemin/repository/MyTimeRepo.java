@@ -41,19 +41,25 @@ public class MyTimeRepo {
                 MyTimeDao.Properties.Timetype.eq(1)));
         return qb.list();
     }
-    public static MyTime getEnrollTime(Context context,long startmillis, int xth, int startHour,int startMin){
+    public static List<MyTime> getHourTimes(Context context, long startMillies, long endMillies, int xth, int startHour){
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+        qb.where(qb.or(MyTimeDao.Properties.Startmillis.between(startMillies, endMillies),
+                 qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                        MyTimeDao.Properties.Dayofweek.eq(xth),
+                        MyTimeDao.Properties.Endhour.ge(startHour))));
+        return qb.list();
+    }
+    public static MyTime getEnrollTime(Context context,long startmillis, int xth, int startHour){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
         qb.where(
                 qb.or(
                 qb.and(MyTimeDao.Properties.Timetype.eq(0),
                         MyTimeDao.Properties.Startmillis.le(startmillis),
-                        MyTimeDao.Properties.Endmillis.ge(startmillis)),
+                        MyTimeDao.Properties.Endmillis.gt(startmillis)),
                 qb.and(MyTimeDao.Properties.Timetype.eq(1),
                         MyTimeDao.Properties.Dayofweek.eq(xth),
-                        MyTimeDao.Properties.Starthour.le(startHour),
-                        MyTimeDao.Properties.Endhour.ge(startHour),
-                        MyTimeDao.Properties.Startmin.ge(startMin),
-                        MyTimeDao.Properties.Endmin.le(startMin))
+                        MyTimeDao.Properties.Starthour.lt(startHour),
+                        MyTimeDao.Properties.Endhour.gt(startHour))
                        )
                 );
         return (MyTime) qb.unique();

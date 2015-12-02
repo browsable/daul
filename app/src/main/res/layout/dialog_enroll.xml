@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_black_border"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_s"
+        android:layout_marginLeft="@dimen/margin_s"
+        android:layout_marginTop="@dimen/margin_s"
+        >
+    <TextView
+        android:id="@+id/tvMonthDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textsize_xl"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        />
+    <Button
+        android:id="@+id/btDialCancel"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_clear" />
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/lv"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:layout_marginRight="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:scrollbars="none"
+        android:divider="@color/lightgray"
+        android:dividerHeight="1dp"
+        android:overScrollMode="never"
+        />
+</LinearLayout>

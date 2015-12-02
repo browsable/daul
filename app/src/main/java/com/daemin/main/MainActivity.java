@@ -446,16 +446,13 @@ public class MainActivity extends FragmentActivity {
                         initSurfaceView.setMode(viewMode);
                         break;
                     case 1: // 일
-                        viewMode = 1;
-                        //barText = CalTime.getTitleMonthWeek(MainActivity.this);
                         switcher.setText("");
                         switcher.setText(barText);
                         tvTitleYear.setVisibility(View.GONE);
                         DrawMode.CURRENT.setMode(0);
                         flSurface.setVisibility(View.VISIBLE);
                         frame_container.setVisibility(View.GONE);
-                        initSurfaceView.setMode(viewMode);
-                        //changeFragment(InitDayFragment.class, "일");
+                        changeFragment(InitDayFragment.class, "일");
                         break;
                     case 2: // 월
                         viewMode = 2;

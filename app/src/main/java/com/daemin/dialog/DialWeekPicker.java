@@ -7,18 +7,21 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.event.UpdateNormalEvent;
+import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
 
 import de.greenrobot.event.EventBus;
@@ -111,21 +114,26 @@ public class DialWeekPicker extends Dialog {
                     npStartMin.setMaxValue(newVal - 1);
 
                 }else {
-                    if(startMin.equals(endMin)&&startMin.equals("00")) {
+                    if(startMin.equals(endMin)&&startMin.equals("00")&&endMin.equals("00")) {
                         if (newVal == 60) {
                             tvDialEndTime.setText(String.valueOf(endHour));
                         } else {
                             tvDialEndTime.setText(String.valueOf(Integer.parseInt(endHour) - 1));
                         }
+                        picker.setMinValue(npStartMin.getValue() + 1);
+                        npStartMin.setMaxValue(newVal - 1);
                     }else{
                         if (newVal == 60) {
                             tvDialEndTime.setText(String.valueOf(Integer.parseInt(endHour) + 1));
                         } else {
                             tvDialEndTime.setText(endHour);
                         }
+                        picker.setMaxValue(60);
+                        picker.setMinValue(1);
+                        npStartMin.setMaxValue(59);
+                        npStartMin.setMinValue(0);
                     }
-                    picker.setMaxValue(60);
-                    picker.setMinValue(1);
+
             }
         }
 
@@ -197,8 +205,8 @@ public class DialWeekPicker extends Dialog {
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
         npStartMin = (NumberPicker) findViewById(R.id.npStartMin);
         npEndMin = (NumberPicker) findViewById(R.id.npEndMin);
-        /*npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);*/
+        npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
     }
 
 }

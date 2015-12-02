@@ -47,6 +47,7 @@
     <string name="tvDialAddGroup">그룹추가</string>
     <string name="btDialCancel">취소</string>
     <string name="btDialSetting">확인</string>
+    <string name="overlapEnroll">일정추가 +</string>
     <!--지도-->
     <string name="search_place">장소 검색</string>
     <string name="search_notwork">GPS 기능을 사용할 수 없습니다.</string>

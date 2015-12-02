@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
+import com.daemin.dialog.DialEnroll;
 import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
@@ -18,6 +20,7 @@ import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.event.FinishDialogEvent;
+import com.daemin.main.MainActivity;
 
 import de.greenrobot.event.EventBus;
 
@@ -125,12 +128,18 @@ public class InitWeekThread extends InitThread {
                     Common.getTempTimePos().remove(ETP.name());
                 }else{
                     EventBus.getDefault().post(new FinishDialogEvent());
-                    Intent i = new Intent(context, DialSchedule.class);
-                    i.putExtra("enrollFlag",true);
-                    i.putExtra("xth",xth);
-                    i.putExtra("yth",tmpYth);
-                    i.putExtra("startMin",ETP.getStartMin());
-                    context.startActivity(i);
+                    if(ETP.getStartMin()==0&&ETP.getEndMin()==0) {
+                        Intent i = new Intent(context, DialSchedule.class);
+                        i.putExtra("enrollFlag", true);
+                        i.putExtra("overlapEnrollFlag", false);
+                        i.putExtra("xth", xth);
+                        i.putExtra("yth", tmpYth);
+                        i.putExtra("startMin", ETP.getStartMin());
+                        context.startActivity(i);
+                    }else{
+                        DialEnroll de = new DialEnroll(context,xth,tmpYth,ETP.getStartMin());
+                        de.show();
+                    }
                 }
                 break;
             case 1: //대학

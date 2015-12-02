@@ -116,12 +116,15 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_schedule);
         EventBus.getDefault().post(new SetBtPlusEvent(false));
+        setLayout();
+        makeNormalList();
+        String _id="0";
         if (!getIntent().equals(null)) {//widget에서 Dialog 호출한 경우
             widgetFlag = getIntent().getBooleanExtra("widgetFlag", false);
             enrollFlag = getIntent().getBooleanExtra("enrollFlag", false);
+            overlapEnrollFlag =  getIntent().getBooleanExtra("overlapEnrollFlag", false);
+            _id =  getIntent().getStringExtra("_id");
         }
-        setLayout();
-        makeNormalList();
         window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(
                 android.graphics.Color.TRANSPARENT));
@@ -147,11 +150,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             int startHour = Integer.parseInt(Convert.YthToHourOfDay(getIntent().getIntExtra("yth", 0)));
             int startMin = getIntent().getIntExtra("startMin", 0);
             String wMonthDay = Dates.NOW.getwMonthDay(xth);
-            String [] tmp = wMonthDay.split("\\.");
+            String[] tmp = wMonthDay.split("\\.");
             int year;
             int titleMonth = Dates.NOW.month;
             int monthOfYear = Integer.parseInt(tmp[0]);
-            if (monthOfYear != titleMonth && titleMonth==1) year = Dates.NOW.year - 1;
+            if (monthOfYear != titleMonth && titleMonth == 1) year = Dates.NOW.year - 1;
             else year = Dates.NOW.year;
             int dayOfMonth = Integer.parseInt(tmp[1]);
             long startmillis = Dates.NOW.getDateMillis(
@@ -159,11 +162,12 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     monthOfYear,
                     dayOfMonth,
                     startHour, startMin);
-            Log.i("test startmillis", String.valueOf(startmillis));
-            Log.i("test xth", String.valueOf(xth));
-            Log.i("test startHour", String.valueOf(startHour));
-            Log.i("test startMin", String.valueOf(startMin));
-            MyTime mt = MyTimeRepo.getEnrollTime(this, startmillis,xth,startHour,startMin);
+            MyTime mt;
+            if(overlapEnrollFlag){ //중복다이얼로그의 아이템 클릭시
+                mt = MyTimeRepo.getMyTimeForId(this,Long.parseLong(_id));
+            }else {
+                mt = MyTimeRepo.getEnrollTime(this, startmillis, xth, startHour);
+            }
             tvTimeCode.setText(mt.getTimecode());
             tvTimeType.setText(String.valueOf(mt.getTimetype()));
             etSavedName.setText(mt.getName());
@@ -174,6 +178,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             }catch(NullPointerException e){
                 tvShare.setText(Convert.revertShare(0));
             }
+        }
+        if(overlapEnrollFlag){
+
         }
         window.setGravity(Gravity.BOTTOM);
         window.setAttributes(lp);
@@ -939,7 +946,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         univFlag = false;
         depFlag = false;
         gradeFlag = false;
-        overlapFlag = false;
+        overlapEnrollFlag = false;
         colorName = Common.MAIN_COLOR;
         dy=mPosY=0;
         dayIndex = new HashMap<>();
@@ -977,7 +984,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight, viewMode;
-    private boolean univFlag, depFlag, gradeFlag, widgetFlag, enrollFlag,overlapFlag;
+    private boolean univFlag, depFlag, gradeFlag, widgetFlag, enrollFlag,overlapEnrollFlag;
 
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
