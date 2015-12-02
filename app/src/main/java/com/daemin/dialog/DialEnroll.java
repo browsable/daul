@@ -70,7 +70,7 @@ public class DialEnroll extends Dialog {
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-        layoutParams.width = dm.widthPixels * 2 / 3;
+        layoutParams.width = dm.widthPixels * 5 / 6;
         layoutParams.height = layoutParams.WRAP_CONTENT;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
@@ -101,6 +101,8 @@ public class DialEnroll extends Dialog {
                 if (tv.getText().toString().equals("0")) {
                     Intent i = new Intent(context, DialSchedule.class);
                     i.putExtra("overlapEnrollFlag", true);
+                    i.putExtra("xth", xth);
+                    i.putExtra("yth", yth);
                     context.startActivity(i);
                     //EventBus.getDefault().post(new UpdateNormalEvent(String.valueOf(startHour), "00", String.valueOf(startHour + 1), "00", xth, 1));
                 } else {

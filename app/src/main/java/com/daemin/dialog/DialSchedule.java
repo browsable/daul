@@ -178,9 +178,15 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             }catch(NullPointerException e){
                 tvShare.setText(Convert.revertShare(0));
             }
-        }
-        if(overlapEnrollFlag){
-
+        }else{
+            if(overlapEnrollFlag) {
+                TimePos tp = TimePos.valueOf(
+                        Convert.getxyMerge(
+                                getIntent().getIntExtra("xth", 1),
+                                getIntent().getIntExtra("yth", 1)));
+                tp.setPosState(PosState.PAINT);
+                tp.setMin(0, 60);
+            }
         }
         window.setGravity(Gravity.BOTTOM);
         window.setAttributes(lp);

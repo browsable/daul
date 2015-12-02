@@ -58,7 +58,7 @@ public class MyTimeRepo {
                         MyTimeDao.Properties.Endmillis.gt(startmillis)),
                 qb.and(MyTimeDao.Properties.Timetype.eq(1),
                         MyTimeDao.Properties.Dayofweek.eq(xth),
-                        MyTimeDao.Properties.Starthour.lt(startHour),
+                        MyTimeDao.Properties.Starthour.le(startHour),
                         MyTimeDao.Properties.Endhour.gt(startHour))
                        )
                 );
