@@ -138,7 +138,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         lp.width = lp.MATCH_PARENT;
         screenHeight = dm.heightPixels -lp.height;
         if (enrollFlag) {
-            llButtonArea.setVisibility(View.VISIBLE);
             rlEdit.setVisibility(View.VISIBLE);
             llEtName.setVisibility(View.GONE);
             llTime.setVisibility(View.GONE);
@@ -777,27 +776,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 DrawMode.CURRENT.setMode(0);
                 finish();
                 break;
-            case R.id.btCommunity:
-                break;
-            case R.id.btInvite:
-                break;
-            case R.id.btRemove:
-                MyTimeRepo.deleteWithTimeCode(this, tvTimeCode.getText().toString());
-                if(tvTimeType.getText().toString().equals("1")){
-                    Log.i("test","remove");
-                    String creditSum = String.valueOf(Integer.parseInt(User.INFO.getCreditSum())
-                            -Integer.parseInt(etMemo.getText().toString().split("/")[1].substring(0, 1)));
-                    User.INFO.getEditor().putString("creditSum",creditSum).commit();
-                    tvCreditSum.setText(creditSum);
-                }
-                Common.fetchWeekData();
-                for (TimePos ETP : TimePos.values()) {
-                    if(ETP.getPosState()!=PosState.ENROLL)ETP.setMin(0, 60);
-                }
-                EventBus.getDefault().post(new SetBtPlusEvent(true));
-                EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
-                finish();
-                break;
             case R.id.btNew:
                 DialAddTimePicker datp = null;
                 switch (viewMode) {
@@ -886,9 +864,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btNormal = (Button) findViewById(R.id.btNormal);
         btAddSchedule = (Button) findViewById(R.id.btAddSchedule);
         btCancel = (Button) findViewById(R.id.btCancel);
-        btCommunity = (Button) findViewById(R.id.btCommunity);
-        btInvite = (Button) findViewById(R.id.btInvite);
-        btRemove = (Button) findViewById(R.id.btRemove);
         btEnter = (Button) findViewById(R.id.btEnter);
         btColor = (Button) findViewById(R.id.btColor);
         btShowUniv = findViewById(R.id.btShowUniv);
@@ -896,7 +871,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btShowGrade = findViewById(R.id.btShowGrade);
         btEdit = (ToggleButton) findViewById(R.id.btEdit);
         llNormal = (LinearLayout) findViewById(R.id.llNormal);
-        llButtonArea = (LinearLayout) findViewById(R.id.llButtonArea);
         llEtName = (LinearLayout) findViewById(R.id.llEtName);
         llUniv = (LinearLayout) findViewById(R.id.llUniv);
         btNew = (LinearLayout) findViewById(R.id.btNew);
@@ -934,9 +908,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btEdit.setOnClickListener(this);
         btAddSchedule.setOnClickListener(this);
         btCancel.setOnClickListener(this);
-        btCommunity.setOnClickListener(this);
-        btInvite.setOnClickListener(this);
-        btRemove.setOnClickListener(this);
         btUnivNotice.setOnClickListener(this);
         btShowUniv.setOnClickListener(this);
         btShowDep.setOnClickListener(this);
@@ -968,9 +939,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
     }
 
-    private Button btNormal, btUniv, btAddSchedule, btCancel, btCommunity, btInvite, btRemove, btEnter, btColor;
+    private Button btNormal, btUniv, btAddSchedule, btCancel, btEnter, btColor;
     private ToggleButton btEdit;
-    private LinearLayout llNormal, llButtonArea, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat, llEtName,llTime;
+    private LinearLayout llNormal, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat, llEtName,llTime;
     private RelativeLayout rlEdit;
     private TextView tvShare, tvAlarm, tvRepeat, btUnivNotice,tvCreditSum,tvTimeCode,tvTimeType;
     private EditText etName, etPlace, etMemo, etSavedName;

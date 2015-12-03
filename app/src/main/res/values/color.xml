@@ -2,6 +2,7 @@
 <resources>
     <color name="transparency">#00000000</color>
     <color name="maincolor">#73C8BA</color>
+    <color name="transmaincolor">#8073C8BA</color>
     <color name="drawercolor">#339DA8</color>
     <color name="profilecolor">#2A858E</color>
     <color name="whitesmoke">#F5F5F5</color>

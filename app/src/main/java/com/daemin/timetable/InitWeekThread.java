@@ -128,7 +128,9 @@ public class InitWeekThread extends InitThread {
                     Common.getTempTimePos().remove(ETP.name());
                 }else{
                     EventBus.getDefault().post(new FinishDialogEvent());
-                    if(ETP.getStartMin()==0&&ETP.getEndMin()==0) {
+                    DialEnroll de = new DialEnroll(context,xth,tmpYth,ETP.getStartMin());
+                    de.show();
+                    /*if(ETP.getStartMin()==0&&ETP.getEndMin()==0) {
                         Intent i = new Intent(context, DialSchedule.class);
                         i.putExtra("enrollFlag", true);
                         i.putExtra("overlapEnrollFlag", false);
@@ -136,10 +138,7 @@ public class InitWeekThread extends InitThread {
                         i.putExtra("yth", tmpYth);
                         i.putExtra("startMin", ETP.getStartMin());
                         context.startActivity(i);
-                    }else{
-                        DialEnroll de = new DialEnroll(context,xth,tmpYth,ETP.getStartMin());
-                        de.show();
-                    }
+                    }*/
                 }
                 break;
             case 1: //대학

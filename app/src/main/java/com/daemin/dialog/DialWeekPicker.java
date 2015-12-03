@@ -66,7 +66,21 @@ public class DialWeekPicker extends Dialog {
         setLayout();
         tvDialStartTime.setText(startHour);
         tvDialEndTime.setText(endHour);
-        npStartMin.setMaxValue(59);
+        npEndMin.setMaxValue(60);
+        npEndMin.setMinValue(1);
+        npEndMin.setWrapSelectorWheel(false);
+        if(endMin.equals("00")) npEndMin.setValue(60);
+        else npEndMin.setValue(Integer.parseInt(endMin));
+        npEndMin.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int i) {
+                int maxVal;
+                if (i == 60) maxVal = 0;
+                else maxVal = i;
+                return String.format("%02d", maxVal);
+            }
+        });
+        npStartMin.setMaxValue(npEndMin.getValue()-1);
         npStartMin.setMinValue(0);
         npStartMin.setValue(Integer.parseInt(startMin));
         npStartMin.setFormatter(new NumberPicker.Formatter() {
@@ -78,27 +92,22 @@ public class DialWeekPicker extends Dialog {
                 return String.format("%02d", maxVal);
             }
         });
-        npEndMin.setMaxValue(60);
-        npEndMin.setMinValue(1);
-        npEndMin.setValue(Integer.parseInt(endMin));
-        npEndMin.setFormatter(new NumberPicker.Formatter() {
+        /*npStartMin.setOnScrollListener(new NumberPicker.OnScrollListener() {
             @Override
-            public String format(int i) {
-                int maxVal;
-                if (i == 60) maxVal = 0;
-                else maxVal = i;
-                return String.format("%02d", maxVal);
+            public void onScrollStateChange(NumberPicker view, int scrollState) {
+                if(scrollState==SCROLL_STATE_IDLE){
+                    Log.i("test","test");
+                }
             }
-        });
+        });*/
         npStartMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                if (startHour == String.valueOf(Integer.parseInt(endHour) - 1)) {
+                if (startHour.equals(String.valueOf(Integer.parseInt(endHour) - 1))||startHour.equals(endHour)) {
                     if (newVal < 59) {
                         npEndMin.setMinValue(newVal + 1);
                     }
                 }
-
             }
         });
         npEndMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -113,8 +122,8 @@ public class DialWeekPicker extends Dialog {
                     picker.setMinValue(npStartMin.getValue() + 1);
                     npStartMin.setMaxValue(newVal - 1);
 
-                }else {
-                    if(startMin.equals(endMin)&&startMin.equals("00")&&endMin.equals("00")) {
+                } else {
+                    if (startHour.equals(String.valueOf(Integer.parseInt(endHour) - 1))&&startMin.equals(endMin) && startMin.equals("00") && endMin.equals("00")) {
                         if (newVal == 60) {
                             tvDialEndTime.setText(String.valueOf(endHour));
                         } else {
@@ -122,22 +131,20 @@ public class DialWeekPicker extends Dialog {
                         }
                         picker.setMinValue(npStartMin.getValue() + 1);
                         npStartMin.setMaxValue(newVal - 1);
-                    }else{
+                    } else {
                         if (newVal == 60) {
-                            tvDialEndTime.setText(String.valueOf(Integer.parseInt(endHour) + 1));
-                        } else {
                             tvDialEndTime.setText(endHour);
+                        } else {
+                            tvDialEndTime.setText(String.valueOf(Integer.parseInt(endHour)-1));
                         }
                         picker.setMaxValue(60);
                         picker.setMinValue(1);
                         npStartMin.setMaxValue(59);
                         npStartMin.setMinValue(0);
                     }
-
+                }
             }
-        }
-
-    });
+        });
         btDialCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,9 +211,9 @@ public class DialWeekPicker extends Dialog {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
         npStartMin = (NumberPicker) findViewById(R.id.npStartMin);
-        npEndMin = (NumberPicker) findViewById(R.id.npEndMin);
+        npEndMin = (NumberPicker) findViewById(R.id.npEndMin);/*
         npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);*/
     }
 
 }

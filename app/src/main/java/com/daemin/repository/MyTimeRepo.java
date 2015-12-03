@@ -43,10 +43,17 @@ public class MyTimeRepo {
     }
     public static List<MyTime> getHourTimes(Context context, long startMillies, long endMillies, int xth, int startHour){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
-        qb.where(qb.or(MyTimeDao.Properties.Startmillis.between(startMillies, endMillies),
-                 qb.and(MyTimeDao.Properties.Timetype.eq(1),
+        qb.where(qb.or(
+                qb.or(MyTimeDao.Properties.Startmillis.between(startMillies, endMillies),
+                        qb.and(MyTimeDao.Properties.Dayofweek.eq(xth),
+                                MyTimeDao.Properties.Starthour.le(startHour),
+                                MyTimeDao.Properties.Endhour.gt(startHour))
+                )
+                ,
+                qb.and(MyTimeDao.Properties.Timetype.eq(1),
                         MyTimeDao.Properties.Dayofweek.eq(xth),
-                        MyTimeDao.Properties.Endhour.ge(startHour))));
+                        MyTimeDao.Properties.Starthour.le(startHour),
+                        MyTimeDao.Properties.Endhour.gt(startHour))));
         return qb.list();
     }
     public static MyTime getEnrollTime(Context context,long startmillis, int xth, int startHour){

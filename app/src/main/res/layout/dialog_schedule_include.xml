@@ -2,52 +2,58 @@
     xmlns:widget="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:scrollbars="none"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:scrollbars="none">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/llEtName"
             android:layout_width="match_parent"
             android:layout_height="34dp"
             android:orientation="horizontal">
+
             <EditText
                 android:id="@+id/etName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/margin_xs"
                 android:layout_weight="1"
-                android:hint="@string/normal_name"
                 android:background="@color/transparency"
+                android:hint="@string/normal_name"
                 android:padding="@dimen/margin_xs"
                 android:singleLine="true"
                 android:textSize="@dimen/textsize_default" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/lightgray"
-            />
+            android:background="@color/lightgray" />
+
         <LinearLayout
             android:id="@+id/llTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:background="@drawable/bt_click"
-            >
+            android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="32dp"
                 android:layout_height="38dp"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:background="@drawable/ic_time"/>
+                    android:background="@drawable/ic_time" />
             </LinearLayout>
+
             <com.daemin.common.HorizontalListView
                 android:id="@+id/lvTime"
                 android:layout_width="match_parent"
@@ -56,262 +62,244 @@
                 android:divider="@color/lightgray"
                 android:fadingEdgeLength="1dp"
                 android:requiresFadingEdge="horizontal"
-                widget:dividerWidth="0dp"
-                />
+                widget:dividerWidth="0dp" />
+
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/lightgray"
-                />
+                android:background="@color/lightgray" />
+
             <LinearLayout
                 android:id="@+id/btNew"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5.2"
-                android:gravity="center"
                 android:background="@color/whitesmoke"
+                android:gravity="center"
                 android:onClick="mOnClick"
                 android:orientation="vertical">
+
                 <View
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:scaleType="fitXY"
                     android:layout_gravity="center"
-                    android:background="@drawable/bt_new" />
+                    android:background="@drawable/bt_new"
+                    android:scaleType="fitXY" />
             </LinearLayout>
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/lightgray"
-            />
+            android:background="@color/lightgray" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="32dp"
                 android:layout_height="34dp"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/ic_memo"/>
+                    android:background="@drawable/ic_memo" />
             </LinearLayout>
+
             <EditText
                 android:id="@+id/etMemo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/normal_memo"
                 android:background="@color/transparency"
+                android:hint="@string/normal_memo"
                 android:singleLine="true"
                 android:textSize="@dimen/textsize_default" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/lightgray"
-            />
+            android:background="@color/lightgray" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="32dp"
                 android:layout_height="34dp"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/ic_place"/>
+                    android:background="@drawable/ic_place" />
             </LinearLayout>
+
             <EditText
                 android:id="@+id/etPlace"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:hint="@string/normal_place"
                 android:background="@color/transparency"
+                android:hint="@string/normal_place"
                 android:singleLine="true"
                 android:textSize="@dimen/textsize_default" />
+
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/lightgray"
-                />
+                android:background="@color/lightgray" />
+
             <LinearLayout
                 android:id="@+id/btPlace"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5.2"
-                android:gravity="center"
                 android:background="@color/whitesmoke"
+                android:gravity="center"
                 android:onClick="mOnClick"
                 android:orientation="vertical">
+
                 <View
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:scaleType="fitXY"
                     android:layout_gravity="center"
-                    android:background="@drawable/ic_map" />
+                    android:background="@drawable/ic_map"
+                    android:scaleType="fitXY" />
             </LinearLayout>
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/lightgray"
-            />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        >
+            android:background="@color/lightgray" />
+
         <LinearLayout
-            android:id="@+id/btShare"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:onClick="mOnClick"
-            android:gravity="center"
-            android:background="@drawable/bt_click"
-            >
-            <LinearLayout
-                android:layout_width="32dp"
-                android:layout_height="34dp"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="17dp"
-                    android:background="@drawable/ic_share"/>
-            </LinearLayout>
-            <TextView
-                android:id="@+id/tvShare"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:hint="@string/normal_share"
-                android:gravity="center_vertical"
-                android:background="@color/transparency"
-                android:layout_marginRight="@dimen/margin_default"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_default" />
-        </LinearLayout>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/lightgray"
-            />
-        <LinearLayout
-            android:id="@+id/btAlarm"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:onClick="mOnClick"
-            android:gravity="center"
-            android:background="@drawable/bt_click"
-            >
-            <LinearLayout
-                android:layout_width="32dp"
-                android:layout_height="34dp"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/ic_alarm"/>
-            </LinearLayout>
-            <TextView
-                android:id="@+id/tvAlarm"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:hint="@string/normal_alarm"
-                android:gravity="center_vertical"
-                android:background="@color/transparency"
-                android:layout_marginRight="@dimen/margin_default"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_default" />
-        </LinearLayout>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/lightgray"
-            />
-        <LinearLayout
-            android:id="@+id/btRepeat"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:onClick="mOnClick"
-            android:background="@drawable/bt_click"
-            >
-            <LinearLayout
-                android:layout_width="32dp"
-                android:layout_height="34dp"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/ic_repeat"/>
-            </LinearLayout>
-            <TextView
-                android:id="@+id/tvRepeat"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:hint="@string/normal_repeat"
-                android:gravity="center_vertical"
-                android:background="@color/transparency"
-                android:layout_marginRight="@dimen/margin_default"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_default" />
-        </LinearLayout>
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/lightgray"
-            />
-        <LinearLayout
-            android:id="@+id/llButtonArea"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_lightgray_bottomline"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="@dimen/margin_l"
-            android:visibility="gone">
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btCommunity"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_marginRight="@dimen/margin_xxl"
-                android:background="@drawable/ic_community_black" />
+            <LinearLayout
+                android:id="@+id/btShare"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bt_click"
+                android:gravity="center"
+                android:onClick="mOnClick"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btInvite"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_marginRight="@dimen/margin_xxl"
-                android:background="@drawable/ic_invite" />
+                <LinearLayout
+                    android:layout_width="32dp"
+                    android:layout_height="34dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btRemove"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/ic_remove" />
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="17dp"
+                        android:background="@drawable/ic_share" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/margin_default"
+                    android:background="@color/transparency"
+                    android:gravity="center_vertical"
+                    android:hint="@string/normal_share"
+                    android:singleLine="true"
+                    android:textSize="@dimen/textsize_default" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray" />
+
+            <LinearLayout
+                android:id="@+id/btAlarm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bt_click"
+                android:gravity="center"
+                android:onClick="mOnClick"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="32dp"
+                    android:layout_height="34dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/ic_alarm" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvAlarm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/margin_default"
+                    android:background="@color/transparency"
+                    android:gravity="center_vertical"
+                    android:hint="@string/normal_alarm"
+                    android:singleLine="true"
+                    android:textSize="@dimen/textsize_default" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray" />
+
+            <LinearLayout
+                android:id="@+id/btRepeat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bt_click"
+                android:gravity="center"
+                android:onClick="mOnClick"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="32dp"
+                    android:layout_height="34dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/ic_repeat" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvRepeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/margin_default"
+                    android:background="@color/transparency"
+                    android:gravity="center_vertical"
+                    android:hint="@string/normal_repeat"
+                    android:singleLine="true"
+                    android:textSize="@dimen/textsize_default" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -61,6 +61,7 @@ public class Common {
 	public static void fetchWeekData(){
 		for (TimePos ETP : TimePos.values()) {
 			ETP.setPosState(PosState.NO_PAINT);
+			ETP.setMin(0, 60);
 		}
 		int week_startMonth = Dates.NOW.monthOfSun;
 		int week_startDay = Dates.NOW.dayOfSun;
