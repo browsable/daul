@@ -76,10 +76,10 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         holder.tvTimeCode.setText(getItem(position).getTimeCode());
         holder.tvTimeType.setText(getItem(position).getTimeType());
         holder.tvCredit.setText(getItem(position).getCredit());
-        if(holder.tvPlace.getText().toString().equals(""))
+        /*if(holder.tvPlace.getText().toString().equals(""))
             holder.tvPlace.setVisibility(View.GONE);
         if(holder.tvMemo.getText().toString().equals(""))
-            holder.tvMemo.setVisibility(View.GONE);
+            holder.tvMemo.setVisibility(View.GONE);*/
         holder.btCommunity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

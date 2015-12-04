@@ -211,9 +211,9 @@ public class DialWeekPicker extends Dialog {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
         npStartMin = (NumberPicker) findViewById(R.id.npStartMin);
-        npEndMin = (NumberPicker) findViewById(R.id.npEndMin);/*
+        npEndMin = (NumberPicker) findViewById(R.id.npEndMin);
         npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);*/
+        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
     }
 
 }

@@ -58,15 +58,11 @@
             <TextView
                 android:id="@+id/btUnivNotice"
                 android:layout_width="match_parent"
-                android:layout_height="106dp"
+                android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/margin_default"
                 android:gravity="end"
                 android:text="@string/univ_notice_enroll"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/textsize_s" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@color/transparency" />
     </LinearLayout>
 </LinearLayout>

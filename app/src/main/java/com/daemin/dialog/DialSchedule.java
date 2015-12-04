@@ -773,6 +773,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 EventBus.getDefault().post(new SetBtPlusEvent(true));
                 EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
                 //btUniv.setVisibility(View.VISIBLE);
+                Common.fetchWeekData();
                 DrawMode.CURRENT.setMode(0);
                 finish();
                 break;
