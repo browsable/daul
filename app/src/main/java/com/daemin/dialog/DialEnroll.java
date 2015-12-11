@@ -65,7 +65,7 @@ public class DialEnroll extends Dialog {
         int dayOfMonth = Integer.parseInt(tmp[1]);
         enrollMyTime(MyTimeRepo.getHourTimes(context,
                 Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, 0),//startmillis
-                Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, 59),//endmillis
+                Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour+1, 0)-1,//endmillis
                 xth, startHour));
     }
 

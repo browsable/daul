@@ -38,6 +38,7 @@
     <string name="normal_i">비공개</string>
     <string name="normal_friend">친구공개</string>
     <string name="normal_all">전체공개</string>
+    <string name="normal_empty">이름입력은 필수입니다.</string>
     <!--다이얼 -->
     <string name="tvDialTime">시간설정</string>
     <string name="tvDialShare">공유설정</string>
@@ -86,6 +87,7 @@
     <!--대학-->
     <string name="univ_search">강의 또는 교수명 검색</string>
     <string name="univ_searchdep">학과 검색</string>
+    <string name="univ_select">대학 또는 과목을 선택하세요</string>
     <string name="univ_grade">학년 : 전체</string>
     <string name="univ_credit">학점 :</string>
     <string name="univ_notice_setting">대학은 설정 메뉴에서 재설정 가능합니다.</string>

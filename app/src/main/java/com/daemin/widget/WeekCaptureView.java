@@ -21,7 +21,6 @@ import timedao.MyTime;
  * Created by hernia on 2015-11-05.
  */
 public class WeekCaptureView extends ImageView {
-    private boolean isToday;
     private Context context;
     private int width, height,dayOfWeek; //화면의 전체 너비, 높이
     private Paint hp; // 1시간 간격 수평선
@@ -35,7 +34,6 @@ public class WeekCaptureView extends ImageView {
         this.context = context;
         this.dayOfWeek = Dates.NOW.getDayOfWeek();
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
-        isToday = true;
         tempxth = 0;
         tempyth = 0;
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);

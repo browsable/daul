@@ -77,10 +77,10 @@ public class Common {
 		long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
 		long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
 		for(MyTime mt :  MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies)){
-			addWeek(mt.getDayofweek(), mt.getStarthour(), mt.getStartmin(), mt.getEndhour(), mt.getEndmin(), mt.getColor());
+			addWeek(mt.getDayofweek(), mt.getStarthour(), mt.getStartmin(), mt.getEndhour(), mt.getEndmin());
 		}
 	}
-	public static void addWeek(int xth, int startHour, int startMin, int endHour, int endMin, String color){
+	public static void addWeek(int xth, int startHour, int startMin, int endHour, int endMin){
 		if(endMin!=0) ++endHour;
 		else endMin=60;
 
@@ -90,8 +90,8 @@ public class Common {
 			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
 			if (tp[j].getPosState() == PosState.NO_PAINT) {
 				if(i==startHour && startMin!=0)tp[j].setMin(startMin, 60);
-				else if(i==endHour-1)tp[j].setMin(0, endMin);
-				tp[j].setColor(color);
+				if(i==endHour-1)tp[j].setMin(0, endMin);
+				if(tp.length==1)tp[j].setMin(startMin,endMin);
 				tp[j].setPosState(PosState.ENROLL);
 			}
 			++j;

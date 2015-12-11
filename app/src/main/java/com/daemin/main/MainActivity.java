@@ -33,7 +33,6 @@ import android.widget.ViewSwitcher;
 import com.daemin.area.AreaFragment;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.Common;
-import com.daemin.common.MyVolley;
 import com.daemin.common.RoundedCornerNetworkImageView;
 import com.daemin.community.CommunityFragment2;
 import com.daemin.dialog.DialSchedule;
@@ -50,6 +49,7 @@ import com.daemin.friend.FriendFragment;
 import com.daemin.setting.SettingFragment;
 import com.daemin.timetable.InitDayFragment;
 import com.daemin.timetable.InitSurfaceView;
+import com.daemin.timetable.InitWeekThread;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 import com.daemin.widget.WidgetUpdateService;
@@ -269,6 +269,7 @@ public class MainActivity extends FragmentActivity {
                     switcher.setText(setMonthWeek());
                 }
                 Common.fetchWeekData();
+                InitWeekThread.getInitWeekThread().setDates();
                 break;
             case 2:
                 --dayIndex;
@@ -297,6 +298,7 @@ public class MainActivity extends FragmentActivity {
                     switcher.setText(setMonthWeek());
                 }
                 Common.fetchWeekData();
+                InitWeekThread.getInitWeekThread().setDates();
                 break;
             case 2:
                 ++dayIndex;
@@ -446,8 +448,8 @@ public class MainActivity extends FragmentActivity {
                         initSurfaceView.setMode(viewMode);
                         break;
                     case 1: // 일
-                        switcher.setText("");
-                        switcher.setText(barText);
+                        //switcher.setText("");
+                        //switcher.setText(barText);
                         tvTitleYear.setVisibility(View.GONE);
                         DrawMode.CURRENT.setMode(0);
                         flSurface.setVisibility(View.VISIBLE);
@@ -479,7 +481,6 @@ public class MainActivity extends FragmentActivity {
             }
         });
     }
-
     private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
     private InitSurfaceView initSurfaceView;
     private DrawerLayout mDrawerLayout;
@@ -491,7 +492,7 @@ public class MainActivity extends FragmentActivity {
     private FrameLayout flSurface, frame_container;
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
-    private String backKeyName, korName, engName, barText;
+    private String backKeyName, korName, engName;
     private Boolean surfaceFlag, dialogFlag, widget5_5, widget4_4;
     private Spinner spinner;
     private ArrayAdapter<CharSequence> spinnerAdapter;
@@ -503,25 +504,11 @@ public class MainActivity extends FragmentActivity {
     public ImageButton getIbBack() {
         return ibBack;
     }
-
     public ImageButton getIbMenu() {
         return ibMenu;
     }
-
-    public String getBarText() {
-        return barText;
-    }
-
-    public InitSurfaceView getInitSurfaceView() {
-        return initSurfaceView;
-    }
-
     public static MainActivity getInstance() {
         return singleton;
-    }
-
-    public int getViewMode() {
-        return viewMode;
     }
 
     public void onEventMainThread(SetBtPlusEvent e) {
@@ -540,5 +527,4 @@ public class MainActivity extends FragmentActivity {
     public void onEventMainThread(ChangeFragEvent e) {
         changeFragment(e.getCl(), e.getTitleName());
     }
-
 }

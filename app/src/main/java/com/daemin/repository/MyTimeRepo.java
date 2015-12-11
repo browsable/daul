@@ -8,6 +8,7 @@ import java.util.List;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
+import de.greenrobot.dao.query.WhereCondition;
 import timedao.MyTime;
 import timedao.MyTimeDao;
 
@@ -41,19 +42,17 @@ public class MyTimeRepo {
                 MyTimeDao.Properties.Timetype.eq(1)));
         return qb.list();
     }
-    public static List<MyTime> getHourTimes(Context context, long startMillies, long endMillies, int xth, int startHour){
+    public static List<MyTime> getHourTimes(Context context, long startmillis, long endmillis, int xth, int startHour){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
-        qb.where(qb.or(
-                qb.or(MyTimeDao.Properties.Startmillis.between(startMillies, endMillies),
-                        qb.and(MyTimeDao.Properties.Dayofweek.eq(xth),
-                                MyTimeDao.Properties.Starthour.le(startHour),
-                                MyTimeDao.Properties.Endhour.gt(startHour))
-                )
-                ,
-                qb.and(MyTimeDao.Properties.Timetype.eq(1),
-                        MyTimeDao.Properties.Dayofweek.eq(xth),
-                        MyTimeDao.Properties.Starthour.le(startHour),
-                        MyTimeDao.Properties.Endhour.gt(startHour))));
+            qb.where(qb.or(
+                    qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
+                            qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
+                                    MyTimeDao.Properties.Endmillis.gt(endmillis)),
+                            MyTimeDao.Properties.Endmillis.between(startmillis, endmillis)),
+                    qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                            MyTimeDao.Properties.Dayofweek.eq(xth),
+                            MyTimeDao.Properties.Starthour.le(startHour), //시간 중복되는거 해결해야함 13:00~15:00, 15:00~17:00같이나옴
+                            MyTimeDao.Properties.Endhour.ge(startHour))));
         return qb.list();
     }
     public static MyTime getEnrollTime(Context context,long startmillis, int xth, int startHour){
@@ -71,22 +70,6 @@ public class MyTimeRepo {
                 );
         return (MyTime) qb.unique();
     }
-    /*public static MyTime getEnroll(Context context,long startmillis, int xth, int startHour,int startMin){
-        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
-        qb.where(
-                qb.or(
-                        qb.and(MyTimeDao.Properties.Timetype.eq(0),
-                                MyTimeDao.Properties.Startmillis.le(startmillis),
-                                MyTimeDao.Properties.Endmillis.ge(startmillis)),
-                        qb.and(MyTimeDao.Properties.Timetype.eq(1), MyTimeDao.Properties.Dayofweek.eq(xth),
-                                MyTimeDao.Properties.Starthour.le(startHour),
-                                MyTimeDao.Properties.Endhour.ge(startHour))),
-                MyTimeDao.Properties.Startmin.le(startMin),
-                MyTimeDao.Properties.Endmin.ge(startMin),
-                new WhereCondition.StringCondition("_ID IN " +
-                        "(SELECT T.'TIMECODE' FROM MY_TIME WHERE (TIMETYPE=0 and STARTMILLIS=)")).build();
-        return (MyTime) qb.unique();
-    }*/
    /* public static String getEngByKor(Context context, String key) {
         return getNormalDao(context)
                 .queryBuilder()

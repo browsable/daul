@@ -56,12 +56,13 @@ public class InitMonthThread extends InitThread {
 		tpgray.setTextSize(38);
 		tpgray.setTextAlign(Paint.Align.CENTER);
 		tpgray.setColor(context.getResources().getColor(R.color.middlegray));
-		ty = Dates.NOW.dayOfWeek+Dates.NOW.dayOfMonth+1;
-		tx = ty%7;
-		if(tx==0){
+		ty = Dates.NOW.dayOfWeek + Dates.NOW.dayOfMonth + 1;
+		tx = ty % 7;
+		if (tx == 0) {
 			--ty;
 			tx = 7;
 		}
+	}
 		/*int cnt =0;
 		for(int i = Dates.NOW.dayOfWeek+1; i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1; i++){
 			++cnt;
@@ -72,7 +73,7 @@ public class InitMonthThread extends InitThread {
 			String str = Dates.NOW.setTitleYearMonth();
 			mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
 			j++;
-		}*/
+		}
 	}
 	public void postMonthData(){
 		int cnt =0;
@@ -88,7 +89,7 @@ public class InitMonthThread extends InitThread {
 		}
 		//Dates.NOW.setDayOfWeekOfLastMonth(Dates.NOW.dayOfWeek);
 		//Dates.NOW.setmData(mData);
-	}
+	}*/
 	public void setRunning(boolean isLoop) {
 		this.isLoop = isLoop;
 	}

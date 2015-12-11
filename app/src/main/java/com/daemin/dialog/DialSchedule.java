@@ -58,10 +58,8 @@ import com.daemin.event.SetPlaceEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
 import com.daemin.event.UpdateNormalEvent;
-import com.daemin.main.MainActivity;
 import com.daemin.map.MapActivity;
 import com.daemin.repository.MyTimeRepo;
-import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.R;
 import com.daemin.widget.WidgetUpdateService;
 
@@ -106,6 +104,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         User.INFO.getEditor().putString("creditSum", tvCreditSum.getText().toString()).commit();
         Common.stateFilter(viewMode);
         DrawMode.CURRENT.setMode(0);
+        Common.fetchWeekData();
         System.gc();
     }
 
@@ -119,7 +118,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         setLayout();
         makeNormalList();
         String _id="0";
-        if (!getIntent().equals(null)) {//widget에서 Dialog 호출한 경우
+        if (getIntent()!=null) {//widget에서 Dialog 호출한 경우
             widgetFlag = getIntent().getBooleanExtra("widgetFlag", false);
             enrollFlag = getIntent().getBooleanExtra("enrollFlag", false);
             overlapEnrollFlag =  getIntent().getBooleanExtra("overlapEnrollFlag", false);
@@ -447,7 +446,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 , Integer.parseInt(temps[3])
                                 , Integer.parseInt(temps[4]));
                     } else {
-                        Toast.makeText(DialSchedule.this, main.getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
@@ -482,9 +481,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 actvGrade.setText("");
                 subjects.clear();
                 subjects.add(db.getAllWithSubOrProf(actvSub.getText().toString()).remove(0));
-                for(SubjectData s : subjects){
-                    Log.i("test2", s.getSubtitle());
-                }
                 hoAdapter.notifyDataSetChanged();
             }
         });
@@ -674,11 +670,18 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btAddSchedule:
-                Common.stateFilter(viewMode);
                 long nowMillis = Dates.NOW.getNowMillis();
                 switch (DrawMode.CURRENT.getMode()) {
                     case 0:
                         if (viewMode == 0) {
+                            if (etName.getText().toString().equals("")) {
+                                etName.requestFocus();
+                                etName.setHintTextColor(Color.RED);
+                                Toast.makeText(DialSchedule.this, getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
+                                updateWeekList();
+                                break;
+                            }
+                            Common.stateFilter(viewMode);
                             for (BottomNormalData d : normalList) {
                                 String[] tmp = d.getYMD().split("\\.");
                                 int year;
@@ -698,7 +701,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                         etName.getText().toString(),
                                         year, monthOfYear, dayOfMonth,
                                         d.getXth(), startHour, startMin, endHour, endMin,
-                                        startMillis, endMillis,
+                                        startMillis, endMillis-1,
                                         etMemo.getText().toString(),
                                         etPlace.getText().toString(),
                                         User.INFO.latitude, User.INFO.longitude,
@@ -715,6 +718,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         }
                         break;
                     case 1:
+                        Common.stateFilter(viewMode);
                         if (subId!=null) {
                             SubjectData subjectData = db.getSubjectData(subId);
                             String[] temps;
@@ -744,7 +748,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                             colorName);
                                     MyTimeRepo.insertOrUpdate(this, myTime);
                                 } else {
-                                    Toast.makeText(DialSchedule.this, main.getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
                                     break;
                                 }
                             }
@@ -773,7 +777,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 EventBus.getDefault().post(new SetBtPlusEvent(true));
                 EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
                 //btUniv.setVisibility(View.VISIBLE);
-                Common.fetchWeekData();
                 DrawMode.CURRENT.setMode(0);
                 finish();
                 break;
@@ -853,15 +856,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private void setLayout() {
         db = new DatabaseHandler(this);
         btUniv = (Button) findViewById(R.id.btUniv);
-        if (widgetFlag) {
-            viewMode = User.INFO.getViewMode();
-            initSurfaceView = new InitSurfaceView(this, viewMode);
-            btUniv.setVisibility(View.INVISIBLE);
-        } else {
-            main = MainActivity.getInstance();
-            viewMode = main.getViewMode();
-            initSurfaceView = main.getInitSurfaceView();
-        }
+        viewMode = User.INFO.getViewMode();
         btNormal = (Button) findViewById(R.id.btNormal);
         btAddSchedule = (Button) findViewById(R.id.btAddSchedule);
         btCancel = (Button) findViewById(R.id.btCancel);
@@ -952,8 +947,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private Window window;
     private GradientDrawable gd;
     private String colorName, subId;
-    private InitSurfaceView initSurfaceView;
-    private MainActivity main;
     private WindowManager.LayoutParams lp;
     private ArrayList<BottomNormalData> normalList;
     private ArrayAdapter normalAdapter;
