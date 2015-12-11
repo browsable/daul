@@ -156,7 +156,7 @@ public class InitWeekThread extends InitThread {
                     Common.getTempTimePos().remove(ETP.name());
                 }else{
                     EventBus.getDefault().post(new FinishDialogEvent());
-                    DialEnroll de = new DialEnroll(context,xth,tmpYth,ETP.getStartMin());
+                    DialEnroll de = new DialEnroll(context,xth,tmpYth,ETP.getStartMin(),ETP.getEndMin());
                     de.show();
                     /*if(ETP.getStartMin()==0&&ETP.getEndMin()==0) {
                         Intent i = new Intent(context, DialSchedule.class);

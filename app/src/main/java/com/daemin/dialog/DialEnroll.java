@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -17,14 +16,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daemin.adapter.EnrollAdapter;
-import com.daemin.adapter.EventListAdapter;
 import com.daemin.common.Convert;
 import com.daemin.data.EnrollData;
 import com.daemin.enumclass.Dates;
-import com.daemin.enumclass.User;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
@@ -46,7 +42,7 @@ public class DialEnroll extends Dialog {
         EventBus.getDefault().unregister(this);
     }
 
-    public DialEnroll(Context context, int xth, int yth, int startMin) {
+    public DialEnroll(Context context, int xth, int yth, int startMin, int endMin) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
         this.xth=xth;
@@ -66,7 +62,7 @@ public class DialEnroll extends Dialog {
         enrollMyTime(MyTimeRepo.getHourTimes(context,
                 Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, 0),//startmillis
                 Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour+1, 0)-1,//endmillis
-                xth, startHour));
+                xth, startHour, endMin));
     }
 
     @Override
@@ -112,6 +108,7 @@ public class DialEnroll extends Dialog {
         btDialCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.gc();
                 cancel();
             }
         });

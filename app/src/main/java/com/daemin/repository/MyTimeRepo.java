@@ -6,9 +6,7 @@ import com.daemin.common.AppController;
 
 import java.util.List;
 
-import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
-import de.greenrobot.dao.query.WhereCondition;
 import timedao.MyTime;
 import timedao.MyTimeDao;
 
@@ -42,17 +40,29 @@ public class MyTimeRepo {
                 MyTimeDao.Properties.Timetype.eq(1)));
         return qb.list();
     }
-    public static List<MyTime> getHourTimes(Context context, long startmillis, long endmillis, int xth, int startHour){
+    public static List<MyTime> getHourTimes(Context context, long startmillis, long endmillis, int xth, int startHour, int endMin){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
-            qb.where(qb.or(
-                    qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
-                            qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
-                                    MyTimeDao.Properties.Endmillis.gt(endmillis)),
-                            MyTimeDao.Properties.Endmillis.between(startmillis, endmillis)),
-                    qb.and(MyTimeDao.Properties.Timetype.eq(1),
-                            MyTimeDao.Properties.Dayofweek.eq(xth),
-                            MyTimeDao.Properties.Starthour.le(startHour), //시간 중복되는거 해결해야함 13:00~15:00, 15:00~17:00같이나옴
-                            MyTimeDao.Properties.Endhour.ge(startHour))));
+            if(endMin==0) {
+                qb.where(qb.or(
+                        qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
+                                qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
+                                        MyTimeDao.Properties.Endmillis.gt(endmillis)),
+                                MyTimeDao.Properties.Endmillis.between(startmillis, endmillis)),
+                        qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                                MyTimeDao.Properties.Dayofweek.eq(xth),
+                                MyTimeDao.Properties.Starthour.le(startHour),
+                                MyTimeDao.Properties.Endhour.gt(startHour))));
+            }else{
+                qb.where(qb.or(
+                        qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
+                                qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
+                                        MyTimeDao.Properties.Endmillis.gt(endmillis)),
+                                MyTimeDao.Properties.Endmillis.between(startmillis, endmillis)),
+                        qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                                MyTimeDao.Properties.Dayofweek.eq(xth),
+                                MyTimeDao.Properties.Starthour.le(startHour),
+                                MyTimeDao.Properties.Endhour.ge(startHour))));
+            }
         return qb.list();
     }
     public static MyTime getEnrollTime(Context context,long startmillis, int xth, int startHour){
