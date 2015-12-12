@@ -5,6 +5,11 @@ import android.content.SharedPreferences;
 
 import com.daemin.common.AppController;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import timedao.MyTime;
+
 /**
  * Created by hernia on 2015-06-27.
  */
@@ -17,11 +22,13 @@ public enum User {
         longitude=0;
         userPK = getUserPK();
         groupPK = getGroupPK();
+        weekData=new ArrayList<>();
     }
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     public double latitude, longitude;
     public String userPK;
+    public List<MyTime> weekData;
     public int groupPK;
     public SharedPreferences.Editor getEditor() {
         return editor;

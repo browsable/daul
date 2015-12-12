@@ -6,16 +6,14 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Environment;
-import android.util.Log;
 
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
+import com.daemin.enumclass.User;
 import com.daemin.repository.MyTimeRepo;
-import com.daemin.timetable.R;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -76,22 +74,21 @@ public class Common {
 			week_endYear=week_startYear=Dates.NOW.year;
 		long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
 		long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
-		for(MyTime mt :  MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies)){
-			addWeek(mt.getDayofweek(), mt.getStarthour(), mt.getStartmin(), mt.getEndhour(), mt.getEndmin());
+		User.INFO.weekData.clear();
+		User.INFO.weekData.addAll(MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies));
+
+		for(MyTime mt :User.INFO.weekData){
+			addWeek(mt.getDayofweek(), mt.getStarthour(), mt.getEndhour(), mt.getEndmin());
 		}
 	}
-	public static void addWeek(int xth, int startHour, int startMin, int endHour, int endMin){
+	public static void addWeek(int xth, int startHour,int endHour, int endMin){
 		if(endMin!=0) ++endHour;
-		else endMin=60;
 
 		TimePos[] tp = new TimePos[endHour - startHour];
 		int j = 0;
 		for (int i = startHour; i < endHour; i++) {
 			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
 			if (tp[j].getPosState() == PosState.NO_PAINT) {
-				if(i==startHour && startMin!=0)tp[j].setMin(startMin, 60);
-				if(i==endHour-1)tp[j].setMin(0, endMin);
-				if(tp.length==1)tp[j].setMin(startMin,endMin);
 				tp[j].setPosState(PosState.ENROLL);
 			}
 			++j;

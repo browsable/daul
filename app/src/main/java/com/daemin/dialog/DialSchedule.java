@@ -395,10 +395,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (i == endHour - 1) tp[j].setMin(0, endMin);
                 tp[j].setPosState(PosState.PAINT);
                 Common.getTempTimePos().add(tp[j].name());
-            }/*else if(tp[j].getPosState() == PosState.ENROLL){
-                tp[j].setColor("#FF0000");//RED
-                overlapFlag = true;
-            }*/
+            }
             ++j;
         }
     }

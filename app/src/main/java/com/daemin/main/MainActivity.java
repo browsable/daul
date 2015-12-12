@@ -49,7 +49,6 @@ import com.daemin.friend.FriendFragment;
 import com.daemin.setting.SettingFragment;
 import com.daemin.timetable.InitDayFragment;
 import com.daemin.timetable.InitSurfaceView;
-import com.daemin.timetable.InitWeekThread;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 import com.daemin.widget.WidgetUpdateService;
@@ -120,7 +119,6 @@ public class MainActivity extends FragmentActivity {
         singleton = this;
         EventBus.getDefault().register(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         setContentView(R.layout.activity_main);
         if (savedInstanceState != null)
             mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
@@ -128,6 +126,7 @@ public class MainActivity extends FragmentActivity {
         setTitle();
         //Log.i("phone", User.USER.getPhoneNum());
         backPressCloseHandler = new BackPressCloseHandler(this);
+        Common.fetchWeekData();
     }
 
     /*private void screenshot() {
@@ -269,7 +268,6 @@ public class MainActivity extends FragmentActivity {
                     switcher.setText(setMonthWeek());
                 }
                 Common.fetchWeekData();
-                InitWeekThread.getInitWeekThread().setDates();
                 break;
             case 2:
                 --dayIndex;
@@ -298,7 +296,6 @@ public class MainActivity extends FragmentActivity {
                     switcher.setText(setMonthWeek());
                 }
                 Common.fetchWeekData();
-                InitWeekThread.getInitWeekThread().setDates();
                 break;
             case 2:
                 ++dayIndex;

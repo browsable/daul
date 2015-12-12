@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
-import com.daemin.common.AppController;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.dialog.DialEnroll;
@@ -18,9 +17,9 @@ import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
+import com.daemin.enumclass.User;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.event.FinishDialogEvent;
-import com.daemin.repository.MyTimeRepo;
 
 import de.greenrobot.event.EventBus;
 import timedao.MyTime;
@@ -36,19 +35,11 @@ public class InitWeekThread extends InitThread {
     private Paint tp, tpred, tpblue; // 시간 텍스트
     private Paint rp;
     static int tempxth, tempyth;
-    long week_startMillies;
-    long week_endMillies;
     Canvas canvas;
-    static InitWeekThread initWeekThread;
-    public static InitWeekThread getInitWeekThread() {
-        return initWeekThread;
-    }
     public InitWeekThread(SurfaceHolder holder, Context context) {
         this.mholder = holder;
         this.context = context;
         this.dayOfWeek = Dates.NOW.getDayOfWeek();
-        initWeekThread = this;
-        Common.fetchWeekData();
         tempxth = 0;
         tempyth = 0;
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -67,22 +58,6 @@ public class InitWeekThread extends InitThread {
         tpblue.setTextAlign(Paint.Align.CENTER);
         tpblue.setColor(context.getResources().getColor(R.color.blue));
         rp= new Paint(Paint.ANTI_ALIAS_FLAG);
-        setDates();
-    }
-    public void setDates(){
-        int week_startMonth = Dates.NOW.monthOfSun;
-        int week_startDay = Dates.NOW.dayOfSun;
-        int week_endMonth = Dates.NOW.monthOfSat;
-        int week_endDay = Dates.NOW.dayOfSat;
-        int week_startYear;
-        int week_endYear;
-        if(week_startMonth==12&&week_endMonth==1){
-            week_endYear= Dates.NOW.year;
-            week_startYear=week_endYear-1;
-        }else
-            week_endYear=week_startYear=Dates.NOW.year;
-        week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
-        week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
     }
     public void setRunning(boolean isLoop) {
         this.isLoop = isLoop;
@@ -116,7 +91,6 @@ public class InitWeekThread extends InitThread {
                 if (canvas != null)
                     mholder.unlockCanvasAndPost(canvas);
             }
-            //System.gc();
         }
     }
     public void getDownXY(int xth, int yth) {
@@ -242,7 +216,7 @@ public class InitWeekThread extends InitThread {
         hp.setAlpha(100);
     }
     public void fetchWeekData(){
-        for(MyTime mt :  MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies)){
+        for(MyTime mt :  User.INFO.weekData){
             rp.setColor(Color.parseColor(mt.getColor()));
             rp.setAlpha(130);
             canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + 18) + (2 * height / 32) * mt.getStartmin() / 60,
