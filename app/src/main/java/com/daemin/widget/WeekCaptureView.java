@@ -15,6 +15,8 @@ import com.daemin.enumclass.Dates;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
+import java.util.HashMap;
+
 import timedao.MyTime;
 
 /**
@@ -28,6 +30,7 @@ public class WeekCaptureView extends ImageView {
     private Paint tp, tpred, tpblue, rp; // 시간 텍스트
     static int tempxth, tempyth;
     private Canvas canvas;
+    private HashMap<String,String> ETP;
     public WeekCaptureView(Context context)
     {
         super(context);
@@ -51,6 +54,7 @@ public class WeekCaptureView extends ImageView {
         tpblue.setTextSize(30);
         tpblue.setTextAlign(Paint.Align.CENTER);
         tpblue.setColor(context.getResources().getColor(R.color.blue));
+        ETP = new HashMap<>();
     }
     public WeekCaptureView(Context context, AttributeSet attrs)
     {
@@ -83,6 +87,7 @@ public class WeekCaptureView extends ImageView {
             week_endYear=week_startYear=Dates.NOW.year;
         long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
         long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
+        String title;
         for(MyTime mt :  MyTimeRepo.getWeekTimes(context, week_startMillies, week_endMillies)) {
             rp.setColor(Color.parseColor(mt.getColor()));
             rp.setAlpha(130);
@@ -91,8 +96,24 @@ public class WeekCaptureView extends ImageView {
             int endMin = mt.getEndmin();
             int startYth = Convert.HourOfDayToYth(mt.getStarthour());
             int endYth = Convert.HourOfDayToYth(mt.getEndhour());
+
                 canvas.drawRect(width * xth / 15, (height * startYth / 32 + 18) + (2 * height / 32) * startMin / 60,
                         width * (xth + 2) / 15, (height * endYth / 32 + 18) + (2 * height / 32) * endMin / 60, rp);
+            String ETPName = Convert.getxyMerge(xth,startYth);
+            String second ="";
+            if(ETP.containsKey(ETPName)){
+                title = ETP.get(ETPName);
+            }else{
+                title = mt.getName();
+                ETP.put(ETPName,title);
+            }
+            if(title.length()>5){
+                second = title.substring(5);
+                title = title.substring(0,5);
+            }
+            tp.setTextAlign(Paint.Align.LEFT);
+            canvas.drawText(title, width * xth / 15, (height * (startYth+1) / 32), tp);
+            canvas.drawText(second, width * xth / 15, (height * (startYth + 2) / 32), tp);
         }
     }
     @Override

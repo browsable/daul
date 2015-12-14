@@ -83,10 +83,10 @@ public class InitWeekThread extends InitThread {
                 height = canvas.getHeight();
                 synchronized (mholder) {
                     initScreen();
+                    fetchWeekData();
                     for (TimePos ETP : TimePos.values()) {
                         ETP.drawTimePos(canvas, width, height);
                     }
-                    fetchWeekData();
                 }
             } catch (Exception e) {
             } finally {
