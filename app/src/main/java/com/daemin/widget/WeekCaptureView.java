@@ -31,6 +31,7 @@ public class WeekCaptureView extends ImageView {
     static int tempxth, tempyth;
     private Canvas canvas;
     private HashMap<String,String> ETP;
+    private int overLapCnt;
     public WeekCaptureView(Context context)
     {
         super(context);
@@ -39,6 +40,7 @@ public class WeekCaptureView extends ImageView {
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
         tempxth = 0;
         tempyth = 0;
+        overLapCnt = 1;
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
         hp.setColor(context.getResources().getColor(R.color.maincolor));
         hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -110,6 +112,9 @@ public class WeekCaptureView extends ImageView {
             if(title.length()>5){
                 second = title.substring(5);
                 title = title.substring(0,5);
+                if(second.length()>5){
+                    second = second.substring(0,5)+"..";
+                }
             }
             tp.setTextAlign(Paint.Align.LEFT);
             canvas.drawText(title, width * xth / 15, (height * (startYth+1) / 32), tp);

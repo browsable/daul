@@ -60,13 +60,16 @@ public enum TimePos {
             if(title.length()>5){
                 this.title = title.substring(0,5);
                 this.second = title.substring(5);
+                if(this.second.length()>5){
+                    this.second = second.substring(0,5)+"..";
+                }
             }else{
                 this.title = title;
                 this.second="";
             }
-        }
-       /* else{
-            this.second = "...";
+        }/*else{
+            if(this.second.equals("")) this.second = "외";
+            else this.second = this.second.substring(0,this.second.length())+"외";
         }*/
     }
     public void setPosState(PosState posState) {

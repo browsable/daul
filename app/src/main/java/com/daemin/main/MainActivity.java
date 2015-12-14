@@ -40,6 +40,7 @@ import com.daemin.community.CommunityFragment2;
 import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
+import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
