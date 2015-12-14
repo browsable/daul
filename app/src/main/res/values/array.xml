@@ -11,38 +11,10 @@
         <item>btcolor8</item>
         <item>btcolor9</item>
     </string-array>
-    <string-array name="array_koreatech_depname">
-        <item>컴공 | HW</item>
-        <item>컴공 | SW</item>
-        <item>컴공 | 시스템응용</item>
-        <item>기계 | 자동차 에너지</item>
-        <item>기계 | 컴퓨터응용</item>
-        <item>기계 | IT응용</item>
-        <item>메카 | 생산시스템</item>
-        <item>메카 | 디지털시스템</item>
-        <item>메카 | 제어시스템</item>
-        <item>전전통 | 전기공학</item>
-        <item>전전통 | 전자공학</item>
-        <item>전전통 | 정보통신공학</item>
-        <item>디공 | 디자인공학</item>
-        <item>건축 | 건축공학</item>
-        <item>건축 | 건축학</item>
-        <item>에신화 | 신소재공학</item>
-        <item>에신화 | 응용화학공학</item>
-        <item>에신화 | 에너지공학</item>
-        <item>산경 | 인력경영</item>
-        <item>산경 | 기술경영</item>
-        <item>산경 | EBusiness</item>
-    </string-array>
     <string-array name="area_distance">
         <item>@string/list_item_01</item>
         <item>@string/list_item_02</item>
         <item>@string/list_item_03</item>
-    </string-array>
-    <string-array name="wdm">
-        <item>주</item>
-        <item>일</item>
-        <item>월</item>
     </string-array>
 
 </resources>

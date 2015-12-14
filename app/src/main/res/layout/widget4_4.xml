@@ -71,7 +71,6 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin_xxs"
-            android:background="@drawable/ic_trian"
             android:gravity="top|left"
             android:orientation="vertical"
             android:scaleType="fitXY">

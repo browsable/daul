@@ -90,7 +90,7 @@ public class SettingUnivFragment extends BasicFragment {
                         .getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(actvSelectUniv.getWindowToken(), 0);
 
-                arrayDep = getActivity().getResources().getStringArray(R.array.array_koreatech_depname);
+                //arrayDep = getActivity().getResources().getStringArray(R.array.array_koreatech_depname);
                 //actvSelectDep.set
             }
         });

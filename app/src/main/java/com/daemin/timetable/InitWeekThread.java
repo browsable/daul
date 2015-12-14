@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class InitWeekThread extends InitThread {
         this.mholder = holder;
         this.context = context;
         this.dayOfWeek = Dates.NOW.getDayOfWeek();
+        Common.fetchWeekData();
         tempxth = 0;
         tempyth = 0;
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -58,6 +60,7 @@ public class InitWeekThread extends InitThread {
         tpblue.setTextAlign(Paint.Align.CENTER);
         tpblue.setColor(context.getResources().getColor(R.color.blue));
         rp= new Paint(Paint.ANTI_ALIAS_FLAG);
+
     }
     public void setRunning(boolean isLoop) {
         this.isLoop = isLoop;
@@ -81,8 +84,7 @@ public class InitWeekThread extends InitThread {
                 synchronized (mholder) {
                     initScreen();
                     for (TimePos ETP : TimePos.values()) {
-                        if(ETP.getPosState()!=PosState.ENROLL)
-                            ETP.drawTimePos(canvas, width, height);
+                        ETP.drawTimePos(canvas, width, height);
                     }
                     fetchWeekData();
                 }

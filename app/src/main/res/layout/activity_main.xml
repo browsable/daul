@@ -96,36 +96,28 @@
 
         <Button
             android:id="@+id/btWriteArticle"
-            android:layout_width="50dp"
-            android:layout_height="20dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/margin_s"
             android:background="@drawable/bg_maincolor_round_border"
             android:text="글쓰기"
-            android:textSize="13dip"
+            android:textSize="13dp"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/llSpinner"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_alignParentBottom="true"
+        <ToggleButton
+            android:id="@+id/btMode"
+            android:layout_width="36dp"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/margin_xxxs"
-            android:background="@drawable/ic_trian"
-            android:gravity="top|left"
-            android:orientation="vertical"
-            android:scaleType="fitXY">
-
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@color/transparency"
-                android:dropDownVerticalOffset="0.45dp"
-                android:spinnerMode="dropdown" />
-        </LinearLayout>
+            android:layout_centerVertical="true"
+            android:background="@drawable/bt_click"
+            android:onClick="mOnClick"
+            android:textOff="@string/week"
+            android:textOn="@string/month"
+            android:textStyle="bold"
+            android:textSize="@dimen/textsize_l"/>
     </RelativeLayout>
 
     <View

@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.daemin.common.Common;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.event.ExcuteMethodEvent;
@@ -29,17 +30,6 @@ public class InitSurfaceView extends SurfaceView implements
 		this.mode = mode;
 		holder = getHolder();
 		holder.addCallback(this);
-		switch (mode){
-			case 0:
-				initThread = new InitWeekThread(holder, context);
-				break;
-			case 2:
-				initThread = new InitMonthThread(holder, context);
-				break;
-		}
-	}
-	public InitThread getInitThread() {
-		return initThread;
 	}
 	//week or month mode
 	public void setMode(int mode) {
@@ -51,7 +41,7 @@ public class InitSurfaceView extends SurfaceView implements
 			case 0:
 				initThread = new InitWeekThread(holder, context);
 				break;
-			case 2:
+			case 1:
 				initThread = new InitMonthThread(holder, context);
 				break;
 		}

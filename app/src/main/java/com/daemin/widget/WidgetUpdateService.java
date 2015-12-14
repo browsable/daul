@@ -50,7 +50,6 @@ public class WidgetUpdateService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("widget", "service update");
         viewMode= User.INFO.getViewMode();
-        //viewMode=intent.getIntExtra("viewMode", 0);
         AppWidgetManager manager = AppWidgetManager.getInstance(this);
         RemoteViews views5_5 = new RemoteViews(getPackageName(), R.layout.widget5_5);
         RemoteViews views4_4 = new RemoteViews(getPackageName(), R.layout.widget4_4);
@@ -110,8 +109,8 @@ public class WidgetUpdateService extends Service {
                     break;
                 case "month5_5":
                     EventBus.getDefault().post(new FinishDialogEvent());
-                    User.INFO.getEditor().putInt("viewMode", 2).commit();
-                    viewMode=2;
+                    User.INFO.getEditor().putInt("viewMode", 1).commit();
+                    viewMode=1;
                     wIndex5_5 = 0;
                     mIndex5_5 = 0;
                     views5_5.setViewVisibility(R.id.tvYear, View.GONE);
@@ -187,8 +186,8 @@ public class WidgetUpdateService extends Service {
                     break;
                 case "month4_4":
                     EventBus.getDefault().post(new FinishDialogEvent());
-                    User.INFO.getEditor().putInt("viewMode", 2).commit();
-                    viewMode=2;
+                    User.INFO.getEditor().putInt("viewMode", 1).commit();
+                    viewMode=1;
                     wIndex4_4 = 0;
                     mIndex4_4 = 0;
                     views4_4.setViewVisibility(R.id.tvYear, View.GONE);
@@ -306,7 +305,6 @@ public class WidgetUpdateService extends Service {
     }
 
     public void widget5_5back(RemoteViews views, AppWidgetManager manager){
-        //int viewMode = User.INFO.getViewMode();
         Bitmap bitmap;
         if (viewMode == 0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);
@@ -351,8 +349,6 @@ public class WidgetUpdateService extends Service {
         bitmap.recycle();
     }
     public void widget5_5Forward(RemoteViews views, AppWidgetManager manager){
-        //int viewMode= User.INFO.getViewMode();
-        //int viewMode= User.INFO.getViewMode();
         Bitmap bitmap;
         if(viewMode==0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);
@@ -398,7 +394,6 @@ public class WidgetUpdateService extends Service {
         bitmap.recycle();
     }
     public void widget4_4back(RemoteViews views, AppWidgetManager manager){
-        //int viewMode= User.INFO.getViewMode();
         Bitmap bitmap;
         if (viewMode == 0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);

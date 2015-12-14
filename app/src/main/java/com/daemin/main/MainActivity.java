@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -28,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 import android.widget.ViewSwitcher;
 
 import com.daemin.area.AreaFragment;
@@ -47,7 +49,6 @@ import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.setting.SettingFragment;
-import com.daemin.timetable.InitDayFragment;
 import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
@@ -126,7 +127,6 @@ public class MainActivity extends FragmentActivity {
         setTitle();
         //Log.i("phone", User.USER.getPhoneNum());
         backPressCloseHandler = new BackPressCloseHandler(this);
-        Common.fetchWeekData();
     }
 
     /*private void screenshot() {
@@ -247,7 +247,6 @@ public class MainActivity extends FragmentActivity {
         llTitle.setVisibility(View.GONE);
         tvTitle.setVisibility(View.VISIBLE);
         btPlus.setVisibility(View.GONE);
-        llSpinner.setVisibility(View.GONE);
         flSurface.setVisibility(View.GONE);
         frame_container.setVisibility(View.VISIBLE);
         surfaceFlag = true;
@@ -269,7 +268,7 @@ public class MainActivity extends FragmentActivity {
                 }
                 Common.fetchWeekData();
                 break;
-            case 2:
+            case 1:
                 --dayIndex;
                 if (dayIndex < 0) {
                     Dates.NOW.setBackMonthData(-dayIndex);
@@ -297,7 +296,7 @@ public class MainActivity extends FragmentActivity {
                 }
                 Common.fetchWeekData();
                 break;
-            case 2:
+            case 1:
                 ++dayIndex;
                 if (dayIndex < 0) {
                     Dates.NOW.setBackMonthData(-dayIndex);
@@ -324,7 +323,6 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.btTimetable:
                 EventBus.getDefault().post(new ClearNormalEvent());
-                llSpinner.setVisibility(View.VISIBLE);
                 llTitle.setVisibility(View.VISIBLE);
                 tvTitle.setVisibility(View.GONE);
                 btPlus.setVisibility(View.VISIBLE);
@@ -357,6 +355,42 @@ public class MainActivity extends FragmentActivity {
                 Intent i = new Intent(MainActivity.this, DialSchedule.class);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.btMode:
+                EventBus.getDefault().post(new FinishDialogEvent());
+                EventBus.getDefault().post(new ClearNormalEvent());
+                llTitle.setVisibility(View.VISIBLE);
+                initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
+                dayIndex = 0;
+                Common.stateFilter(viewMode);
+                if (btMode.isChecked()) {
+                    viewMode = 1;
+                    EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
+                    Dates.NOW.setMonthData();
+                    switcher.setText("");
+                    switcher.setText(setYearMonth());
+                    tvTitleYear.setVisibility(View.GONE);
+                    DrawMode.CURRENT.setMode(0);
+                    changeFragment(TimetableFragment.class, "");
+                    flSurface.setVisibility(View.VISIBLE);
+                    frame_container.setVisibility(View.GONE);
+                    initSurfaceView.setMode(viewMode);
+                }else{
+                    viewMode = 0;
+                    Dates.NOW.setWeekData();
+                    EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
+                    tvTitleYear.setVisibility(View.VISIBLE);
+                    tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
+                    switcher.setText("");
+                    switcher.setText(setMonthWeek());
+                    changeFragment(TimetableFragment.class, "");
+                    flSurface.setVisibility(View.VISIBLE);
+                    frame_container.setVisibility(View.GONE);
+                    initSurfaceView.setMode(viewMode);
+                }
+                User.INFO.getEditor().putInt("viewMode", viewMode).commit();
+                initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
+                surfaceFlag = false;
                 break;
             case R.id.btBack:
                 Common.stateFilter(viewMode);
@@ -391,11 +425,11 @@ public class MainActivity extends FragmentActivity {
         ibMenu = (ImageButton) findViewById(R.id.ibMenu);
         ibBack = (ImageButton) findViewById(R.id.ibBack);
         mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
-        llSpinner = (LinearLayout) findViewById(R.id.llSpinner);
         llTitle = (LinearLayout) findViewById(R.id.llTitle);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
         btPlus = (Button) findViewById(R.id.btPlus);
+        btMode = (ToggleButton) findViewById(R.id.btMode);
         ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
         //ivProfile.setImageUrl(SAMPLE_IMAGE_URL, MyVolley.getImageLoader());
         switcher = (TextSwitcher) findViewById(R.id.switcher);
@@ -403,96 +437,22 @@ public class MainActivity extends FragmentActivity {
         frame_container = (FrameLayout) findViewById(R.id.frame_container);
         initSurfaceView = new InitSurfaceView(this, viewMode);
         flSurface.addView(initSurfaceView);
-        spinner = (Spinner) findViewById(R.id.spinner);
-        spinnerAdapter = ArrayAdapter
-                .createFromResource(this, R.array.wdm,
-                        R.layout.wdm_spinner_item);
-        spinnerAdapter
-                .setDropDownViewResource(R.layout.wdm_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setSelection(viewMode);
-        spinner.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                EventBus.getDefault().post(new FinishDialogEvent());
-                return false;
-            }
-        });
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                EventBus.getDefault().post(new ClearNormalEvent());
-                llTitle.setVisibility(View.VISIBLE);
-                initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
-                dayIndex = 0;
-                Common.stateFilter(viewMode);
-                switch (position) {
-                    case 0: //주
-                        viewMode = 0;
-                        Dates.NOW.setWeekData();
-                        User.INFO.getEditor().putInt("viewMode", viewMode).commit();
-                        EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
-                        tvTitleYear.setVisibility(View.VISIBLE);
-                        tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
-                        switcher.setText("");
-                        switcher.setText(setMonthWeek());
-                        changeFragment(TimetableFragment.class, "");
-                        flSurface.setVisibility(View.VISIBLE);
-                        frame_container.setVisibility(View.GONE);
-                        initSurfaceView.setMode(viewMode);
-                        break;
-                    case 1: // 일
-                        //switcher.setText("");
-                        //switcher.setText(barText);
-                        tvTitleYear.setVisibility(View.GONE);
-                        DrawMode.CURRENT.setMode(0);
-                        flSurface.setVisibility(View.VISIBLE);
-                        frame_container.setVisibility(View.GONE);
-                        changeFragment(InitDayFragment.class, "일");
-                        break;
-                    case 2: // 월
-                        viewMode = 2;
-                        User.INFO.getEditor().putInt("viewMode", viewMode).commit();
-                        EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
-                        Dates.NOW.setMonthData();
-                        switcher.setText("");
-                        switcher.setText(setYearMonth());
-                        tvTitleYear.setVisibility(View.GONE);
-                        DrawMode.CURRENT.setMode(0);
-                        changeFragment(TimetableFragment.class, "");
-                        flSurface.setVisibility(View.VISIBLE);
-                        frame_container.setVisibility(View.GONE);
-                        initSurfaceView.setMode(viewMode);
-                        break;
-                }
-                initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
-                surfaceFlag = false;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-            }
-        });
+        if(viewMode==1) btMode.setChecked(true);
     }
     private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
     private InitSurfaceView initSurfaceView;
     private DrawerLayout mDrawerLayout;
     private RoundedCornerNetworkImageView ivProfile;
-    private LinearLayout mLeftDrawer, llTitle, llSpinner;
+    private LinearLayout mLeftDrawer, llTitle;
     private ImageButton ibMenu, ibBack;
     private TextView tvTitle, tvTitleYear;
     private Button btPlus;
+    private ToggleButton btMode;
     private FrameLayout flSurface, frame_container;
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
     private String backKeyName, korName, engName;
     private Boolean surfaceFlag, dialogFlag, widget5_5, widget4_4;
-    private Spinner spinner;
-    private ArrayAdapter<CharSequence> spinnerAdapter;
     private TextSwitcher switcher;
     private static MainActivity singleton;
     private int viewMode;

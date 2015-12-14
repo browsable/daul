@@ -18,9 +18,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.daemin.adapter.EnrollAdapter;
+import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.data.EnrollData;
 import com.daemin.enumclass.Dates;
+import com.daemin.enumclass.PosState;
+import com.daemin.enumclass.TimePos;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
@@ -167,5 +170,9 @@ public class DialEnroll extends Dialog {
         mtList.remove(enrollList.get(e.getTimeCode()));
         if(mtList.size()==0)cancel();
         enrollAdapter.notifyDataSetChanged();
+        for (TimePos ETP : TimePos.values()) {
+            ETP.setInitTitle();
+        }
+        Common.fetchWeekData();
     }
 }
