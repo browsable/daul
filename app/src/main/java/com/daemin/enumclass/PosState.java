@@ -1,12 +1,16 @@
 package com.daemin.enumclass;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.Log;
+import android.util.TypedValue;
 
 import com.daemin.common.Common;
+import com.daemin.main.MainActivity;
+import com.daemin.timetable.R;
 
 
 /**
@@ -23,8 +27,8 @@ public enum PosState {
     ENROLL(){
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, String title, String second, int xth, int yth, int startMin, int endMin) {
-            canvas.drawText(title, width * xth / 15, (height * (yth+1) / 32), tp);
-            canvas.drawText(second, width * xth / 15, (height * (yth+2) / 32), tp);
+            canvas.drawText(title, width * (xth+1) / 15, (height * (yth + 1) / 32), tp);
+            canvas.drawText(second, width * (xth+1) / 15, (height * (yth+1) / 32 + 30), tp);
         }
     };
     public Paint rp; // 사각형
@@ -37,7 +41,8 @@ public enum PosState {
         rp.setTextAlign(Paint.Align.CENTER);
         tp = new Paint(Paint.ANTI_ALIAS_FLAG);
         tp.setColor(Color.BLACK);
-        tp.setTextSize(30);
+        tp.setTextAlign(Paint.Align.CENTER);
+        tp.setTextSize(User.INFO.titleSize);
         tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
     }
     public void drawTimePos(Canvas canvas, int width, int height, String title, String second, int xth, int yth, int startMin, int endMin) {

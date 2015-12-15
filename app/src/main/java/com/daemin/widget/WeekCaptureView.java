@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 
 import com.daemin.common.Convert;
 import com.daemin.enumclass.Dates;
+import com.daemin.enumclass.User;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
@@ -31,29 +33,28 @@ public class WeekCaptureView extends ImageView {
     static int tempxth, tempyth;
     private Canvas canvas;
     private HashMap<String,String> ETP;
-    private int overLapCnt;
     public WeekCaptureView(Context context)
     {
         super(context);
         this.context = context;
         this.dayOfWeek = Dates.NOW.getDayOfWeek();
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
+        int dateSize = User.INFO.getDateSize();
         tempxth = 0;
         tempyth = 0;
-        overLapCnt = 1;
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
         hp.setColor(context.getResources().getColor(R.color.maincolor));
         hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
         hpvp.setAlpha(70);
         tp = new Paint(Paint.ANTI_ALIAS_FLAG);
-        tp.setTextSize(30);
+        tp.setTextSize(dateSize);
         tp.setTextAlign(Paint.Align.CENTER);
         tpred = new Paint(Paint.ANTI_ALIAS_FLAG);
-        tpred.setTextSize(30);
+        tpred.setTextSize(dateSize);
         tpred.setTextAlign(Paint.Align.CENTER);
         tpred.setColor(context.getResources().getColor(R.color.red));
         tpblue = new Paint(Paint.ANTI_ALIAS_FLAG);
-        tpblue.setTextSize(30);
+        tpblue.setTextSize(dateSize);
         tpblue.setTextAlign(Paint.Align.CENTER);
         tpblue.setColor(context.getResources().getColor(R.color.blue));
         ETP = new HashMap<>();
@@ -116,9 +117,11 @@ public class WeekCaptureView extends ImageView {
                     second = second.substring(0,5)+"..";
                 }
             }
-            tp.setTextAlign(Paint.Align.LEFT);
-            canvas.drawText(title, width * xth / 15, (height * (startYth+1) / 32), tp);
-            canvas.drawText(second, width * xth / 15, (height * (startYth + 2) / 32), tp);
+            tp.setTextSize(User.INFO.getTitleSize());
+            tp.setTextAlign(Paint.Align.CENTER);
+            tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            canvas.drawText(title, width * (xth+1) / 15, (height * (startYth + 1) / 32), tp);
+            canvas.drawText(second, width * (xth+1) / 15, (height * (startYth+1) / 32 + 30), tp);
         }
     }
     @Override
@@ -220,3 +223,4 @@ public class WeekCaptureView extends ImageView {
         hp.setAlpha(100);
     }
 }
+

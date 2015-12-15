@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.daemin.common.AppController;
+import com.daemin.timetable.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +24,17 @@ public enum User {
         userPK = getUserPK();
         groupPK = getGroupPK();
         weekData=new ArrayList<>();
+        titleSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_xs);
+        dateSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_s);
+        editor.putInt("titleSize", titleSize).commit();
+        editor.putInt("dateSize", dateSize).commit();
     }
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     public double latitude, longitude;
     public String userPK;
     public List<MyTime> weekData;
-    public int groupPK;
+    public int groupPK, titleSize, dateSize;
     public SharedPreferences.Editor getEditor() {
         return editor;
     }
@@ -47,6 +52,7 @@ public enum User {
     }
 
     //Pref Getter
+
     public boolean getFirstFlag(){
         return pref.getBoolean("firstFlag", true);
     }
@@ -55,6 +61,12 @@ public enum User {
     }
     public int getDeviceHeight(){
         return pref.getInt("deviceHeight", 0);
+    }
+    public int getTitleSize() {
+        return pref.getInt("titleSize", 0);
+    }
+    public int getDateSize() {
+        return pref.getInt("dateSize", 0);
     }
     public String getUserPK(){
         String userPK = pref.getString("userPK", "0");

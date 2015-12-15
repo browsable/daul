@@ -102,7 +102,6 @@ public class MainActivity extends FragmentActivity {
         super.onDestroy();
         //appcontroller에서 앱 실행시 초기에 불러오게될 정보를 저장함
         Common.stateFilter(viewMode);
-        //CalTime.setTitleMonth(CalTime.getNow().getMonthOfYear());
         clearApplicationCache(getExternalCacheDir());
         EventBus.getDefault().unregister(this);
     }

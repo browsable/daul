@@ -106,9 +106,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginTop="@dimen/margin_xxxs"
             android:scaleType="fitXY"
-            android:alpha="0.88"
+            android:layout_marginTop="@dimen/margin_xxxs"
             />
     <!-- android:scaleType="fitXY"
                  android:alpha="0.88"  -->

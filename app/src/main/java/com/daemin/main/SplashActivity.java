@@ -103,6 +103,7 @@ public class SplashActivity extends Activity{
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		int deviceWidth = displayMetrics.widthPixels;
 		int deviceHeight = displayMetrics.heightPixels;
+
 		//폰번호
 		TelephonyManager systemService = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         String phoneNum = systemService.getLine1Number();
