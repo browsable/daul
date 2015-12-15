@@ -1,6 +1,7 @@
 package com.daemin.widget;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,7 +27,7 @@ import timedao.MyTime;
  */
 public class WeekCaptureView extends ImageView {
     private Context context;
-    private int width, height,dayOfWeek; //화면의 전체 너비, 높이
+    private int width, height,dayOfWeek, titleSize; //화면의 전체 너비, 높이
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
     private Paint tp, tpred, tpblue, rp; // 시간 텍스트
@@ -39,7 +40,8 @@ public class WeekCaptureView extends ImageView {
         this.context = context;
         this.dayOfWeek = Dates.NOW.getDayOfWeek();
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
-        int dateSize = User.INFO.getDateSize();
+        int dateSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_s);
+        titleSize=context.getResources().getDimensionPixelSize(R.dimen.textsize_xs);
         tempxth = 0;
         tempyth = 0;
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -117,7 +119,7 @@ public class WeekCaptureView extends ImageView {
                     second = second.substring(0,5)+"..";
                 }
             }
-            tp.setTextSize(User.INFO.getTitleSize());
+            tp.setTextSize(titleSize);
             tp.setTextAlign(Paint.Align.CENTER);
             tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             canvas.drawText(title, width * (xth+1) / 15, (height * (startYth + 1) / 32), tp);

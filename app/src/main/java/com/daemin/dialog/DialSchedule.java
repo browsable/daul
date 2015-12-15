@@ -115,8 +115,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_schedule);
         EventBus.getDefault().post(new SetBtPlusEvent(false));
-        setLayout();
-        makeNormalList();
         String _id="0";
         if (getIntent()!=null) {//widget에서 Dialog 호출한 경우
             widgetFlag = getIntent().getBooleanExtra("widgetFlag", false);
@@ -124,6 +122,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             overlapEnrollFlag =  getIntent().getBooleanExtra("overlapEnrollFlag", false);
             _id =  getIntent().getStringExtra("_id");
         }
+        setLayout();
+        makeNormalList();
         window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(
                 android.graphics.Color.TRANSPARENT));
@@ -929,7 +929,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 else
                     btUniv.setVisibility(View.INVISIBLE);
             }
-        }
+        }else btUniv.setVisibility(View.INVISIBLE);
     }
 
     private Button btNormal, btUniv, btAddSchedule, btCancel, btEnter, btColor;

@@ -6,21 +6,17 @@ import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
 
 import com.daemin.common.Common;
 import com.daemin.enumclass.Dates;
-import com.daemin.enumclass.User;
-import com.daemin.event.FinishDialogEvent;
 import com.daemin.timetable.R;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-11-03.
@@ -28,12 +24,14 @@ import de.greenrobot.event.EventBus;
 public class WidgetUpdateService extends Service {
     int deviceWidth, deviceHeight, viewMode;
     static int wIndex5_5,mIndex5_5,wIndex4_4,mIndex4_4;
+    SharedPreferences pref;
     @Override
     public void onCreate() {
         super.onCreate();
         Log.i("widget", "service start");
-        deviceWidth = User.INFO.getDeviceWidth();
-        deviceHeight= User.INFO.getDeviceHeight();
+        pref = getSharedPreferences("USERINFO", MODE_PRIVATE);
+        deviceWidth = pref.getInt("deviceWidth", 0);
+        deviceHeight= pref.getInt("deviceHeight", 0);
         wIndex5_5=0;
         mIndex5_5=0;
         wIndex4_4=0;
@@ -50,206 +48,55 @@ public class WidgetUpdateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("widget", "service update");
-        viewMode= User.INFO.getViewMode();
+        viewMode= pref.getInt("viewMode", 0);
         AppWidgetManager manager = AppWidgetManager.getInstance(this);
         RemoteViews views5_5 = new RemoteViews(getPackageName(), R.layout.widget5_5);
         RemoteViews views4_4 = new RemoteViews(getPackageName(), R.layout.widget4_4);
-        try {
+        if(intent!=null){
             switch (intent.getStringExtra("action")) {
                 case "update5_5":
-                    wIndex5_5 = 0;
-                    mIndex5_5 = 0;
-                    if (viewMode == 0) {
-                        views5_5.setViewVisibility(R.id.tvYear, View.VISIBLE);
-                        WeekCaptureView iv = new WeekCaptureView(this);
-                        views5_5.setViewVisibility(R.id.btWeek, View.GONE);
-                        views5_5.setViewVisibility(R.id.btMonth, View.VISIBLE);
-                        Dates.NOW.setWeekData();
-                        views5_5.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
-                        views5_5.setTextViewText(R.id.tvDate, setMonthWeek());
-                        iv.layout(0, 0, deviceWidth, deviceHeight);
-                        iv.setDrawingCacheEnabled(true);
-                        Bitmap week5_5 = iv.getDrawingCache();
-                        views5_5.setImageViewBitmap(R.id.timetableimage, week5_5);
-                        widget5_5Setting(views5_5, manager);
-                        week5_5.recycle();
-                    } else {
-                        views5_5.setViewVisibility(R.id.tvYear, View.GONE);
-                        MonthCaptureView iv = new MonthCaptureView(this);
-                        views5_5.setViewVisibility(R.id.btWeek, View.VISIBLE);
-                        views5_5.setViewVisibility(R.id.btMonth, View.GONE);
-                        Dates.NOW.setMonthData();
-                        views5_5.setTextViewText(R.id.tvDate, setYearMonth());
-                        iv.layout(0, 0, deviceWidth, deviceHeight);
-                        iv.setDrawingCacheEnabled(true);
-                        Bitmap month5_5 = iv.getDrawingCache();
-                        views5_5.setImageViewBitmap(R.id.timetableimage, month5_5);
-                        widget5_5Setting(views5_5, manager);
-                        month5_5.recycle();
-                    }
+                    if (viewMode == 0) widget5_5Week(views5_5,manager);
+                    else widget5_5Month(views5_5,manager);
                     break;
                 case "week5_5":
-                    EventBus.getDefault().post(new FinishDialogEvent());
-                    User.INFO.getEditor().putInt("viewMode", 0).commit();
-                    viewMode=0;
-                    wIndex5_5 = 0;
-                    mIndex5_5 = 0;
-                    views5_5.setViewVisibility(R.id.tvYear, View.VISIBLE);
-                    WeekCaptureView iv5 = new WeekCaptureView(this);
-                    views5_5.setViewVisibility(R.id.btWeek, View.GONE);
-                    views5_5.setViewVisibility(R.id.btMonth, View.VISIBLE);
-                    Dates.NOW.setWeekData();
-                    views5_5.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
-                    views5_5.setTextViewText(R.id.tvDate, setMonthWeek());
-                    iv5.layout(0, 0, deviceWidth, deviceHeight);
-                    iv5.setDrawingCacheEnabled(true);
-                    Bitmap week5 = iv5.getDrawingCache();
-                    views5_5.setImageViewBitmap(R.id.timetableimage, week5);
-                    widget5_5Setting(views5_5, manager);
-                    week5.recycle();
+                    Log.i("widget", "service week5_5");
+                    widget5_5Week(views5_5,manager);
                     break;
                 case "month5_5":
-                    EventBus.getDefault().post(new FinishDialogEvent());
-                    User.INFO.getEditor().putInt("viewMode", 1).commit();
-                    viewMode=1;
-                    wIndex5_5 = 0;
-                    mIndex5_5 = 0;
-                    views5_5.setViewVisibility(R.id.tvYear, View.GONE);
-                    MonthCaptureView im5 = new MonthCaptureView(this);
-                    views5_5.setViewVisibility(R.id.btWeek, View.VISIBLE);
-                    views5_5.setViewVisibility(R.id.btMonth, View.GONE);
-                    Dates.NOW.setMonthData();
-                    views5_5.setTextViewText(R.id.tvDate, setYearMonth());
-                    im5.layout(0, 0, deviceWidth, deviceHeight);
-                    im5.setDrawingCacheEnabled(true);
-                    Bitmap month5 = im5.getDrawingCache();
-                    views5_5.setImageViewBitmap(R.id.timetableimage, month5);
-                    widget5_5Setting(views5_5, manager);
-                    month5.recycle();
+                    Log.i("widget", "service month5_5");
+                    widget5_5Month(views5_5,manager);
                     break;
                 case "back5_5":
-                    widget5_5back(views5_5, manager);
+                    widget5_5Back(views5_5, manager);
                     break;
                 case "forward5_5":
                     widget5_5Forward(views5_5, manager);
                     break;
                 case "update4_4":
-                    wIndex4_4 = 0;
-                    mIndex4_4 = 0;
-                    if (viewMode == 0) {
-                        views4_4.setViewVisibility(R.id.tvYear, View.VISIBLE);
-                        WeekCaptureView iv = new WeekCaptureView(this);
-                        views4_4.setViewVisibility(R.id.btWeek, View.GONE);
-                        views4_4.setViewVisibility(R.id.btMonth, View.VISIBLE);
-                        Dates.NOW.setWeekData();
-                        views4_4.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
-                        views4_4.setTextViewText(R.id.tvDate, setMonthWeek());
-                        iv.layout(0, 0, deviceWidth, deviceHeight);
-                        iv.setDrawingCacheEnabled(true);
-                        Bitmap week4_4 = iv.getDrawingCache();
-                        views4_4.setImageViewBitmap(R.id.timetableimage, week4_4);
-                        widget4_4Setting(views4_4, manager);
-                        week4_4.recycle();
-                    } else {
-                        views4_4.setViewVisibility(R.id.tvYear, View.GONE);
-                        MonthCaptureView iv = new MonthCaptureView(this);
-                        views4_4.setViewVisibility(R.id.btWeek, View.VISIBLE);
-                        views4_4.setViewVisibility(R.id.btMonth, View.GONE);
-                        Dates.NOW.setMonthData();
-                        views4_4.setTextViewText(R.id.tvDate, setYearMonth());
-                        iv.layout(0, 0, deviceWidth, deviceHeight);
-                        iv.setDrawingCacheEnabled(true);
-                        Bitmap month4_4 = iv.getDrawingCache();
-                        views4_4.setImageViewBitmap(R.id.timetableimage, month4_4);
-                        widget4_4Setting(views4_4, manager);
-                        month4_4.recycle();
-                    }
+                    if (viewMode == 0) widget4_4Week(views4_4,manager);
+                    else widget4_4Month(views4_4,manager);
                     break;
                 case "week4_4":
-                    EventBus.getDefault().post(new FinishDialogEvent());
-                    User.INFO.getEditor().putInt("viewMode", 0).commit();
-                    viewMode=0;
-                    wIndex4_4 = 0;
-                    mIndex4_4 = 0;
-                    views4_4.setViewVisibility(R.id.tvYear, View.VISIBLE);
-                    WeekCaptureView iv4 = new WeekCaptureView(this);
-                    views4_4.setViewVisibility(R.id.btWeek, View.GONE);
-                    views4_4.setViewVisibility(R.id.btMonth, View.VISIBLE);
-                    Dates.NOW.setWeekData();
-                    views4_4.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
-                    views4_4.setTextViewText(R.id.tvDate, setMonthWeek());
-                    iv4.layout(0, 0, deviceWidth, deviceHeight);
-                    iv4.setDrawingCacheEnabled(true);
-                    Bitmap week4 = iv4.getDrawingCache();
-                    views4_4.setImageViewBitmap(R.id.timetableimage, week4);
-                    widget4_4Setting(views4_4, manager);
-                    week4.recycle();
+                    widget4_4Week(views4_4,manager);
                     break;
                 case "month4_4":
-                    EventBus.getDefault().post(new FinishDialogEvent());
-                    User.INFO.getEditor().putInt("viewMode", 1).commit();
-                    viewMode=1;
-                    wIndex4_4 = 0;
-                    mIndex4_4 = 0;
-                    views4_4.setViewVisibility(R.id.tvYear, View.GONE);
-                    MonthCaptureView im4 = new MonthCaptureView(this);
-                    views4_4.setViewVisibility(R.id.btWeek, View.VISIBLE);
-                    views4_4.setViewVisibility(R.id.btMonth, View.GONE);
-                    Dates.NOW.setMonthData();
-                    views4_4.setTextViewText(R.id.tvDate, setYearMonth());
-                    im4.layout(0, 0, deviceWidth, deviceHeight);
-                    im4.setDrawingCacheEnabled(true);
-                    Bitmap month4_4 = im4.getDrawingCache();
-                    views4_4.setImageViewBitmap(R.id.timetableimage, month4_4);
-                    widget4_4Setting(views4_4, manager);
-                    month4_4.recycle();
+                    widget4_4Month(views4_4,manager);
                     break;
                 case "back4_4":
-                    widget4_4back(views4_4, manager);
+                    widget4_4Back(views4_4, manager);
                     break;
                 case "forward4_4":
                     widget4_4Forward(views4_4, manager);
                     break;
             }
-        }catch(NullPointerException e){
-            Log.i("nullpoint",e.toString());
-            if(User.INFO.getWidget5_5()) {
-                User.INFO.getEditor().putInt("viewMode", 0).commit();
-                viewMode = 0;
-                wIndex5_5 = 0;
-                mIndex5_5 = 0;
-                views5_5.setViewVisibility(R.id.tvYear, View.VISIBLE);
-                WeekCaptureView iv = new WeekCaptureView(this);
-                views5_5.setViewVisibility(R.id.btWeek, View.GONE);
-                views5_5.setViewVisibility(R.id.btMonth, View.VISIBLE);
-                Dates.NOW.setWeekData();
-                views5_5.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
-                views5_5.setTextViewText(R.id.tvDate, setMonthWeek());
-                iv.layout(0, 0, deviceWidth, deviceHeight);
-                iv.setDrawingCacheEnabled(true);
-                Bitmap week5 = iv.getDrawingCache();
-                views5_5.setImageViewBitmap(R.id.timetableimage, week5);
-                widget5_5Setting(views5_5, manager);
-                week5.recycle();
+        }else{
+            if(pref.getBoolean("widget5_5", false)) {
+                if (viewMode == 0) widget5_5Week(views5_5,manager);
+                else widget5_5Month(views5_5,manager);
             }
-            if(User.INFO.getWidget4_4()){
-                User.INFO.getEditor().putInt("viewMode", 0).commit();
-                viewMode = 0;
-                wIndex4_4 = 0;
-                mIndex4_4 = 0;
-                views4_4.setViewVisibility(R.id.tvYear, View.VISIBLE);
-                WeekCaptureView iv = new WeekCaptureView(this);
-                views4_4.setViewVisibility(R.id.btWeek, View.GONE);
-                views4_4.setViewVisibility(R.id.btMonth, View.VISIBLE);
-                Dates.NOW.setWeekData();
-                views4_4.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
-                views4_4.setTextViewText(R.id.tvDate, setMonthWeek());
-                iv.layout(0, 0, deviceWidth, deviceHeight);
-                iv.setDrawingCacheEnabled(true);
-                Bitmap week4 = iv.getDrawingCache();
-                views4_4.setImageViewBitmap(R.id.timetableimage, week4);
-                widget4_4Setting(views4_4, manager);
-                week4.recycle();
+            if(pref.getBoolean("widget4_4", false)){
+                if (viewMode == 0) widget4_4Week(views4_4,manager);
+                else widget4_4Month(views4_4,manager);
             }
         }
         return START_STICKY;
@@ -304,8 +151,81 @@ public class WidgetUpdateService extends Service {
             manager.updateAppWidget(appWidgetId, views);
         }
     }
-
-    public void widget5_5back(RemoteViews views, AppWidgetManager manager){
+    public void widget5_5Week(RemoteViews views, AppWidgetManager manager) {
+        pref.edit().putInt("viewMode", 0).commit();
+        viewMode=0;
+        wIndex5_5 = 0;
+        mIndex5_5 = 0;
+        views.setViewVisibility(R.id.tvYear, View.VISIBLE);
+        WeekCaptureView iv5 = new WeekCaptureView(this);
+        views.setViewVisibility(R.id.btWeek, View.GONE);
+        views.setViewVisibility(R.id.btMonth, View.VISIBLE);
+        Dates.NOW.setWeekData();
+        views.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
+        views.setTextViewText(R.id.tvDate, setMonthWeek());
+        iv5.layout(0, 0, deviceWidth, deviceHeight);
+        iv5.setDrawingCacheEnabled(true);
+        Bitmap week5 = iv5.getDrawingCache();
+        views.setImageViewBitmap(R.id.timetableimage, week5);
+        widget5_5Setting(views, manager);
+        week5.recycle();
+    }
+    public void widget5_5Month(RemoteViews views, AppWidgetManager manager) {
+        pref.edit().putInt("viewMode", 1).commit();
+        viewMode=1;
+        wIndex5_5 = 0;
+        mIndex5_5 = 0;
+        views.setViewVisibility(R.id.tvYear, View.GONE);
+        MonthCaptureView im5 = new MonthCaptureView(this);
+        views.setViewVisibility(R.id.btWeek, View.VISIBLE);
+        views.setViewVisibility(R.id.btMonth, View.GONE);
+        Dates.NOW.setMonthData();
+        views.setTextViewText(R.id.tvDate, setYearMonth());
+        im5.layout(0, 0, deviceWidth, deviceHeight);
+        im5.setDrawingCacheEnabled(true);
+        Bitmap month5 = im5.getDrawingCache();
+        views.setImageViewBitmap(R.id.timetableimage, month5);
+        widget5_5Setting(views, manager);
+        month5.recycle();
+    }
+    public void widget4_4Week(RemoteViews views, AppWidgetManager manager) {
+        pref.edit().putInt("viewMode", 0).commit();
+        viewMode=0;
+        wIndex4_4 = 0;
+        mIndex4_4 = 0;
+        views.setViewVisibility(R.id.tvYear, View.VISIBLE);
+        WeekCaptureView iv4 = new WeekCaptureView(this);
+        views.setViewVisibility(R.id.btWeek, View.GONE);
+        views.setViewVisibility(R.id.btMonth, View.VISIBLE);
+        Dates.NOW.setWeekData();
+        views.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
+        views.setTextViewText(R.id.tvDate, setMonthWeek());
+        iv4.layout(0, 0, deviceWidth, deviceHeight);
+        iv4.setDrawingCacheEnabled(true);
+        Bitmap week4 = iv4.getDrawingCache();
+        views.setImageViewBitmap(R.id.timetableimage, week4);
+        widget4_4Setting(views, manager);
+        week4.recycle();
+    }
+    public void widget4_4Month(RemoteViews views, AppWidgetManager manager) {
+        pref.edit().putInt("viewMode", 1).commit();
+        viewMode=1;
+        wIndex4_4 = 0;
+        mIndex4_4 = 0;
+        views.setViewVisibility(R.id.tvYear, View.GONE);
+        MonthCaptureView im4 = new MonthCaptureView(this);
+        views.setViewVisibility(R.id.btWeek, View.VISIBLE);
+        views.setViewVisibility(R.id.btMonth, View.GONE);
+        Dates.NOW.setMonthData();
+        views.setTextViewText(R.id.tvDate, setYearMonth());
+        im4.layout(0, 0, deviceWidth, deviceHeight);
+        im4.setDrawingCacheEnabled(true);
+        Bitmap month4_4 = im4.getDrawingCache();
+        views.setImageViewBitmap(R.id.timetableimage, month4_4);
+        widget4_4Setting(views, manager);
+        month4_4.recycle();
+    }
+    public void widget5_5Back(RemoteViews views, AppWidgetManager manager){
         Bitmap bitmap;
         if (viewMode == 0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);
@@ -394,7 +314,7 @@ public class WidgetUpdateService extends Service {
         widget5_5Setting(views, manager);
         bitmap.recycle();
     }
-    public void widget4_4back(RemoteViews views, AppWidgetManager manager){
+    public void widget4_4Back(RemoteViews views, AppWidgetManager manager){
         Bitmap bitmap;
         if (viewMode == 0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);

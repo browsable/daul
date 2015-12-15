@@ -110,7 +110,7 @@ public class InitSurfaceView extends SurfaceView implements
 						break;
 				}
 				break;
-			case 2:
+			case 1:
 				switch (event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
 						calXthYth(event);
@@ -165,7 +165,7 @@ public class InitSurfaceView extends SurfaceView implements
 					e.printStackTrace();
 				}
 				break;
-			case 2:
+			case 1:
 				try{
 					//화면에 x축으로 7등분 중 몇번째에 위치하는지
 					xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 7 / initThread.getWidth()+1;

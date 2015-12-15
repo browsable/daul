@@ -117,6 +117,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewMode = User.INFO.getViewMode();
         singleton = this;
         EventBus.getDefault().register(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -126,7 +127,6 @@ public class MainActivity extends FragmentActivity {
         setLayout();
         setTitle();
         //Log.i("phone", User.USER.getPhoneNum());
-        backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
     /*private void screenshot() {
@@ -418,7 +418,6 @@ public class MainActivity extends FragmentActivity {
         //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
                 GravityCompat.START);
-        viewMode = User.INFO.getViewMode();
         widget5_5 = User.INFO.getWidget5_5();
         widget4_4 = User.INFO.getWidget4_4();
         dayIndex = 0;
@@ -437,7 +436,11 @@ public class MainActivity extends FragmentActivity {
         frame_container = (FrameLayout) findViewById(R.id.frame_container);
         initSurfaceView = new InitSurfaceView(this, viewMode);
         flSurface.addView(initSurfaceView);
-        if(viewMode==1) btMode.setChecked(true);
+        backPressCloseHandler = new BackPressCloseHandler(this);
+        if(viewMode==1){
+            btMode.setChecked(true);
+            EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
+        }
     }
     private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
     private InitSurfaceView initSurfaceView;
