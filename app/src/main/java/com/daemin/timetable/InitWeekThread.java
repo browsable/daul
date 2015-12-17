@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.dialog.DialEnroll;
+import com.daemin.dialog.DialEnrollActivity;
 import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
@@ -23,6 +24,7 @@ import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.event.FinishDialogEvent;
+import com.daemin.event.SetCreditEvent;
 
 import de.greenrobot.event.EventBus;
 import timedao.MyTime;
@@ -133,18 +135,16 @@ public class InitWeekThread extends InitThread {
                     ETP.setPosState(PosState.NO_PAINT);
                     Common.getTempTimePos().remove(ETP.name());
                 }else{
-                    EventBus.getDefault().post(new FinishDialogEvent());
-                    DialEnroll de = new DialEnroll(context,xth,tmpYth,ETP.getStartMin(),ETP.getEndMin());
-                    de.show();
-                    /*if(ETP.getStartMin()==0&&ETP.getEndMin()==0) {
-                        Intent i = new Intent(context, DialSchedule.class);
-                        i.putExtra("enrollFlag", true);
-                        i.putExtra("overlapEnrollFlag", false);
-                        i.putExtra("xth", xth);
-                        i.putExtra("yth", tmpYth);
-                        i.putExtra("startMin", ETP.getStartMin());
-                        context.startActivity(i);
-                    }*/
+                    //EventBus.getDefault().post(new FinishDialogEvent());
+                    Intent i = new Intent(context, DialEnrollActivity.class);
+                    i.putExtra("xth", xth);
+                    i.putExtra("yth", tmpYth);
+                    i.putExtra("startMin", ETP.getStartMin());
+                    i.putExtra("endMin", ETP.getEndMin());
+                    context.startActivity(i);
+                    /*DialEnroll de = new DialEnroll(context,xth,tmpYth,ETP.getStartMin(),ETP.getEndMin());
+                    de.show();*/
+
                 }
                 break;
             case 1: //대학
@@ -153,15 +153,25 @@ public class InitWeekThread extends InitThread {
                     Toast.makeText(context, context.getResources().getString(R.string.univ_select), Toast.LENGTH_SHORT).show();
                 } else {
                     Common.stateFilter(0);
+                    EventBus.getDefault().post(new SetCreditEvent());
                 }
                 if (ETP.getPosState() == PosState.ENROLL) {
-                    EventBus.getDefault().post(new FinishDialogEvent());
+                    //EventBus.getDefault().post(new FinishDialogEvent());
+                    /*DialEnroll de = new DialEnroll(context,xth,tmpYth,ETP.getStartMin(),ETP.getEndMin());
+                    de.show();*/
+                    Intent i = new Intent(context, DialEnrollActivity.class);
+                    i.putExtra("xth", xth);
+                    i.putExtra("yth", tmpYth);
+                    i.putExtra("startMin", ETP.getStartMin());
+                    i.putExtra("endMin", ETP.getEndMin());
+                    context.startActivity(i);
+                    /*EventBus.getDefault().post(new FinishDialogEvent());
                     Intent i = new Intent(context, DialSchedule.class);
                     i.putExtra("enrollFlag",true);
                     i.putExtra("xth",xth);
                     i.putExtra("yth",tmpYth);
                     i.putExtra("startMin",ETP.getStartMin());
-                    context.startActivity(i);
+                    context.startActivity(i);*/
                 }
                 break;
         }

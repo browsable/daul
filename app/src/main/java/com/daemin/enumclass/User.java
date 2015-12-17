@@ -24,6 +24,7 @@ public enum User {
         userPK = getUserPK();
         groupPK = getGroupPK();
         weekData=new ArrayList<>();
+        overlapFlag = false;
         titleSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_xs);
         dateSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_s);
         editor.putInt("titleSize", titleSize).commit();
@@ -35,6 +36,7 @@ public enum User {
     public String userPK;
     public List<MyTime> weekData;
     public int groupPK, titleSize, dateSize;
+    public boolean overlapFlag;
     public SharedPreferences.Editor getEditor() {
         return editor;
     }
@@ -47,26 +49,12 @@ public enum User {
     public double getLongitude() {
         return longitude;
     }
-    public double getLatitude() {
-        return latitude;
-    }
+    public double getLatitude() {return latitude;}
 
     //Pref Getter
 
     public boolean getFirstFlag(){
         return pref.getBoolean("firstFlag", true);
-    }
-    public int getDeviceWidth(){
-        return pref.getInt("deviceWidth", 0);
-    }
-    public int getDeviceHeight(){
-        return pref.getInt("deviceHeight", 0);
-    }
-    public int getTitleSize() {
-        return pref.getInt("titleSize", 0);
-    }
-    public int getDateSize() {
-        return pref.getInt("dateSize", 0);
     }
     public String getUserPK(){
         String userPK = pref.getString("userPK", "0");

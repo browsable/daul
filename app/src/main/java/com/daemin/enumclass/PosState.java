@@ -17,7 +17,14 @@ import com.daemin.timetable.R;
  * Created by hernia on 2015-06-27.
  */
 public enum PosState {
-    PAINT(){
+    PAINT(),
+    OVERLAP(){
+        @Override
+        public void drawTimePos(Canvas canvas, int width, int height, String title, String second, int xth, int yth, int startMin, int endMin) {
+            rp.setColor(Color.parseColor("#FF0000"));
+            canvas.drawRect(width * xth / 15, (height * yth / 32 + 18)+(2*height/32)*startMin/60,
+                    width * (xth + 2) / 15, (height * yth / 32 + 18)+(2*height/32)*endMin/60, rp);
+        }
     },
     NO_PAINT() {
         @Override
@@ -33,12 +40,10 @@ public enum PosState {
     };
     public Paint rp; // 사각형
     public Paint tp;
-
     PosState() {
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
         rp.setColor(Color.parseColor(Common.MAIN_COLOR));
         rp.setAlpha(100);
-        rp.setTextAlign(Paint.Align.CENTER);
         tp = new Paint(Paint.ANTI_ALIAS_FLAG);
         tp.setColor(Color.BLACK);
         tp.setTextAlign(Paint.Align.CENTER);

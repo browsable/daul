@@ -1,8 +1,10 @@
 package com.daemin.repository;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.daemin.common.AppController;
+import com.daemin.timetable.R;
 
 import java.util.List;
 
@@ -43,42 +45,41 @@ public class MyTimeRepo {
     public static List<MyTime> getHourTimes(Context context, long startmillis, long endmillis, int xth, int startHour, int endMin){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
             if(endMin==0) {
-                qb.where(qb.or(
+                qb.where(qb.or( qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                                MyTimeDao.Properties.Dayofweek.eq(xth),
+                                MyTimeDao.Properties.Starthour.le(startHour),
+                                MyTimeDao.Properties.Endhour.gt(startHour)),
                         qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
                                 qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
                                         MyTimeDao.Properties.Endmillis.gt(endmillis)),
-                                MyTimeDao.Properties.Endmillis.between(startmillis, endmillis)),
-                        qb.and(MyTimeDao.Properties.Timetype.eq(1),
-                                MyTimeDao.Properties.Dayofweek.eq(xth),
-                                MyTimeDao.Properties.Starthour.le(startHour),
-                                MyTimeDao.Properties.Endhour.gt(startHour))));
+                                MyTimeDao.Properties.Endmillis.between(startmillis, endmillis))
+                       ));
             }else{
-                qb.where(qb.or(
+                qb.where(qb.or(qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                                MyTimeDao.Properties.Dayofweek.eq(xth),
+                                MyTimeDao.Properties.Starthour.le(startHour),
+                                MyTimeDao.Properties.Endhour.ge(startHour)),
                         qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
                                 qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
                                         MyTimeDao.Properties.Endmillis.gt(endmillis)),
-                                MyTimeDao.Properties.Endmillis.between(startmillis, endmillis)),
-                        qb.and(MyTimeDao.Properties.Timetype.eq(1),
-                                MyTimeDao.Properties.Dayofweek.eq(xth),
-                                MyTimeDao.Properties.Starthour.le(startHour),
-                                MyTimeDao.Properties.Endhour.ge(startHour))));
+                                MyTimeDao.Properties.Endmillis.between(startmillis, endmillis))
+                        ));
             }
         return qb.list();
     }
-    public static MyTime getEnrollTime(Context context,long startmillis, int xth, int startHour){
+    public static int overLapCheck(Context context,int xth, int startHour){
+        int overlap = 0;
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
         qb.where(
-                qb.or(
-                qb.and(MyTimeDao.Properties.Timetype.eq(0),
-                        MyTimeDao.Properties.Startmillis.le(startmillis),
-                        MyTimeDao.Properties.Endmillis.gt(startmillis)),
                 qb.and(MyTimeDao.Properties.Timetype.eq(1),
                         MyTimeDao.Properties.Dayofweek.eq(xth),
                         MyTimeDao.Properties.Starthour.le(startHour),
-                        MyTimeDao.Properties.Endhour.gt(startHour))
-                       )
-                );
-        return (MyTime) qb.unique();
+                        MyTimeDao.Properties.Endhour.ge(startHour))
+        );
+        if(qb.unique()!=null) {
+            overlap = 1;
+            return overlap;
+        }else return overlap;
     }
    /* public static String getEngByKor(Context context, String key) {
         return getNormalDao(context)

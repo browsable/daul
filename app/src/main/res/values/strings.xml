@@ -8,7 +8,6 @@
     <string name="network_error">네트워크 상태를 확인하세요</string>
     <string name="dataloading_error">데이터로딩에 실패하였습니다. 네트워크상태를 확인하세요.</string>
     <string name="e_learning">이러닝 혹은 시간정보가 없습니다</string>
-    <string name="overlap">중복되는 시간을 확인하세요</string>
     <string name="year">년</string>
     <string name="month">월</string>
     <string name="week">주</string>
@@ -90,14 +89,10 @@
     <string name="univ_select">대학 또는 과목을 선택하세요</string>
     <string name="univ_grade">학년 : 전체</string>
     <string name="univ_credit">학점 :</string>
+    <string name="univ_overlap">중복되는 시간을 확인하세요</string>
     <string name="univ_notice_setting">대학은 설정 메뉴에서 재설정 가능합니다.</string>
     <string name="univ_notice_enroll">소속대학이 없나요?</string>
-    <string name="univ_notice1">TimeDAO는 각 학교의 수강데이터를</string>
-    <string name="univ_notice2">토대로 시간표를 제작합니다.</string>
-    <string name="univ_notice3">소속대학이 목록에 없는 경우</string>
-    <string name="univ_notice4">대학의 수강편람을 메일로 보내주세요.</string>
-    <string name="univ_notice_email">hernia@koreatech.ac.kr</string>
-    <string name="univ_notice_share">메일 주소 내보내기</string>
+    <string name="univ_hyper"><a href="https://open.kakao.com/o/sqXjIpf">문의하기</a></string>
     <string name="univ_notice_emtpy">정해진 시간이 없습니다</string>
     <!--친구-->
     <string name="friend_favorite">즐겨찾기</string>

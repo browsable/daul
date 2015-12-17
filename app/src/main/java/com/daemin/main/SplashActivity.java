@@ -69,10 +69,10 @@ public class SplashActivity extends Activity{
 		if (gps.isGetLocation()) {
 			User.INFO.setLatitude(gps.getLatitude());
 			User.INFO.setLongitude(gps.getLongitude());
-			Toast.makeText(
+			/*Toast.makeText(
 					this,
 					"내 위치 - \n위도: " + gps.getLatitude() + "\n경도: " + gps.getLongitude(),
-					Toast.LENGTH_LONG).show();
+					Toast.LENGTH_LONG).show();*/
 			gps.stopUsingGPS();
 		} else {
 			// GPS 를 사용할수 없으므로

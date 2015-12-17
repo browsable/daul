@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,8 +53,8 @@ import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetAlarmEvent;
 import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
-import com.daemin.event.SetBtUnivNoticeEvent;
 import com.daemin.event.SetColorEvent;
+import com.daemin.event.SetCreditEvent;
 import com.daemin.event.SetPlaceEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
@@ -101,7 +102,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        User.INFO.getEditor().putString("creditSum", tvCreditSum.getText().toString()).commit();
         Common.stateFilter(viewMode);
         DrawMode.CURRENT.setMode(0);
         Common.fetchWeekData();
@@ -115,14 +115,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_schedule);
         EventBus.getDefault().post(new SetBtPlusEvent(false));
-        String _id="0";
+        setLayout();
         if (getIntent()!=null) {//widget에서 Dialog 호출한 경우
             widgetFlag = getIntent().getBooleanExtra("widgetFlag", false);
-            enrollFlag = getIntent().getBooleanExtra("enrollFlag", false);
             overlapEnrollFlag =  getIntent().getBooleanExtra("overlapEnrollFlag", false);
-            _id =  getIntent().getStringExtra("_id");
         }
-        setLayout();
         makeNormalList();
         window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(
@@ -136,7 +133,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         lp.height = lp.WRAP_CONTENT;
         lp.width = lp.MATCH_PARENT;
         screenHeight = dm.heightPixels -lp.height;
-        if (enrollFlag) {
+        /*if (enrollFlag) {
             rlEdit.setVisibility(View.VISIBLE);
             llEtName.setVisibility(View.GONE);
             llTime.setVisibility(View.GONE);
@@ -185,6 +182,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 tp.setPosState(PosState.PAINT);
                 tp.setMin(0, 60);
             }
+        }*/
+        if(overlapEnrollFlag) {
+            TimePos tp = TimePos.valueOf(
+                    Convert.getxyMerge(
+                            getIntent().getIntExtra("xth", 1),
+                            getIntent().getIntExtra("yth", 1)));
+            tp.setPosState(PosState.PAINT);
+            tp.setMin(0, 60);
         }
         window.setGravity(Gravity.BOTTOM);
         window.setAttributes(lp);
@@ -394,8 +399,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
                 if (i == endHour - 1) tp[j].setMin(0, endMin);
                 tp[j].setPosState(PosState.PAINT);
-                Common.getTempTimePos().add(tp[j].name());
+            }else {
+               tp[j].setPosState(PosState.OVERLAP);
+               if (MyTimeRepo.overLapCheck(this, xth, i) == 1) {
+                   User.INFO.overlapFlag = true;
+               }
             }
+            Common.getTempTimePos().add(tp[j].name());
             ++j;
         }
     }
@@ -432,6 +442,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String[] temps;
                 subId = ((TextView) view.findViewById(R.id._id)).getText().toString();
+                User.INFO.overlapFlag = false;
                 Common.stateFilter(viewMode);
                 for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
                         .toString())) {
@@ -447,6 +458,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         break;
                     }
                 }
+                String credit = ((TextView) view.findViewById(R.id.credit)).getText().toString();
+                tvCreditSum.setText(String.valueOf(Integer.parseInt(creditSum)
+                        + Integer.parseInt(credit)));
             }
         });
 
@@ -493,7 +507,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 btShowGrade.setBackgroundResource(R.drawable.ic_expand);
             }
         });
-
     }
 
     public static void createFolder() {
@@ -542,6 +555,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         switch (v.getId()) {
             case R.id.btNormal:
                 clearView();
+                creditSum = User.INFO.getCreditSum();
+                tvCreditSum.setText(creditSum);
                 DrawMode.CURRENT.setMode(0);
                 btColor.setVisibility(View.VISIBLE);
                 llNormal.setVisibility(View.VISIBLE);
@@ -667,106 +682,112 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btAddSchedule:
-                long nowMillis = Dates.NOW.getNowMillis();
-                switch (DrawMode.CURRENT.getMode()) {
-                    case 0:
-                        if (viewMode == 0) {
-                            if (etName.getText().toString().equals("")) {
-                                etName.requestFocus();
-                                etName.setHintTextColor(Color.RED);
-                                Toast.makeText(DialSchedule.this, getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
-                                updateWeekList();
-                                break;
-                            }
-                            Common.stateFilter(viewMode);
-                            for (BottomNormalData d : normalList) {
-                                String[] tmp = d.getYMD().split("\\.");
-                                int year;
-                                int titleMonth = Dates.NOW.month;
-                                int monthOfYear = Integer.parseInt(tmp[0]);
-                                if (monthOfYear != titleMonth && titleMonth==1) year = Dates.NOW.year - 1;
-                                else year = Dates.NOW.year;
-                                int dayOfMonth = Integer.parseInt(tmp[1]);
-                                int startHour = Integer.parseInt(d.getStartHour());
-                                int startMin = Integer.parseInt(d.getStartMin());
-                                int endHour = Integer.parseInt(d.getEndHour());
-                                int endMin = Integer.parseInt(d.getEndMin());
-                                long startMillis = Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, startMin);
-                                long endMillis = Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, endHour, endMin);
-                                MyTime myTime = new MyTime(null,
-                                        String.valueOf(nowMillis),0,
-                                        etName.getText().toString(),
-                                        year, monthOfYear, dayOfMonth,
-                                        d.getXth(), startHour, startMin, endHour, endMin,
-                                        startMillis, endMillis-1,
-                                        etMemo.getText().toString(),
-                                        etPlace.getText().toString(),
-                                        User.INFO.latitude, User.INFO.longitude,
-                                        Convert.Share(tvShare.getText().toString()),
-                                        Convert.Alarm(startMillis, tvAlarm.getText().toString()),
-                                        "10:10",
-                                        colorName);
-                                MyTimeRepo.insertOrUpdate(this, myTime);
-                                Common.fetchWeekData();
-                            }
-                        } else {
-
-
-                        }
-                        break;
-                    case 1:
-                        Common.stateFilter(viewMode);
-                        if (subId!=null) {
-                            SubjectData subjectData = db.getSubjectData(subId);
-                            String[] temps;
-                            String subtitle = subjectData.getSubtitle();
-                            String prof = subjectData.getProf();
-                            String credit = subjectData.getCredit();
-                            String classnum = subjectData.getClassnum();
-                            for (String timePos : getTimeList(subjectData.getTime())) {
-                                temps = timePos.split(":");
-                                if (!temps[0].equals(" ")) {
+                if(User.INFO.overlapFlag) {
+                    Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_overlap), Toast.LENGTH_SHORT).show();
+                }else {
+                    long nowMillis = Dates.NOW.getNowMillis();
+                    switch (DrawMode.CURRENT.getMode()) {
+                        case 0:
+                            if (viewMode == 0) {
+                                if (etName.getText().toString().equals("")) {
+                                    etName.requestFocus();
+                                    etName.setHintTextColor(Color.RED);
+                                    Toast.makeText(DialSchedule.this, getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
+                                    updateWeekList();
+                                    break;
+                                }
+                                Common.stateFilter(viewMode);
+                                for (BottomNormalData d : normalList) {
+                                    String[] tmp = d.getYMD().split("\\.");
+                                    int year;
+                                    int titleMonth = Dates.NOW.month;
+                                    int monthOfYear = Integer.parseInt(tmp[0]);
+                                    if (monthOfYear != titleMonth && titleMonth == 1)
+                                        year = Dates.NOW.year - 1;
+                                    else year = Dates.NOW.year;
+                                    int dayOfMonth = Integer.parseInt(tmp[1]);
+                                    int startHour = Integer.parseInt(d.getStartHour());
+                                    int startMin = Integer.parseInt(d.getStartMin());
+                                    int endHour = Integer.parseInt(d.getEndHour());
+                                    int endMin = Integer.parseInt(d.getEndMin());
+                                    long startMillis = Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, startMin);
+                                    long endMillis = Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, endHour, endMin);
                                     MyTime myTime = new MyTime(null,
-                                            User.INFO.groupPK+subtitle+prof,1,
-                                            subtitle,
-                                            null, null, null,
-                                            Integer.parseInt(temps[0]),
-                                            Integer.parseInt(temps[1]),
-                                            Integer.parseInt(temps[2]),
-                                            Integer.parseInt(temps[3]),
-                                            Integer.parseInt(temps[4]),
-                                            null, null,
-                                            prof + "교수/" + credit + "학점/" + classnum + "분반",
-                                            null,
+                                            String.valueOf(nowMillis), 0,
+                                            etName.getText().toString(),
+                                            year, monthOfYear, dayOfMonth,
+                                            d.getXth(), startHour, startMin, endHour, endMin,
+                                            startMillis, endMillis - 1,
+                                            etMemo.getText().toString(),
+                                            etPlace.getText().toString(),
                                             User.INFO.latitude, User.INFO.longitude,
-                                            null,
-                                            null,
+                                            Convert.Share(tvShare.getText().toString()),
+                                            Convert.Alarm(startMillis, tvAlarm.getText().toString()),
                                             "10:10",
                                             colorName);
                                     MyTimeRepo.insertOrUpdate(this, myTime);
-                                } else {
-                                    Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
-                                    break;
+                                    Common.fetchWeekData();
                                 }
+                            } else {
+
+
                             }
-                            tvCreditSum.setText(String.valueOf(Integer.parseInt(tvCreditSum.getText().toString())
-                                    +Integer.parseInt(credit)));
-                            Common.fetchWeekData();
-                        }
-                        break;
-                }
-                if (widgetFlag) {
-                    if (User.INFO.getWidget5_5()) {
-                        Intent update = new Intent(this, WidgetUpdateService.class);
-                        update.putExtra("action", "update5_5");
-                        update.putExtra("viewMode", viewMode);
-                        this.startService(update);
+                            break;
+                        case 1:
+                            Common.stateFilter(viewMode);
+                            if (subId != null) {
+                                SubjectData subjectData = db.getSubjectData(subId);
+                                String[] temps;
+                                String subtitle = subjectData.getSubtitle();
+                                String prof = subjectData.getProf();
+                                String credit = subjectData.getCredit();
+                                String classnum = subjectData.getClassnum();
+                                for (String timePos : getTimeList(subjectData.getTime())) {
+                                    temps = timePos.split(":");
+                                    if (!temps[0].equals(" ")) {
+                                        MyTime myTime = new MyTime(null,
+                                                User.INFO.groupPK + subtitle + prof, 1,
+                                                subtitle,
+                                                null, null, null,
+                                                Integer.parseInt(temps[0]),
+                                                Integer.parseInt(temps[1]),
+                                                Integer.parseInt(temps[2]),
+                                                Integer.parseInt(temps[3]),
+                                                Integer.parseInt(temps[4]),
+                                                null, null,
+                                                prof + "교수/" + credit + "학점/" + classnum + "분반",
+                                                null,
+                                                User.INFO.latitude, User.INFO.longitude,
+                                                null,
+                                                null,
+                                                "10:10",
+                                                colorName);
+                                        MyTimeRepo.insertOrUpdate(this, myTime);
+                                    } else {
+                                        Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
+                                        break;
+                                    }
+                                }
+                                creditSum = tvCreditSum.getText().toString();
+                                tvCreditSum.setText(creditSum);
+                                User.INFO.getEditor().putString("creditSum", creditSum).commit();
+                                Common.fetchWeekData();
+                            }
+                            break;
                     }
-                    if (User.INFO.getWidget4_4()) {
-                        Intent update = new Intent(this, WidgetUpdateService.class);
-                        update.putExtra("action", "update4_4");
-                        update.putExtra("viewMode", viewMode);
-                        this.startService(update);
+                    if (widgetFlag) {
+                        if (User.INFO.getWidget5_5()) {
+                            Intent update = new Intent(this, WidgetUpdateService.class);
+                            update.putExtra("action", "update5_5");
+                            update.putExtra("viewMode", viewMode);
+                            this.startService(update);
+                        }
+                        if (User.INFO.getWidget4_4()) {
+                            Intent update = new Intent(this, WidgetUpdateService.class);
+                            update.putExtra("action", "update4_4");
+                            update.putExtra("viewMode", viewMode);
+                            this.startService(update);
+                        }
                     }
                 }
                 break;
@@ -810,11 +831,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 DialRepeat dr = new DialRepeat(DialSchedule.this, dayIndex);
                 dr.show();
-                break;
-            case R.id.btUnivNotice:
-                btUnivNotice.setTextColor(Color.GRAY);
-                DialUnivNotice du = new DialUnivNotice(DialSchedule.this);
-                du.show();
                 break;
         }
     }
@@ -881,9 +897,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         tvRepeat = (TextView) findViewById(R.id.tvRepeat);
         tvTimeCode = (TextView) findViewById(R.id.tvTimeCode);
         tvTimeType = (TextView) findViewById(R.id.tvTimeType);
-        btUnivNotice = (TextView) findViewById(R.id.btUnivNotice);
+        tvHyperText = (TextView) findViewById(R.id.tvHyperText);
+        tvHyperText.setMovementMethod(LinkMovementMethod.getInstance());
         tvCreditSum = (TextView) findViewById(R.id.tvCreditSum);
-        tvCreditSum.setText(User.INFO.getCreditSum());
+        creditSum = User.INFO.getCreditSum();
+        tvCreditSum.setText(creditSum);
         etName = (EditText) findViewById(R.id.etName);
         etPlace = (EditText) findViewById(R.id.etPlace);
         etMemo = (EditText) findViewById(R.id.etMemo);
@@ -901,7 +919,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btEdit.setOnClickListener(this);
         btAddSchedule.setOnClickListener(this);
         btCancel.setOnClickListener(this);
-        btUnivNotice.setOnClickListener(this);
         btShowUniv.setOnClickListener(this);
         btShowDep.setOnClickListener(this);
         btShowGrade.setOnClickListener(this);
@@ -916,7 +933,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         univFlag = false;
         depFlag = false;
         gradeFlag = false;
-        overlapEnrollFlag = false;
+        overlapEnrollFlag =false;
         colorName = Common.MAIN_COLOR;
         dy=mPosY=0;
         dayIndex = new HashMap<>();
@@ -936,14 +953,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private ToggleButton btEdit;
     private LinearLayout llNormal, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat, llEtName,llTime;
     private RelativeLayout rlEdit;
-    private TextView tvShare, tvAlarm, tvRepeat, btUnivNotice,tvCreditSum,tvTimeCode,tvTimeType;
+    private TextView tvShare, tvAlarm, tvRepeat,tvCreditSum,tvTimeCode,tvTimeType,tvHyperText;
     private EditText etName, etPlace, etMemo, etSavedName;
     private View dragToggle, btShowUniv, btShowDep, btShowGrade;
     private HorizontalListView lvTime, hlv;
     private HorizontalListAdapter hoAdapter;
     private Window window;
     private GradientDrawable gd;
-    private String colorName, subId;
+    private String colorName, subId, creditSum;
     private WindowManager.LayoutParams lp;
     private ArrayList<BottomNormalData> normalList;
     private ArrayAdapter normalAdapter;
@@ -952,7 +969,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight, viewMode;
-    private boolean univFlag, depFlag, gradeFlag, widgetFlag, enrollFlag,overlapEnrollFlag;
+    private boolean univFlag, depFlag, gradeFlag, widgetFlag,overlapEnrollFlag;
 
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
@@ -981,10 +998,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         gd.invalidateSelf();
     }
 
-    public void onEventMainThread(SetBtUnivNoticeEvent e) {
-        btUnivNotice.setTextColor(Color.BLACK);
-    }
-
     public void onEventMainThread(BottomNormalData e) {
         normalList.add(e);
         normalAdapter.notifyDataSetChanged();
@@ -1002,7 +1015,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 e.getEndHour(), e.getEndMin(), e.getXth()));
         normalAdapter.notifyDataSetChanged();
     }
-
+    public void onEventMainThread(SetCreditEvent e) {
+        creditSum = User.INFO.getCreditSum();
+        tvCreditSum.setText(creditSum);
+    }
     public void onEventMainThread(ExcuteMethodEvent e) {
         try {
             Method m = DialSchedule.this.getClass().getDeclaredMethod(e.getMethodName());

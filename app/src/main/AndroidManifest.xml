@@ -60,6 +60,7 @@
         <activity android:name="com.daemin.community.lib.DoubleTapZoomNetworkImageViewActivity" />
         <activity android:name="com.daemin.community.lib.SingleTapZoomNetworkImageViewActivity" />
         <activity android:name="com.daemin.dialog.DialSchedule" android:theme="@android:style/Theme.Holo.Light.Dialog" />
+        <activity android:name="com.daemin.dialog.DialEnrollActivity" android:theme="@android:style/Theme.Holo.Light.Dialog" />
 
         <receiver android:name="com.daemin.widget.Widget4_4">
             <meta-data

@@ -22,6 +22,7 @@ import com.daemin.enumclass.User;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
+import com.daemin.event.SetCreditEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 import java.util.List;
@@ -95,14 +96,16 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         holder.btRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String creditSum="0";
                 MyTimeRepo.deleteWithTimeCode(context, holder.tvTimeCode.getText().toString());
                 if(holder.tvTimeType.getText().toString().equals("1")){
-                    String creditSum = String.valueOf(Integer.parseInt(User.INFO.getCreditSum())
+                    creditSum = String.valueOf(Integer.parseInt(User.INFO.getCreditSum())
                             -Integer.parseInt(holder.tvCredit.getText().toString()));
                     User.INFO.getEditor().putString("creditSum",creditSum).commit();
                 }
                 Common.fetchWeekData();
                 EventBus.getDefault().post(new RemoveEnrollEvent(holder.tvTimeCode.getText().toString()));
+                EventBus.getDefault().post(new SetCreditEvent());
             }
         });
         return convertView;

@@ -273,7 +273,7 @@ public class DialAddTimePicker extends Dialog {
                     xth));
             cancel();
         }else{
-            Toast.makeText(context, context.getResources().getString(R.string.overlap), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getResources().getString(R.string.univ_overlap), Toast.LENGTH_SHORT).show();
         }
     }
 }

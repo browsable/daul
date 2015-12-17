@@ -55,14 +55,31 @@
                     android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
-            <TextView
-                android:id="@+id/btUnivNotice"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/margin_default"
-                android:gravity="end"
-                android:text="@string/univ_notice_enroll"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/textsize_s" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/margin_default"
+            android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/btUnivNotice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/univ_notice_enroll"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textsize_default" />
+        <TextView
+            android:id="@+id/tvHyperText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="end"
+            android:text="@string/univ_hyper"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textsize_default"/>
+            </LinearLayout>
     </LinearLayout>
 </LinearLayout>

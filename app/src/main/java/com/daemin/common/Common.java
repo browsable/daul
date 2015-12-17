@@ -58,7 +58,6 @@ public class Common {
 		return false;
 	}
 	public static void fetchWeekData(){
-		Log.i("test", "test");
 		for (TimePos ETP : TimePos.values()) {
 			ETP.setPosState(PosState.NO_PAINT);
 			ETP.setMin(0, 60);
@@ -112,9 +111,11 @@ public class Common {
 				case 0:
 					for(String t : tempTimePos){
 						TimePos tp= TimePos.valueOf(t);
-						if(tp.getPosState()!=PosState.ENROLL) {
-							tp.setMin(0, 60);
+						tp.setMin(0, 60);
+						if(tp.getPosState()==PosState.PAINT) {
 							tp.setPosState(PosState.NO_PAINT);
+						}else if(tp.getPosState()==PosState.OVERLAP){
+							tp.setPosState(PosState.ENROLL);
 						}
 					}
 					break;
