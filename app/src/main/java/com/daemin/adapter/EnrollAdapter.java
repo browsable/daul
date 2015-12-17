@@ -96,10 +96,9 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         holder.btRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String creditSum="0";
                 MyTimeRepo.deleteWithTimeCode(context, holder.tvTimeCode.getText().toString());
                 if(holder.tvTimeType.getText().toString().equals("1")){
-                    creditSum = String.valueOf(Integer.parseInt(User.INFO.getCreditSum())
+                    String creditSum = String.valueOf(Integer.parseInt(User.INFO.getCreditSum())
                             -Integer.parseInt(holder.tvCredit.getText().toString()));
                     User.INFO.getEditor().putString("creditSum",creditSum).commit();
                 }

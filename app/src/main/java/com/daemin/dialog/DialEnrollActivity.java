@@ -23,7 +23,9 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.data.EnrollData;
 import com.daemin.enumclass.Dates;
+import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.TimePos;
+import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
@@ -39,9 +41,8 @@ import timedao.MyTime;
  * Created by hernia on 2015-09-08.
  */
 public class DialEnrollActivity extends Activity {
-    @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
     @Override
@@ -64,14 +65,12 @@ public class DialEnrollActivity extends Activity {
     }
     private void setLayout() {
         int endMin =0;
-        llNewEnroll = (LinearLayout) findViewById(R.id.llNewEnroll);
         if(getIntent()!=null) {
             this.xth = getIntent().getIntExtra("xth", 1);
             this.yth = getIntent().getIntExtra("yth", 1);
             this.startMin = getIntent().getIntExtra("startMin", 1);
             this.dayOfWeek = Convert.XthToDayOfWeek(xth);
             endMin = getIntent().getIntExtra("endMin", 1);
-            llNewEnroll.setVisibility(View.INVISIBLE);
         }
         mtList = new ArrayList<>();
         enrollList = new HashMap<>();
@@ -96,9 +95,11 @@ public class DialEnrollActivity extends Activity {
             tvMonthDay.setTextColor(Color.BLUE);
         }
         tvMonthDay.setText(Dates.NOW.getwMonthDay(xth)+" "+dayOfWeek);
+        llNewEnroll = (LinearLayout) findViewById(R.id.llNewEnroll);
         llNewEnroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EventBus.getDefault().post(new FinishDialogEvent());
                 Intent i = new Intent(DialEnrollActivity.this, DialSchedule.class);
                 i.putExtra("overlapEnrollFlag", true);
                 i.putExtra("xth", xth);
@@ -167,11 +168,15 @@ public class DialEnrollActivity extends Activity {
     private EnrollAdapter enrollAdapter;
     public void onEventMainThread(RemoveEnrollEvent e) {
         mtList.remove(enrollList.get(e.getTimeCode()));
-        if(mtList.size()==0)finish();
-        enrollAdapter.notifyDataSetChanged();
-        for (TimePos ETP : TimePos.values()) {
-            ETP.setInitTitle();
+        if(mtList.size()==0){
+            finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }else {
+            enrollAdapter.notifyDataSetChanged();
+            for (TimePos ETP : TimePos.values()) {
+                ETP.setInitTitle();
+            }
+            Common.fetchWeekData();
         }
-        Common.fetchWeekData();
     }
 }
