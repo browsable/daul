@@ -127,9 +127,8 @@ public class MainActivity extends FragmentActivity {
             mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
         setLayout();
         setTitle();
-        //Log.i("phone", User.USER.getPhoneNum());
+        MyRequest.getVersionFromServer(this);
     }
-
     /*private void screenshot() {
         Log.i("widget", "capture start");
         Bitmap bm = initSurfaceView.getInitThread().captureImg();

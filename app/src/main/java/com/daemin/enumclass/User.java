@@ -76,9 +76,6 @@ public enum User {
     public int getViewMode(){
         return pref.getInt("viewMode", 0);
     }
-    public String getGroupVersion(){
-        return pref.getString("groupversion", "0");
-    }
     public String getCreditSum(){
         return pref.getString("creditSum", "0");
     }

@@ -30,8 +30,8 @@ public class CommunityListAdapter2 extends BaseExpandableListAdapter{
     // child data in format of header title, child title
     private HashMap<String, List<CommentData>> _listDataChild;
     private ImageLoader imageLoader;
-    private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test.png";
-    private static final String SAMPLE_IMAGE_URL2 = "http://hernia.cafe24.com/android/test2.png";
+    private static final String SAMPLE_IMAGE_URL = "http://timenuri.com/app/images/test.png";
+    private static final String SAMPLE_IMAGE_URL2 = "http://timenuri.com/app/images/test2.png";
 
     public CommunityListAdapter2(Context context, List<PostData.Data> listDataHeader,
                                  HashMap<String, List<CommentData>> listDataChild) {

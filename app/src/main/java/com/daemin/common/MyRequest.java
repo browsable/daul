@@ -2,8 +2,6 @@ package com.daemin.common;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,14 +10,18 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.daemin.data.GroupListData;
+import com.daemin.dialog.DialDefault;
 import com.daemin.enumclass.User;
+import com.daemin.timetable.R;
+import com.navercorp.volleyextensions.request.Jackson2Request;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hernia on 2015-07-02.
@@ -27,9 +29,62 @@ import java.util.Map;
 public class MyRequest {
     public static RequestQueue requestQueue = MyVolley.getRequestQueue();
     public static Context context = AppController.getInstance();
-    private static String KEY_SUCCESS = "success";
-    public static final String GET_GROUPLIST_URL = "http://timedao.heeguchi.me/app/getGroupList";
-   /* public static ArrayList<String> getGroupListFromLocal() {
+    private static String KEY_STATUS = "status";
+    public static final String GET_VERSION = "http://timenuri.com/ajax/app/get_version";
+    public static void getVersionFromServer(final Context context){
+        CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET, GET_VERSION, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString(KEY_STATUS).equals("Success")) {
+                                JSONObject data = response.getJSONObject("data");
+                                if(!User.INFO.appVer.equals(data.getString("appversion"))){
+                                    DialDefault dd = new DialDefault(context,
+                                            context.getResources().getString(R.string.update_title),
+                                            context.getResources().getString(R.string.update_content),
+                                            0);
+                                    dd.show();
+                                }
+                            }else {
+                                Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Response Error", error.toString());
+                Toast.makeText(context, "network error", Toast.LENGTH_LONG).show();
+            }
+        });
+        requestQueue.add(rq);
+    }
+    public static final String GET_GROUP_LIST = "http://timenuri.com/ajax/app/get_univ_list";
+    public static void getGroupList(final Context context){
+        Jackson2Request<GroupListData> jackson2Request = new Jackson2Request<>(
+                Request.Method.POST,GET_GROUP_LIST, GroupListData.class,
+                new Response.Listener<GroupListData>() {
+                    @Override
+                    public void onResponse(GroupListData response) {
+                       for(GroupListData.Data d : response.getData()){
+                        Log.i(d.getEn(), d.getKo());
+                    }
+                }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+        }
+    });
+    requestQueue.add(jackson2Request);
+}
+
+    /*
+    public static ArrayList<String> getGroupListFromLocal() {
         ArrayList<String> groupListFomServer = new ArrayList<>();
         for( GroupListFromServer GLFS : GroupListFromServerRepository.getAllGroupListFromServer(context)){
             groupListFomServer.add(GLFS.getKorname());
@@ -69,7 +124,7 @@ public class MyRequest {
         requestQueue.add(jackson2Request);
     }
 */
-    public static final String POST_TEST = "http://54.64.223.92/users/register";
+   /* public static final String POST_TEST = "http://54.64.223.92/users/register";
     public static void test(final Context context){
         CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.POST, POST_TEST, null,
                 new Response.Listener<JSONObject>() {
@@ -80,10 +135,64 @@ public class MyRequest {
                                 int success = Integer.parseInt(response.getString(KEY_SUCCESS));
                                 if (success == 1) {
                                     Toast.makeText(context, response.getString("message"), Toast.LENGTH_LONG).show();
-                                    /*Toast.makeText(context, response.getString("tag"), Toast.LENGTH_LONG).show();
+                                    *//*Toast.makeText(context, response.getString("tag"), Toast.LENGTH_LONG).show();
                                     Toast.makeText(context, response.getString("username"), Toast.LENGTH_LONG).show();
                                     Toast.makeText(context, response.getString("email"), Toast.LENGTH_LONG).show();
-                                    Toast.makeText(context, response.getString("password"), Toast.LENGTH_LONG).show();*/
+                                    Toast.makeText(context, response.getString("password"), Toast.LENGTH_LONG).show();*//*
+                                } else if (success == 0) {
+                                    Toast.makeText(context, "Invalid email or password..", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Response Error", error.toString());
+                Toast.makeText(context, "network error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("tag", "register");
+                params.put("email", "hernia@koreatech.ac.kr");
+                params.put("username", "daemin");
+                //params.put("password", Common.md5("qlalfqjsgh"));
+                return params;
+            }
+
+        };
+        requestQueue.add(rq);
+    }*/
+   /* public static final String GET_GROUP_LIST = "http://54.64.223.92/users/register";
+    public static void getGroupList(final Context context){
+        CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET, GET_GROUP_LIST, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString(KEY_SUCCESS) != null) {
+                                int success = Integer.parseInt(response.getString(KEY_SUCCESS));
+                                if (success == 1) {
+                                    Toast.makeText(context, response.getString("message"), Toast.LENGTH_LONG).show();
+                                    *//*Toast.makeText(context, response.getString("tag"), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, response.getString("username"), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, response.getString("email"), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, response.getString("password"), Toast.LENGTH_LONG).show();*//*
                                 } else if (success == 0) {
                                     Toast.makeText(context, "Invalid email or password..", Toast.LENGTH_LONG).show();
                                 } else {
@@ -123,9 +232,9 @@ public class MyRequest {
         };
         requestQueue.add(rq);
     }
-    public static final String GET_VERSION = "http://hernia.cafe24.com/android/get_version.php";
-    public static void getVersionFromServer(final Context context){
-        CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET, GET_VERSION, null,
+    public static final String POST_GROUP_DB = "http://timenuri.com/ajax/app/get_group_list";
+    public static void postGroupDB(final Context context, final String groupName){
+        CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.POST, POST_GROUP_DB, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -133,20 +242,13 @@ public class MyRequest {
                             if (response.getString(KEY_SUCCESS) != null) {
                                 int success = Integer.parseInt(response.getString(KEY_SUCCESS));
                                 if (success == 1) {
-                                    JSONArray product = response.getJSONArray("product");
-                                    /*Toast.makeText(context, response.getString("tag"), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, response.getString("message"), Toast.LENGTH_LONG).show();
+                                    *//*Toast.makeText(context, response.getString("tag"), Toast.LENGTH_LONG).show();
                                     Toast.makeText(context, response.getString("username"), Toast.LENGTH_LONG).show();
                                     Toast.makeText(context, response.getString("email"), Toast.LENGTH_LONG).show();
-                                    Toast.makeText(context, response.getString("password"), Toast.LENGTH_LONG).show();*/
-                                    if(User.INFO.appVer.equals(product.getJSONObject(0).getString("appversion"))){
-                                        Intent intent = new Intent(
-                                                Intent.ACTION_VIEW,
-                                                Uri.parse("http://market.android.com/details?id=com.daemin.timetable"));
-                                        context.startActivity(intent);
-                                    }
-                                    User.INFO.getEditor().putString("groupversion", product.getJSONObject(0).getString("groupversion"));
+                                    Toast.makeText(context, response.getString("password"), Toast.LENGTH_LONG).show();*//*
                                 } else if (success == 0) {
-                                    Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, "Invalid email or password..", Toast.LENGTH_LONG).show();
                                 } else {
                                     Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
                                 }
@@ -162,7 +264,23 @@ public class MyRequest {
                 Log.d("Response Error", error.toString());
                 Toast.makeText(context, "network error", Toast.LENGTH_LONG).show();
             }
-        });
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("school", groupName);
+                return params;
+            }
+
+        };
         requestQueue.add(rq);
-    }
+    }*/
 }

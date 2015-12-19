@@ -38,6 +38,7 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.DatabaseHandler;
 import com.daemin.common.HorizontalListView;
+import com.daemin.common.MyRequest;
 import com.daemin.data.BottomNormalData;
 import com.daemin.data.SubjectData;
 import com.daemin.enumclass.Dates;
@@ -72,6 +73,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,6 +117,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_schedule);
         EventBus.getDefault().post(new SetBtPlusEvent(false));
+        MyRequest.getGroupList(this);
         setLayout();
         if (getIntent()!=null) {//widget에서 Dialog 호출한 경우
             widgetFlag = getIntent().getBooleanExtra("widgetFlag", false);
@@ -355,7 +358,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         protected String doInBackground(String... univName) {
             int count;
             try {
-                URL url = new URL("http://hernia.cafe24.com/android/db/" + univName[0] + "/subject.sqlite");
+                URL url = new URL("http://timenuri.com/ajax/app/get_univ_db?school=" + URLEncoder.encode(univName[0]));
                 URLConnection conection = url.openConnection();
                 conection.connect();
                 // input stream to read file - with 8k buffer
@@ -597,11 +600,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 actvUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View v,
                                             int position, long id) {
-                        /*korName = actvUniv.getText().toString();
-                        User.USER.setKorUnivName(korName);
-						engName = GroupListFromServerRepository
-								.getEngByKor(MainActivity.this, korName);
-						User.USER.setEngUnivName(engName);*/
+                        groupName = actvUniv.getText().toString().split("/")[0];
                         // 열려있는 키패드 닫기
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(actvUniv.getWindowToken(), 0);
@@ -654,6 +653,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         settingUniv();
                     } else {
                         Toast.makeText(DialSchedule.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
+                        //MyRequest.postGroupDB(DialSchedule.this,groupName);
                         new DownloadFileFromURL().execute("koreatech");
                     }
                 } else {
@@ -969,7 +969,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private HorizontalListAdapter hoAdapter;
     private Window window;
     private GradientDrawable gd;
-    private String colorName, subId, creditSum;
+    private String colorName, subId, creditSum,groupName;
     private WindowManager.LayoutParams lp;
     private ArrayList<BottomNormalData> normalList;
     private ArrayAdapter normalAdapter;

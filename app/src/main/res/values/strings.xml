@@ -6,7 +6,6 @@
     <string name="app_menu">메뉴</string>
     <string name="action_settings">Settings</string>
     <string name="network_error">네트워크 상태를 확인하세요</string>
-    <string name="dataloading_error">데이터로딩에 실패하였습니다. 네트워크상태를 확인하세요.</string>
     <string name="e_learning">이러닝 혹은 시간정보가 없습니다</string>
     <string name="year">년</string>
     <string name="month">월</string>

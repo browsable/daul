@@ -37,8 +37,6 @@ public class AppController extends Application {
             pInfo = getApplicationContext().getPackageManager().getPackageInfo(
                     getApplicationContext().getPackageName(), 0);
             User.INFO.appVer = pInfo.versionName;
-            Log.i("test appver",User.INFO.appVer);
-
         } catch (PackageManager.NameNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

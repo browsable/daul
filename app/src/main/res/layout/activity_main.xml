@@ -80,7 +80,6 @@
             android:onClick="mOnClick"
             android:padding="@dimen/margin_s"
             android:scaleType="fitXY"
-            android:visibility="invisible"
             android:src="@drawable/bt_menu" />
 
         <ImageButton
@@ -118,7 +117,6 @@
             android:textOff="@string/week"
             android:textOn="@string/month"
             android:textStyle="bold"
-            android:visibility="invisible"
             android:textSize="@dimen/textsize_l"/>
     </RelativeLayout>
 
