@@ -1,10 +1,8 @@
 package com.daemin.repository;
 
 import android.content.Context;
-import android.graphics.Color;
 
 import com.daemin.common.AppController;
-import com.daemin.timetable.R;
 
 import java.util.List;
 

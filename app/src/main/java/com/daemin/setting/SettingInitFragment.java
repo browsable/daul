@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.daemin.common.BasicFragment;
+import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.MainActivity;
@@ -37,6 +38,7 @@ public class SettingInitFragment extends BasicFragment {
         if (layoutId > 0) {
             ibMenu.setVisibility(View.GONE);
             ibBack.setVisibility(View.VISIBLE);
+            User.INFO.getEditor().putString("creditSum", "0").commit();
             EventBus.getDefault().post(new BackKeyEvent("SettingInitFragment"));
         }
         ibBack.setOnClickListener(new View.OnClickListener() {

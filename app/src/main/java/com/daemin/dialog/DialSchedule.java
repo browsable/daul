@@ -400,10 +400,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (i == endHour - 1) tp[j].setMin(0, endMin);
                 tp[j].setPosState(PosState.PAINT);
             }else {
-               tp[j].setPosState(PosState.OVERLAP);
-               if (MyTimeRepo.overLapCheck(this, xth, i) == 1) {
-                   User.INFO.overlapFlag = true;
-               }
+                tp[j].setPosState(PosState.OVERLAP);
+                if (MyTimeRepo.overLapCheck(this, xth, i) == 1) {
+                    User.INFO.overlapFlag = true;
+                }
             }
             Common.getTempTimePos().add(tp[j].name());
             ++j;

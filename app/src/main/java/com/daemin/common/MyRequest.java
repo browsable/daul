@@ -22,8 +22,8 @@ import java.util.Map;
  */
 public class MyRequest {
     public static RequestQueue requestQueue = MyVolley.getRequestQueue();
-
     public static Context context = AppController.getInstance();
+    private static String KEY_SUCCESS = "success";
     public static final String GET_GROUPLIST_URL = "http://timedao.heeguchi.me/app/getGroupList";
    /* public static ArrayList<String> getGroupListFromLocal() {
         ArrayList<String> groupListFomServer = new ArrayList<>();
@@ -66,7 +66,6 @@ public class MyRequest {
     }
 */
     public static final String POST_TEST = "http://54.64.223.92/users/register";
-    private static String KEY_SUCCESS = "success";
     public static void test(final Context context){
         CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.POST, POST_TEST, null,
                 new Response.Listener<JSONObject>() {
@@ -118,6 +117,41 @@ public class MyRequest {
             }
 
         };
+        requestQueue.add(rq);
+    }
+    public static final String GET_VERSION = "http://hernia.cafe24.com/android/db/get_version.php";
+    public static void getVersionFromServer(final Context context){
+        CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET, GET_VERSION, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString(KEY_SUCCESS) != null) {
+                                int success = Integer.parseInt(response.getString(KEY_SUCCESS));
+                                if (success == 1) {
+                                    Toast.makeText(context, response.getString("appversion"), Toast.LENGTH_LONG).show();
+                                    /*Toast.makeText(context, response.getString("tag"), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, response.getString("username"), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, response.getString("email"), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, response.getString("password"), Toast.LENGTH_LONG).show();*/
+                                } else if (success == 0) {
+                                    Toast.makeText(context, "not success..", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Response Error", error.toString());
+                Toast.makeText(context, "network error", Toast.LENGTH_LONG).show();
+            }
+        });
         requestQueue.add(rq);
     }
 }

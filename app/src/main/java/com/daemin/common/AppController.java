@@ -12,6 +12,8 @@ import timedao.DaoSession;
 public class AppController extends Application {
     public DaoSession daoSession;
     static AppController singleton;
+    String serverVer;
+    String appVer;
 
     public static AppController getInstance() {
         return singleton;
@@ -22,6 +24,7 @@ public class AppController extends Application {
         singleton = this;
         MyVolley.init(this);
         setupDatabase();
+        MyRequest.getVersionFromServer(this);
     }
 
     private void setupDatabase() {
