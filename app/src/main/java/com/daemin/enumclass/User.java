@@ -34,6 +34,7 @@ public enum User {
     SharedPreferences.Editor editor;
     public double latitude, longitude;
     public String userPK;
+    public String appVer;//어플버전;
     public List<MyTime> weekData;
     public int groupPK, titleSize, dateSize;
     public boolean overlapFlag;
@@ -74,6 +75,9 @@ public enum User {
     }
     public int getViewMode(){
         return pref.getInt("viewMode", 0);
+    }
+    public String getGroupVersion(){
+        return pref.getString("groupversion", "0");
     }
     public String getCreditSum(){
         return pref.getString("creditSum", "0");

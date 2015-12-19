@@ -15,8 +15,6 @@
     <string name="am">오전</string>
     <string name="pm">오후</string>
     <string name="weekofmonth">째주</string>
-    <string name="appupdate">APP 업데이트 버전이 있습니다. 업데이트 하시겠습니까?</string>
-    <string name="dbupdate">DB 업데이트 버전이 있습니다. 업데이트 하시겠습니까?</string>
 
     <!--메인화면-->
     <!--좌측드로어메뉴-->
@@ -48,6 +46,9 @@
     <string name="btDialCancel">취소</string>
     <string name="btDialSetting">확인</string>
     <string name="overlapEnroll">일정추가 +</string>
+    <!--업데이트-->
+    <string name="update_title">업데이트 안내</string>
+    <string name="update_content">업데이트 버전이 있습니다. 마켓으로 이동합니다.</string>
     <!--지도-->
     <string name="search_place">장소 검색</string>
     <string name="search_notwork">GPS 기능을 사용할 수 없습니다.</string>

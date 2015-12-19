@@ -2,6 +2,8 @@ package com.daemin.common;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,7 +12,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.daemin.enumclass.User;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -119,7 +123,7 @@ public class MyRequest {
         };
         requestQueue.add(rq);
     }
-    public static final String GET_VERSION = "http://hernia.cafe24.com/android/db/get_version.php";
+    public static final String GET_VERSION = "http://hernia.cafe24.com/android/get_version.php";
     public static void getVersionFromServer(final Context context){
         CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET, GET_VERSION, null,
                 new Response.Listener<JSONObject>() {
@@ -129,13 +133,20 @@ public class MyRequest {
                             if (response.getString(KEY_SUCCESS) != null) {
                                 int success = Integer.parseInt(response.getString(KEY_SUCCESS));
                                 if (success == 1) {
-                                    Toast.makeText(context, response.getString("appversion"), Toast.LENGTH_LONG).show();
+                                    JSONArray product = response.getJSONArray("product");
                                     /*Toast.makeText(context, response.getString("tag"), Toast.LENGTH_LONG).show();
                                     Toast.makeText(context, response.getString("username"), Toast.LENGTH_LONG).show();
                                     Toast.makeText(context, response.getString("email"), Toast.LENGTH_LONG).show();
                                     Toast.makeText(context, response.getString("password"), Toast.LENGTH_LONG).show();*/
+                                    if(User.INFO.appVer.equals(product.getJSONObject(0).getString("appversion"))){
+                                        Intent intent = new Intent(
+                                                Intent.ACTION_VIEW,
+                                                Uri.parse("http://market.android.com/details?id=com.daemin.timetable"));
+                                        context.startActivity(intent);
+                                    }
+                                    User.INFO.getEditor().putString("groupversion", product.getJSONObject(0).getString("groupversion"));
                                 } else if (success == 0) {
-                                    Toast.makeText(context, "not success..", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
                                 } else {
                                     Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
                                 }

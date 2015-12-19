@@ -35,6 +35,7 @@ import android.widget.ViewSwitcher;
 import com.daemin.area.AreaFragment;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.Common;
+import com.daemin.common.MyRequest;
 import com.daemin.common.RoundedCornerNetworkImageView;
 import com.daemin.community.CommunityFragment2;
 import com.daemin.dialog.DialSchedule;
@@ -446,6 +447,7 @@ public class MainActivity extends FragmentActivity {
             btMode.setChecked(true);
             EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
         }
+       // MyRequest.getVersionFromServer(this);
     }
     private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
     private InitSurfaceView initSurfaceView;

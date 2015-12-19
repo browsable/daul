@@ -1,7 +1,12 @@
 package com.daemin.common;
 
 import android.app.Application;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.daemin.enumclass.User;
 
 import timedao.DaoMaster;
 import timedao.DaoSession;
@@ -24,9 +29,21 @@ public class AppController extends Application {
         singleton = this;
         MyVolley.init(this);
         setupDatabase();
-        MyRequest.getVersionFromServer(this);
+        getAppVer();
     }
+    private void getAppVer(){
+        PackageInfo pInfo;
+        try {
+            pInfo = getApplicationContext().getPackageManager().getPackageInfo(
+                    getApplicationContext().getPackageName(), 0);
+            User.INFO.appVer = pInfo.versionName;
+            Log.i("test appver",User.INFO.appVer);
 
+        } catch (PackageManager.NameNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
     private void setupDatabase() {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "timedao", null);
         SQLiteDatabase db = helper.getWritableDatabase();
