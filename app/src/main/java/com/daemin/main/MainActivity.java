@@ -323,6 +323,7 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.btTimetable:
                 EventBus.getDefault().post(new ClearNormalEvent());
+                btMode.setVisibility(View.VISIBLE);
                 llTitle.setVisibility(View.VISIBLE);
                 tvTitle.setVisibility(View.GONE);
                 btPlus.setVisibility(View.VISIBLE);
@@ -335,18 +336,22 @@ public class MainActivity extends FragmentActivity {
                 }
                 break;
             case R.id.btFriend:
+                btMode.setVisibility(View.GONE);
                 changeSetting();
                 changeFragment(FriendFragment.class, "친구시간표");
                 break;
             case R.id.btArea:
+                btMode.setVisibility(View.GONE);
                 changeSetting();
                 changeFragment(AreaFragment.class, "주변시간표");
                 break;
             case R.id.btCommunity:
+                btMode.setVisibility(View.GONE);
                 changeSetting();
                 changeFragment(CommunityFragment2.class, "커뮤니티");
                 break;
             case R.id.btSetting:
+                btMode.setVisibility(View.GONE);
                 changeSetting();
                 changeFragment(SettingFragment.class, "설정");
                 break;

@@ -3,27 +3,21 @@ package com.daemin.timetable;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.dialog.DialEnroll;
-import com.daemin.dialog.DialEnrollActivity;
-import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.ExcuteMethodEvent;
-import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetCreditEvent;
 
 import de.greenrobot.event.EventBus;
@@ -136,14 +130,12 @@ public class InitWeekThread extends InitThread {
                     Common.getTempTimePos().remove(ETP.name());
                 }else{
                     //EventBus.getDefault().post(new FinishDialogEvent());
-                    Intent i = new Intent(context, DialEnrollActivity.class);
+                    Intent i = new Intent(context, DialEnroll.class);
                     i.putExtra("xth", xth);
                     i.putExtra("yth", tmpYth);
                     i.putExtra("startMin", ETP.getStartMin());
                     i.putExtra("endMin", ETP.getEndMin());
                     context.startActivity(i);
-                    /*DialEnroll de = new DialEnroll(context,xth,tmpYth,ETP.getStartMin(),ETP.getEndMin());
-                    de.show();*/
 
                 }
                 break;
@@ -157,9 +149,7 @@ public class InitWeekThread extends InitThread {
                 }
                 if (ETP.getPosState() == PosState.ENROLL) {
                     //EventBus.getDefault().post(new FinishDialogEvent());
-                    /*DialEnroll de = new DialEnroll(context,xth,tmpYth,ETP.getStartMin(),ETP.getEndMin());
-                    de.show();*/
-                    Intent i = new Intent(context, DialEnrollActivity.class);
+                    Intent i = new Intent(context, DialEnroll.class);
                     i.putExtra("xth", xth);
                     i.putExtra("yth", tmpYth);
                     i.putExtra("startMin", ETP.getStartMin());

@@ -81,7 +81,7 @@ public class StreamDrawable extends Drawable {
      */
     StreamDrawable(Bitmap bitmap, float cornerRadius, int margin,boolean isVignette,ScaleType scaleType) {
         if(scaleType == null)
-            mScaleType = ScaleType.FIT_CENTER;
+        mScaleType = ScaleType.FIT_CENTER;
         mScaleType = scaleType;
         mBitmapRect.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
         mBitmapHeight = bitmap.getHeight();

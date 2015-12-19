@@ -76,7 +76,7 @@ public class MyTimeRepo {
                         MyTimeDao.Properties.Starthour.le(startHour),
                         MyTimeDao.Properties.Endhour.ge(startHour))
         );
-        if(qb.unique()!=null) {
+        if(qb.list()!=null) {
             overlap = 1;
             return overlap;
         }else return overlap;

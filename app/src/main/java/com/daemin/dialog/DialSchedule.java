@@ -443,6 +443,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 String[] temps;
                 subId = ((TextView) view.findViewById(R.id._id)).getText().toString();
                 User.INFO.overlapFlag = false;
+                subOverlapFlag = true;
                 Common.stateFilter(viewMode);
                 for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
                         .toString())) {
@@ -548,6 +549,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         actv.setDropDownVerticalOffset(10);
         return actv;
     }
+
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -727,15 +729,19 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                             colorName);
                                     MyTimeRepo.insertOrUpdate(this, myTime);
                                     Common.fetchWeekData();
+                                    normalList.clear();
+                                    normalAdapter.notifyDataSetChanged();
+                                    etName.setText("");
+                                    etMemo.setText("");
+                                    etPlace.setText("");
                                 }
-                            } else {
-
+                            }else {
 
                             }
                             break;
                         case 1:
                             Common.stateFilter(viewMode);
-                            if (subId != null) {
+                            if (subId != null&& subOverlapFlag) {
                                 SubjectData subjectData = db.getSubjectData(subId);
                                 String[] temps;
                                 String subtitle = subjectData.getSubtitle();
@@ -763,6 +769,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                                 "10:10",
                                                 colorName);
                                         MyTimeRepo.insertOrUpdate(this, myTime);
+                                        subOverlapFlag=false;
                                     } else {
                                         Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
                                         break;
@@ -934,6 +941,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         depFlag = false;
         gradeFlag = false;
         overlapEnrollFlag =false;
+        subOverlapFlag = true;
+        User.INFO.overlapFlag = false;
         colorName = Common.MAIN_COLOR;
         dy=mPosY=0;
         dayIndex = new HashMap<>();
@@ -969,7 +978,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight, viewMode;
-    private boolean univFlag, depFlag, gradeFlag, widgetFlag,overlapEnrollFlag;
+    private boolean univFlag, depFlag, gradeFlag, widgetFlag,overlapEnrollFlag,subOverlapFlag;
 
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
