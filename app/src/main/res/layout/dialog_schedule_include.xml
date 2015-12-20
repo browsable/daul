@@ -188,6 +188,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_lightgray_bottomline"
+            android:visibility="invisible"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -302,5 +303,9 @@
                     android:textSize="@dimen/textsize_default" />
             </LinearLayout>
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
     </LinearLayout>
 </ScrollView>
