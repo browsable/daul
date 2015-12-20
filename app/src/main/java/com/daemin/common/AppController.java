@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.daemin.enumclass.User;
 
@@ -17,9 +16,6 @@ import timedao.DaoSession;
 public class AppController extends Application {
     public DaoSession daoSession;
     static AppController singleton;
-    String serverVer;
-    String appVer;
-
     public static AppController getInstance() {
         return singleton;
     }
