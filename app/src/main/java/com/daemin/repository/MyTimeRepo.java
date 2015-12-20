@@ -26,6 +26,11 @@ public class MyTimeRepo {
     public static MyTime getMyTimeForId(Context context, long id) {
         return getMyTimeDao(context).load(id);
     }
+    public static void deleteWithTimetype(Context context, int timetype) {
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+        qb.where(MyTimeDao.Properties.Timetype.eq(timetype));
+        qb.buildDelete().executeDeleteWithoutDetachingEntities();
+    }
     public static void deleteWithTimeCode(Context context, String timeCode) {
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
         qb.where(MyTimeDao.Properties.Timecode.eq(timeCode));

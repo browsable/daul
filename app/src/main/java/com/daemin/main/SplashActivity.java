@@ -54,6 +54,7 @@ public class SplashActivity extends Activity{
 		singleton = this;
 		setContentView(R.layout.activity_splash);
 		initialize();
+		MyRequest.getGroupList(this);
 	}
 	private void initialize() {
 		/*if(Common.isOnline()) {

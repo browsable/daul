@@ -5,7 +5,7 @@
     <string name="app_name">TimeDAO</string>
     <string name="app_menu">메뉴</string>
     <string name="action_settings">Settings</string>
-    <string name="network_error">네트워크 상태를 확인하세요</string>
+    <string name="network_error">네트워크 상태를 확인하세요\n일부 기능이 실행되지 않을 수 있습니다</string>
     <string name="e_learning">이러닝 혹은 시간정보가 없습니다</string>
     <string name="year">년</string>
     <string name="month">월</string>
@@ -14,6 +14,9 @@
     <string name="am">오전</string>
     <string name="pm">오후</string>
     <string name="weekofmonth">째주</string>
+    <string name="wait1">등록대기중</string>
+    <string name="wait2">등록대기중입니다</string>
+    <string name="QandA"><a href="https://open.kakao.com/o/sqXjIpf">문의하기</a></string>
 
     <!--메인화면-->
     <!--좌측드로어메뉴-->
@@ -92,7 +95,6 @@
     <string name="univ_overlap">중복되는 시간을 확인하세요</string>
     <string name="univ_notice_setting">대학은 설정 메뉴에서 재설정 가능합니다.</string>
     <string name="univ_notice_enroll">소속대학이 없나요?</string>
-    <string name="univ_hyper"><a href="https://open.kakao.com/o/sqXjIpf">문의하기</a></string>
     <string name="univ_notice_emtpy">정해진 시간이 없습니다</string>
     <!--친구-->
     <string name="friend_favorite">즐겨찾기</string>
@@ -112,7 +114,7 @@
     <string name="setting_mailpassword">비밀번호 변경</string>
     <string name="setting_univ">학교/학과 변경</string>
     <string name="setting_timeinfo">시간표 표시정보</string>
-    <string name="setting_inittable">시간표 초기화</string>
+    <string name="setting_init">초기화</string>
     <string name="setting_backup">백업</string>
     <string name="setting_devinfo">개발자 정보</string>
     <string name="setting_password">암호잠금</string>
@@ -120,7 +122,14 @@
     <string name="setting_withdrawl">TimeDAO 탈퇴</string>
     <string name="setting_lockon">암호잠금 켜기</string>
     <string name="setting_lockchange">암호 변경하기</string>
-
+    <!--초기화-->
+    <string name="setting_init_table_title">시간표 초기화</string>
+    <string name="setting_init_table_content">모든 저장된 시간표가 사라지며 복구가 불가능합니다</string>
+    <string name="setting_init_sub_title">과목 초기화</string>
+    <string name="setting_init_sub_content">모든 저장된 과목 시간표가 사라지며 복구가 불가능합니다</string>
+    <string name="setting_init_credit_title">학점 초기화</string>
+    <string name="setting_init_credit_content">학점이 초기화됩니다</string>
+    <string name="setting_init_q">초기화하시겠습니까?</string>
     <string name="jackson1_text">-&#45;&#45; Jackson 1.x -&#45;&#45;</string>
     <string name="jackson2_text">-&#45;&#45; Jackson 2.x -&#45;&#45;</string>
     <string name="waiting_for_response">Waiting for a response . . .</string>
@@ -128,4 +137,6 @@
     <string name="github_activity_text">Github JSON-format User API</string>
     <string name="single_tap_zoom_network_image_view_activity_text">Single Tap Zoom NetworkImageView</string>
     <string name="double_tap_zoom_network_image_view_activity_text">Double Tap Zoom NetworkImageView</string>
+
+
 </resources>

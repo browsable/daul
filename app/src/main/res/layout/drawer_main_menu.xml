@@ -30,8 +30,8 @@
 
                 <com.daemin.common.RoundedCornerNetworkImageView
                     android:id="@+id/ivProfile"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:layout_marginTop="@dimen/margin_xxl"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_profile"
@@ -98,6 +98,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:onClick="mOnClick"
+                    android:visibility="invisible"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -127,6 +128,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:onClick="mOnClick"
+                    android:visibility="invisible"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -156,6 +158,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:onClick="mOnClick"
+                    android:visibility="invisible"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -191,9 +194,9 @@
         <ImageView
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginBottom="@dimen/margin_xxs"
+            android:layout_marginBottom="@dimen/margin_xs"
             android:layout_marginRight="@dimen/margin_xs"
-            android:layout_marginTop="@dimen/margin_xxs"
+            android:layout_marginTop="@dimen/margin_s"
             android:scaleType="fitXY"
             android:src="@drawable/ic_setting" />
 

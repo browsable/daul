@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,6 @@ public class SettingIdFragment extends BasicFragment {
                 EventBus.getDefault().post(new BackKeyEvent(""));
             }
         });
-
         return root;
     }
 

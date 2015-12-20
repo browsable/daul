@@ -31,6 +31,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.daemin.adapter.BottomNormalListAdapter;
 import com.daemin.adapter.HorizontalListAdapter;
 import com.daemin.common.BackPressCloseHandler;
@@ -39,7 +42,9 @@ import com.daemin.common.Convert;
 import com.daemin.common.DatabaseHandler;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
+import com.daemin.common.MyVolley;
 import com.daemin.data.BottomNormalData;
+import com.daemin.data.GroupListData;
 import com.daemin.data.SubjectData;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
@@ -64,6 +69,7 @@ import com.daemin.map.MapActivity;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 import com.daemin.widget.WidgetUpdateService;
+import com.navercorp.volleyextensions.request.Jackson2Request;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -117,11 +123,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_schedule);
         EventBus.getDefault().post(new SetBtPlusEvent(false));
-        MyRequest.getGroupList(this);
         setLayout();
-        if (getIntent()!=null) {//widget에서 Dialog 호출한 경우
+        if (getIntent() != null) {//widget에서 Dialog 호출한 경우
             widgetFlag = getIntent().getBooleanExtra("widgetFlag", false);
-            overlapEnrollFlag =  getIntent().getBooleanExtra("overlapEnrollFlag", false);
+            overlapEnrollFlag = getIntent().getBooleanExtra("overlapEnrollFlag", false);
         }
         makeNormalList();
         window = getWindow();
@@ -135,7 +140,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         DisplayMetrics dm = getResources().getDisplayMetrics();
         lp.height = lp.WRAP_CONTENT;
         lp.width = lp.MATCH_PARENT;
-        screenHeight = dm.heightPixels -lp.height;
+        screenHeight = dm.heightPixels - lp.height;
         /*if (enrollFlag) {
             rlEdit.setVisibility(View.VISIBLE);
             llEtName.setVisibility(View.GONE);
@@ -186,7 +191,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 tp.setMin(0, 60);
             }
         }*/
-        if(overlapEnrollFlag) {
+        if (overlapEnrollFlag) {
             TimePos tp = TimePos.valueOf(
                     Convert.getxyMerge(
                             getIntent().getIntExtra("xth", 1),
@@ -384,7 +389,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
         @Override
         protected void onPostExecute(String param) {
-            User.INFO.getEditor().putBoolean("subjectDown", true).commit();
+            User.INFO.getEditor().putString("groupName", groupName);
             settingUniv();
         }
 
@@ -402,7 +407,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
                 if (i == endHour - 1) tp[j].setMin(0, endMin);
                 tp[j].setPosState(PosState.PAINT);
-            }else {
+            } else {
                 tp[j].setPosState(PosState.OVERLAP);
                 if (MyTimeRepo.overLapCheck(this, xth, i) == 1) {
                     User.INFO.overlapFlag = true;
@@ -552,8 +557,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         actv.setDropDownVerticalOffset(10);
         return actv;
     }
-
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onClick(View v) {
@@ -576,31 +579,23 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 DrawMode.CURRENT.setMode(1);
                 llNormal.setVisibility(View.GONE);
                 llUniv.setVisibility(View.VISIBLE);
-                /*if (User.USER.isSubjectDownloadState()) {
-                    llSelectUniv.setVisibility(View.GONE);
-                    llDep.setVisibility(View.VISIBLE);
-                }
-                else {
-                    llSelectUniv.setVisibility(View.VISIBLE);
-                    llDep.setVisibility(View.GONE);
-                }*/
                 btNormal.setTextColor(getResources().getColor(
                         R.color.gray));
                 btUniv.setTextColor(getResources().getColor(
                         android.R.color.white));
-                //ArrayAdapter<String> univAdapter = new ArrayAdapter<>(this,R.layout.dropdown_univ, MyRequest.getGroupListFromLocal());
-                ArrayList<String> univList = new ArrayList<>();
+                univList = new ArrayList<>();
                 //임시목록
-                univList.add("한국기술교육대학교");
-                univList.add("공주대학교");
-                univList.add("충남대학교");
-                ArrayAdapter<String>
-                        univAdapter = new ArrayAdapter<>(this, R.layout.dropdown_univ, univList);
+                for (GroupListData.Data d :  User.INFO.groupListData) {
+                    univList.add(d.getKo() + "/" + d.getTt_version());
+                }
+                ArrayAdapter<String> univAdapter = new ArrayAdapter<>(DialSchedule.this, R.layout.dropdown_univ, univList);
                 SettingACTV(actvUniv, univAdapter);
                 actvUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View v,
                                             int position, long id) {
-                        groupName = actvUniv.getText().toString().split("/")[0];
+                        String[] tmp = actvUniv.getText().toString().split("/");
+                        groupName = tmp[0];
+                        DBVersion = tmp[1];
                         // 열려있는 키패드 닫기
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(actvUniv.getWindowToken(), 0);
@@ -616,6 +611,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 });
                 break;
             case R.id.btShowUniv:
+                if (!Common.isOnline())
+                    Toast.makeText(DialSchedule.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                 if (univFlag) {
                     actvUniv.dismissDropDown();
                     univFlag = false;
@@ -646,21 +643,22 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btEnter:
-                Toast.makeText(DialSchedule.this, getString(R.string.univ_notice_setting), Toast.LENGTH_SHORT).show();
                 if (Common.isOnline()) {
-                    if (User.INFO.getSubjectDownFlag()) {
-                        Toast.makeText(DialSchedule.this, "다운로드 되어 있음", Toast.LENGTH_SHORT).show();
+                    if (User.INFO.getGroupName().equals(groupName)) { //처음 대학을 그대로 선택시
                         settingUniv();
-                    } else {
-                        Toast.makeText(DialSchedule.this, "첫 과목 다운로드", Toast.LENGTH_SHORT).show();
-                        //MyRequest.postGroupDB(DialSchedule.this,groupName);
-                        new DownloadFileFromURL().execute("koreatech");
+                    }else {
+                        if(DBVersion.equals(getResources().getString(R.string.wait1))){
+                            Toast.makeText(DialSchedule.this, getString(R.string.wait2), Toast.LENGTH_SHORT).show();
+                            btShowUniv.setVisibility(View.VISIBLE);
+                            btEnter.setVisibility(View.GONE);
+                        }else {
+                            new DownloadFileFromURL().execute(groupName);
+                        }
                     }
                 } else {
-                    if (User.INFO.getSubjectDownFlag()) {
-                        Toast.makeText(DialSchedule.this, "네트워크는 비연결, 오프라인으로 조회", Toast.LENGTH_SHORT).show();
+                    if (User.INFO.getGroupName().equals(groupName)) {
                         settingUniv();
-                    } else {
+                    }else {
                         Toast.makeText(DialSchedule.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -684,9 +682,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btAddSchedule:
-                if(User.INFO.overlapFlag) {
+                if (User.INFO.overlapFlag) {
                     Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_overlap), Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     long nowMillis = Dates.NOW.getNowMillis();
                     switch (DrawMode.CURRENT.getMode()) {
                         case 0:
@@ -729,19 +727,19 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                             colorName);
                                     MyTimeRepo.insertOrUpdate(this, myTime);
                                     Common.fetchWeekData();
-                                    normalList.clear();
-                                    normalAdapter.notifyDataSetChanged();
-                                    etName.setText("");
-                                    etMemo.setText("");
-                                    etPlace.setText("");
                                 }
-                            }else {
+                                normalList.clear();
+                                normalAdapter.notifyDataSetChanged();
+                                etName.setText("");
+                                etMemo.setText("");
+                                etPlace.setText("");
+                            } else {
 
                             }
                             break;
                         case 1:
                             Common.stateFilter(viewMode);
-                            if (subId != null&& subOverlapFlag) {
+                            if (subId != null && subOverlapFlag) {
                                 SubjectData subjectData = db.getSubjectData(subId);
                                 String[] temps;
                                 String subtitle = subjectData.getSubtitle();
@@ -769,7 +767,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                                 "10:10",
                                                 colorName);
                                         MyTimeRepo.insertOrUpdate(this, myTime);
-                                        subOverlapFlag=false;
+                                        subOverlapFlag = false;
                                     } else {
                                         Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
                                         break;
@@ -812,7 +810,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         datp = new DialAddTimePicker(DialSchedule.this, Dates.NOW.getWData());
                         break;
                     case 2:
-                        datp = new DialAddTimePicker(DialSchedule.this,  Dates.NOW.mData, Dates.NOW.dayOfWeek);
+                        datp = new DialAddTimePicker(DialSchedule.this, Dates.NOW.mData, Dates.NOW.dayOfWeek);
                         break;
                 }
                 datp.show();
@@ -940,11 +938,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         univFlag = false;
         depFlag = false;
         gradeFlag = false;
-        overlapEnrollFlag =false;
+        overlapEnrollFlag = false;
         subOverlapFlag = true;
         User.INFO.overlapFlag = false;
         colorName = Common.MAIN_COLOR;
-        dy=mPosY=0;
+        dy = mPosY = 0;
         dayIndex = new HashMap<>();
         if (!widgetFlag) {
             SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
@@ -955,30 +953,31 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 else
                     btUniv.setVisibility(View.INVISIBLE);
             }
-        }else btUniv.setVisibility(View.INVISIBLE);
+        } else btUniv.setVisibility(View.INVISIBLE);
     }
 
     private Button btNormal, btUniv, btAddSchedule, btCancel, btEnter, btColor;
     private ToggleButton btEdit;
-    private LinearLayout llNormal, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat, llEtName,llTime;
+    private LinearLayout llNormal, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat, llEtName, llTime;
     private RelativeLayout rlEdit;
-    private TextView tvShare, tvAlarm, tvRepeat,tvCreditSum,tvTimeCode,tvTimeType,tvHyperText;
+    private TextView tvShare, tvAlarm, tvRepeat, tvCreditSum, tvTimeCode, tvTimeType, tvHyperText;
     private EditText etName, etPlace, etMemo, etSavedName;
     private View dragToggle, btShowUniv, btShowDep, btShowGrade;
     private HorizontalListView lvTime, hlv;
     private HorizontalListAdapter hoAdapter;
     private Window window;
     private GradientDrawable gd;
-    private String colorName, subId, creditSum,groupName;
+    private String colorName, subId, creditSum, groupName,DBVersion;
     private WindowManager.LayoutParams lp;
     private ArrayList<BottomNormalData> normalList;
+    private ArrayList<String> univList;
     private ArrayAdapter normalAdapter;
     private HashMap<Integer, Integer> dayIndex;//어느 요일이 선택됬는지
     private AutoCompleteTextView actvUniv, actvDep, actvGrade, actvSub;
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight, viewMode;
-    private boolean univFlag, depFlag, gradeFlag, widgetFlag,overlapEnrollFlag,subOverlapFlag;
+    private boolean univFlag, depFlag, gradeFlag, widgetFlag, overlapEnrollFlag, subOverlapFlag;
 
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
@@ -1024,10 +1023,12 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 e.getEndHour(), e.getEndMin(), e.getXth()));
         normalAdapter.notifyDataSetChanged();
     }
+
     public void onEventMainThread(SetCreditEvent e) {
         creditSum = User.INFO.getCreditSum();
         tvCreditSum.setText(creditSum);
     }
+
     public void onEventMainThread(ExcuteMethodEvent e) {
         try {
             Method m = DialSchedule.this.getClass().getDeclaredMethod(e.getMethodName());

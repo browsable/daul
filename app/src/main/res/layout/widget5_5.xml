@@ -93,6 +93,7 @@
             android:text="@string/week"
             android:textStyle="bold"
             android:textSize="@dimen/textsize_l"
+            android:visibility="invisible"
             android:textColor="@android:color/black"
             android:background="@color/transparency"/>
         </LinearLayout>

@@ -46,7 +46,7 @@ public class AreaFragment_Find extends BasicFragment {
             area_autocomplete.setTextSize(16);
             area_autocomplete.setDropDownVerticalOffset(10);
 
-            spinner_data = new ArrayList<String>();
+            spinner_data = new ArrayList<>();
             spinner_data.add("1km");
             spinner_data.add("5km");
             spinner_data.add("10km");

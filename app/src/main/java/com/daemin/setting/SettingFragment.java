@@ -16,11 +16,13 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.daemin.common.BasicFragment;
 import com.daemin.event.ChangeFragEvent;
@@ -253,6 +255,8 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
     public void setLayout(View root){
         mCurrentPhotoPath = null;
         ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
+        tvHyperText = (TextView)root.findViewById(R.id.tvHyperText);
+        tvHyperText.setMovementMethod(LinkMovementMethod.getInstance());
         btSettingId= (LinearLayout)root.findViewById(R.id.btSettingId);
         btSettingUniv = (LinearLayout)root.findViewById(R.id.btSettingUniv);
         btSettingInit = (LinearLayout)root.findViewById(R.id.btSettingInit);
@@ -276,6 +280,7 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
     private static final int REQUEST_SETTING_UNIV = 4;
     private String mCurrentPhotoPath;
     private Uri contentUri;
+    private TextView tvHyperText;
 
 
 }

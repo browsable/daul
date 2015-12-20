@@ -51,7 +51,7 @@ public class DialEnroll extends Activity {
         Window window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(
                 Color.TRANSPARENT));
-        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        //window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels * 5 / 6;
@@ -118,7 +118,7 @@ public class DialEnroll extends Activity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv = (TextView) view.findViewById(R.id.tvId);
+                /*TextView tv = (TextView) view.findViewById(R.id.tvId);
                 Intent i = new Intent(DialEnroll.this, DialSchedule.class);
                 i.putExtra("enrollFlag", true);
                 i.putExtra("overlapEnrollFlag", true);
@@ -127,7 +127,7 @@ public class DialEnroll extends Activity {
                 i.putExtra("yth", yth);
                 i.putExtra("startMin", startMin);
                 startActivity(i);
-                finish();
+                finish();*/
             }
         });
     }

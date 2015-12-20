@@ -323,7 +323,7 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.btTimetable:
                 EventBus.getDefault().post(new ClearNormalEvent());
-                btMode.setVisibility(View.VISIBLE);
+                //btMode.setVisibility(View.VISIBLE);
                 llTitle.setVisibility(View.VISIBLE);
                 tvTitle.setVisibility(View.GONE);
                 btPlus.setVisibility(View.VISIBLE);

@@ -16,7 +16,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.daemin.enumclass.User;
 import com.daemin.event.SetShareEvent;
+import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
 import de.greenrobot.event.EventBus;
@@ -42,16 +44,20 @@ public class DialDefault extends Dialog {
         Window window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(
                 android.graphics.Color.TRANSPARENT));
-        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels * 2 / 3;
-        layoutParams.height = dm.heightPixels / 3;
+        layoutParams.height = dm.heightPixels* 3/10;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();
     }
-
+    public void goToPlayMarket(){
+        Intent intent = new Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("http://market.android.com/details?id=com.daemin.timetable"));
+        context.startActivity(intent);
+    }
     private void setLayout() {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
@@ -63,8 +69,15 @@ public class DialDefault extends Dialog {
             @Override
             public void onClick(View v) {
                     switch (callFuncIndex){
-                        case 0:
+                        case 0: //업데이트시 마켓이동
                             goToPlayMarket();
+                            break;
+                        case 1: //시간표 초기화
+                            MyTimeRepo.clearMyTime(context);
+                            break;
+                        case 2: //과목시간표 초기화
+                            User.INFO.getEditor().putString("creditSum","0");
+                            MyTimeRepo.deleteWithTimetype(context,1);
                             break;
                     }
                     cancel();
@@ -84,10 +97,5 @@ public class DialDefault extends Dialog {
     private String title, content;
     private int callFuncIndex;
     private Context context;
-    public void goToPlayMarket(){
-        Intent intent = new Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("http://market.android.com/details?id=com.daemin.timetable"));
-        context.startActivity(intent);
-    }
+
 }

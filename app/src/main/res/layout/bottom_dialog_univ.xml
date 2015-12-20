@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="end"
-            android:text="@string/univ_hyper"
+            android:text="@string/QandA"
             android:textColor="@android:color/black"
             android:textSize="@dimen/textsize_default"/>
             </LinearLayout>

@@ -22,8 +22,8 @@ public enum PosState {
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, String title, String second, int xth, int yth, int startMin, int endMin) {
             rp.setColor(Color.parseColor("#FF0000"));
-            canvas.drawRect(width * xth / 15, (height * yth / 32 + 18)+(2*height/32)*startMin/60,
-                    width * (xth + 2) / 15, (height * yth / 32 + 18)+(2*height/32)*endMin/60, rp);
+            canvas.drawRect(width * xth / 15, (height * yth / 32 + intervalSize)+(2*height/32)*startMin/60,
+                    width * (xth + 2) / 15, (height * yth / 32 + intervalSize)+(2*height/32)*endMin/60, rp);
         }
     },
     NO_PAINT() {
@@ -35,23 +35,26 @@ public enum PosState {
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, String title, String second, int xth, int yth, int startMin, int endMin) {
             canvas.drawText(title, width * (xth+1) / 15, (height * (yth + 1) / 32), tp);
-            canvas.drawText(second, width * (xth+1) / 15, (height * (yth+1) / 32 + 30), tp);
+            canvas.drawText(second, width * (xth+1) / 15, (height * (yth+1) / 32 + dateSize), tp);
         }
     };
     public Paint rp; // 사각형
     public Paint tp;
+    public int intervalSize,dateSize;
     PosState() {
+        intervalSize = User.INFO.intervalSize;
+        dateSize = User.INFO.dateSize;
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
         rp.setColor(Color.parseColor(Common.MAIN_COLOR));
         rp.setAlpha(100);
         tp = new Paint(Paint.ANTI_ALIAS_FLAG);
         tp.setColor(Color.BLACK);
         tp.setTextAlign(Paint.Align.CENTER);
-        tp.setTextSize(User.INFO.titleSize);
+        tp.setTextSize(User.INFO.textSize);
         tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
     }
     public void drawTimePos(Canvas canvas, int width, int height, String title, String second, int xth, int yth, int startMin, int endMin) {
-        canvas.drawRect(width * xth / 15, (height * yth / 32 + 18)+(2*height/32)*startMin/60,
-                width * (xth + 2) / 15, (height * yth / 32 + 18)+(2*height/32)*endMin/60, rp);
+        canvas.drawRect(width * xth / 15, (height * yth / 32 + intervalSize)+(2*height/32)*startMin/60,
+                width * (xth + 2) / 15, (height * yth / 32 + intervalSize)+(2*height/32)*endMin/60, rp);
     }
 }

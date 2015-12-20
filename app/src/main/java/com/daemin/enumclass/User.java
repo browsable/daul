@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.daemin.common.AppController;
+import com.daemin.data.GroupListData;
 import com.daemin.timetable.R;
 
 import java.util.ArrayList;
@@ -24,10 +25,12 @@ public enum User {
         userPK = getUserPK();
         groupPK = getGroupPK();
         weekData=new ArrayList<>();
+        groupListData=new ArrayList<>();
         overlapFlag = false;
-        titleSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_xs);
+        textSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_xs);
         dateSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_s);
-        editor.putInt("titleSize", titleSize).commit();
+        intervalSize = context.getResources().getDimensionPixelSize(R.dimen.margin_xs);
+        editor.putInt("textSize", textSize).commit();
         editor.putInt("dateSize", dateSize).commit();
     }
     SharedPreferences pref;
@@ -36,7 +39,8 @@ public enum User {
     public String userPK;
     public String appVer;//어플버전;
     public List<MyTime> weekData;
-    public int groupPK, titleSize, dateSize;
+    public List<GroupListData.Data> groupListData;
+    public int groupPK, textSize, dateSize,intervalSize;
     public boolean overlapFlag;
     public SharedPreferences.Editor getEditor() {
         return editor;
@@ -61,17 +65,11 @@ public enum User {
         String userPK = pref.getString("userPK", "0");
         return userPK.substring(0, userPK.length() / 2);
     }
-    public String getKorGroupName(){
-        return pref.getString("korGroupName", "");
-    }
-    public String getEngGroupName(){
-        return pref.getString("engGroupName", "");
+    public String getGroupName(){
+        return pref.getString("groupName", "");
     }
     public int getGroupPK(){
         return pref.getInt("groupPK", 0);
-    }
-    public boolean getSubjectDownFlag(){
-        return pref.getBoolean("subjectDown", false);
     }
     public int getViewMode(){
         return pref.getInt("viewMode", 0);

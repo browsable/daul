@@ -91,6 +91,7 @@
                 android:layout_height="22dp"
                 android:gravity="center"
                 android:text="@string/week"
+                android:visibility="invisible"
                 android:textStyle="bold"
                 android:textSize="@dimen/textsize_default"
                 android:textColor="@android:color/black"

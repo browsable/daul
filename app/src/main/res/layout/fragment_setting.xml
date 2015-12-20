@@ -20,8 +20,8 @@
 
             <ImageView
                 android:id="@+id/ivProfile"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="@dimen/margin_l"
@@ -33,7 +33,6 @@
                 android:layout_centerInParent="true"
                 android:text="daul@"
                 android:textSize="@dimen/textsize_xxxl" />
-
 
         </LinearLayout>
 
@@ -49,6 +48,7 @@
             android:layout_margin="@dimen/margin_l"
             android:layout_weight="1"
             android:paddingLeft="@dimen/margin_s"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <TextView
@@ -81,6 +81,7 @@
             android:layout_margin="@dimen/margin_l"
             android:paddingLeft="@dimen/margin_s"
             android:layout_weight="1"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <TextView
@@ -119,22 +120,17 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="@dimen/margin_xs"
-                android:text="@string/setting_inittable"
+                android:text="@string/setting_init"
                 android:textSize="@dimen/textsize_xl" />
 
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray"
-            android:layout_marginBottom="@dimen/margin_s"
-            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_l"
             android:paddingLeft="@dimen/margin_s"
             android:layout_weight="1"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <TextView
@@ -154,45 +150,13 @@
                 android:textSize="@dimen/textsize_l" />
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray"
-            android:layout_marginBottom="@dimen/margin_s"
-            />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_l"
             android:paddingLeft="@dimen/margin_s"
             android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginBottom="@dimen/margin_xs"
-                android:text="@string/setting_backup"
-                android:textSize="@dimen/textsize_xl" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray"
-            android:layout_marginBottom="@dimen/margin_s"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_l"
-            android:paddingLeft="@dimen/margin_s"
-            android:layout_weight="1"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <TextView
@@ -201,6 +165,30 @@
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="@dimen/margin_xs"
                 android:text="@string/setting_devinfo"
+                android:textSize="@dimen/textsize_xl" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray"
+            android:layout_marginBottom="@dimen/margin_s"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_l"
+            android:paddingLeft="@dimen/margin_s"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvHyperText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="@dimen/margin_xs"
+                android:text="@string/QandA"
                 android:textSize="@dimen/textsize_xl" />
 
         </LinearLayout>
@@ -219,6 +207,7 @@
             android:layout_margin="@dimen/margin_l"
             android:paddingLeft="@dimen/margin_s"
             android:layout_weight="1"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <TextView
