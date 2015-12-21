@@ -114,7 +114,7 @@
             android:layout_centerVertical="true"
             android:background="@drawable/bt_click"
             android:onClick="mOnClick"
-            android:visibility="gone"
+            android:visibility="invisible"
             android:textOff="@string/week"
             android:textOn="@string/month"
             android:textStyle="bold"
