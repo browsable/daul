@@ -126,9 +126,7 @@
     <string name="setting_init_table_title">시간표 초기화</string>
     <string name="setting_init_table_content">모든 저장된 시간표가 사라지며 복구가 불가능합니다</string>
     <string name="setting_init_sub_title">과목 초기화</string>
-    <string name="setting_init_sub_content">모든 저장된 과목 시간표가 사라지며 복구가 불가능합니다</string>
-    <string name="setting_init_credit_title">학점 초기화</string>
-    <string name="setting_init_credit_content">학점이 초기화됩니다</string>
+    <string name="setting_init_sub_content">모든 저장된 과목 시간표가 사라지며 학점이 초기화됩니다.</string>
     <string name="setting_init_q">초기화하시겠습니까?</string>
     <string name="jackson1_text">-&#45;&#45; Jackson 1.x -&#45;&#45;</string>
     <string name="jackson2_text">-&#45;&#45; Jackson 2.x -&#45;&#45;</string>

@@ -39,7 +39,7 @@ public class SettingInitFragment extends BasicFragment {
             ibMenu.setVisibility(View.GONE);
             ibBack.setVisibility(View.VISIBLE);
             User.INFO.getEditor().putString("creditSum", "0").commit();
-            EventBus.getDefault().post(new BackKeyEvent("SettingInitFragment"));
+            EventBus.getDefault().post(new BackKeyEvent("SettingInitFragment",null,null));
         }
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +47,7 @@ public class SettingInitFragment extends BasicFragment {
                 ibMenu.setVisibility(View.VISIBLE);
                 ibBack.setVisibility(View.GONE);
                 EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
-                EventBus.getDefault().post(new BackKeyEvent(""));
+                EventBus.getDefault().post(new BackKeyEvent("",new String[]{"ibMenu"},new String[]{"ibBack"}));
             }
         });
         btInitTable.setOnClickListener(new View.OnClickListener() {

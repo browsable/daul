@@ -77,14 +77,14 @@ public class WritePostFragment extends BasicFragment {
         root = super.onCreateView(inflater, container, savedInstanceState);
 
         if (layoutId > 0) {
-            EventBus.getDefault().post(new BackKeyEvent("WritePostFragment"));
+           /* EventBus.getDefault().post(new BackKeyEvent("WritePostFragment"));
 
             etArticleTitle = (EditText) root.findViewById(R.id.etArticleTitle);
             etArticleContent = (EditText) root.findViewById(R.id.etArticleContent);
             btWriteArticle = (Button) ((View)container.getParent().getParent().getParent().getParent()).findViewById(R.id.btWriteArticle);
 
             btWriteArticle.setText("확인");
-            btWriteArticle.setOnClickListener(new mOnClick());
+            btWriteArticle.setOnClickListener(new mOnClick());*/
 
         }
 

@@ -29,7 +29,7 @@ public class AreaFragment_Write extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        if (layoutId > 0) {
+       /* if (layoutId > 0) {
             //EventBus.getDefault().post(new ViewGoneEvent(new String[]{"ibMenu"}));
             //EventBus.getDefault().post(new ViewVisibleEvent(new String[]{"ibBack"}));
             EventBus.getDefault().post(new BackKeyEvent("AreaFragment"));
@@ -49,7 +49,7 @@ public class AreaFragment_Write extends BasicFragment {
                 EventBus.getDefault().post(new BackKeyEvent(""));
 
             }
-        });
+        });*/
         return root;
     }
 

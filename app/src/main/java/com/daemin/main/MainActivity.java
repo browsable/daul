@@ -488,8 +488,21 @@ public class MainActivity extends FragmentActivity {
 
     public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();
+        if(e.getVisibleBt()!=null) {
+            for (String bt : e.getVisibleBt()){
+                int resId = getResources().getIdentifier(bt, "id", getPackageName());
+                ImageButton ib = (ImageButton)findViewById(resId);
+                ib.setVisibility(View.VISIBLE);
+            }
+        }
+        if(e.getVisibleBt()!=null) {
+            for (String bt : e.getGoneBt()){
+                int resId = getResources().getIdentifier(bt, "id", getPackageName());
+                ImageButton ib = (ImageButton)findViewById(resId);
+                ib.setVisibility(View.GONE);
+            }
+        }
     }
-
     public void onEventMainThread(ChangeFragEvent e) {
         changeFragment(e.getCl(), e.getTitleName());
     }

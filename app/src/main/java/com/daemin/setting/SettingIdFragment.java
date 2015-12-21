@@ -34,7 +34,7 @@ public class SettingIdFragment extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        ibMenu = MainActivity.getInstance().getIbMenu();
+       /* ibMenu = MainActivity.getInstance().getIbMenu();
         ibBack = MainActivity.getInstance().getIbBack();
         if (layoutId > 0) {
             ibMenu.setVisibility(View.GONE);
@@ -49,7 +49,7 @@ public class SettingIdFragment extends BasicFragment {
                 EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
                 EventBus.getDefault().post(new BackKeyEvent(""));
             }
-        });
+        });*/
         return root;
     }
 

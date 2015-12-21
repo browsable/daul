@@ -47,13 +47,8 @@ public class SplashActivity extends Activity{
 	}
 	private void initialize() {
 		Log.i("userPK",User.INFO.getUserPK());
-		if(User.INFO.getFirstFlag()) {
-			Toast.makeText(
-					this,
-					"앱 처음 설치",
-					Toast.LENGTH_LONG).show();
+		if(User.INFO.getFirstFlag())
 			firstSetting();
-		}
 		/*GPSInfo gps = new GPSInfo(this);
 		// GPS 사용유무 가져오기
 		if (gps.isGetLocation()) {

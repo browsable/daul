@@ -43,7 +43,7 @@ public class SettingUnivFragment extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        ibMenu = MainActivity.getInstance().getIbMenu();
+        /*ibMenu = MainActivity.getInstance().getIbMenu();
         ibBack = MainActivity.getInstance().getIbBack();
         if (layoutId > 0) {
             ibMenu.setVisibility(View.GONE);
@@ -151,7 +151,7 @@ public class SettingUnivFragment extends BasicFragment {
             public void onDismiss() {
                 btShowDropDown2.setBackgroundResource(R.drawable.ic_expand);
             }
-        });
+        });*/
 
         return root;
     }

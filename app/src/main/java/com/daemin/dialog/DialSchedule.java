@@ -123,11 +123,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_schedule);
         EventBus.getDefault().post(new SetBtPlusEvent(false));
-        setLayout();
-        if (getIntent() != null) {//widget에서 Dialog 호출한 경우
+        if (getIntent() != null) {
             widgetFlag = getIntent().getBooleanExtra("widgetFlag", false);
             overlapEnrollFlag = getIntent().getBooleanExtra("overlapEnrollFlag", false);
         }
+        setLayout();
         makeNormalList();
         window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(
@@ -136,61 +136,23 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
         lp = window.getAttributes();
-
         DisplayMetrics dm = getResources().getDisplayMetrics();
         lp.height = lp.WRAP_CONTENT;
-        lp.width = lp.MATCH_PARENT;
-        screenHeight = dm.heightPixels - lp.height;
-        /*if (enrollFlag) {
-            rlEdit.setVisibility(View.VISIBLE);
-            llEtName.setVisibility(View.GONE);
-            llTime.setVisibility(View.GONE);
-            btUniv.setVisibility(View.GONE);
-            btNormal.setVisibility(View.GONE);
-            btNew.setVisibility(View.GONE);
-            lp.height = lp.WRAP_CONTENT;
-            int xth = getIntent().getIntExtra("xth", 0);
-            int startHour = Integer.parseInt(Convert.YthToHourOfDay(getIntent().getIntExtra("yth", 0)));
-            int startMin = getIntent().getIntExtra("startMin", 0);
-            String wMonthDay = Dates.NOW.getwMonthDay(xth);
-            String[] tmp = wMonthDay.split("\\.");
-            int year;
-            int titleMonth = Dates.NOW.month;
-            int monthOfYear = Integer.parseInt(tmp[0]);
-            if (monthOfYear != titleMonth && titleMonth == 1) year = Dates.NOW.year - 1;
-            else year = Dates.NOW.year;
-            int dayOfMonth = Integer.parseInt(tmp[1]);
-            long startmillis = Dates.NOW.getDateMillis(
-                    year,
-                    monthOfYear,
-                    dayOfMonth,
-                    startHour, startMin);
-            MyTime mt;
-            if(overlapEnrollFlag){ //중복다이얼로그의 아이템 클릭시
-                mt = MyTimeRepo.getMyTimeForId(this,Long.parseLong(_id));
-            }else {
-                mt = MyTimeRepo.getEnrollTime(this, startmillis, xth, startHour);
+        if (!widgetFlag) {
+            SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
+            if (sbue != null) {
+                EventBus.getDefault().removeStickyEvent(sbue);
+                if (sbue.isSetVisable())
+                    btUniv.setVisibility(View.VISIBLE);
+                else
+                    btUniv.setVisibility(View.INVISIBLE);
             }
-            tvTimeCode.setText(mt.getTimecode());
-            tvTimeType.setText(String.valueOf(mt.getTimetype()));
-            etSavedName.setText(mt.getName());
-            etMemo.setText(mt.getMemo());
-            etPlace.setText(mt.getPlace());
-            try {
-                tvShare.setText(Convert.revertShare(mt.getShare()));
-            }catch(NullPointerException e){
-                tvShare.setText(Convert.revertShare(0));
-            }
+            lp.width = lp.MATCH_PARENT;
         }else{
-            if(overlapEnrollFlag) {
-                TimePos tp = TimePos.valueOf(
-                        Convert.getxyMerge(
-                                getIntent().getIntExtra("xth", 1),
-                                getIntent().getIntExtra("yth", 1)));
-                tp.setPosState(PosState.PAINT);
-                tp.setMin(0, 60);
-            }
-        }*/
+            btUniv.setVisibility(View.INVISIBLE);
+            lp.width = dm.widthPixels * 9/10;
+        }
+        screenHeight = dm.heightPixels - lp.height;
         if (overlapEnrollFlag) {
             TimePos tp = TimePos.valueOf(
                     Convert.getxyMerge(
@@ -565,6 +527,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 clearView();
                 creditSum = User.INFO.getCreditSum();
                 tvCreditSum.setText(creditSum);
+                User.INFO.overlapFlag = false;
                 DrawMode.CURRENT.setMode(0);
                 btColor.setVisibility(View.VISIBLE);
                 llNormal.setVisibility(View.VISIBLE);
@@ -938,22 +901,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         univFlag = false;
         depFlag = false;
         gradeFlag = false;
-        overlapEnrollFlag = false;
         subOverlapFlag = true;
         User.INFO.overlapFlag = false;
         colorName = Common.MAIN_COLOR;
         dy = mPosY = 0;
         dayIndex = new HashMap<>();
-        if (!widgetFlag) {
-            SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
-            if (sbue != null) {
-                EventBus.getDefault().removeStickyEvent(sbue);
-                if (sbue.isSetVisable())
-                    btUniv.setVisibility(View.VISIBLE);
-                else
-                    btUniv.setVisibility(View.INVISIBLE);
-            }
-        } else btUniv.setVisibility(View.INVISIBLE);
     }
 
     private Button btNormal, btUniv, btAddSchedule, btCancel, btEnter, btColor;

@@ -34,7 +34,7 @@ public class SettingLockFragment extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        ibMenu = MainActivity.getInstance().getIbMenu();
+        /*ibMenu = MainActivity.getInstance().getIbMenu();
         ibBack = MainActivity.getInstance().getIbBack();
         if (layoutId > 0) {
             ibMenu.setVisibility(View.GONE);
@@ -49,7 +49,7 @@ public class SettingLockFragment extends BasicFragment {
                 ibMenu.setVisibility(View.VISIBLE);
                 ibBack.setVisibility(View.GONE);
             }
-        });
+        });*/
 
         return root;
     }
