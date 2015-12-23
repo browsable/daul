@@ -651,14 +651,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     long nowMillis = Dates.NOW.getNowMillis();
                     switch (DrawMode.CURRENT.getMode()) {
                         case 0:
+                            if (etName.getText().toString().equals("")) {
+                                etName.requestFocus();
+                                etName.setHintTextColor(Color.RED);
+                                Toast.makeText(DialSchedule.this, getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
+                                updateWeekList();
+                                break;
+                            }
                             if (viewMode == 0) {
-                                if (etName.getText().toString().equals("")) {
-                                    etName.requestFocus();
-                                    etName.setHintTextColor(Color.RED);
-                                    Toast.makeText(DialSchedule.this, getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
-                                    updateWeekList();
-                                    break;
-                                }
                                 Common.stateFilter(viewMode);
                                 for (BottomNormalData d : normalList) {
                                     String[] tmp = d.getYMD().split("\\.");

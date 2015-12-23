@@ -123,11 +123,11 @@ public class MainActivity extends FragmentActivity {
         EventBus.getDefault().register(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState != null)
-            mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
         setLayout();
         setTitle();
         MyRequest.getVersionFromServer(this);
+        /*if (savedInstanceState != null)
+            mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");*/
     }
     /*private void screenshot() {
         Log.i("widget", "capture start");
@@ -220,7 +220,7 @@ public class MainActivity extends FragmentActivity {
             if (mDrawerLayout.isDrawerOpen(mLeftDrawer))
                 mDrawerLayout.closeDrawer(mLeftDrawer);
             mContent = newFragment;
-            ft.commit();
+            ft.commitAllowingStateLoss();
             if (!title.equals("")) tvTitle.setText(title);
         }
     }
@@ -323,7 +323,7 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.btTimetable:
                 EventBus.getDefault().post(new ClearNormalEvent());
-                //btMode.setVisibility(View.VISIBLE);
+                btMode.setVisibility(View.VISIBLE);
                 llTitle.setVisibility(View.VISIBLE);
                 tvTitle.setVisibility(View.GONE);
                 btPlus.setVisibility(View.VISIBLE);
@@ -446,7 +446,6 @@ public class MainActivity extends FragmentActivity {
             btMode.setChecked(true);
             EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
         }
-       // MyRequest.getVersionFromServer(this);
     }
     private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
     private InitSurfaceView initSurfaceView;
@@ -483,7 +482,6 @@ public class MainActivity extends FragmentActivity {
         else
             btPlus.setVisibility(View.GONE);
         dialogFlag = true;
-        System.gc();
     }
 
     public void onEventMainThread(BackKeyEvent e) {
