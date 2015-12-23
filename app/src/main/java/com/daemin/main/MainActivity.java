@@ -123,34 +123,12 @@ public class MainActivity extends FragmentActivity {
         EventBus.getDefault().register(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
+        if (savedInstanceState != null)
+            mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
         setLayout();
         setTitle();
         MyRequest.getVersionFromServer(this);
-        /*if (savedInstanceState != null)
-            mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");*/
     }
-    /*private void screenshot() {
-        Log.i("widget", "capture start");
-        Bitmap bm = initSurfaceView.getInitThread().captureImg();
-        try {
-            File path = new File(Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/");
-            if (!path.isDirectory()) {
-                path.mkdirs();
-            }
-            FileOutputStream out = new FileOutputStream(
-                    Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg");
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            bm.recycle();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        Log.i("widget", "capture end");
-        Intent intent = new Intent();
-        intent.setAction(Common.ACTION_UPDATE);
-        sendBroadcast(intent);
-    }*/
     public void setTitle() {
         switcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
@@ -356,6 +334,7 @@ public class MainActivity extends FragmentActivity {
                 changeFragment(SettingFragment.class, "설정");
                 break;
             case R.id.btPlus:
+                if(viewMode==1) EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
                 dialogFlag = false;
                 Intent i = new Intent(MainActivity.this, DialSchedule.class);
                 startActivity(i);

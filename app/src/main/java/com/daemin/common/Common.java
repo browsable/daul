@@ -119,7 +119,7 @@ public class Common {
 						}
 					}
 					break;
-				case 2:
+				case 1:
 					for(String t : tempTimePos){
 						DayOfMonthPos.valueOf(t).setPosState(DayOfMonthPosState.NO_PAINT);
 					}

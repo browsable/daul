@@ -56,6 +56,7 @@ import com.daemin.enumclass.User;
 import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.event.FinishDialogEvent;
+import com.daemin.event.PostGroupListEvent;
 import com.daemin.event.SetAlarmEvent;
 import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
@@ -147,6 +148,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 else
                     btUniv.setVisibility(View.INVISIBLE);
             }
+            univList = new ArrayList<>();
+            for (GroupListData.Data d :  User.INFO.groupListData) {
+                univList.add(d.getKo() + "/" + d.getTt_version());
+            }
             lp.width = lp.MATCH_PARENT;
         }else{
             btUniv.setVisibility(View.INVISIBLE);
@@ -163,7 +168,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
         window.setGravity(Gravity.BOTTOM);
         window.setAttributes(lp);
-
         if (viewMode == 0)
             updateWeekList();
         else
@@ -188,8 +192,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         DialWeekPicker dwp = new DialWeekPicker(DialSchedule.this, position, xth, startHour, startMin, endHour, endMin);
                         dwp.show();
                         break;
-                    case 2:
-                        DialMonthPicker dmp = new DialMonthPicker(DialSchedule.this);
+                    case 1:
+                        beforeYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
+                        String xth2 = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
+                        DialMonthPicker dmp = new DialMonthPicker(DialSchedule.this, position, xth2);
                         dmp.show();
                         break;
                 }
@@ -206,10 +212,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
                         removeWeek(Integer.parseInt(xth), Integer.parseInt(startHour), Integer.parseInt(endHour), Integer.parseInt(endMin));
                         break;
-                    case 2:
+                    case 1:
                         String tvYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
                         String xth2 = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-                        removeMonth(Integer.parseInt(xth2), Integer.parseInt(tvYMD.split("/")[1]));
+                        removeMonth(Integer.parseInt(xth2), Integer.parseInt(tvYMD.split("\\.")[1]));
                         break;
                 }
                 normalList.remove(pos);
@@ -295,8 +301,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
     public void updateMonthList() {
         normalList.clear();
-        int tmpXth = 0, tmpYth = 0;
-        String YMD = "";
+        int tmpXth, tmpYth;
+        String YMD ;
         for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
             if (DOMP.getPosState() == DayOfMonthPosState.PAINT) {
                 tmpXth = DOMP.getXth();
@@ -524,18 +530,20 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btNormal:
-                clearView();
-                creditSum = User.INFO.getCreditSum();
-                tvCreditSum.setText(creditSum);
-                User.INFO.overlapFlag = false;
-                DrawMode.CURRENT.setMode(0);
-                btColor.setVisibility(View.VISIBLE);
-                llNormal.setVisibility(View.VISIBLE);
-                llUniv.setVisibility(View.GONE);
-                btNormal.setTextColor(getResources().getColor(
-                        android.R.color.white));
-                btUniv.setTextColor(getResources().getColor(
-                        R.color.gray));
+                if(viewMode==0) {
+                    clearView();
+                    creditSum = User.INFO.getCreditSum();
+                    tvCreditSum.setText(creditSum);
+                    User.INFO.overlapFlag = false;
+                    DrawMode.CURRENT.setMode(0);
+                    btColor.setVisibility(View.VISIBLE);
+                    llNormal.setVisibility(View.VISIBLE);
+                    llUniv.setVisibility(View.GONE);
+                    btNormal.setTextColor(getResources().getColor(
+                            android.R.color.white));
+                    btUniv.setTextColor(getResources().getColor(
+                            R.color.gray));
+                }
                 break;
             case R.id.btUniv:
                 clearView();
@@ -546,12 +554,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         R.color.gray));
                 btUniv.setTextColor(getResources().getColor(
                         android.R.color.white));
-                univList = new ArrayList<>();
-                //임시목록
-                for (GroupListData.Data d :  User.INFO.groupListData) {
-                    univList.add(d.getKo() + "/" + d.getTt_version());
-                }
-                ArrayAdapter<String> univAdapter = new ArrayAdapter<>(DialSchedule.this, R.layout.dropdown_univ, univList);
+                univAdapter = new ArrayAdapter<>(DialSchedule.this, R.layout.dropdown_univ, univList);
                 SettingACTV(actvUniv, univAdapter);
                 actvUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View v,
@@ -576,6 +579,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             case R.id.btShowUniv:
                 if (!Common.isOnline())
                     Toast.makeText(DialSchedule.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                else{
+                    if(univList.size()==0)MyRequest.getGroupList(DialSchedule.this);
+                }
                 if (univFlag) {
                     actvUniv.dismissDropDown();
                     univFlag = false;
@@ -655,7 +661,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 etName.requestFocus();
                                 etName.setHintTextColor(Color.RED);
                                 Toast.makeText(DialSchedule.this, getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
-                                updateWeekList();
                                 break;
                             }
                             if (viewMode == 0) {
@@ -772,8 +777,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     case 0:
                         datp = new DialAddTimePicker(DialSchedule.this, Dates.NOW.getWData());
                         break;
-                    case 2:
-                        datp = new DialAddTimePicker(DialSchedule.this, Dates.NOW.mData, Dates.NOW.dayOfWeek);
+                    case 1:
+                        datp = new DialAddTimePicker(DialSchedule.this, Dates.NOW.getMData(), Dates.NOW.dayOfWeek);
                         break;
                 }
                 datp.show();
@@ -919,9 +924,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private HorizontalListAdapter hoAdapter;
     private Window window;
     private GradientDrawable gd;
-    private String colorName, subId, creditSum, groupName,DBVersion;
+    private String colorName, subId, creditSum, groupName,DBVersion, beforeYMD;
     private WindowManager.LayoutParams lp;
     private ArrayList<BottomNormalData> normalList;
+    private ArrayAdapter<String> univAdapter;
     private ArrayList<String> univList;
     private ArrayAdapter normalAdapter;
     private HashMap<Integer, Integer> dayIndex;//어느 요일이 선택됬는지
@@ -970,9 +976,15 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
     public void onEventMainThread(UpdateNormalEvent e) {
         normalList.remove(e.getPosition());
-        normalList.add(e.getPosition(), new BottomNormalData(
-                Dates.NOW.getwMonthDay(e.getXth()), e.getStartHour(), e.getStartMin(),
-                e.getEndHour(), e.getEndMin(), e.getXth()));
+        if(viewMode==0) {
+            normalList.add(e.getPosition(), new BottomNormalData(
+                    Dates.NOW.getwMonthDay(e.getXth()), e.getStartHour(), e.getStartMin(),
+                    e.getEndHour(), e.getEndMin(), e.getXth()));
+        }else{
+            normalList.add(e.getPosition(), new BottomNormalData(
+                    beforeYMD, e.getStartHour(), e.getStartMin(),
+                    e.getEndHour(), e.getEndMin(), e.getXth()));
+        }
         normalAdapter.notifyDataSetChanged();
     }
 
@@ -989,5 +1001,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             ex.printStackTrace();
         }
     }
-
+    public void onEventMainThread(PostGroupListEvent e){
+        univList.clear();
+        for (GroupListData.Data d :  User.INFO.groupListData) {
+            univList.add(d.getKo() + "/" + d.getTt_version());
+        }
+    }
 }

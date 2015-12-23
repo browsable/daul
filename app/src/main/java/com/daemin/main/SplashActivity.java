@@ -45,6 +45,7 @@ public class SplashActivity extends Activity{
 		initialize();
 		MyRequest.getGroupList(this);
 	}
+
 	private void initialize() {
 		Log.i("userPK",User.INFO.getUserPK());
 		if(User.INFO.getFirstFlag())

@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.daemin.data.GroupListData;
 import com.daemin.dialog.DialDefault;
 import com.daemin.enumclass.User;
+import com.daemin.event.PostGroupListEvent;
 import com.daemin.timetable.R;
 import com.navercorp.volleyextensions.request.Jackson2Request;
 
@@ -22,6 +23,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-07-02.
@@ -64,7 +67,6 @@ public class MyRequest {
     }
 
     public static final String GET_GROUP_LIST = "http://timenuri.com/ajax/app/get_univ_list";
-
     public static void getGroupList(final Context context) {
         Jackson2Request<GroupListData> jackson2Request = new Jackson2Request<>(
                 Request.Method.POST, GET_GROUP_LIST, GroupListData.class,
@@ -72,7 +74,7 @@ public class MyRequest {
                     @Override
                     public void onResponse(GroupListData response) {
                         User.INFO.groupListData = response.getData();
-
+                        EventBus.getDefault().post(new PostGroupListEvent());
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -82,7 +84,6 @@ public class MyRequest {
         });
         requestQueue.add(jackson2Request);
     }
-
     /*
     public static ArrayList<String> getGroupListFromLocal() {
         ArrayList<String> groupListFomServer = new ArrayList<>();

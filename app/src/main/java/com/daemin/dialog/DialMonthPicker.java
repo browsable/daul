@@ -15,8 +15,18 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
+import com.daemin.common.Common;
+import com.daemin.common.Convert;
+import com.daemin.data.BottomNormalData;
+import com.daemin.enumclass.DayOfMonthPos;
+import com.daemin.enumclass.DayOfMonthPosState;
+import com.daemin.event.ClearNormalEvent;
+import com.daemin.event.UpdateNormalEvent;
 import com.daemin.timetable.R;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-09-08.
@@ -51,15 +61,23 @@ public class DialMonthPicker extends Dialog {
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EventBus.getDefault().post(new UpdateNormalEvent(
+                        String.valueOf(npStartHour.getValue()),
+                        Convert.IntToString(npStartMin.getValue()),
+                        String.valueOf(npEndHour.getValue()),
+                        Convert.IntToString(npEndMin.getValue()),
+                        Integer.parseInt(xth),position));
                 cancel();
             }
         });
     }
     Context context;
-    public DialMonthPicker(Context context) {
+    public DialMonthPicker(Context context, int position, String xth) {
         // Dialog 배경을 투명 처리 해준다.
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
+        this.xth = xth;
+        this.position = position;
     }
     private void setNP() {
         npStartHour.setMaxValue(22);
@@ -185,5 +203,7 @@ public class DialMonthPicker extends Dialog {
     private NumberPicker npStartMin;
     private NumberPicker npEndHour;
     private NumberPicker npEndMin;
+    private String xth;
+    private int position;
 
 }

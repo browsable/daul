@@ -86,9 +86,10 @@ public class DialAddTimePicker extends Dialog {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(context, MD[npMD.getValue()], Toast.LENGTH_SHORT).show();
-                if (MD.length == 7) weekSetting(npStartHour.getValue(),npStartMin.getValue(),
-                        npEndHour.getValue(),npEndMin.getValue());
-                else monthSetting(MD[npMD.getValue()]);
+                if (MD.length == 7) {
+                    weekSetting(npStartHour.getValue(), npStartMin.getValue(),
+                            npEndHour.getValue(), npEndMin.getValue());
+                }else monthSetting(MD[npMD.getValue()]);
             }
         });
     }
@@ -231,10 +232,10 @@ public class DialAddTimePicker extends Dialog {
             for (int i = 0; i < tpSize; i++) {
                 if (i == 0) {
                     tp[i].setMin(startMin, 60);
-                    tp[i].setPosState(PosState.ENROLL);
+                    tp[i].setPosState(PosState.PAINT);
                 } else if (i == tpSize - 1) {
                     tp[i].setMin(0, endMin);
-                    tp[i].setPosState(PosState.ENROLL);
+                    tp[i].setPosState(PosState.PAINT);
                 } else {
                     tp[i].setPosState(PosState.PAINT);
                 }
@@ -244,7 +245,7 @@ public class DialAddTimePicker extends Dialog {
         }else{
             TimePos tp = TimePos.valueOf(Convert.getxyMerge(2 * npMD.getValue() + 1, Convert.HourOfDayToYth(startHour)));
             tp.setMin(startMin, endMin);
-            tp.setPosState(PosState.ENROLL);
+            tp.setPosState(PosState.PAINT);
         }
         EventBus.getDefault().post(new BottomNormalData(MD[npMD.getValue()],
                 String.valueOf(npStartHour.getValue()),
@@ -255,7 +256,7 @@ public class DialAddTimePicker extends Dialog {
         cancel();
     }
     private void monthSetting(String day) {
-        String[] tmp = day.split("/");
+        String[] tmp = day.split("\\.");
         int dayCnt = Integer.parseInt(tmp[1]) + dayOfWeekOfLastMonth;
         int xth = (dayCnt+1)%7;
         if(xth==0) xth=7;

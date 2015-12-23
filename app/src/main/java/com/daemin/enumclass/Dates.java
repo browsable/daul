@@ -65,6 +65,13 @@ public enum Dates {
         wData[6] = mdOfSat;
         return wData;
     }
+    public String[] getMData(){
+        String[] MData = new String[dayNumOfMonth];
+        for(int i=0; i<dayNumOfMonth; i++){
+            MData[i] =month+"."+mData[i+dayOfWeek+1];
+        }
+        return MData;
+    }
     public String getwMonthDay(int xth) {
         switch (xth) {
             case 1:
