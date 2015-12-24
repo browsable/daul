@@ -25,6 +25,7 @@ public enum User {
         userPK = getUserPK();
         groupPK = getGroupPK();
         weekData=new ArrayList<>();
+        monthData=new ArrayList<>();
         groupListData=new ArrayList<>();
         overlapFlag = false;
         textSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_xs);
@@ -39,6 +40,7 @@ public enum User {
     public String userPK;
     public String appVer;//어플버전;
     public List<MyTime> weekData;
+    public List<MyTime> monthData;
     public List<GroupListData.Data> groupListData;
     public int groupPK, textSize, dateSize,intervalSize;
     public boolean overlapFlag;

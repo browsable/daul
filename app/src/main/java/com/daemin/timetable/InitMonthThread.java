@@ -12,10 +12,13 @@ import com.daemin.common.Convert;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
+import com.daemin.enumclass.PosState;
+import com.daemin.enumclass.User;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.main.MainActivity;
 
 import de.greenrobot.event.EventBus;
+import timedao.MyTime;
 
 @SuppressLint("DefaultLocale")
 public class InitMonthThread extends InitThread {
@@ -35,6 +38,7 @@ public class InitMonthThread extends InitThread {
 	public InitMonthThread(SurfaceHolder holder, Context context) {
 		this.mholder = holder;
 		this.context = context;
+		Common.fetchMonthData();
 		tempxth = 0;
 		tempyth = 0;
 		int textSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_l);
@@ -64,33 +68,6 @@ public class InitMonthThread extends InitThread {
 			tx = 7;
 		}
 	}
-		/*int cnt =0;
-		for(int i = Dates.NOW.dayOfWeek+1; i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1; i++){
-			++cnt;
-		}
-		String[] mData = new String[cnt];
-		int j =0;
-		for(int i = dayOfWeekOfLastMonth+1; i<dayOfWeekOfLastMonth+dayNumOfMonth+1; i++){
-			String str = Dates.NOW.setTitleYearMonth();
-			mData[j] = str.substring(6,str.length()-1)+"/"+monthData[i];
-			j++;
-		}
-	}
-	public void postMonthData(){
-		int cnt =0;
-		for(int i = Dates.NOW.dayOfWeek+1; i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1; i++){
-			++cnt;
-		}
-		String[] mData = new String[cnt];
-		int j =0;
-		for(int i = Dates.NOW.dayOfWeek+1; i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1; i++){
-			String str = MainActivity.getInstance().getBarText();
-			mData[j] = str.substring(6,str.length()-1)+"/"+mData[i];
-			j++;
-		}
-		//Dates.NOW.setDayOfWeekOfLastMonth(Dates.NOW.dayOfWeek);
-		//Dates.NOW.setmData(mData);
-	}*/
 	public void setRunning(boolean isLoop) {
 		this.isLoop = isLoop;
 	}
@@ -150,12 +127,21 @@ public class InitMonthThread extends InitThread {
 			DOMP.setPosState(DayOfMonthPosState.PAINT);
 			if(!Common.getTempTimePos().contains(DOMP.name()))
 			Common.getTempTimePos().add(DOMP.name());
-		} else {
+		} else if(DOMP.getPosState() == DayOfMonthPosState.PAINT){
 			DOMP.setPosState(DayOfMonthPosState.NO_PAINT);
+		}else{
+			//월에서 일정 등록한 영역 터치시
 		}
 		return;
 	}
-
+	/*public void fetchMonthData(){
+		for(MyTime mt :  User.INFO.monthData){
+			rp.setColor(Color.parseColor(mt.getColor()));
+			rp.setAlpha(130);
+			canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + intervalSize) + (2 * height / 32) * mt.getStartmin() / 60,
+					width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);
+		}
+	}*/
 	public void initScreen() {
 		float[] hp_hour = {
 				// 가로선 : 1시간 간격

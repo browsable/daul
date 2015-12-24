@@ -169,6 +169,14 @@ public class InitWeekThread extends InitThread {
         }
         return;
     }
+    public void fetchWeekData(){
+        for(MyTime mt :  User.INFO.weekData){
+            rp.setColor(Color.parseColor(mt.getColor()));
+            rp.setAlpha(130);
+            canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + intervalSize) + (2 * height / 32) * mt.getStartmin() / 60,
+                    width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);
+        }
+    }
     public void initScreen() {
         float[] hp_hour = {
                 // 가로선 : 1시간 간격
@@ -220,13 +228,5 @@ public class InitWeekThread extends InitThread {
         hp.setAlpha(40);
         if(Dates.NOW.isToday)canvas.drawRect(width * (2 * dayOfWeek + 1) / 15, ((height * 2) - 10) / 64 + intervalSize, width * (2 * dayOfWeek + 3) / 15, height * 62 / 64 + intervalSize, hp);
         hp.setAlpha(100);
-    }
-    public void fetchWeekData(){
-        for(MyTime mt :  User.INFO.weekData){
-            rp.setColor(Color.parseColor(mt.getColor()));
-            rp.setAlpha(130);
-            canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + intervalSize) + (2 * height / 32) * mt.getStartmin() / 60,
-                    width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);
-        }
     }
 }

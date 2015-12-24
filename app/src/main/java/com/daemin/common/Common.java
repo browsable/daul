@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.daemin.data.BottomNormalData;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
@@ -19,6 +20,7 @@ import com.daemin.repository.MyTimeRepo;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import de.greenrobot.event.EventBus;
 import timedao.MyTime;
 
 
@@ -76,38 +78,12 @@ public class Common {
 			week_endYear=week_startYear=Dates.NOW.year;
 		long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
 		long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
+		User.INFO.monthData.clear();
 		User.INFO.weekData.clear();
 		User.INFO.weekData.addAll(MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies));
-
 		for(MyTime mt :User.INFO.weekData){
 			addWeek(mt.getName(),mt.getDayofweek(), mt.getStarthour(), mt.getEndhour(), mt.getEndmin());
 		}
-	}
-	public static void fetchMonthData(){
-		/*for (TimePos ETP : TimePos.values()) {
-			ETP.setPosState(PosState.NO_PAINT);
-			ETP.setMin(0, 60);
-			ETP.setInitTitle();
-		}
-		int week_startMonth = Dates.NOW.monthOfSun;
-		int week_startDay = Dates.NOW.dayOfSun;
-		int week_endMonth = Dates.NOW.monthOfSat;
-		int week_endDay = Dates.NOW.dayOfSat;
-		int week_startYear;
-		int week_endYear;
-		if(week_startMonth==12&&week_endMonth==1){
-			week_endYear= Dates.NOW.year;
-			week_startYear=week_endYear-1;
-		}else
-			week_endYear=week_startYear=Dates.NOW.year;
-		long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
-		long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
-		User.INFO.weekData.clear();
-		User.INFO.weekData.addAll(MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies));
-
-		for(MyTime mt :User.INFO.weekData){
-			addWeek(mt.getName(),mt.getDayofweek(), mt.getStarthour(), mt.getEndhour(), mt.getEndmin());
-		}*/
 	}
 	public static void addWeek(String title, int xth, int startHour,int endHour, int endMin){
 		if(endMin!=0) ++endHour;
@@ -118,6 +94,32 @@ public class Common {
 			tp[j].setPosState(PosState.ENROLL);
 			if(i==startHour)tp[j].setTitle(title);
 			++j;
+		}
+	}
+	public static void fetchMonthData(){
+		for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
+			DOMP.setPosState(DayOfMonthPosState.NO_PAINT);
+			DOMP.setInitTitle();
+		}
+		int year = Dates.NOW.year;
+		int month = Dates.NOW.month;
+		long month_startMillies = Dates.NOW.getDateMillis(year, month, 1, 8, 0);
+		long month_endMillies = Dates.NOW.getDateMillis(year, month, Dates.NOW.dayNumOfMonth, 23, 0);
+		User.INFO.weekData.clear();
+		User.INFO.monthData.clear();
+		User.INFO.monthData.addAll(MyTimeRepo.getMonthTimes(AppController.getInstance(), month_startMillies, month_endMillies));
+		for (MyTime mt :User.INFO.monthData){
+			addMonth(mt.getName(), mt.getDayofweek(), mt.getDayofmonth());
+		}
+	}
+	public static void addMonth(String title, int xth, int dayOfMonth){
+		int dayCnt = dayOfMonth + Dates.NOW.dayOfWeek;
+		int yth = dayCnt/7+1;
+		xth = Convert.wXthTomXth(xth);
+		DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
+		if (DOMP.getPosState() == DayOfMonthPosState.NO_PAINT) {
+			DOMP.setPosState(DayOfMonthPosState.ENROLL);
+			DOMP.setTitle(title);
 		}
 	}
 	public static boolean isTableEmpty(){

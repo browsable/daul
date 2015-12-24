@@ -16,12 +16,14 @@ public enum DayOfMonthPos {
     private DayOfMonthPosState posState;
     private int xth;
     private int yth;
+    private String title;
     DayOfMonthPos() {
     }
     DayOfMonthPos(int xth, int yth) {
         this.xth = xth;
         this.yth = yth;
         this.posState = DayOfMonthPosState.NO_PAINT;
+        title ="";
     }
     public int getXth() {
         return xth;
@@ -32,12 +34,17 @@ public enum DayOfMonthPos {
     public void setPosState(DayOfMonthPosState posState) {
         this.posState = posState;
     }
-
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setInitTitle(){
+        this.title="";
+    }
     public DayOfMonthPosState getPosState() {
         return posState;
     }
 
     public void drawTimePos(Canvas canvas, int width, int height) {
-        posState.drawTimePos(canvas, width, height, xth, yth);
+        posState.drawTimePos(canvas, width, height,title, xth, yth);
     }
 }

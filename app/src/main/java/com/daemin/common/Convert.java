@@ -180,6 +180,33 @@ public class Convert {
 		}
 		return wXth;
 	}
+	public static int wXthTomXth(int wXth) {
+		int mXth=0;
+		switch (wXth) {
+			case 1:
+				mXth = 1;
+				break;
+			case 3:
+				mXth = 2;
+				break;
+			case 5:
+				mXth = 3;
+				break;
+			case 7:
+				mXth = 4;
+				break;
+			case 9:
+				mXth = 5;
+				break;
+			case 11:
+				mXth = 6;
+				break;
+			case 13:
+				mXth = 7;
+				break;
+		}
+		return mXth;
+	}
 	public static int Share(String grade) {
 		int index=0;
 		switch (grade) {

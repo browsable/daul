@@ -778,7 +778,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         datp = new DialAddTimePicker(DialSchedule.this, Dates.NOW.getWData());
                         break;
                     case 1:
-                        datp = new DialAddTimePicker(DialSchedule.this, Dates.NOW.getMData(), Dates.NOW.dayOfWeek);
+                        datp = new DialAddTimePicker(DialSchedule.this, Dates.NOW.getMData());
                         break;
                 }
                 datp.show();

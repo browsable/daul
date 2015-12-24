@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.data.BottomNormalData;
+import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.PosState;
@@ -35,7 +36,6 @@ import de.greenrobot.event.EventBus;
 public class DialAddTimePicker extends Dialog {
     Context context;
     String[] MD;
-    int dayOfWeekOfLastMonth;
     private Button btDialCancel;
     private Button btDialSetting;
     private NumberPicker npMD;
@@ -48,13 +48,6 @@ public class DialAddTimePicker extends Dialog {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
         this.MD = MD;
-    }
-
-    public DialAddTimePicker(Context context, String[] MD, int dayOfWeekOfLastMonth) {
-        super(context, android.R.style.Theme_Holo_Light_Dialog);
-        this.context = context;
-        this.MD = MD;
-        this.dayOfWeekOfLastMonth = dayOfWeekOfLastMonth;
     }
 
     @Override
@@ -257,7 +250,7 @@ public class DialAddTimePicker extends Dialog {
     }
     private void monthSetting(String day) {
         String[] tmp = day.split("\\.");
-        int dayCnt = Integer.parseInt(tmp[1]) + dayOfWeekOfLastMonth;
+        int dayCnt = Integer.parseInt(tmp[1]) + Dates.NOW.dayOfWeek;
         int xth = (dayCnt+1)%7;
         if(xth==0) xth=7;
         int yth = dayCnt/7+1;
