@@ -273,8 +273,8 @@ public class DialAddTimePicker extends Dialog {
                     Convert.IntToString(npEndMin.getValue()),
                     xth));
             cancel();
-        }else{
+        }/*else{
             Toast.makeText(context, context.getResources().getString(R.string.univ_overlap), Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 }

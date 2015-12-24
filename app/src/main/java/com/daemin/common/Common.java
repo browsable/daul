@@ -83,6 +83,32 @@ public class Common {
 			addWeek(mt.getName(),mt.getDayofweek(), mt.getStarthour(), mt.getEndhour(), mt.getEndmin());
 		}
 	}
+	public static void fetchMonthData(){
+		/*for (TimePos ETP : TimePos.values()) {
+			ETP.setPosState(PosState.NO_PAINT);
+			ETP.setMin(0, 60);
+			ETP.setInitTitle();
+		}
+		int week_startMonth = Dates.NOW.monthOfSun;
+		int week_startDay = Dates.NOW.dayOfSun;
+		int week_endMonth = Dates.NOW.monthOfSat;
+		int week_endDay = Dates.NOW.dayOfSat;
+		int week_startYear;
+		int week_endYear;
+		if(week_startMonth==12&&week_endMonth==1){
+			week_endYear= Dates.NOW.year;
+			week_startYear=week_endYear-1;
+		}else
+			week_endYear=week_startYear=Dates.NOW.year;
+		long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
+		long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
+		User.INFO.weekData.clear();
+		User.INFO.weekData.addAll(MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies));
+
+		for(MyTime mt :User.INFO.weekData){
+			addWeek(mt.getName(),mt.getDayofweek(), mt.getStarthour(), mt.getEndhour(), mt.getEndmin());
+		}*/
+	}
 	public static void addWeek(String title, int xth, int startHour,int endHour, int endMin){
 		if(endMin!=0) ++endHour;
 		TimePos[] tp = new TimePos[endHour - startHour];

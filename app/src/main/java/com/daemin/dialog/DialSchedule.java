@@ -663,47 +663,47 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 Toast.makeText(DialSchedule.this, getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
                                 break;
                             }
-                            if (viewMode == 0) {
-                                Common.stateFilter(viewMode);
-                                for (BottomNormalData d : normalList) {
-                                    String[] tmp = d.getYMD().split("\\.");
-                                    int year;
-                                    int titleMonth = Dates.NOW.month;
-                                    int monthOfYear = Integer.parseInt(tmp[0]);
-                                    if (monthOfYear != titleMonth && titleMonth == 1)
-                                        year = Dates.NOW.year - 1;
-                                    else year = Dates.NOW.year;
-                                    int dayOfMonth = Integer.parseInt(tmp[1]);
-                                    int startHour = Integer.parseInt(d.getStartHour());
-                                    int startMin = Integer.parseInt(d.getStartMin());
-                                    int endHour = Integer.parseInt(d.getEndHour());
-                                    int endMin = Integer.parseInt(d.getEndMin());
-                                    long startMillis = Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, startMin);
-                                    long endMillis = Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, endHour, endMin);
-                                    MyTime myTime = new MyTime(null,
-                                            String.valueOf(nowMillis), 0,
-                                            etName.getText().toString(),
-                                            year, monthOfYear, dayOfMonth,
-                                            d.getXth(), startHour, startMin, endHour, endMin,
-                                            startMillis, endMillis - 1,
-                                            etMemo.getText().toString(),
-                                            etPlace.getText().toString(),
-                                            User.INFO.latitude, User.INFO.longitude,
-                                            Convert.Share(tvShare.getText().toString()),
-                                            Convert.Alarm(startMillis, tvAlarm.getText().toString()),
-                                            "10:10",
-                                            colorName);
-                                    MyTimeRepo.insertOrUpdate(this, myTime);
-                                    Common.fetchWeekData();
+                            Common.stateFilter(viewMode);
+                            for (BottomNormalData d : normalList) {
+                                String[] tmp = d.getYMD().split("\\.");
+                                int year;
+                                int titleMonth = Dates.NOW.month;
+                                int monthOfYear = Integer.parseInt(tmp[0]);
+                                if (monthOfYear != titleMonth && titleMonth == 1)
+                                    year = Dates.NOW.year - 1;
+                                else year = Dates.NOW.year;
+                                int dayOfMonth = Integer.parseInt(tmp[1]);
+                                int startHour = Integer.parseInt(d.getStartHour());
+                                int startMin = Integer.parseInt(d.getStartMin());
+                                int endHour = Integer.parseInt(d.getEndHour());
+                                int endMin = Integer.parseInt(d.getEndMin());
+                                int xth;
+                                if(viewMode==0) xth=d.getXth();
+                                else xth = Convert.mXthTowXth(d.getXth());
+                                long startMillis = Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, startMin);
+                                long endMillis = Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, endHour, endMin);
+                                MyTime myTime = new MyTime(null,
+                                        String.valueOf(nowMillis), 0,
+                                        etName.getText().toString(),
+                                        year, monthOfYear, dayOfMonth,
+                                        xth, startHour, startMin, endHour, endMin,
+                                        startMillis, endMillis - 1,
+                                        etMemo.getText().toString(),
+                                        etPlace.getText().toString(),
+                                        User.INFO.latitude, User.INFO.longitude,
+                                        Convert.Share(tvShare.getText().toString()),
+                                        Convert.Alarm(startMillis, tvAlarm.getText().toString()),
+                                        "10:10",
+                                        colorName);
+                                MyTimeRepo.insertOrUpdate(this, myTime);
                                 }
                                 normalList.clear();
                                 normalAdapter.notifyDataSetChanged();
                                 etName.setText("");
                                 etMemo.setText("");
                                 etPlace.setText("");
-                            } else {
-
-                            }
+                                if(viewMode==0)Common.fetchWeekData();
+                                else Common.fetchMonthData();
                             break;
                         case 1:
                             Common.stateFilter(viewMode);

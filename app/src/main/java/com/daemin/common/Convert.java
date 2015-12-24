@@ -153,6 +153,33 @@ public class Convert {
 				return "";
 		}
 	}
+	public static int mXthTowXth(int mXth) {
+		int wXth=0;
+		switch (mXth) {
+			case 1:
+				wXth = 1;
+				break;
+			case 2:
+				wXth = 3;
+				break;
+			case 3:
+				wXth = 5;
+				break;
+			case 4:
+				wXth = 7;
+				break;
+			case 5:
+				wXth = 9;
+				break;
+			case 6:
+				wXth = 11;
+				break;
+			case 7:
+				wXth = 13;
+				break;
+		}
+		return wXth;
+	}
 	public static int Share(String grade) {
 		int index=0;
 		switch (grade) {
