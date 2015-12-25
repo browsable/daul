@@ -17,6 +17,7 @@ import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
+import com.daemin.event.CreateDialEvent;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.event.SetCreditEvent;
 
@@ -131,7 +132,8 @@ public class InitWeekThread extends InitThread {
                     ETP.setPosState(PosState.NO_PAINT);
                     Common.getTempTimePos().remove(ETP.name());
                 }else{
-                    //EventBus.getDefault().post(new FinishDialogEvent());
+                    //등록된 다음주 시간표를 누를 때 위젯 업데이트로 날짜가 변동되는 현상을 막기위해 dialflag를 false로 해줌
+                    EventBus.getDefault().post(new CreateDialEvent(false));
                     Intent i = new Intent(context, DialEnroll.class);
                     i.putExtra("xth", xth);
                     i.putExtra("yth", tmpYth);
@@ -150,20 +152,14 @@ public class InitWeekThread extends InitThread {
                     EventBus.getDefault().post(new SetCreditEvent());
                 }
                 if (ETP.getPosState() == PosState.ENROLL) {
-                    //EventBus.getDefault().post(new FinishDialogEvent());
+                    //등록된 다음주 시간표를 누를 때 위젯 업데이트로 날짜가 변동되는 현상을 막기위해 dialflag를 false로 해줌
+                    EventBus.getDefault().post(new CreateDialEvent(false));
                     Intent i = new Intent(context, DialEnroll.class);
                     i.putExtra("xth", xth);
                     i.putExtra("yth", tmpYth);
                     i.putExtra("startMin", ETP.getStartMin());
                     i.putExtra("endMin", ETP.getEndMin());
                     context.startActivity(i);
-                    /*EventBus.getDefault().post(new FinishDialogEvent());
-                    Intent i = new Intent(context, DialSchedule.class);
-                    i.putExtra("enrollFlag",true);
-                    i.putExtra("xth",xth);
-                    i.putExtra("yth",tmpYth);
-                    i.putExtra("startMin",ETP.getStartMin());
-                    context.startActivity(i);*/
                 }
                 break;
         }

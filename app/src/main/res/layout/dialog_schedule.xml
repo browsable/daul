@@ -13,54 +13,6 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/margin_s">
 
-        <RelativeLayout
-            android:id="@+id/rlEdit"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:visibility="gone">
-
-            <EditText
-                android:id="@+id/etSavedName"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/margin_xxxs"
-                android:background="@color/transparency"
-                android:ellipsize="end"
-                android:enabled="false"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/textsize_l"
-                android:textStyle="bold"
-                android:paddingRight="36dp"
-                />
-            <ToggleButton
-                android:id="@+id/btEdit"
-                android:layout_width="28dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/margin_l"
-                android:layout_marginBottom="@dimen/margin_default"
-                android:background="@drawable/ic_edit"
-                android:textOff=""
-                android:textOn=""
-                android:layout_alignTop="@+id/etSavedName"
-                android:layout_alignBottom="@+id/etSavedName"
-                android:layout_alignRight="@+id/etSavedName"
-                android:scaleType="fitXY" />
-            <TextView
-                android:id="@+id/tvTimeCode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"/>
-            <TextView
-                android:id="@+id/tvTimeType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"/>
-        </RelativeLayout>
-
         <Button
             android:id="@+id/btNormal"
             android:layout_width="match_parent"

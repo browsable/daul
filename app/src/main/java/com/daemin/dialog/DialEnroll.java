@@ -10,7 +10,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -22,6 +21,7 @@ import com.daemin.common.Convert;
 import com.daemin.data.EnrollData;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.TimePos;
+import com.daemin.event.CreateDialEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.repository.MyTimeRepo;
@@ -42,10 +42,12 @@ public class DialEnroll extends Activity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        EventBus.getDefault().post(new CreateDialEvent(true));
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_enroll);
         Window window = getWindow();
@@ -114,11 +116,12 @@ public class DialEnroll extends Activity {
         });
         lv = (ListView) findViewById(R.id.lv);
         enrollAdapter = new EnrollAdapter(DialEnroll.this, mtList);
-        lv.setAdapter(enrollAdapter);
+        lv.setAdapter(enrollAdapter);/*
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*TextView tv = (TextView) view.findViewById(R.id.tvId);
+                Toast.makeText(DialEnroll.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
+                *//*TextView tv = (TextView) view.findViewById(R.id.tvId);
                 Intent i = new Intent(DialEnroll.this, DialSchedule.class);
                 i.putExtra("enrollFlag", true);
                 i.putExtra("overlapEnrollFlag", true);
@@ -127,9 +130,9 @@ public class DialEnroll extends Activity {
                 i.putExtra("yth", yth);
                 i.putExtra("startMin", startMin);
                 startActivity(i);
-                finish();*/
+                finish();*//*
             }
-        });
+        });*/
     }
     private void enrollMyTime(List<MyTime> mt){
         for(MyTime m : mt){

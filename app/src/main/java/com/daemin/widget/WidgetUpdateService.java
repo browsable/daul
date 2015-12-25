@@ -198,6 +198,7 @@ public class WidgetUpdateService extends Service {
         views.setViewVisibility(R.id.btWeek, View.GONE);
         views.setViewVisibility(R.id.btMonth, View.GONE); //Visible
         Dates.NOW.setWeekData();
+
         views.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
         views.setTextViewText(R.id.tvDate, setMonthWeek());
         iv4.layout(0, 0, deviceWidth, deviceHeight);

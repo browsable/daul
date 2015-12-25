@@ -75,7 +75,12 @@
             android:layout_marginRight="@dimen/margin_l"
             android:visibility="gone"
             android:background="@drawable/ic_invite" />
-
+        <Button
+            android:id="@+id/btEdit"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="@dimen/margin_l"
+            android:background="@drawable/ic_write" />
         <Button
             android:id="@+id/btRemove"
             android:layout_width="24dp"

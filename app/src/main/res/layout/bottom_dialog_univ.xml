@@ -40,13 +40,13 @@
                     android:textSize="@dimen/textsize_l" />
 
                 <requestFocus />
-
-                <View
+                <ToggleButton
                     android:id="@+id/btShowUniv"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:textOff=""
+                    android:textOn=""
                     android:background="@drawable/ic_expand" />
-
                 <Button
                     android:id="@+id/btEnter"
                     android:layout_width="24dp"

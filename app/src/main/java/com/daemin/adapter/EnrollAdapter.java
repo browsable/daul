@@ -1,34 +1,24 @@
 package com.daemin.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.daemin.common.Common;
-import com.daemin.community.github.Person;
 import com.daemin.data.EnrollData;
-import com.daemin.data.EventlistData;
-import com.daemin.enumclass.PosState;
-import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.RemoveEnrollEvent;
-import com.daemin.event.SetBtPlusEvent;
-import com.daemin.event.SetBtUnivEvent;
 import com.daemin.event.SetCreditEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
+
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import timedao.MyTime;
 
 /**
  * Created by HOME on 2015-09-11.
@@ -63,6 +53,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
             holder.tvCredit = (TextView) convertView.findViewById(R.id.tvCredit);
             holder.btCommunity  = (Button) convertView.findViewById(R.id.btCommunity);
             holder.btInvite  = (Button) convertView.findViewById(R.id.btInvite);
+            holder.btEdit = (Button) convertView.findViewById(R.id.btEdit);
             holder.btRemove  = (Button) convertView.findViewById(R.id.btRemove);
             convertView.setTag(holder);
         } else {
@@ -93,6 +84,12 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
 
             }
         });
+        holder.btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         holder.btRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +108,6 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
     }
     private static class Holder {
         public TextView tvTime, tvTitle, tvMemo, tvPlace, tvId, tvTimeCode, tvTimeType, tvCredit;
-        public Button btCommunity, btInvite, btRemove;
+        public Button btCommunity, btInvite, btEdit, btRemove;
     }
 }

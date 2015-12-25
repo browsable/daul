@@ -12,21 +12,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -41,11 +36,11 @@ import com.daemin.community.CommunityFragment2;
 import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
-import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.event.ClearNormalEvent;
+import com.daemin.event.CreateDialEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
@@ -301,7 +296,7 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.btTimetable:
                 EventBus.getDefault().post(new ClearNormalEvent());
-                btMode.setVisibility(View.VISIBLE);
+                //btMode.setVisibility(View.VISIBLE);
                 llTitle.setVisibility(View.VISIBLE);
                 tvTitle.setVisibility(View.GONE);
                 btPlus.setVisibility(View.VISIBLE);
@@ -462,7 +457,10 @@ public class MainActivity extends FragmentActivity {
             btPlus.setVisibility(View.GONE);
         dialogFlag = true;
     }
-
+    public void onEventMainThread(CreateDialEvent e) {
+        if(e.isDialFlag()) dialogFlag=true;
+        else dialogFlag = false;
+    }
     public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();
         if(e.getVisibleBt()!=null) {

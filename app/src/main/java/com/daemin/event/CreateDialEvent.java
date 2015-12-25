@@ -1,0 +1,16 @@
+package com.daemin.event;
+
+/**
+ * Created by hernia on 2015-10-16.
+ */
+public class CreateDialEvent {
+    boolean dialFlag;
+
+    public CreateDialEvent(boolean dialFlag) {
+        this.dialFlag = dialFlag;
+    }
+
+    public boolean isDialFlag() {
+        return dialFlag;
+    }
+}
