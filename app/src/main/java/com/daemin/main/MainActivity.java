@@ -394,9 +394,9 @@ public class MainActivity extends FragmentActivity {
         dialogFlag = true;
         DrawMode.CURRENT.setMode(0);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
                 GravityCompat.START);
+        mDrawerLayout.setScrimColor(getResources().getColor(R.color.middlegray));
         widget5_5 = User.INFO.getWidget5_5();
         widget4_4 = User.INFO.getWidget4_4();
         dayIndex = 0;

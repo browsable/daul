@@ -39,6 +39,11 @@ public class MyTimeRepo {
     public static List<MyTime> getAllMyTime(Context context) {
         return getMyTimeDao(context).loadAll();
     }
+    public static List<MyTime> getMyTimeWithTimeCode(Context context, String timeCode){
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+        qb.where(MyTimeDao.Properties.Timecode.eq(timeCode));
+        return qb.list();
+    }
     public static List<MyTime> getWeekTimes(Context context, long week_startMillies, long week_endMillies){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
         qb.where(qb.or(MyTimeDao.Properties.Startmillis.between(week_startMillies, week_endMillies),

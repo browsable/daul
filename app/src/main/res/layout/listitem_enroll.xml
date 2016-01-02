@@ -23,35 +23,44 @@
                 android:singleLine="true"
                 android:textSize="@dimen/textsize_xl"
                 android:text="13:00 ~ 15:00" />
-            <TextView
-                android:id="@+id/tvTitle"
+            <EditText
+                android:id="@+id/etTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:ellipsize="marquee"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/margin_s"
+                android:ellipsize="end"
+                android:enabled="false"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="test"
                 android:textSize="@dimen/textsize_xl"
-                android:textStyle="bold" />
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:background="@color/transparency"
+                />
         </LinearLayout>
-        <TextView
-            android:id="@+id/tvPlace"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/etPlace"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:text="- test"
+            android:layout_marginTop="@dimen/margin_s"
+            android:textSize="@dimen/textsize_default"
+            android:enabled="false"
             android:ellipsize="end"
+            android:textColor="@android:color/black"
+            android:background="@color/transparency"
             android:maxLines="1" />
 
-        <TextView
-            android:id="@+id/tvMemo"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/etMemo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:text="- test"
+            android:layout_marginTop="@dimen/margin_xs"
+            android:textSize="@dimen/textsize_default"
+            android:enabled="false"
             android:ellipsize="end"
+            android:textColor="@android:color/black"
+            android:background="@color/transparency"
             android:maxLines="7" />
     </LinearLayout>
 
@@ -60,7 +69,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:orientation="horizontal"
-        android:padding="@dimen/margin_default">
+        android:paddingLeft="@dimen/margin_default"
+        android:paddingRight="@dimen/margin_default"
+        android:paddingBottom="@dimen/margin_default">
 
         <Button
             android:id="@+id/btCommunity"
@@ -77,7 +88,13 @@
             android:layout_marginRight="@dimen/margin_l"
             android:background="@drawable/ic_invite"
             android:visibility="gone" />
-
+        <Button
+            android:id="@+id/btCheck"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="@dimen/margin_l"
+            android:visibility="gone"
+            android:background="@drawable/ic_check_on" />
         <Button
             android:id="@+id/btEdit"
             android:layout_width="24dp"

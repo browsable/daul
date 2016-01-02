@@ -56,7 +56,7 @@ public class DialEnroll extends Activity {
         //window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getResources().getDisplayMetrics();
-        layoutParams.width = dm.widthPixels * 5 / 7;
+        layoutParams.width = dm.widthPixels * 7 / 9;
         layoutParams.height = layoutParams.WRAP_CONTENT;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
