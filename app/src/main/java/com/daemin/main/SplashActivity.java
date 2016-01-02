@@ -14,7 +14,6 @@ import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.daemin.common.MyRequest;
 import com.daemin.encryption.MyHash;
@@ -92,13 +91,24 @@ public class SplashActivity extends Activity{
 
 		//폰번호
 		TelephonyManager systemService = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String phoneNum = systemService.getLine1Number();
-        if(phoneNum!=null) {
-			phoneNum = phoneNum.substring(phoneNum.length() - 10, phoneNum.length());
-			phoneNum = "0" + phoneNum;
-			phoneNum = PhoneNumberUtils.formatNumber(phoneNum);
-        }else{
-			phoneNum="00000000000";
+		String phoneNum = systemService.getLine1Number();
+        try{
+			if (phoneNum != null) {
+				/*phoneNum = phoneNum.substring(phoneNum.length() - 10, phoneNum.length());
+				phoneNum = "0" + phoneNum;*/
+				phoneNum = PhoneNumberUtils.formatNumber(phoneNum);
+			} else {
+				phoneNum = "00000000000";
+			}
+		}catch (StringIndexOutOfBoundsException e){
+			e.printStackTrace();
+			phoneNum = systemService.getLine1Number();
+		}catch(NullPointerException e){
+			e.printStackTrace();
+			phoneNum = systemService.getLine1Number();
+		}catch(Exception e){
+			e.printStackTrace();
+			phoneNum = systemService.getLine1Number();
 		}
 		//MAC Address
 		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);

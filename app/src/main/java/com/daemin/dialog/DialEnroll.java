@@ -56,7 +56,7 @@ public class DialEnroll extends Activity {
         //window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getResources().getDisplayMetrics();
-        layoutParams.width = dm.widthPixels * 5 / 6;
+        layoutParams.width = dm.widthPixels * 5 / 7;
         layoutParams.height = layoutParams.WRAP_CONTENT;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
@@ -136,7 +136,7 @@ public class DialEnroll extends Activity {
     }
     private void enrollMyTime(List<MyTime> mt){
         for(MyTime m : mt){
-            String time = m.getStarthour()+":"+Convert.IntToString(m.getStartmin())+"~"
+            String time = m.getStarthour()+":"+Convert.IntToString(m.getStartmin())+" ~ "
                     +m.getEndhour()+ ":"+Convert.IntToString(m.getEndmin());
             int timeType = m.getTimetype();
             if(timeType==0){

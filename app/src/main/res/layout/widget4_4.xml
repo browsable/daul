@@ -59,12 +59,12 @@
         </LinearLayout>
         <Button
             android:id="@+id/btHome"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
             android:layout_marginLeft="@dimen/margin_default"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/ic_launcher"/>
+            android:background="@drawable/ic_home"/>
         <LinearLayout
             android:layout_width="26dp"
             android:layout_height="26dp"
