@@ -3,6 +3,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bt_click"
     android:gravity="center"
+    android:padding="@dimen/margin_default"
     android:orientation="vertical">
 
     <LinearLayout
@@ -32,7 +33,6 @@
                 android:ellipsize="end"
                 android:enabled="false"
                 android:gravity="center_vertical"
-                android:singleLine="true"
                 android:textSize="@dimen/textsize_xl"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"

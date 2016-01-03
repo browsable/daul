@@ -4,18 +4,16 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_black_border"
     android:orientation="vertical">
-
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/margin_l"
-        android:layout_marginRight="@dimen/margin_l"
-        android:layout_weight="1"
+        android:layout_height="50dp"
+        android:paddingLeft="@dimen/margin_xl"
+        android:background="@color/middlegray"
+        android:textColor="@android:color/white"
         android:gravity="center_vertical"
-        android:textSize="@dimen/textsize_l"
-        android:textStyle="bold"
-        />
+        android:textSize="@dimen/textsize_xxl"
+        android:textStyle="bold" />
     <TextView
         android:id="@+id/tvContent"
         android:layout_width="match_parent"
@@ -26,36 +24,35 @@
         android:gravity="center_vertical"
         android:textSize="@dimen/textsize_l"
         android:textStyle="bold" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/lightgray" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_marginRight="@dimen/margin_default"
-        android:layout_marginBottom="@dimen/margin_xxxs"
+        android:background="@drawable/bg_black_border_upper"
         >
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2.5" />
-
         <Button
             android:id="@+id/btDialCancel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="1"
             android:background="@android:color/white"
             android:text="@string/btDialCancel"
             android:textColor="@android:color/black"
             android:textSize="@dimen/textsize_l"
             android:textStyle="bold" />
-
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightgray" />
         <Button
             android:id="@+id/btDialSetting"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="1"
             android:background="@android:color/white"
             android:text="@string/btDialSetting"
             android:textColor="@android:color/black"

@@ -3,27 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_black_border"
-    android:padding="@dimen/margin_default"
     android:orientation="vertical">
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_default"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="@dimen/margin_default"
+        android:background="@color/middlegray"
         >
     <TextView
         android:id="@+id/tvMonthDay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/textsize_xl"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/margin_default"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical"
+        android:text="@string/tvDialColor"
+        android:textSize="@dimen/textsize_xxl"
+        android:textStyle="bold" />
     <Button
         android:id="@+id/btDialCancel"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_default"
         android:background="@drawable/ic_clear" />
     </RelativeLayout>
     <ListView
@@ -32,19 +35,19 @@
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:scrollbars="none"
-        android:divider="@drawable/divider_dash"
-        android:dividerHeight="3dp"
+        android:divider="@color/lightgray"
+        android:dividerHeight="2dp"
         android:overScrollMode="never"
         android:layerType="software"
         />
     <View
         android:layout_width="match_parent"
-        android:layout_height="2.5dp"
+        android:layout_height="2dp"
         android:background="@color/lightgray" />
     <LinearLayout
         android:id="@+id/llNewEnroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:gravity="center"
         android:background="@drawable/bt_click"
         >
@@ -52,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/overlapEnroll"
-        android:padding="@dimen/margin_s"
+        android:padding="@dimen/margin_l"
         />
     </LinearLayout>
 </LinearLayout>

@@ -38,11 +38,11 @@
                     android:layout_margin="@dimen/margin_xxs"
                     android:layout_weight="1"
                     android:background="@android:color/white"
-                    android:dropDownHeight="160dp"
+                    android:dropDownHeight="148dp"
                     android:dropDownWidth="170dp"
                     android:ems="10"
                     android:hint="@string/univ_searchdep"
-                    android:popupBackground="@color/transparency"
+                    android:popupBackground="@color/whitesmoke"
                     android:singleLine="true"
                     android:textColor="@color/dimgray"
                     android:textColorHint="@color/gray"
@@ -53,7 +53,7 @@
                     android:layout_height="24dp"
                     android:textOff=""
                     android:textOn=""
-                    android:background="@drawable/ic_expand" />
+                    android:background="@drawable/bt_show" />
             </LinearLayout>
 
             <View
@@ -81,11 +81,11 @@
                         android:layout_margin="@dimen/margin_xxs"
                         android:layout_weight="1"
                         android:background="@android:color/white"
-                        android:dropDownHeight="160dp"
+                        android:dropDownHeight="148dp"
                         android:dropDownWidth="wrap_content"
                         android:ems="10"
                         android:hint="@string/univ_grade"
-                        android:popupBackground="@color/transparency"
+                        android:popupBackground="@color/whitesmoke"
                         android:singleLine="true"
                         android:textColor="@color/dimgray"
                         android:textColorHint="@color/gray"
@@ -96,7 +96,7 @@
                         android:layout_height="24dp"
                         android:textOff=""
                         android:textOn=""
-                        android:background="@drawable/ic_expand" />
+                        android:background="@drawable/bt_show" />
                 </LinearLayout>
 
                 <View
@@ -128,12 +128,12 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:background="@android:color/white"
-            android:dropDownHeight="160dp"
+            android:dropDownHeight="116dp"
             android:dropDownWidth="250dp"
             android:ems="10"
             android:hint="@string/univ_search"
             android:padding="@dimen/margin_s"
-            android:popupBackground="@color/transparency"
+            android:popupBackground="@color/whitesmoke"
             android:singleLine="true"
             android:textColor="@color/dimgray"
             android:textColorHint="@color/gray"

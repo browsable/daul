@@ -2,9 +2,9 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/textAutoComplete"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/whitesmoke"
     android:ellipsize="marquee"
     android:gravity="center_vertical"
     android:padding="@dimen/margin_xs"
-    android:textSize="@dimen/textsize_l" />
+    android:textSize="@dimen/textsize_default" />

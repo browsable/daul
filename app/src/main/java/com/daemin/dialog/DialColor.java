@@ -38,13 +38,20 @@ public class DialColor extends Dialog {
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels * 5/ 9;
-        layoutParams.height = dm.heightPixels * 1/ 3;
+        layoutParams.height = dm.heightPixels * 5/ 9;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();
     }
 
     private void setLayout() {
+        btDialCancel = (Button) findViewById(R.id.btDialCancel);
+        btDialCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancel();
+            }
+        });
         String[] dialogColorBtn = context.getResources().getStringArray(R.array.dialogColorBtn);
         for (int i = 0; i < dialogColorBtn.length; i++) {
             int resID = context.getResources().getIdentifier(dialogColorBtn[i], "id", context.getPackageName());
@@ -60,4 +67,5 @@ public class DialColor extends Dialog {
         }
     }
     private Context context;
+    private Button btDialCancel;
 }

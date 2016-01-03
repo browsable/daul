@@ -393,6 +393,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         SettingACTV(actvDep, depAdapter);
         SettingACTV(actvGrade, gradeAdapter);
         SettingACTV(actvSub, subAdapter);
+        actvDep.setDropDownVerticalOffset(User.INFO.intervalSize);
+        actvGrade.setDropDownVerticalOffset(User.INFO.intervalSize);
+        actvGrade.setDropDownVerticalOffset(User.INFO.intervalSize);
 
         //subject
         final List<SubjectData> subjects = db.getAllSubjectDatas();

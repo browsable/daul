@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.daemin.common.BasicFragment;
 import com.daemin.event.ChangeFragEvent;
@@ -247,6 +246,12 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
             case R.id.btSettingInit:
                 EventBus.getDefault().post(new ChangeFragEvent(SettingInitFragment.class, "시간표 초기화"));
                 break;
+            case R.id.btSettingQA:
+                Intent i = new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://open.kakao.com/o/sqXjIpf"));
+                getActivity().startActivity(i );
+                break;
             case R.id.btSettingCustomer:
                 EventBus.getDefault().post(new ChangeFragEvent(SettingCustomerFragment.class, "고객센터"));
                 break;
@@ -255,11 +260,10 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
     public void setLayout(View root){
         mCurrentPhotoPath = null;
         ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
-        tvHyperText = (TextView)root.findViewById(R.id.tvHyperText);
-        tvHyperText.setMovementMethod(LinkMovementMethod.getInstance());
         btSettingId= (LinearLayout)root.findViewById(R.id.btSettingId);
         btSettingUniv = (LinearLayout)root.findViewById(R.id.btSettingUniv);
         btSettingInit = (LinearLayout)root.findViewById(R.id.btSettingInit);
+        btSettingQA = (LinearLayout)root.findViewById(R.id.btSettingQA);
         btSettingCustomer = (LinearLayout)root.findViewById(R.id.btSettingCustomer);
         File path = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
@@ -269,18 +273,18 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
         ivProfile.setOnClickListener(this);
         btSettingId.setOnClickListener(this);
         btSettingUniv.setOnClickListener(this);
+        btSettingQA.setOnClickListener(this);
         btSettingInit.setOnClickListener(this);
         btSettingCustomer.setOnClickListener(this);
     }
     private ImageView ivProfile;
-    private LinearLayout btSettingId,btSettingUniv,btSettingInit,btSettingCustomer;
+    private LinearLayout btSettingId,btSettingUniv,btSettingInit,btSettingQA,btSettingCustomer;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_ALBUM = 2;
     private static final int REQUEST_IMAGE_CROP = 3;
     private static final int REQUEST_SETTING_UNIV = 4;
     private String mCurrentPhotoPath;
     private Uri contentUri;
-    private TextView tvHyperText;
 
 
 }

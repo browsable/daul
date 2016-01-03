@@ -36,10 +36,6 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray" />
 
         <LinearLayout
             android:id="@+id/btSettingId"
@@ -68,11 +64,6 @@
                 android:textSize="@dimen/textsize_l" />
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray" />
 
         <LinearLayout
             android:id="@+id/btSettingUniv"
@@ -175,6 +166,7 @@
             android:layout_marginBottom="@dimen/margin_s"
             />
         <LinearLayout
+            android:id="@+id/btSettingQA"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_l"
@@ -183,12 +175,11 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvHyperText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="@dimen/margin_xs"
-                android:text="@string/QandA"
+                android:text="@string/QandA2"
                 android:textSize="@dimen/textsize_xl" />
 
         </LinearLayout>
@@ -197,9 +188,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/lightgray" />
-
-
-
         <LinearLayout
             android:id="@+id/btSettingCustomer"
             android:layout_width="match_parent"
@@ -209,7 +197,6 @@
             android:layout_weight="1"
             android:visibility="gone"
             android:orientation="vertical">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -217,13 +204,7 @@
                 android:layout_marginBottom="@dimen/margin_xs"
                 android:text="@string/setting_customercenter"
                 android:textSize="@dimen/textsize_xl" />
-
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray" />
 
     </LinearLayout>
 

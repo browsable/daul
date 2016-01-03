@@ -46,7 +46,7 @@
                     android:layout_height="30dp"
                     android:textOff=""
                     android:textOn=""
-                    android:background="@drawable/ic_expand" />
+                    android:background="@drawable/bt_show" />
                 <Button
                     android:id="@+id/btEnter"
                     android:layout_width="24dp"
