@@ -64,20 +64,59 @@
             android:maxLines="7" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/margin_default"
         android:paddingRight="@dimen/margin_default"
         android:paddingBottom="@dimen/margin_default">
-
+        <Button
+            android:id="@+id/btExpand"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="@dimen/margin_l"
+            android:layout_alignParentLeft="true"
+            android:visibility="gone"
+            android:background="@drawable/ic_expand3" />
+        <Button
+            android:id="@+id/btShare"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="@dimen/margin_l"
+            android:layout_alignParentLeft="true"
+            android:visibility="gone"
+            android:background="@drawable/ic_share" />
+        <Button
+            android:id="@+id/btAlarm"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="@dimen/margin_l"
+            android:layout_toRightOf="@+id/btShare"
+            android:visibility="gone"
+            android:background="@drawable/ic_alarm" />
+        <Button
+            android:id="@+id/btRepeat"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="@dimen/margin_l"
+            android:layout_toRightOf="@+id/btAlarm"
+            android:visibility="gone"
+            android:background="@drawable/ic_repeat" />
+        <Button
+            android:id="@+id/btColor"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="@dimen/margin_l"
+            android:layout_toRightOf="@+id/btRepeat"
+            android:visibility="gone"
+            android:background="@drawable/bg_circle_maincolor" />
         <Button
             android:id="@+id/btCommunity"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginRight="@dimen/margin_l"
+            android:layout_toLeftOf="@+id/btInvite"
             android:background="@drawable/ic_community_black"
             android:visibility="gone" />
 
@@ -86,19 +125,21 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginRight="@dimen/margin_l"
+            android:layout_toLeftOf="@+id/btEdit"
             android:background="@drawable/ic_invite"
             android:visibility="gone" />
         <Button
             android:id="@+id/btCheck"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginRight="@dimen/margin_l"
             android:visibility="gone"
+            android:layout_alignParentRight="true"
             android:background="@drawable/ic_check_on" />
         <Button
             android:id="@+id/btEdit"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_toLeftOf="@+id/btRemove"
             android:layout_marginRight="@dimen/margin_l"
             android:background="@drawable/ic_write" />
 
@@ -106,8 +147,9 @@
             android:id="@+id/btRemove"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_alignParentRight="true"
             android:background="@drawable/ic_remove" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tvId"
@@ -129,6 +171,11 @@
 
     <TextView
         android:id="@+id/tvCredit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+    <TextView
+        android:id="@+id/tvColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone" />

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -24,6 +25,7 @@ import com.daemin.enumclass.TimePos;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RemoveEnrollEvent;
+import com.daemin.event.SetColorEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
@@ -143,7 +145,7 @@ public class DialEnroll extends Activity {
                 String timeCode = m.getTimecode();
                 EnrollData ed = new EnrollData(time,m.getName(),m.getMemo(),timeCode,
                         String.valueOf(timeType),
-                        "0",m.getPlace(),m.getId());
+                        "0",m.getColor(),m.getPlace(),m.getId());
                 mtList.add(ed);
                 enrollList.put(timeCode,ed);
             }else{
@@ -151,7 +153,7 @@ public class DialEnroll extends Activity {
                 String memo = m.getMemo();
                 EnrollData ed =new EnrollData(time, m.getName(), memo, timeCode,
                         String.valueOf(timeType),
-                        memo.split("/")[1].substring(0, 1), m.getPlace(), m.getId());
+                        memo.split("/")[1].substring(0, 1),m.getColor(), m.getPlace(), m.getId());
                 mtList.add(ed);
                 enrollList.put(timeCode, ed);
             }

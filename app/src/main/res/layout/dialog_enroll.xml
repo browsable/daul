@@ -6,7 +6,7 @@
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dialog_bar"
         android:padding="@dimen/margin_default"
         android:background="@color/middlegray"
         >
@@ -26,7 +26,6 @@
         android:layout_height="24dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/margin_default"
         android:background="@drawable/ic_clear" />
     </RelativeLayout>
     <ListView
@@ -47,7 +46,7 @@
     <LinearLayout
         android:id="@+id/llNewEnroll"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dialog_bar"
         android:gravity="center"
         android:background="@drawable/bt_click"
         >

@@ -2,7 +2,9 @@ package com.daemin.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -20,9 +22,10 @@ import de.greenrobot.event.EventBus;
  * Created by hernia on 2015-09-08.
  */
 public class DialColor extends Dialog {
-    public DialColor(Context context) {
+    public DialColor(Context context, Button btColor) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
+        this.btColor = btColor;
     }
 
     @Override
@@ -37,8 +40,8 @@ public class DialColor extends Dialog {
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-        layoutParams.width = dm.widthPixels * 5/ 9;
-        layoutParams.height = dm.heightPixels * 5/ 9;
+        layoutParams.width = dm.widthPixels * 7/ 9;
+        layoutParams.height = dm.widthPixels * 7/ 9;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();
@@ -60,7 +63,14 @@ public class DialColor extends Dialog {
             B.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EventBus.getDefault().post(new SetColorEvent(resColor));
+                    if(btColor==null)
+                        EventBus.getDefault().post(new SetColorEvent(resColor));
+                    else{
+                        gd = (GradientDrawable) btColor.getBackground().mutate();
+                        gd.setColor(context.getResources().getColor(resColor));
+                        gd.invalidateSelf();
+                        btColor.setTag(resColor);
+                    }
                     cancel();
                 }
             });
@@ -68,4 +78,6 @@ public class DialColor extends Dialog {
     }
     private Context context;
     private Button btDialCancel;
+    private Button btColor;
+    private GradientDrawable gd;
 }

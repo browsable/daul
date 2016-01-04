@@ -28,6 +28,7 @@ public class InitMonthThread extends InitThread {
 	private int height;
 	private int ty;
 	private int tx;//이전달의 마지막날 요일
+	private int intervalSize;
 	Context context;
 	private Paint hp; // 1시간 간격 수평선
 	private Paint hpvp; // 30분 간격 수평선, 수직선
@@ -42,24 +43,25 @@ public class InitMonthThread extends InitThread {
 		tempxth = 0;
 		tempyth = 0;
 		int textSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_l);
+		intervalSize = User.INFO.intervalSize;
 		hp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		hp.setColor(context.getResources().getColor(R.color.maincolor));
 		hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		hpvp.setAlpha(70);
 		tp = new Paint(Paint.ANTI_ALIAS_FLAG);
 		tp.setTextSize(textSize);
-		tp.setTextAlign(Paint.Align.CENTER);
+		tp.setTextAlign(Paint.Align.LEFT);
 		tpred = new Paint(Paint.ANTI_ALIAS_FLAG);
 		tpred.setTextSize(textSize);
-		tpred.setTextAlign(Paint.Align.CENTER);
+		tpred.setTextAlign(Paint.Align.LEFT);
 		tpred.setColor(context.getResources().getColor(R.color.red));
 		tpblue = new Paint(Paint.ANTI_ALIAS_FLAG);
 		tpblue.setTextSize(textSize);
-		tpblue.setTextAlign(Paint.Align.CENTER);
+		tpblue.setTextAlign(Paint.Align.LEFT);
 		tpblue.setColor(context.getResources().getColor(R.color.blue));
 		tpgray = new Paint(Paint.ANTI_ALIAS_FLAG);
 		tpgray.setTextSize(textSize);
-		tpgray.setTextAlign(Paint.Align.CENTER);
+		tpgray.setTextAlign(Paint.Align.LEFT);
 		tpgray.setColor(context.getResources().getColor(R.color.middlegray));
 		ty = Dates.NOW.dayOfWeek + Dates.NOW.dayOfMonth + 1;
 		tx = ty % 7;
@@ -144,7 +146,7 @@ public class InitMonthThread extends InitThread {
 	}*/
 	public void initScreen() {
 		float[] hp_hour = {
-				// 가로선 : 1시간 간격
+				// 가로선
 				0, height / 32 + 6, width, height / 32 + 6 , 0, height * 12 / 64 + 6, width,
 				height * 12 / 64 + 6, 0, height * 22 / 64 + 6, width, height * 22 / 64 + 6, 0,
 				height * 32 / 64 + 6, width, height * 32 / 64 + 6, 0, height * 42 / 64 + 6, width,
@@ -168,33 +170,38 @@ public class InitMonthThread extends InitThread {
 		hp.setAlpha(40);
 		if(Dates.NOW.isToday)canvas.drawRect(width * (tx - 1) / 7, height * ((ty / 7) * 10 + 2) / 64 + 6,width * tx / 7, height * ((ty / 7 + 1) * 10 + 2) / 64 + 6, hp);
 		hp.setAlpha(100);
-		canvas.drawText("SUN", width * 1 / 14, height * 2 / 62 - 1, tpred);
-		canvas.drawText("MON", width * 3 / 14, height * 2/ 62 - 1, tp);
-		canvas.drawText("TUE", width * 5 / 14, height * 2/ 62 - 1, tp);
-		canvas.drawText("WED", width * 7 / 14, height * 2/ 62 - 1, tp);
-		canvas.drawText("THU", width * 9 / 14, height * 2 / 62 - 1, tp);
-		canvas.drawText("FRI", width * 11 / 14, height * 2 / 62 - 1, tp);
-		canvas.drawText("SAT", width * 13 / 14, height * 2 / 62 - 1, tpblue);
-
 		for(int i = 0; i<Dates.NOW.dayOfWeek+1; i++){
-			canvas.drawText(Dates.NOW.mData[i], width * (4 * (i % 7) + 1) / 28 - 6, height * ((10 * (i / 7)) + 4) / 64, tpgray);
+			canvas.drawText(Dates.NOW.mData[i], width * (i % 7) / 7+intervalSize, height * ((10 * (i / 7)) + 4) / 64, tpgray);
 		}
 		for(int i = Dates.NOW.dayOfWeek+1; i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1; i++){
 			int j = i%7;
 			switch(j){
 				case 0:
-					canvas.drawText(Dates.NOW.mData[i], width * 1 / 28-6, height* (( 10 * (i/7)) + 4) / 64, tpred);
+					canvas.drawText(Dates.NOW.mData[i], 2+intervalSize, height* (( 10 * (i/7)) + 4) / 64, tpred);
 					break;
 				case 6:
-					canvas.drawText(Dates.NOW.mData[i], width * 25 / 28-6, height * ((10 * (i/7)) + 4) / 64, tpblue);
+					canvas.drawText(Dates.NOW.mData[i], width * 6 / 7+intervalSize, height * ((10 * (i/7)) + 4) / 64, tpblue);
 					break;
 				default:
-					canvas.drawText(Dates.NOW.mData[i], width * (4*j+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tp);
+					canvas.drawText(Dates.NOW.mData[i], width * j / 7+intervalSize, height * ((10 * (i/7)) + 4) / 64, tp);
 					break;
 			}
 		}
 		for(int i = Dates.NOW.dayOfWeek + Dates.NOW.dayNumOfMonth + 1; i < 42; i++) {
-			canvas.drawText(Dates.NOW.mData[i], width * (4 * (i%7)+1) / 28-6, height * ((10 * (i/7)) + 4) / 64, tpgray);
+			canvas.drawText(Dates.NOW.mData[i], width * (i % 7) / 7+intervalSize, height * ((10 * (i/7)) + 4) / 64, tpgray);
 		}
+		tp.setTextAlign(Paint.Align.CENTER);
+		tpred.setTextAlign(Paint.Align.CENTER);
+		tpblue.setTextAlign(Paint.Align.CENTER);
+		canvas.drawText("SUN", width * 1 / 14, height * 2 / 62 - 1, tpred);
+		canvas.drawText("MON", width * 3 / 14, height * 2 / 62 - 1, tp);
+		canvas.drawText("TUE", width * 5 / 14, height * 2 / 62 - 1, tp);
+		canvas.drawText("WED", width * 7 / 14, height * 2 / 62 - 1, tp);
+		canvas.drawText("THU", width * 9 / 14, height * 2 / 62 - 1, tp);
+		canvas.drawText("FRI", width * 11 / 14, height * 2 / 62 - 1, tp);
+		canvas.drawText("SAT", width * 13 / 14, height * 2 / 62 - 1, tpblue);
+		tp.setTextAlign(Paint.Align.LEFT);
+		tpred.setTextAlign(Paint.Align.LEFT);
+		tpblue.setTextAlign(Paint.Align.LEFT);
 	}
 }

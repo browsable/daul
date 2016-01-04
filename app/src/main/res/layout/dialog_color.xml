@@ -6,7 +6,7 @@
     android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dialog_bar"
         android:paddingLeft="@dimen/margin_xl"
         android:background="@color/middlegray"
         android:textColor="@android:color/white"
@@ -111,11 +111,11 @@
         <Button
             android:id="@+id/btDialCancel"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@android:color/white"
+            android:layout_height="@dimen/dialog_bar"
+            android:background="@drawable/bt_click"
             android:text="@string/btDialCancel"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/textsize_xxl"
+            android:textSize="@dimen/textsize_l"
             android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

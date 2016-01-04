@@ -2,6 +2,9 @@ package com.daemin.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +17,10 @@ import android.widget.ToggleButton;
 
 import com.daemin.common.Common;
 import com.daemin.data.EnrollData;
+import com.daemin.dialog.DialColor;
 import com.daemin.enumclass.User;
 import com.daemin.event.RemoveEnrollEvent;
+import com.daemin.event.SetColorEvent;
 import com.daemin.event.SetCreditEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
@@ -56,11 +61,18 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
             holder.tvTimeCode = (TextView) convertView.findViewById(R.id.tvTimeCode);
             holder.tvTimeType = (TextView) convertView.findViewById(R.id.tvTimeType);
             holder.tvCredit = (TextView) convertView.findViewById(R.id.tvCredit);
+            holder.tvColor = (TextView) convertView.findViewById(R.id.tvColor);
             holder.btCommunity  = (Button) convertView.findViewById(R.id.btCommunity);
             holder.btInvite  = (Button) convertView.findViewById(R.id.btInvite);
             holder.btCheck  = (Button) convertView.findViewById(R.id.btCheck);
             holder.btEdit = (Button) convertView.findViewById(R.id.btEdit);
             holder.btRemove  = (Button) convertView.findViewById(R.id.btRemove);
+            holder.btColor  = (Button) convertView.findViewById(R.id.btColor);
+            holder.btExpand = (Button) convertView.findViewById(R.id.btExpand);
+            holder.btShare = (Button) convertView.findViewById(R.id.btShare);
+            holder.btAlarm = (Button) convertView.findViewById(R.id.btAlarm);
+            holder.btRepeat = (Button) convertView.findViewById(R.id.btRepeat);
+            holder.gd = (GradientDrawable) holder.btColor.getBackground().mutate();
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -74,10 +86,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         holder.tvTimeCode.setText(getItem(position).getTimeCode());
         holder.tvTimeType.setText(getItem(position).getTimeType());
         holder.tvCredit.setText(getItem(position).getCredit());
-        /*if(holder.tvPlace.getText().toString().equals(""))
-            holder.tvPlace.setVisibility(View.GONE);
-        if(holder.tvMemo.getText().toString().equals(""))
-            holder.tvMemo.setVisibility(View.GONE);*/
+        holder.tvColor.setText(getItem(position).getColor());
         holder.btCommunity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,8 +109,14 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                     Toast.makeText(context, context.getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
                     holder.etTitle.setHintTextColor(Color.RED);
                 }else {
+                    holder.btRemove.setVisibility(View.VISIBLE);
                     holder.btEdit.setVisibility(View.VISIBLE);
                     holder.btCheck.setVisibility(View.GONE);
+                    holder.btExpand.setVisibility(View.GONE);
+                    holder.btColor.setVisibility(View.GONE);
+                    holder.btShare.setVisibility(View.GONE);
+                    holder.btAlarm.setVisibility(View.GONE);
+                    holder.btRepeat.setVisibility(View.GONE);
                     holder.etTitle.setEnabled(false);
                     holder.etPlace.setEnabled(false);
                     holder.etMemo.setEnabled(false);
@@ -111,10 +126,15 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                     holder.etTitle.setHint("");
                     holder.etPlace.setHint("");
                     holder.etMemo.setHint("");
+                    String colorName;
+                    if(holder.btColor.getTag()==null) colorName = holder.tvColor.getText().toString();
+                    else colorName = context.getResources().getString((int)holder.btColor.getTag());
+                    holder.tvColor.setText(colorName);
                     for (MyTime mt : MyTimeRepo.getMyTimeWithTimeCode(context, holder.tvTimeCode.getText().toString())) {
                         mt.setName(title);
                         mt.setPlace(place);
                         mt.setMemo(memo);
+                        mt.setColor(colorName);
                         MyTimeRepo.insertOrUpdate(context, mt);
                     }
                     Common.fetchWeekData();
@@ -124,8 +144,10 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         holder.btEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.btRemove.setVisibility(View.GONE);
                 holder.btEdit.setVisibility(View.GONE);
                 holder.btCheck.setVisibility(View.VISIBLE);
+                holder.btExpand.setVisibility(View.VISIBLE);
                 holder.etPlace.setEnabled(true);
                 holder.etPlace.setTextColor(Color.GRAY);
                 holder.etPlace.setHint(context.getResources().getString(R.string.normal_place));
@@ -141,6 +163,25 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                     holder.etTitle.setSelection(holder.etTitle.length());
                     holder.etTitle.requestFocus();
                 }
+            }
+        });
+        holder.btExpand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.btExpand.setVisibility(View.GONE);
+                holder.btColor.setVisibility(View.VISIBLE);
+                holder.btShare.setVisibility(View.VISIBLE);
+                holder.btAlarm.setVisibility(View.VISIBLE);
+                holder.btRepeat.setVisibility(View.VISIBLE);
+                holder.gd.setColor(Color.parseColor(holder.tvColor.getText().toString()));
+                holder.gd.invalidateSelf();
+            }
+        });
+        holder.btColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialColor dc = new DialColor(context,holder.btColor);
+                dc.show();
             }
         });
         holder.btRemove.setOnClickListener(new View.OnClickListener() {
@@ -160,8 +201,9 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         return convertView;
     }
     private static class Holder {
-        public TextView tvTime, tvId, tvTimeCode, tvTimeType, tvCredit;
+        public TextView tvTime, tvId, tvTimeCode, tvTimeType, tvCredit,tvColor;
         public EditText etTitle, etMemo, etPlace;
-        public Button btCommunity,btCheck,btEdit,btInvite, btRemove;
+        public Button btCommunity,btCheck,btEdit,btInvite, btRemove,btColor,btShare,btAlarm,btRepeat,btExpand;
+        private GradientDrawable gd;
     }
 }

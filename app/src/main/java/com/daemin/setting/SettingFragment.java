@@ -16,12 +16,11 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.daemin.common.BasicFragment;
 import com.daemin.event.ChangeFragEvent;
@@ -237,12 +236,6 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, REQUEST_IMAGE_ALBUM);
                 break;
-            case R.id.btSettingId:
-                EventBus.getDefault().post(new ChangeFragEvent(SettingIdFragment.class, "메일주소 변경"));
-                break;
-            case R.id.btSettingUniv:
-                EventBus.getDefault().post(new ChangeFragEvent(SettingUnivFragment.class, "학교/학과 변경"));
-                break;
             case R.id.btSettingInit:
                 EventBus.getDefault().post(new ChangeFragEvent(SettingInitFragment.class, "시간표 초기화"));
                 break;
@@ -252,33 +245,24 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
                         Uri.parse("https://open.kakao.com/o/sqXjIpf"));
                 getActivity().startActivity(i );
                 break;
-            case R.id.btSettingCustomer:
-                EventBus.getDefault().post(new ChangeFragEvent(SettingCustomerFragment.class, "고객센터"));
-                break;
         }
     }
     public void setLayout(View root){
         mCurrentPhotoPath = null;
         ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
-        btSettingId= (LinearLayout)root.findViewById(R.id.btSettingId);
-        btSettingUniv = (LinearLayout)root.findViewById(R.id.btSettingUniv);
-        btSettingInit = (LinearLayout)root.findViewById(R.id.btSettingInit);
-        btSettingQA = (LinearLayout)root.findViewById(R.id.btSettingQA);
-        btSettingCustomer = (LinearLayout)root.findViewById(R.id.btSettingCustomer);
+        btSettingInit = (TextView)root.findViewById(R.id.btSettingInit);
+        btSettingQA = (TextView)root.findViewById(R.id.btSettingQA);
         File path = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         if(!path.exists()) {
             path.mkdirs();
         }
         ivProfile.setOnClickListener(this);
-        btSettingId.setOnClickListener(this);
-        btSettingUniv.setOnClickListener(this);
         btSettingQA.setOnClickListener(this);
         btSettingInit.setOnClickListener(this);
-        btSettingCustomer.setOnClickListener(this);
     }
     private ImageView ivProfile;
-    private LinearLayout btSettingId,btSettingUniv,btSettingInit,btSettingQA,btSettingCustomer;
+    private TextView btSettingInit,btSettingQA;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_ALBUM = 2;
     private static final int REQUEST_IMAGE_CROP = 3;

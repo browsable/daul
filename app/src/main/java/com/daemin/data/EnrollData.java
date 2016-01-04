@@ -6,7 +6,15 @@ import android.view.View;
  * Created by HOME on 2015-09-11.
  */
 public class EnrollData {
-    private String title,memo,place,timeCode,timeType,credit,time;
+    private String title;
+    private String memo;
+    private String place;
+    private String timeCode;
+    private String timeType;
+    private String credit;
+    private String time;
+
+    private String color;
     private long _id;
 
     public String getTitle() {
@@ -40,8 +48,10 @@ public class EnrollData {
     public String getCredit() {
         return credit;
     }
-
-    public EnrollData(String time,String title,String memo,String timeCode,String timeType,String credit,String place,long _id) {
+    public String getColor() {
+        return color;
+    }
+    public EnrollData(String time,String title,String memo,String timeCode,String timeType,String credit,String color, String place,long _id) {
         this.time = time;
         this.title = title;
         this.memo = memo;
@@ -49,6 +59,7 @@ public class EnrollData {
         this.timeCode = timeCode;
         this.timeType = timeType;
         this.credit = credit;
+        this.color = color;
         this._id = _id;
     }
 }

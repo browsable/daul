@@ -6,7 +6,7 @@
     android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dialog_bar"
         android:paddingLeft="@dimen/margin_xl"
         android:background="@color/middlegray"
         android:textColor="@android:color/white"
@@ -54,7 +54,7 @@
         android:background="@color/lightgray" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dialog_bar"
         android:orientation="horizontal"
         android:background="@drawable/bg_black_border_upper"
         >
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@android:color/white"
+            android:background="@drawable/bt_click"
             android:text="@string/btDialCancel"
             android:textColor="@android:color/black"
             android:textSize="@dimen/textsize_l"
@@ -77,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@android:color/white"
+            android:background="@drawable/bt_click"
             android:text="@string/btDialSetting"
             android:textColor="@android:color/black"
             android:textSize="@dimen/textsize_l"

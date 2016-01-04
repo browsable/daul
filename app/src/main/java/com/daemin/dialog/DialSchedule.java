@@ -582,7 +582,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btColor:
-                DialColor dc = new DialColor(DialSchedule.this);
+                DialColor dc = new DialColor(DialSchedule.this, null);
                 dc.show();
                 break;
             case R.id.btAddSchedule:

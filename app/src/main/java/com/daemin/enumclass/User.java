@@ -30,7 +30,7 @@ public enum User {
         overlapFlag = false;
         textSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_xs);
         dateSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_s);
-        intervalSize = context.getResources().getDimensionPixelSize(R.dimen.margin_xs);
+        intervalSize = context.getResources().getDimensionPixelSize(R.dimen.margin_xxs);
         editor.putInt("textSize", textSize).commit();
         editor.putInt("dateSize", dateSize).commit();
     }

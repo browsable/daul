@@ -16,7 +16,7 @@ public enum DayOfMonthPosState {
     ENROLL(){
         @Override
         public void drawTimePos(Canvas canvas, int width, int height,String title, int xth, int yth) {
-            canvas.drawText(title, width * (xth-1) / 7, height * ((yth-1)*10+2) / 64 + 6, tp);
+            canvas.drawText(title, width * (xth-1) / 7+User.INFO.intervalSize, height * ((10 * (yth-1))+2+4) / 64 + 6, tp);
         }
     },
     NO_PAINT() {
@@ -36,7 +36,7 @@ public enum DayOfMonthPosState {
         tp = new Paint(Paint.ANTI_ALIAS_FLAG);
         tp.setColor(Color.BLACK);
         tp.setTextAlign(Paint.Align.LEFT);
-        tp.setTextSize(User.INFO.textSize);
+        tp.setTextSize(dateSize);
         tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
     }
 
