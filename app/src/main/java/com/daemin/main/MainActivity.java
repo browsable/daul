@@ -250,6 +250,7 @@ public class MainActivity extends FragmentActivity {
                     Dates.NOW.setPreMonthData(dayIndex);
                     switcher.setText(setYearMonth());
                 }
+                Common.fetchMonthData();
                 break;
         }
     }
@@ -278,6 +279,7 @@ public class MainActivity extends FragmentActivity {
                     Dates.NOW.setPreMonthData(dayIndex);
                     switcher.setText(setYearMonth());
                 }
+                Common.fetchMonthData();
                 break;
         }
     }

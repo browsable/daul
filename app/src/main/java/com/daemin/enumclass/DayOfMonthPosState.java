@@ -18,8 +18,8 @@ public enum DayOfMonthPosState {
         public void drawTimePos(Canvas canvas, int width, int height,String[] title,String[] color, int xth, int yth) {
             for(int i =0; i<4; i++) {
                 rp.setColor(Color.parseColor(color[i]));
-                canvas.drawRect(width * (xth - 1) / 7, height * ((10 * (yth - 1)) + 4 + 2*i) / 64+6,
-                        width * (xth - 1) / 7+User.INFO.intervalSize, height * ((10 * (yth - 1)) + 6 + 2*i) / 64+6, rp);
+                canvas.drawRect(width * (xth - 1) / 7, height * ((10 * (yth - 1)) + 4 + 2*i) / 64+intervalSize,
+                        width * (xth - 1) / 7+User.INFO.intervalSize, height * ((10 * (yth - 1)) + 6 + 2*i) / 64+intervalSize, rp);
                 canvas.drawText(title[i], width * (xth - 1) / 7 + User.INFO.intervalSize, height * ((10 * (yth - 1)) + 5 + 2*i) / 64+User.INFO.intervalSize, tp);
             }
         }
@@ -46,7 +46,7 @@ public enum DayOfMonthPosState {
     }
 
     public void drawTimePos(Canvas canvas, int width, int height,String[] title, String[] color, int xth, int yth) {
-            canvas.drawRect(width * (xth-1) / 7, height * ((yth-1)*10+2) / 64 + 6,
-                    width * xth / 7, height * (yth*10+2) / 64 + 6, rp);
+            canvas.drawRect(width * (xth-1) / 7, height * ((yth-1)*10+2) / 64 + intervalSize,
+                    width * xth / 7, height * (yth*10+2) / 64 + intervalSize, rp);
     }
 }

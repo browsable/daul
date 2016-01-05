@@ -2,6 +2,7 @@ package com.daemin.timetable;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,11 +12,13 @@ import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
+import com.daemin.dialog.DialEnroll;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.User;
+import com.daemin.event.CreateDialEvent;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.main.MainActivity;
 
@@ -136,6 +139,12 @@ public class InitMonthThread extends InitThread {
 		}else{
 			//월에서 일정 등록한 영역 터치시
 			Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show();
+			EventBus.getDefault().post(new CreateDialEvent(false));
+			Intent i = new Intent(context, DialEnroll.class);
+			i.putExtra("xth", xth);
+			i.putExtra("yth", yth);
+			context.startActivity(i);
+
 		}
 		return;
 	}
@@ -150,28 +159,28 @@ public class InitMonthThread extends InitThread {
 	public void initScreen() {
 		float[] hp_hour = {
 				// 가로선
-				0, height / 32 + 6, width, height / 32 + 6 , 0, height * 12 / 64 + 6, width,
-				height * 12 / 64 + 6, 0, height * 22 / 64 + 6, width, height * 22 / 64 + 6, 0,
-				height * 32 / 64 + 6, width, height * 32 / 64 + 6, 0, height * 42 / 64 + 6, width,
-				height * 42 / 64 + 6, 0, height * 52 / 64 + 6, width, height * 52 / 64 + 6, 0,
-				height * 62 / 64 + 6, width, height * 62 / 64 + 6};
+				0, height / 32 + intervalSize, width, height / 32 + intervalSize , 0, height * 12 / 64 + intervalSize, width,
+				height * 12 / 64 + intervalSize, 0, height * 22 / 64 + intervalSize, width, height * 22 / 64 + intervalSize, 0,
+				height * 32 / 64 + intervalSize, width, height * 32 / 64 + intervalSize, 0, height * 42 / 64 + intervalSize, width,
+				height * 42 / 64 + intervalSize, 0, height * 52 / 64 + intervalSize, width, height * 52 / 64 + intervalSize, 0,
+				height * 62 / 64 + intervalSize, width, height * 62 / 64 + intervalSize};
 
 		float[] vp = {
 				// 세로 선
-				2, height / 32 + 6, 2, height * 62 / 64+ 6, width / 7,
-				height / 32 + 6, width / 7, height * 62 / 64+ 6, width * 2 / 7,
-				height / 32 + 6, width * 2 / 7, height * 62 / 64+ 6, width * 3 / 7,
-				height / 32 + 6, width * 3 / 7, height * 62 / 64+ 6, width * 4 / 7,
-				height / 32 + 6, width * 4 / 7, height * 62 / 64+ 6, width * 5 / 7,
-				height / 32 + 6, width * 5 / 7, height * 62 / 64+ 6, width * 6 / 7,
-				height / 32 + 6, width * 6 / 7, height * 62 / 64+ 6, width-2,
-				height / 32 + 6, width-2, height * 62 / 64+ 6};
+				2, height / 32 + intervalSize, 2, height * 62 / 64+ intervalSize, width / 7,
+				height / 32 + intervalSize, width / 7, height * 62 / 64+ intervalSize, width * 2 / 7,
+				height / 32 + intervalSize, width * 2 / 7, height * 62 / 64+ intervalSize, width * 3 / 7,
+				height / 32 + intervalSize, width * 3 / 7, height * 62 / 64+ intervalSize, width * 4 / 7,
+				height / 32 + intervalSize, width * 4 / 7, height * 62 / 64+ intervalSize, width * 5 / 7,
+				height / 32 + intervalSize, width * 5 / 7, height * 62 / 64+ intervalSize, width * 6 / 7,
+				height / 32 + intervalSize, width * 6 / 7, height * 62 / 64+ intervalSize, width-2,
+				height / 32 + intervalSize, width-2, height * 62 / 64+ intervalSize};
 
 		canvas.drawColor(Color.WHITE);
 		canvas.drawLines(hp_hour, hp);
 		canvas.drawLines(vp, hpvp);
 		hp.setAlpha(40);
-		if(Dates.NOW.isToday)canvas.drawRect(width * (tx - 1) / 7, height * ((ty / 7) * 10 + 2) / 64 + 6,width * tx / 7, height * ((ty / 7 + 1) * 10 + 2) / 64 + 6, hp);
+		if(Dates.NOW.isToday)canvas.drawRect(width * (tx - 1) / 7, height * ((ty / 7) * 10 + 2) / 64 + intervalSize,width * tx / 7, height * ((ty / 7 + 1) * 10 + 2) / 64 + intervalSize, hp);
 		hp.setAlpha(100);
 		for(int i = 0; i<Dates.NOW.dayOfWeek+1; i++){
 			canvas.drawText(Dates.NOW.mData[i], width * (i % 7) / 7+intervalSize, height * ((10 * (i / 7)) + 4) / 64, tpgray);
