@@ -21,7 +21,7 @@ public enum PosState {
     OVERLAP(){
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, String title, String second, int xth, int yth, int startMin, int endMin) {
-            rp.setColor(Color.parseColor("#FF0000"));
+            rp.setColor(Color.parseColor("#FF4A4A"));
             canvas.drawRect(width * xth / 15, (height * yth / 32 + intervalSize)+(2*height/32)*startMin/60,
                     width * (xth + 2) / 15, (height * yth / 32 + intervalSize)+(2*height/32)*endMin/60, rp);
         }

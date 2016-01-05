@@ -39,8 +39,8 @@ public class Common {
 	public static final String ACTION_BACK4_4 = "com.daemin.widget.ACTION_BACK4_4";
 	public static final String ACTION_FORWARD4_4 = "com.daemin.widget.ACTION_FORWARD4_4";
 	public static final String ACTION_DIAL4_4 = "com.daemin.widget.ACTION_DIAL4_4";
-	//public static final String CAPTURE = Environment.getExternalStorageDirectory().toString() + "/.TimeDAO/timetable.jpg";
 	public static final String MAIN_COLOR = "#73C8BA";
+	public static final String TRANS_COLOR = "#00000000";
 
 	public static boolean isOnline() { // network 연결 상태 확인
 		try {
@@ -109,17 +109,22 @@ public class Common {
 		User.INFO.monthData.clear();
 		User.INFO.monthData.addAll(MyTimeRepo.getMonthTimes(AppController.getInstance(), month_startMillies, month_endMillies));
 		for (MyTime mt :User.INFO.monthData){
-			addMonth(mt.getName(), mt.getDayofweek(), mt.getDayofmonth());
+			Log.i("test",mt.getName()+mt.getColor()+mt.getDayofweek()+mt.getDayofmonth());
+			addMonth(mt.getName(),mt.getColor(), mt.getDayofweek(), mt.getDayofmonth());
 		}
 	}
-	public static void addMonth(String title, int xth, int dayOfMonth){
+	public static void addMonth(String title, String color, int xth, int dayOfMonth){
 		int dayCnt = dayOfMonth + Dates.NOW.dayOfWeek;
 		int yth = dayCnt/7+1;
 		xth = Convert.wXthTomXth(xth);
 		DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
 		if (DOMP.getPosState() == DayOfMonthPosState.NO_PAINT) {
 			DOMP.setPosState(DayOfMonthPosState.ENROLL);
-			DOMP.setTitle(title);
+			DOMP.setTitleAndColor(title, color, 0);
+			DOMP.setEnrollCnt();
+		}else if(DOMP.getPosState() == DayOfMonthPosState.ENROLL){
+			DOMP.setTitleAndColor(title,color,DOMP.getEnrollCnt());
+			DOMP.setEnrollCnt();
 		}
 	}
 	public static boolean isTableEmpty(){

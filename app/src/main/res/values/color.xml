@@ -11,8 +11,8 @@
     <color name="gray">#808080</color>
     <color name="lightgray">#20000000</color>
     <color name="middlegray">#50000000</color>
-    <color name="red">#FF0000</color>
-    <color name="blue">#0000FF</color>
+    <color name="red">#FF4A4A</color>
+    <color name="blue">#7D97FF</color>
     <!-- 시간표 입력 시 선택 색상 -->
     <color name="btcolor1">#FFF1A6</color>
     <color name="btcolor2">#FDDA7B</color>

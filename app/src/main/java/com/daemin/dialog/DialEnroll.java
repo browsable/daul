@@ -91,9 +91,9 @@ public class DialEnroll extends Activity {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
         tvMonthDay = (TextView) findViewById(R.id.tvMonthDay);
         if(xth==1){
-            tvMonthDay.setTextColor(Color.RED);
+            tvMonthDay.setTextColor(getResources().getColor(R.color.red));
         }else if(xth==13){
-            tvMonthDay.setTextColor(Color.BLUE);
+            tvMonthDay.setTextColor(getResources().getColor(R.color.blue));
         }
         tvMonthDay.setText(Dates.NOW.getwMonthDay(xth)+" "+dayOfWeek);
         llNewEnroll = (LinearLayout) findViewById(R.id.llNewEnroll);

@@ -170,9 +170,9 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
             public void onClick(View v) {
                 holder.btExpand.setVisibility(View.GONE);
                 holder.btColor.setVisibility(View.VISIBLE);
-                holder.btShare.setVisibility(View.VISIBLE);
-                holder.btAlarm.setVisibility(View.VISIBLE);
-                holder.btRepeat.setVisibility(View.VISIBLE);
+                //holder.btShare.setVisibility(View.VISIBLE);
+                //holder.btAlarm.setVisibility(View.VISIBLE);
+                //holder.btRepeat.setVisibility(View.VISIBLE);
                 holder.gd.setColor(Color.parseColor(holder.tvColor.getText().toString()));
                 holder.gd.invalidateSelf();
             }

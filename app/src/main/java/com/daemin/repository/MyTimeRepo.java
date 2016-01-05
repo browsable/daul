@@ -53,8 +53,9 @@ public class MyTimeRepo {
     public static List<MyTime> getMonthTimes(Context context, long month_startMillies, long month_endMillies){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
         qb.where(qb.and(MyTimeDao.Properties.Startmillis.between(month_startMillies, month_endMillies),
-                MyTimeDao.Properties.Timetype.eq(0)));
-        return qb.list();
+                        MyTimeDao.Properties.Timetype.eq(0)
+                        ));
+        return qb.orderAsc(MyTimeDao.Properties.Startmillis).list();
     }
     public static List<MyTime> getHourTimes(Context context, long startmillis, long endmillis, int xth, int startHour, int endMin){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();

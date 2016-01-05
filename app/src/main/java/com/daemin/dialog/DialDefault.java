@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.daemin.enumclass.User;
+import com.daemin.event.SetCreditEvent;
 import com.daemin.event.SetShareEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
@@ -76,7 +77,7 @@ public class DialDefault extends Dialog {
                             MyTimeRepo.clearMyTime(context);
                             break;
                         case 2: //과목시간표 초기화
-                            User.INFO.getEditor().putString("creditSum","0");
+                            User.INFO.getEditor().putString("creditSum", "0").commit();
                             MyTimeRepo.deleteWithTimetype(context,1);
                             break;
                     }

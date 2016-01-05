@@ -5,7 +5,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
+import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
@@ -133,6 +135,7 @@ public class InitMonthThread extends InitThread {
 			DOMP.setPosState(DayOfMonthPosState.NO_PAINT);
 		}else{
 			//월에서 일정 등록한 영역 터치시
+			Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show();
 		}
 		return;
 	}

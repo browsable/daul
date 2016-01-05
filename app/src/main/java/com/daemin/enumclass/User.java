@@ -57,9 +57,7 @@ public enum User {
         return longitude;
     }
     public double getLatitude() {return latitude;}
-
     //Pref Getter
-
     public boolean getFirstFlag(){
         return pref.getBoolean("firstFlag", true);
     }

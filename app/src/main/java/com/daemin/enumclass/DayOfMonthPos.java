@@ -2,6 +2,8 @@ package com.daemin.enumclass;
 
 import android.graphics.Canvas;
 
+import com.daemin.common.Common;
+
 /**
  * Created by hernia on 2015-06-27.
  */
@@ -12,18 +14,24 @@ public enum DayOfMonthPos {
     M0104(1, 4),M0204(2, 4),M0304(3, 4),M0404(4, 4),M0504(5, 4),M0604(6, 4),M0704(7, 4),
     M0105(1, 5),M0205(2, 5),M0305(3, 5),M0405(4, 5),M0505(5, 5),M0605(6, 5),M0705(7, 5),
     M0106(1, 6),M0206(2, 6),M0306(3, 6),M0406(4, 6),M0506(5, 6),M0606(6, 6),M0706(7, 6);
-
     private DayOfMonthPosState posState;
     private int xth;
     private int yth;
-    private String title;
+    private int enrollCnt;
+    private String[] title,color;
     DayOfMonthPos() {
     }
     DayOfMonthPos(int xth, int yth) {
         this.xth = xth;
         this.yth = yth;
         this.posState = DayOfMonthPosState.NO_PAINT;
-        title ="";
+        enrollCnt=0;
+        title = new String[4];
+        color = new String[4];
+        for(int i = 0; i<4; i++){
+            title[i]="";
+            color[i]= Common.TRANS_COLOR;
+        }
     }
     public int getXth() {
         return xth;
@@ -31,20 +39,34 @@ public enum DayOfMonthPos {
     public int getYth() {
         return yth;
     }
+    public int getEnrollCnt() {
+        return enrollCnt;
+    }
+    public void setEnrollCnt() {
+        ++this.enrollCnt;
+    }
     public void setPosState(DayOfMonthPosState posState) {
         this.posState = posState;
     }
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitleAndColor(String title,String color, int enrollCnt) {
+        if(title.length()>5) title = title.substring(0,4);
+        if(enrollCnt<4) {
+            this.color[enrollCnt] = color;
+            this.title[enrollCnt] = title;
+        }
     }
     public void setInitTitle(){
-        this.title="";
+        for(int i = 0; i<4; i++){
+            title[i]="";
+            color[i]=Common.TRANS_COLOR;
+        }
+        enrollCnt=0;
     }
     public DayOfMonthPosState getPosState() {
         return posState;
     }
 
     public void drawTimePos(Canvas canvas, int width, int height) {
-        posState.drawTimePos(canvas, width, height,title, xth, yth);
+        posState.drawTimePos(canvas, width, height,title,color, xth, yth);
     }
 }
