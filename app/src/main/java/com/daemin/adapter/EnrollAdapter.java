@@ -196,7 +196,8 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                             -Integer.parseInt(holder.tvCredit.getText().toString()));
                     User.INFO.getEditor().putString("creditSum",creditSum).commit();
                 }
-                Common.fetchWeekData();
+                if(weekFlag)Common.fetchWeekData();
+                else Common.fetchMonthData();
                 EventBus.getDefault().post(new RemoveEnrollEvent(holder.tvTimeCode.getText().toString()));
                 EventBus.getDefault().post(new SetCreditEvent());
             }

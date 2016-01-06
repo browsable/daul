@@ -20,7 +20,7 @@ public enum DayOfMonthPosState {
                 rp.setColor(Color.parseColor(color[i]));
                 canvas.drawRect(width * (xth - 1) / 7, height * ((10 * (yth - 1)) + 4 + 2*i) / 64+intervalSize,
                         width * (xth - 1) / 7+User.INFO.intervalSize, height * ((10 * (yth - 1)) + 6 + 2*i) / 64+intervalSize, rp);
-                canvas.drawText(title[i], width * (xth - 1) / 7 + User.INFO.intervalSize, height * ((10 * (yth - 1)) + 5 + 2*i) / 64+User.INFO.intervalSize, tp);
+                canvas.drawText(title[i], width * (xth - 1) / 7 + User.INFO.intervalSize, height * ((10 * (yth - 1)) + 5 + 2*i) / 64+2*User.INFO.intervalSize, tp);
             }
         }
     },

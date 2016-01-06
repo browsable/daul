@@ -59,8 +59,8 @@
         </LinearLayout>
         <Button
             android:id="@+id/btHome"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_marginLeft="@dimen/margin_default"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
@@ -83,7 +83,6 @@
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/textsize_default"
-                android:visibility="gone"
                 android:background="@color/transparency"/>
             <Button
                 android:id="@+id/btMonth"
@@ -91,9 +90,9 @@
                 android:layout_height="22dp"
                 android:gravity="center"
                 android:text="@string/week"
-                android:visibility="invisible"
                 android:textStyle="bold"
                 android:textSize="@dimen/textsize_default"
+                android:visibility="gone"
                 android:textColor="@android:color/black"
                 android:background="@color/transparency"/>
         </LinearLayout>

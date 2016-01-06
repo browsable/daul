@@ -148,14 +148,6 @@ public class InitMonthThread extends InitThread {
 		}
 		return;
 	}
-	/*public void fetchMonthData(){
-		for(MyTime mt :  User.INFO.monthData){
-			rp.setColor(Color.parseColor(mt.getColor()));
-			rp.setAlpha(130);
-			canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + intervalSize) + (2 * height / 32) * mt.getStartmin() / 60,
-					width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);
-		}
-	}*/
 	public void initScreen() {
 		float[] hp_hour = {
 				// 가로선

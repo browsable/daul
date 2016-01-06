@@ -81,6 +81,9 @@ public class WeekCaptureView extends ImageView {
         width = canvas.getWidth();
         height = canvas.getHeight();
         initScreen();
+        fetchWeekData();
+    }
+    public void fetchWeekData(){
         int week_startMonth = Dates.NOW.monthOfSun;
         int week_startDay = Dates.NOW.dayOfSun;
         int week_endMonth = Dates.NOW.monthOfSat;
@@ -103,9 +106,8 @@ public class WeekCaptureView extends ImageView {
             int endMin = mt.getEndmin();
             int startYth = Convert.HourOfDayToYth(mt.getStarthour());
             int endYth = Convert.HourOfDayToYth(mt.getEndhour());
-
-                canvas.drawRect(width * xth / 15, (height * startYth / 32 + intervalSize) + (2 * height / 32) * startMin / 60,
-                        width * (xth + 2) / 15, (height * endYth / 32 + intervalSize) + (2 * height / 32) * endMin / 60, rp);
+            canvas.drawRect(width * xth / 15, (height * startYth / 32 + intervalSize) + (2 * height / 32) * startMin / 60,
+                    width * (xth + 2) / 15, (height * endYth / 32 + intervalSize) + (2 * height / 32) * endMin / 60, rp);
             String ETPName = Convert.getxyMerge(xth,startYth);
             String second ="";
             if(ETP.containsKey(ETPName)){

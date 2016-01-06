@@ -109,7 +109,6 @@ public class Common {
 		User.INFO.monthData.clear();
 		User.INFO.monthData.addAll(MyTimeRepo.getMonthTimes(AppController.getInstance(), month_startMillies, month_endMillies));
 		for (MyTime mt :User.INFO.monthData){
-			Log.i("test",mt.getName()+mt.getColor()+mt.getDayofweek()+mt.getDayofmonth());
 			addMonth(mt.getName(),mt.getColor(), mt.getDayofweek(), mt.getDayofmonth());
 		}
 	}
@@ -120,10 +119,10 @@ public class Common {
 		DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
 		if (DOMP.getPosState() == DayOfMonthPosState.NO_PAINT) {
 			DOMP.setPosState(DayOfMonthPosState.ENROLL);
-			DOMP.setTitleAndColor(title, color, 0);
+			DOMP.setTitleAndColor(title, color);
 			DOMP.setEnrollCnt();
 		}else if(DOMP.getPosState() == DayOfMonthPosState.ENROLL){
-			DOMP.setTitleAndColor(title,color,DOMP.getEnrollCnt());
+			DOMP.setTitleAndColor(title,color);
 			DOMP.setEnrollCnt();
 		}
 	}
