@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.daemin.adapter.EnrollAdapter;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
+import com.daemin.data.BoardData;
 import com.daemin.data.EnrollData;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.TimePos;
@@ -69,40 +70,55 @@ public class DialEnroll extends Activity {
         if(getIntent()!=null) {
             this.xth = getIntent().getIntExtra("xth", 1);
             this.yth = getIntent().getIntExtra("yth", 1);
+            this.weekFlag = getIntent().getBooleanExtra("weekFlag", true);
             this.startMin = getIntent().getIntExtra("startMin", 1);
-            this.dayOfWeek = Convert.XthToDayOfWeek(xth);
             endMin = getIntent().getIntExtra("endMin", 1);
         }
         mtList = new ArrayList<>();
         enrollList = new HashMap<>();
-        startHour = Integer.parseInt(Convert.YthToHourOfDay(yth));
-        String wMonthDay = Dates.NOW.getwMonthDay(xth);
-        String [] tmp = wMonthDay.split("\\.");
-        int year;
-        int titleMonth = Dates.NOW.month;
-        int monthOfYear = Integer.parseInt(tmp[0]);
-        if (monthOfYear != titleMonth && titleMonth==1) year = Dates.NOW.year - 1;
-        else year = Dates.NOW.year;
-        int dayOfMonth = Integer.parseInt(tmp[1]);
-        enrollMyTime(MyTimeRepo.getHourTimes(DialEnroll.this,
-                Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, 0),//startmillis
-                Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour+1, 0)-1,//endmillis
-                xth, startHour, endMin));
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
-        tvMonthDay = (TextView) findViewById(R.id.tvMonthDay);
-        if(xth==1){
-            tvMonthDay.setTextColor(getResources().getColor(R.color.red));
-        }else if(xth==13){
-            tvMonthDay.setTextColor(getResources().getColor(R.color.blue));
-        }
-        tvMonthDay.setText(Dates.NOW.getwMonthDay(xth)+" "+dayOfWeek);
         llNewEnroll = (LinearLayout) findViewById(R.id.llNewEnroll);
+        tvMonthDay = (TextView) findViewById(R.id.tvMonthDay);
+        if(weekFlag) {
+            startHour = Integer.parseInt(Convert.YthToHourOfDay(yth));
+            String wMonthDay = Dates.NOW.getwMonthDay(xth);
+            String[] tmp = wMonthDay.split("\\.");
+            int year;
+            int titleMonth = Dates.NOW.month;
+            int monthOfYear = Integer.parseInt(tmp[0]);
+            if (monthOfYear != titleMonth && titleMonth == 1) year = Dates.NOW.year - 1;
+            else year = Dates.NOW.year;
+            int dayOfMonth = Integer.parseInt(tmp[1]);
+            enrollMyTime(MyTimeRepo.getHourTimes(DialEnroll.this,
+                    Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, 0),//startmillis
+                    Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour + 1, 0) - 1,//endmillis
+                    xth, startHour, endMin));
+            if(xth==1){
+                tvMonthDay.setTextColor(getResources().getColor(R.color.red));
+            }else if(xth==13){
+                tvMonthDay.setTextColor(getResources().getColor(R.color.blue));
+            }
+            tvMonthDay.setText(Dates.NOW.getwMonthDay(xth) + " " + Convert.XthToDayOfWeek(xth));
+        }else{
+            String dayOfMonth = Dates.NOW.getmMonthDay(xth - 1, 7 * (yth - 1));
+                    enrollMyTime(MyTimeRepo.getOneDayTimes(DialEnroll.this,
+                            Dates.NOW.year, Dates.NOW.month, Integer.parseInt(dayOfMonth)));
+            if(xth==1){
+                tvMonthDay.setTextColor(getResources().getColor(R.color.red));
+            }else if(xth==7){
+                tvMonthDay.setTextColor(getResources().getColor(R.color.blue));
+            }
+            tvMonthDay.setText(Dates.NOW.month+"."+dayOfMonth+" "+Convert.XthToDayOfWeekInMonth(xth));
+        }
+
         llNewEnroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new FinishDialogEvent());
                 Intent i = new Intent(DialEnroll.this, DialSchedule.class);
                 i.putExtra("overlapEnrollFlag", true);
+                if(weekFlag) i.putExtra("weekFlag", true);
+                else i.putExtra("weekFlag", false);
                 i.putExtra("xth", xth);
                 i.putExtra("yth", yth);
                 startActivity(i);
@@ -117,24 +133,8 @@ public class DialEnroll extends Activity {
             }
         });
         lv = (ListView) findViewById(R.id.lv);
-        enrollAdapter = new EnrollAdapter(DialEnroll.this, mtList);
-        lv.setAdapter(enrollAdapter);/*
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DialEnroll.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
-                *//*TextView tv = (TextView) view.findViewById(R.id.tvId);
-                Intent i = new Intent(DialEnroll.this, DialSchedule.class);
-                i.putExtra("enrollFlag", true);
-                i.putExtra("overlapEnrollFlag", true);
-                i.putExtra("_id",tv.getText().toString());
-                i.putExtra("xth", xth);
-                i.putExtra("yth", yth);
-                i.putExtra("startMin", startMin);
-                startActivity(i);
-                finish();*//*
-            }
-        });*/
+        enrollAdapter = new EnrollAdapter(DialEnroll.this, mtList,weekFlag);
+        lv.setAdapter(enrollAdapter);
     }
     private void enrollMyTime(List<MyTime> mt){
         for(MyTime m : mt){
@@ -160,6 +160,7 @@ public class DialEnroll extends Activity {
         }
     }
     private int xth,yth,startHour,startMin;
+    private Boolean weekFlag;
     private TextView tvMonthDay;
     private String dayOfWeek;
     private Button btDialCancel;

@@ -36,10 +36,12 @@ import timedao.MyTime;
 public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
     private LayoutInflater mInflater;
     private Context context;
-    public EnrollAdapter(Context context, List<EnrollData> values) {
+    private Boolean weekFlag;
+    public EnrollAdapter(Context context, List<EnrollData> values, Boolean weekFlag) {
         super(context, R.layout.listitem_enroll, values);
         mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
+        this.weekFlag = weekFlag;
     }
 
     @Override
@@ -137,7 +139,8 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                         mt.setColor(colorName);
                         MyTimeRepo.insertOrUpdate(context, mt);
                     }
-                    Common.fetchWeekData();
+                    if(weekFlag)Common.fetchWeekData();
+                    else Common.fetchMonthData();
                 }
             }
         });

@@ -114,6 +114,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         if (getIntent() != null) {
             widgetFlag = getIntent().getBooleanExtra("widgetFlag", false);
             overlapEnrollFlag = getIntent().getBooleanExtra("overlapEnrollFlag", false);
+            weekFlag = getIntent().getBooleanExtra("weekFlag", true);
         }
         setLayout();
         makeNormalList();
@@ -146,12 +147,20 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
         screenHeight = dm.heightPixels - lp.height;
         if (overlapEnrollFlag) {
-            TimePos tp = TimePos.valueOf(
-                    Convert.getxyMerge(
-                            getIntent().getIntExtra("xth", 1),
-                            getIntent().getIntExtra("yth", 1)));
-            tp.setPosState(PosState.PAINT);
-            tp.setMin(0, 60);
+            if (weekFlag) {
+                TimePos tp = TimePos.valueOf(
+                        Convert.getxyMerge(
+                                getIntent().getIntExtra("xth", 1),
+                                getIntent().getIntExtra("yth", 1)));
+                tp.setPosState(PosState.PAINT);
+                tp.setMin(0, 60);
+            } else {
+                DayOfMonthPos DOMP = DayOfMonthPos.valueOf(
+                        Convert.getxyMergeForMonth(
+                                getIntent().getIntExtra("xth", 1),
+                                getIntent().getIntExtra("yth", 1)));
+                DOMP.setPosState(DayOfMonthPosState.PAINT);
+            }
         }
         window.setGravity(Gravity.BOTTOM);
         window.setAttributes(lp);
@@ -851,7 +860,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight, viewMode;
-    private boolean widgetFlag, overlapEnrollFlag, subOverlapFlag;
+    private boolean widgetFlag, overlapEnrollFlag,weekFlag, subOverlapFlag;
 
     public void onEventMainThread(FinishDialogEvent e) {
         finish();

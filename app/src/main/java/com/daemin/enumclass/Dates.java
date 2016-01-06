@@ -95,46 +95,7 @@ public enum Dates {
     public String getmMonthDay(int... index) {
         return mData[index[0]+index[1]];
     }
-    public int getXthToDay(int xth) {
-        switch (xth) {
-            case 1:
-                return dayOfSun;
-            case 3:
-                return dayOfMon;
-            case 5:
-                return dayOfTue;
-            case 7:
-                return dayOfWed;
-            case 9:
-                return dayOfThr;
-            case 11:
-                return dayOfFri;
-            case 13:
-                return dayOfSat;
-            default:
-                return 0;
-        }
-    }
-    public int getXthToMonth(int xth) {
-        switch (xth) {
-            case 1:
-                return dayOfSun;
-            case 3:
-                return dayOfMon;
-            case 5:
-                return dayOfTue;
-            case 7:
-                return dayOfWed;
-            case 9:
-                return dayOfThr;
-            case 11:
-                return dayOfFri;
-            case 13:
-                return dayOfSat;
-            default:
-                return 0;
-        }
-    }
+
     static LocalDate fst; //해당날짜의 첫째 date
     public int getYear() {
         return getLastDayOfWeek().getYear();

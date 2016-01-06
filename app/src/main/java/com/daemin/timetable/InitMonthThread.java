@@ -138,11 +138,11 @@ public class InitMonthThread extends InitThread {
 			DOMP.setPosState(DayOfMonthPosState.NO_PAINT);
 		}else{
 			//월에서 일정 등록한 영역 터치시
-			Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show();
 			EventBus.getDefault().post(new CreateDialEvent(false));
 			Intent i = new Intent(context, DialEnroll.class);
 			i.putExtra("xth", xth);
 			i.putExtra("yth", yth);
+			i.putExtra("weekFlag", false);
 			context.startActivity(i);
 
 		}

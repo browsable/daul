@@ -53,8 +53,17 @@ public class MyTimeRepo {
     public static List<MyTime> getMonthTimes(Context context, long month_startMillies, long month_endMillies){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
         qb.where(qb.and(MyTimeDao.Properties.Startmillis.between(month_startMillies, month_endMillies),
-                        MyTimeDao.Properties.Timetype.eq(0)
-                        ));
+                MyTimeDao.Properties.Timetype.eq(0)
+        ));
+        return qb.orderAsc(MyTimeDao.Properties.Startmillis).list();
+    }
+    public static List<MyTime> getOneDayTimes(Context context, int year, int monthOfYear, int dayOfMonth){
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+        qb.where(qb.and(MyTimeDao.Properties.Year.eq(year),
+                MyTimeDao.Properties.Monthofyear.eq(monthOfYear),
+                MyTimeDao.Properties.Dayofmonth.eq(dayOfMonth),
+                MyTimeDao.Properties.Timetype.eq(0)
+        ));
         return qb.orderAsc(MyTimeDao.Properties.Startmillis).list();
     }
     public static List<MyTime> getHourTimes(Context context, long startmillis, long endmillis, int xth, int startHour, int endMin){
