@@ -37,7 +37,6 @@ import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.User;
-import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.CreateDialEvent;
@@ -56,6 +55,7 @@ import java.io.File;
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends FragmentActivity {
+    //hi
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
             mDrawerLayout.closeDrawer(mLeftDrawer);
