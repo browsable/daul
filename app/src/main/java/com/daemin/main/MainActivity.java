@@ -64,7 +64,6 @@ public class MainActivity extends FragmentActivity {
             backPressCloseHandler.onBackPressed(backKeyName);
         }
     }
-
     @Override
     public void onResume() {
         super.onResume();
