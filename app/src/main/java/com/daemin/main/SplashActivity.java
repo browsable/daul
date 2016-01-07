@@ -89,10 +89,11 @@ public class SplashActivity extends Activity{
 		int deviceWidth = displayMetrics.widthPixels;
 		int deviceHeight = displayMetrics.heightPixels;
 
-		//폰번호
 		TelephonyManager systemService = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-		String phoneNum = systemService.getLine1Number();
+		String phoneNum;
+		//폰번호
         try{
+			phoneNum = systemService.getLine1Number();
 			if (phoneNum != null) {
 				/*phoneNum = phoneNum.substring(phoneNum.length() - 10, phoneNum.length());
 				phoneNum = "0" + phoneNum;*/

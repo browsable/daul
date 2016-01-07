@@ -527,6 +527,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             repeatPeriod=Convert.onlyNum(s[1]);
             repeat = repeatNum+":"+String.valueOf(repeatType)+":"+repeatPeriod;
         }
+        long nowMilis = Dates.NOW.getNowMillis();
         for(int i=0; i<repeatNum; i++){
             for (BottomNormalData d : normalList) {
                 String[] tmp = d.getYMD().split("\\.");
@@ -548,7 +549,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 DateTime endDt =  Dates.NOW.getDateMillisWithRepeat(year, monthOfYear, dayOfMonth, endHour, endMin, repeatType, repeatPeriod * i);
                 long startMillis = startDt.getMillis();
                 MyTime myTime = new MyTime(null,
-                        String.valueOf(Dates.NOW.getNowMillis()), 0,
+                        String.valueOf(nowMilis), 0,
                         etName.getText().toString(),
                         startDt.getYear(), startDt.getMonthOfYear(), startDt.getDayOfMonth(),
                         xth, startHour, startMin, endHour, endMin,

@@ -14,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:background="@drawable/bt_click"
             android:padding="@dimen/margin_xl">
             <TextView
                 android:layout_width="wrap_content"
@@ -21,13 +22,17 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/setting_cal_holiday_ko"
                 android:textSize="@dimen/textsize_xl" />
-            <Button
-                android:id="@+id/bt1"
+            <ToggleButton
+                android:id="@+id/switch1"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/ic_clear" />
+                android:textOff=""
+                android:textOn=""
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/ic_switch_on" />
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
@@ -39,6 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:background="@drawable/bt_click"
             android:padding="@dimen/margin_xl">
             <TextView
                 android:layout_width="wrap_content"
@@ -46,13 +52,17 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/setting_cal_lunar"
                 android:textSize="@dimen/textsize_xl"/>
-            <Button
-                android:id="@+id/bt2"
+            <ToggleButton
+                android:id="@+id/switch2"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/ic_clear" />
+                android:textOff=""
+                android:textOn=""
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/ic_switch_off" />
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
@@ -64,6 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:background="@drawable/bt_click"
             android:padding="@dimen/margin_xl">
             <TextView
                 android:layout_width="wrap_content"
@@ -71,13 +82,17 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/setting_cal_24"
                 android:textSize="@dimen/textsize_xl"/>
-            <Button
-                android:id="@+id/bt3"
+            <ToggleButton
+                android:id="@+id/switch3"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/ic_clear" />
+                android:textOff=""
+                android:textOn=""
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/ic_switch_off" />
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
@@ -89,6 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:background="@drawable/bt_click"
             android:padding="@dimen/margin_xl">
             <TextView
                 android:layout_width="wrap_content"
@@ -96,13 +112,17 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/setting_cal_sub"
                 android:textSize="@dimen/textsize_xl"/>
-            <Button
-                android:id="@+id/bt4"
+            <ToggleButton
+                android:id="@+id/switch4"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/ic_clear" />
+                android:textOff=""
+                android:textOn=""
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/ic_switch_off" />
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
@@ -114,6 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:background="@drawable/bt_click"
             android:padding="@dimen/margin_xl">
             <TextView
                 android:layout_width="wrap_content"
@@ -121,13 +142,17 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/setting_cal_repeat"
                 android:textSize="@dimen/textsize_xl"/>
-            <Button
-                android:id="@+id/bt5"
+            <ToggleButton
+                android:id="@+id/switch5"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/ic_clear" />
+                android:textOff=""
+                android:textOn=""
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/ic_switch_off" />
         </RelativeLayout>
         <View
             android:layout_width="match_parent"

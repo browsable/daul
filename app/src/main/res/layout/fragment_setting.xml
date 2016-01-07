@@ -58,7 +58,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bt_click"
-            android:visibility="gone"
             android:padding="@dimen/margin_xl"
             android:text="@string/setting_calendar"
             android:textSize="@dimen/textsize_xl" />
