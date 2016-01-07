@@ -144,9 +144,15 @@
                     android:checked="true"
                     android:text="@string/repeat_radio0"
                     android:textSize="@dimen/textsize_default" />
-
                 <RadioButton
                     android:id="@+id/repeat_radio1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/repeat_radio1"
+                    android:textSize="@dimen/textsize_default" />
+                <RadioButton
+                    android:id="@+id/repeat_radio2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -154,7 +160,7 @@
                     android:textSize="@dimen/textsize_default" />
 
                 <RadioButton
-                    android:id="@+id/repeat_radio2"
+                    android:id="@+id/repeat_radio3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -162,7 +168,7 @@
                     android:textSize="@dimen/textsize_default" />
 
                 <RadioButton
-                    android:id="@+id/repeat_radio3"
+                    android:id="@+id/repeat_radio4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -181,7 +187,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical" />
-
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical" />
                 <LinearLayout
                     android:id="@+id/llWeek"
                     android:layout_width="match_parent"
@@ -293,7 +303,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/repeat_radio4"
+                    android:id="@+id/repeat_radio5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

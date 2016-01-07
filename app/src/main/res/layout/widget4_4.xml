@@ -73,6 +73,7 @@
             android:layout_marginRight="@dimen/margin_xxs"
             android:gravity="top|left"
             android:orientation="vertical"
+            android:visibility="gone"
             android:scaleType="fitXY">
             <Button
                 android:id="@+id/btWeek"

@@ -4,20 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.daemin.common.BasicFragment;
-import com.daemin.dialog.DialDefault;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
 
 import de.greenrobot.event.EventBus;
 
-public class SettingInitFragment extends BasicFragment {
-    public SettingInitFragment() {
-        super(R.layout.fragment_setting_init,"SettingIdFragment");
+public class SettingCalendarFragment extends BasicFragment {
+    public SettingCalendarFragment() {
+        super(R.layout.fragment_setting_calendar,"SettingCalendarFragment");
     }
 
     @Override
@@ -27,8 +26,11 @@ public class SettingInitFragment extends BasicFragment {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         ibMenu = MainActivity.getInstance().getIbMenu();
         ibBack = MainActivity.getInstance().getIbBack();
-        btInitTable = (Button)root.findViewById(R.id.btInitTable);
-        btInitSub = (Button)root.findViewById(R.id.btInitSub);
+        btHoliKo = (RelativeLayout) root.findViewById(R.id.btHoliKo);
+        btLunar = (RelativeLayout) root.findViewById(R.id.btLunar);
+        bt24 = (RelativeLayout) root.findViewById(R.id.bt24);
+        btSub= (RelativeLayout) root.findViewById(R.id.btSub);
+        btRepeat= (RelativeLayout) root.findViewById(R.id.btRepeat);
         ibMenu.setVisibility(View.GONE);
         ibBack.setVisibility(View.VISIBLE);
         ibBack.setOnClickListener(new View.OnClickListener() {
@@ -37,33 +39,36 @@ public class SettingInitFragment extends BasicFragment {
                 ibMenu.setVisibility(View.VISIBLE);
                 ibBack.setVisibility(View.GONE);
                 EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
-                //EventBus.getDefault().post(new BackKeyEvent("",new String[]{"ibMenu"},new String[]{"ibBack"}));
             }
         });
-        btInitTable.setOnClickListener(new View.OnClickListener() {
+        btHoliKo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialDefault dd = new DialDefault(getActivity(),
-                        getActivity().getResources().getString(R.string.setting_init_table_title),
-                        getActivity().getResources().getString(R.string.setting_init_q),
-                        1);
-                dd.show();
-
             }
         });
-        btInitSub.setOnClickListener(new View.OnClickListener() {
+        btLunar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialDefault dd = new DialDefault(getActivity(),
-                        getActivity().getResources().getString(R.string.setting_init_sub_title),
-                        getActivity().getResources().getString(R.string.setting_init_q),
-                        2);
-                dd.show();
+            }
+        });
+        bt24.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+        btSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+        btRepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
             }
         });
         return root;
     }
     ImageButton ibMenu, ibBack;
-    Button btInitTable,btInitSub;
+    RelativeLayout btHoliKo,btLunar,bt24,btSub,btRepeat;
 
 }

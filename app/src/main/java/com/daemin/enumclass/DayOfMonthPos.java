@@ -49,7 +49,7 @@ public enum DayOfMonthPos {
         this.posState = posState;
     }
     public void setTitleAndColor(String title,String color) {
-        if(title.length()>5) title = title.substring(0,4);
+        if(title.length()>5) title = title.substring(0,5);
         if(enrollCnt<4) {
             this.color[enrollCnt] = color;
             this.title[enrollCnt] = title;

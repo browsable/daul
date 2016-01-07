@@ -129,22 +129,26 @@ public class InitMonthThread extends InitThread {
 	}
 
 	public void makeTimePos(int xth, int yth) {
-		DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
-		if (DOMP.getPosState() == DayOfMonthPosState.NO_PAINT) {
-			DOMP.setPosState(DayOfMonthPosState.PAINT);
-			if(!Common.getTempTimePos().contains(DOMP.name()))
-			Common.getTempTimePos().add(DOMP.name());
-		} else if(DOMP.getPosState() == DayOfMonthPosState.PAINT){
-			DOMP.setPosState(DayOfMonthPosState.NO_PAINT);
-		}else{
-			//월에서 일정 등록한 영역 터치시
-			EventBus.getDefault().post(new CreateDialEvent(false));
-			Intent i = new Intent(context, DialEnroll.class);
-			i.putExtra("xth", xth);
-			i.putExtra("yth", yth);
-			i.putExtra("weekFlag", false);
-			context.startActivity(i);
+		try{
+			DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
+			if (DOMP.getPosState() == DayOfMonthPosState.NO_PAINT) {
+				DOMP.setPosState(DayOfMonthPosState.PAINT);
+				if(!Common.getTempTimePos().contains(DOMP.name()))
+				Common.getTempTimePos().add(DOMP.name());
+			} else if(DOMP.getPosState() == DayOfMonthPosState.PAINT){
+				DOMP.setPosState(DayOfMonthPosState.NO_PAINT);
+			}else{
+				//월에서 일정 등록한 영역 터치시
+				EventBus.getDefault().post(new CreateDialEvent(false));
+				Intent i = new Intent(context, DialEnroll.class);
+				i.putExtra("xth", xth);
+				i.putExtra("yth", yth);
+				i.putExtra("weekFlag", false);
+				context.startActivity(i);
 
+			}
+		}catch (IllegalArgumentException e){
+			e.printStackTrace();
 		}
 		return;
 	}

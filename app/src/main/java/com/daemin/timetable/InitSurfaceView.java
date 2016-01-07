@@ -21,7 +21,7 @@ public class InitSurfaceView extends SurfaceView implements
 	private InitThread initThread;
 	Context context;
 	private int xth, yth;
-	private boolean outOfTouchArea;
+	private boolean outOfTouchArea,destroyFlag;
 	private int mode;
 
 	public InitSurfaceView(Context context, int mode) {
@@ -30,6 +30,7 @@ public class InitSurfaceView extends SurfaceView implements
 		this.mode = mode;
 		holder = getHolder();
 		holder.addCallback(this);
+		destroyFlag = false;
 	}
 	//week or month mode
 	public void setMode(int mode) {
@@ -46,7 +47,12 @@ public class InitSurfaceView extends SurfaceView implements
 				break;
 		}
 		initThread.setRunning(true);
+		destroyFlag = false;
 		if(!initThread.isAlive()) initThread.start();
+	}
+
+	public boolean isDestroyed() {
+		return destroyFlag;
 	}
 
 	@Override
@@ -57,6 +63,7 @@ public class InitSurfaceView extends SurfaceView implements
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		boolean done = true;
+		destroyFlag = true;
 		initThread.setRunning(false);
 		while (done) {
 			try {

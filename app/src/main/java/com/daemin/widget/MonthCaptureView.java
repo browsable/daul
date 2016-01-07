@@ -15,8 +15,6 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
-import com.daemin.enumclass.DayOfMonthPosState;
-import com.daemin.enumclass.User;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
@@ -45,7 +43,7 @@ public class MonthCaptureView extends ImageView {
         super(context);
         tempxth = 0;
         tempyth = 0;
-        int textSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_l);
+        int textSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_s);
         intervalSize = context.getResources().getDimensionPixelSize(R.dimen.margin_xxs);
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
         hp.setColor(context.getResources().getColor(R.color.maincolor));
@@ -110,21 +108,26 @@ public class MonthCaptureView extends ImageView {
             DayOfMonthPos domp = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
             if(DOMP.containsKey(domp.name())){
                 DOMPData dData = DOMP.get(domp.name());
-                dData.setTitleAndColor(mt.getName(),mt.getColor());
+                dData.setTitleAndColor(mt.getName(), mt.getColor());
                 dData.setEnrollCnt();
             }else{
                 DOMPData dData = new DOMPData();
                 dData.setTitleAndColor(mt.getName(), mt.getColor());
                 dData.setEnrollCnt();
+                dData.setXYth(xth,yth);
                 DOMP.put(domp.name(),dData);
-            } // 작업하는중 2016.01.06 4시 40분 마무리
+            }
         }
-        /*for(int i =0; i<4; i++) {
-            rp.setColor(Color.parseColor(color[i]));
-            canvas.drawRect(width * (xth - 1) / 7, height * ((10 * (yth - 1)) + 4 + 2*i) / 64+intervalSize,
-                    width * (xth - 1) / 7+User.INFO.intervalSize, height * ((10 * (yth - 1)) + 6 + 2*i) / 64+intervalSize, rp);
-            canvas.drawText(title[i], width * (xth - 1) / 7 + User.INFO.intervalSize, height * ((10 * (yth - 1)) + 5 + 2*i) / 64+2*User.INFO.intervalSize, tp);
-        }*/
+        for(DOMPData d : DOMP.values()){
+            int xth = d.getXth();
+            int yth = d.getYth();
+            for(int i =0; i<4; i++) {
+                rp.setColor(Color.parseColor(d.color[i]));
+                canvas.drawRect(width * (xth - 1) / 7, height * ((10 * (yth - 1)) + 4 + 2 * i) / 64 + intervalSize,
+                        width * (xth - 1) / 7 + intervalSize, height * ((10 * (yth - 1)) + 6 + 2 * i) / 64 + intervalSize, rp);
+                canvas.drawText(d.title[i], width * (xth - 1) / 7 + intervalSize, height * ((10 * (yth - 1)) + 5 + 2 * i) / 64 + 2 * intervalSize, tp);
+            }
+        }
     }
     @Override
     public boolean onTouchEvent(MotionEvent event)
@@ -172,7 +175,7 @@ public class MonthCaptureView extends ImageView {
     }
     public void initScreen() {
         float[] hp_hour = {
-                // 가로선 : 1시간 간격
+                // 가로선
                 0, height / 32 + intervalSize, width, height / 32 + intervalSize , 0, height * 12 / 64 + intervalSize, width,
                 height * 12 / 64 + intervalSize, 0, height * 22 / 64 + intervalSize, width, height * 22 / 64 + intervalSize, 0,
                 height * 32 / 64 + intervalSize, width, height * 32 / 64 + intervalSize, 0, height * 42 / 64 + intervalSize, width,
@@ -203,18 +206,18 @@ public class MonthCaptureView extends ImageView {
             int j = i%7;
             switch(j){
                 case 0:
-                    canvas.drawText(Dates.NOW.mData[i], 2+intervalSize, height* (( 10 * (i/7)) + 4) / 64, tpred);
+                    canvas.drawText(Dates.NOW.mData[i], 2+2*intervalSize, height* (( 10 * (i/7)) + 4) / 64, tpred);
                     break;
                 case 6:
-                    canvas.drawText(Dates.NOW.mData[i], width * 6 / 7+intervalSize, height * ((10 * (i/7)) + 4) / 64, tpblue);
+                    canvas.drawText(Dates.NOW.mData[i], width * 6 / 7+2*intervalSize, height * ((10 * (i/7)) + 4) / 64, tpblue);
                     break;
                 default:
-                    canvas.drawText(Dates.NOW.mData[i], width * j / 7+intervalSize, height * ((10 * (i/7)) + 4) / 64, tp);
+                    canvas.drawText(Dates.NOW.mData[i], width * j / 7+2*intervalSize, height * ((10 * (i/7)) + 4) / 64, tp);
                     break;
             }
         }
         for(int i = Dates.NOW.dayOfWeek + Dates.NOW.dayNumOfMonth + 1; i < 42; i++) {
-            canvas.drawText(Dates.NOW.mData[i], width * (i % 7) / 7+intervalSize, height * ((10 * (i/7)) + 4) / 64, tpgray);
+            canvas.drawText(Dates.NOW.mData[i], width * (i % 7) / 7+2*intervalSize, height * ((10 * (i/7)) + 4) / 64, tpgray);
         }
         tp.setTextAlign(Paint.Align.CENTER);
         tpred.setTextAlign(Paint.Align.CENTER);
@@ -229,10 +232,10 @@ public class MonthCaptureView extends ImageView {
         tp.setTextAlign(Paint.Align.LEFT);
         tpred.setTextAlign(Paint.Align.LEFT);
         tpblue.setTextAlign(Paint.Align.LEFT);
-
     }
     class DOMPData{
         private int enrollCnt;
+        private int xth,yth;
         private String[] title,color;
         public DOMPData() {
             enrollCnt=0;
@@ -243,6 +246,17 @@ public class MonthCaptureView extends ImageView {
                 color[i]= Common.TRANS_COLOR;
             }
         }
+        public int getXth() {
+            return xth;
+        }
+
+        public int getYth() {
+            return yth;
+        }
+        public void setXYth(int xth, int yth) {
+            this.xth=xth;
+            this.yth=yth;
+        }
         public int getEnrollCnt() {
             return enrollCnt;
         }
@@ -250,7 +264,7 @@ public class MonthCaptureView extends ImageView {
             ++this.enrollCnt;
         }
         public void setTitleAndColor(String title,String color) {
-            if(title.length()>5) title = title.substring(0,4);
+            if(title.length()>5) title = title.substring(0,5);
             if(enrollCnt<4) {
                 this.color[enrollCnt] = color;
                 this.title[enrollCnt] = title;

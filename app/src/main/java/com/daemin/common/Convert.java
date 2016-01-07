@@ -290,5 +290,16 @@ public class Convert {
 		}
 		return alarmMillis;
 	}
+	public static int onlyNum(String str) {
+		if ( str == null ) return 0;
+
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0; i < str.length(); i++){
+			if( Character.isDigit( str.charAt(i) ) ) {
+				sb.append( str.charAt(i) );
+			}
+		}
+		return Integer.parseInt(sb.toString());
+	}
 }
 

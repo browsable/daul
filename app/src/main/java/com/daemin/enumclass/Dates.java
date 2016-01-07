@@ -1,5 +1,7 @@
 package com.daemin.enumclass;
 
+import android.util.Log;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -111,6 +113,22 @@ public enum Dates {
     public long getDateMillis(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour) {
         DateTime dt = new DateTime(year,monthOfYear,dayOfMonth,hourOfDay,minuteOfHour);
         return dt.getMillis();
+    }
+    public DateTime getDateMillisWithRepeat(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int repeatType, int repeatPeriod) {
+        LocalDate ld = new LocalDate(year, monthOfYear, dayOfMonth);
+        switch (repeatType){
+            case 2: //주
+                ld = ld.plusWeeks(repeatPeriod);
+                break;
+            case 3: //개월
+                ld = ld.plusMonths(repeatPeriod);
+                break;
+            case 4: //년
+                ld = ld.plusYears(repeatPeriod);
+                break;
+        }
+        DateTime dt = new DateTime(ld.getYear(),ld.getMonthOfYear(),ld.getDayOfMonth(),hourOfDay,minuteOfHour);
+        return dt;
     }
     public long getMidnight(){
         return new DateTime().plusDays(1).withTimeAtStartOfDay().getMillis();

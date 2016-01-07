@@ -64,6 +64,8 @@ import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 import com.daemin.widget.WidgetUpdateService;
 
+import org.joda.time.DateTime;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -73,6 +75,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -508,6 +511,66 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         actv.setDropDownVerticalOffset(10);
         return actv;
     }
+    public void AddSchedule(int repeatType){
+        String repeat = tvRepeat.getText().toString();
+        String s[];
+        int repeatNum, repeatPeriod; //반복횟수와 기간;
+        repeatNum=1;
+        repeatPeriod=0;
+        if(repeatType==0){ //반복없음
+            repeat="0";
+        }else if(repeatType==1){ //매주마다
+            repeat="1";
+        }else{ //~주마다, ~개월마다, ~년마다
+            s = repeat.split(":");
+            repeatNum=Convert.onlyNum(s[0])+1;
+            repeatPeriod=Convert.onlyNum(s[1]);
+            repeat = repeatNum+":"+String.valueOf(repeatType)+":"+repeatPeriod;
+        }
+        for(int i=0; i<repeatNum; i++){
+            for (BottomNormalData d : normalList) {
+                String[] tmp = d.getYMD().split("\\.");
+                int year;
+                int titleMonth = Dates.NOW.month;
+                int monthOfYear = Integer.parseInt(tmp[0]);
+                if (monthOfYear != titleMonth && titleMonth == 1)
+                    year = Dates.NOW.year - 1;
+                else year = Dates.NOW.year;
+                int dayOfMonth = Integer.parseInt(tmp[1]);
+                int startHour = Integer.parseInt(d.getStartHour());
+                int startMin = Integer.parseInt(d.getStartMin());
+                int endHour = Integer.parseInt(d.getEndHour());
+                int endMin = Integer.parseInt(d.getEndMin());
+                int xth;
+                if (viewMode == 0) xth = d.getXth();
+                else xth = Convert.mXthTowXth(d.getXth());
+                DateTime startDt = Dates.NOW.getDateMillisWithRepeat(year, monthOfYear, dayOfMonth, startHour, startMin, repeatType, repeatPeriod * i);
+                DateTime endDt =  Dates.NOW.getDateMillisWithRepeat(year, monthOfYear, dayOfMonth, endHour, endMin, repeatType, repeatPeriod * i);
+                long startMillis = startDt.getMillis();
+                MyTime myTime = new MyTime(null,
+                        String.valueOf(Dates.NOW.getNowMillis()), 0,
+                        etName.getText().toString(),
+                        startDt.getYear(), startDt.getMonthOfYear(), startDt.getDayOfMonth(),
+                        xth, startHour, startMin, endHour, endMin,
+                        startMillis, endDt.getMillis() - 1,
+                        etMemo.getText().toString(),
+                        etPlace.getText().toString(),
+                        User.INFO.latitude, User.INFO.longitude,
+                        Convert.Share(tvShare.getText().toString()),
+                        Convert.Alarm(startMillis, tvAlarm.getText().toString()),
+                        repeat,
+                        colorName);
+                MyTimeRepo.insertOrUpdate(this, myTime);
+            }
+        }
+        normalList.clear();
+        normalAdapter.notifyDataSetChanged();
+        etName.setText("");
+        etMemo.setText("");
+        etPlace.setText("");
+        if(viewMode==0)Common.fetchWeekData();
+        else Common.fetchMonthData();
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -598,7 +661,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (User.INFO.overlapFlag) {
                     Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_overlap), Toast.LENGTH_SHORT).show();
                 } else {
-                    long nowMillis = Dates.NOW.getNowMillis();
                     switch (DrawMode.CURRENT.getMode()) {
                         case 0:
                             if (etName.getText().toString().equals("")) {
@@ -608,46 +670,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 break;
                             }
                             Common.stateFilter(viewMode);
-                            for (BottomNormalData d : normalList) {
-                                String[] tmp = d.getYMD().split("\\.");
-                                int year;
-                                int titleMonth = Dates.NOW.month;
-                                int monthOfYear = Integer.parseInt(tmp[0]);
-                                if (monthOfYear != titleMonth && titleMonth == 1)
-                                    year = Dates.NOW.year - 1;
-                                else year = Dates.NOW.year;
-                                int dayOfMonth = Integer.parseInt(tmp[1]);
-                                int startHour = Integer.parseInt(d.getStartHour());
-                                int startMin = Integer.parseInt(d.getStartMin());
-                                int endHour = Integer.parseInt(d.getEndHour());
-                                int endMin = Integer.parseInt(d.getEndMin());
-                                int xth;
-                                if(viewMode==0) xth=d.getXth();
-                                else xth = Convert.mXthTowXth(d.getXth());
-                                long startMillis = Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, startMin);
-                                long endMillis = Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, endHour, endMin);
-                                MyTime myTime = new MyTime(null,
-                                        String.valueOf(nowMillis), 0,
-                                        etName.getText().toString(),
-                                        year, monthOfYear, dayOfMonth,
-                                        xth, startHour, startMin, endHour, endMin,
-                                        startMillis, endMillis - 1,
-                                        etMemo.getText().toString(),
-                                        etPlace.getText().toString(),
-                                        User.INFO.latitude, User.INFO.longitude,
-                                        Convert.Share(tvShare.getText().toString()),
-                                        Convert.Alarm(startMillis, tvAlarm.getText().toString()),
-                                        "10:10",
-                                        colorName);
-                                MyTimeRepo.insertOrUpdate(this, myTime);
-                                }
-                                normalList.clear();
-                                normalAdapter.notifyDataSetChanged();
-                                etName.setText("");
-                                etMemo.setText("");
-                                etPlace.setText("");
-                                if(viewMode==0)Common.fetchWeekData();
-                                else Common.fetchMonthData();
+                            AddSchedule(repeatType);
                             break;
                         case 1:
                             Common.stateFilter(viewMode);
@@ -711,7 +734,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             case R.id.btCancel:
                 EventBus.getDefault().post(new SetBtPlusEvent(true));
                 EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
-                //btUniv.setVisibility(View.VISIBLE);
+                if(viewMode==0)Common.fetchWeekData();
+                else Common.fetchMonthData();
                 DrawMode.CURRENT.setMode(0);
                 finish();
                 break;
@@ -751,7 +775,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 break;
         }
     }
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (v.getId()) {
@@ -835,7 +858,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         subOverlapFlag = true;
         User.INFO.overlapFlag = false;
         colorName = Common.MAIN_COLOR;
-        dy = mPosY = 0;
+        dy = 0; mPosY = 0; repeatType = 0;
         dayIndex = new HashMap<>();
     }
 
@@ -859,7 +882,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private AutoCompleteTextView actvUniv, actvDep, actvGrade, actvSub;
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
-    private int dy, mPosY, screenHeight, viewMode;
+    private int dy, mPosY, screenHeight, viewMode,repeatType;
     private boolean widgetFlag, overlapEnrollFlag,weekFlag, subOverlapFlag;
 
     public void onEventMainThread(FinishDialogEvent e) {
@@ -876,6 +899,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
 
     public void onEventMainThread(SetRepeatEvent e) {
+        repeatType=e.getRepeatType();
         tvRepeat.setText(e.toString());
     }
 

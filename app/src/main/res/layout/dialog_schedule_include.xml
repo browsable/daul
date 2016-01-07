@@ -188,7 +188,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_lightgray_bottomline"
-            android:visibility="invisible"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -199,6 +198,7 @@
                 android:background="@drawable/bt_click"
                 android:gravity="center"
                 android:onClick="mOnClick"
+                android:visibility="invisible"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -238,6 +238,7 @@
                 android:background="@drawable/bt_click"
                 android:gravity="center"
                 android:onClick="mOnClick"
+                android:visibility="invisible"
                 android:orientation="horizontal">
 
                 <LinearLayout

@@ -47,7 +47,7 @@ public class MyTimeRepo {
     public static List<MyTime> getWeekTimes(Context context, long week_startMillies, long week_endMillies){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
         qb.where(qb.or(MyTimeDao.Properties.Startmillis.between(week_startMillies, week_endMillies),
-                MyTimeDao.Properties.Timetype.eq(1)));
+                MyTimeDao.Properties.Timetype.eq(1), MyTimeDao.Properties.Repeat.eq(1)));
         return qb.list();
     }
     public static List<MyTime> getMonthTimes(Context context, long month_startMillies, long month_endMillies){
@@ -73,6 +73,10 @@ public class MyTimeRepo {
                                 MyTimeDao.Properties.Dayofweek.eq(xth),
                                 MyTimeDao.Properties.Starthour.le(startHour),
                                 MyTimeDao.Properties.Endhour.gt(startHour)),
+                        qb.and(MyTimeDao.Properties.Repeat.eq(1),
+                                MyTimeDao.Properties.Dayofweek.eq(xth),
+                                MyTimeDao.Properties.Starthour.le(startHour),
+                                MyTimeDao.Properties.Endhour.gt(startHour)),
                         qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
                                 qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
                                         MyTimeDao.Properties.Endmillis.gt(endmillis)),
@@ -83,6 +87,10 @@ public class MyTimeRepo {
                                 MyTimeDao.Properties.Dayofweek.eq(xth),
                                 MyTimeDao.Properties.Starthour.le(startHour),
                                 MyTimeDao.Properties.Endhour.ge(startHour)),
+                        qb.and(MyTimeDao.Properties.Repeat.eq(1),
+                                MyTimeDao.Properties.Dayofweek.eq(xth),
+                                MyTimeDao.Properties.Starthour.le(startHour),
+                                MyTimeDao.Properties.Endhour.gt(startHour)),
                         qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
                                 qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
                                         MyTimeDao.Properties.Endmillis.gt(endmillis)),

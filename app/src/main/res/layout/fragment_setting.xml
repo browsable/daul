@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fadeScrollbars="false">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -33,66 +34,7 @@
                 android:layout_marginTop="@dimen/margin_default"
                 android:text="daul@"
                 android:textSize="@dimen/textsize_xxxl" />
-
         </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/btSettingId"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_l"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/margin_s"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginBottom="@dimen/margin_xxs"
-                android:text="@string/setting_id"
-                android:textSize="@dimen/textsize_xxl" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="choz00@naver.com"
-                android:textColor="@color/dimgray"
-                android:textSize="@dimen/textsize_l" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/btSettingUniv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_l"
-            android:paddingLeft="@dimen/margin_s"
-            android:layout_weight="1"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginBottom="@dimen/margin_xxs"
-                android:text="@string/setting_univ"
-                android:textSize="@dimen/textsize_xxl" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="한국기술교육대학교 디자인공학과"
-                android:textColor="@color/dimgray"
-                android:textSize="@dimen/textsize_l" />
-
-        </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -101,24 +43,40 @@
             android:id="@+id/btSettingInit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/bt_click"
             android:padding="@dimen/margin_xl"
             android:text="@string/setting_init"
-            android:background="@drawable/bt_click"
             android:textSize="@dimen/textsize_xl" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/lightgray"
-            />
+            android:background="@color/lightgray" />
+
+        <TextView
+            android:id="@+id/btSettingCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bt_click"
+            android:visibility="gone"
+            android:padding="@dimen/margin_xl"
+            android:text="@string/setting_calendar"
+            android:textSize="@dimen/textsize_xl" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
+
         <TextView
             android:id="@+id/btSettingQA"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/bt_click"
             android:padding="@dimen/margin_xl"
             android:text="@string/QandA2"
-            android:textSize="@dimen/textsize_xl"
-            android:background="@drawable/bt_click"
-            />
+            android:textSize="@dimen/textsize_xl" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

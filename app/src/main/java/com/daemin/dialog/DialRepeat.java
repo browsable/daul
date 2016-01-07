@@ -53,7 +53,7 @@ public class DialRepeat extends Dialog {
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels * 2 / 3;
-        layoutParams.height = dm.heightPixels * 4 / 9;
+        layoutParams.height = dm.heightPixels * 5 / 9;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();
@@ -170,6 +170,12 @@ public class DialRepeat extends Dialog {
                         llYear.setVisibility(View.INVISIBLE);
                         break;
                     case R.id.repeat_radio1:
+                        llTerm.setVisibility(View.INVISIBLE);
+                        llWeek.setVisibility(View.INVISIBLE);
+                        llMonth.setVisibility(View.INVISIBLE);
+                        llYear.setVisibility(View.INVISIBLE);
+                        break;
+                    case R.id.repeat_radio2:
                         etWeek.setText("");
                         etWeek.setFocusable(true);
                         llWeek.setVisibility(View.VISIBLE);
@@ -177,7 +183,7 @@ public class DialRepeat extends Dialog {
                         llMonth.setVisibility(View.INVISIBLE);
                         llYear.setVisibility(View.INVISIBLE);
                         break;
-                    case R.id.repeat_radio2:
+                    case R.id.repeat_radio3:
                         etMonth.setText("");
                         etMonth.setFocusable(true);
                         llTerm.setVisibility(View.INVISIBLE);
@@ -185,7 +191,7 @@ public class DialRepeat extends Dialog {
                         llYear.setVisibility(View.INVISIBLE);
                         llMonth.setVisibility(View.VISIBLE);
                         break;
-                    case R.id.repeat_radio3:
+                    case R.id.repeat_radio4:
                         etYear.setText("");
                         etYear.setFocusable(true);
                         llTerm.setVisibility(View.INVISIBLE);
@@ -204,26 +210,31 @@ public class DialRepeat extends Dialog {
                     int id = repeatGroup.getCheckedRadioButtonId();
                     View radioButton = repeatGroup.findViewById(id);
                     int radioId = repeatGroup.indexOfChild(radioButton);
+                    RadioButton btn = (RadioButton) repeatGroup.getChildAt(radioId);
                     switch (radioId) {
                         case 0:
-                            RadioButton btn = (RadioButton) repeatGroup.getChildAt(radioId);
                             repeatType = (String) btn.getText();
                             repeatPeriod = "";
                             repeatNumber = "";
                             break;
                         case 1:
+                            repeatType = (String) btn.getText();
+                            repeatPeriod = "";
+                            repeatNumber = "";
+                            break;
+                        case 2:
                             repeatPeriod = etWeek.getText().toString();
                             repeatType = context.getResources().getString(R.string.everyweek);
                             if (!repeatPeriod.equals(""))
                                 limitNum = 7 * Integer.parseInt(repeatPeriod);
                             break;
-                        case 2:
+                        case 3:
                             repeatPeriod = etMonth.getText().toString();
                             repeatType = context.getResources().getString(R.string.everymonth);
                             if (!repeatPeriod.equals(""))
                                 limitNum = 7 * 4 * Integer.parseInt(repeatPeriod);
                             break;
-                        case 3:
+                        case 4:
                             repeatPeriod = etYear.getText().toString();
                             repeatType = context.getResources().getString(R.string.everyyear);
                             if (!repeatPeriod.equals(""))
@@ -232,19 +243,20 @@ public class DialRepeat extends Dialog {
                     }
                     String term = etTerm.getText().toString();
                     repeatNumber = term;
-                    if(!repeatType.equals("반복 없음")) {
+                    if(!repeatType.equals(context.getResources().getString(R.string.repeat_radio0))
+                            &&!repeatType.equals(context.getResources().getString(R.string.repeat_radio1))){
                         if (repeatPeriod.equals("") || repeatNumber.equals(""))
-                            Toast.makeText(context, "단위를 입력하세요", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.input_measure), Toast.LENGTH_SHORT).show();
                         else {
-                            if (Integer.parseInt(repeatNumber) * limitNum <= 365 * 10) {
-                                EventBus.getDefault().post(new SetRepeatEvent(repeatType, repeatPeriod, repeatNumber));
+                            if (Integer.parseInt(repeatNumber) * limitNum <= 365 * 5) {
+                                EventBus.getDefault().post(new SetRepeatEvent(context,repeatType, repeatPeriod, repeatNumber));
                                 cancel();
                             } else {
-                                Toast.makeText(context, "반복기한은 10년 이하로 가능합니다", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context,context.getResources().getString(R.string.repeat_term), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }else{
-                        EventBus.getDefault().post(new SetRepeatEvent(repeatType, repeatPeriod, repeatNumber));
+                        EventBus.getDefault().post(new SetRepeatEvent(context, repeatType, repeatPeriod, repeatNumber));
                         cancel();
                     }
                 }

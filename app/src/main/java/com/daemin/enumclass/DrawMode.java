@@ -6,7 +6,7 @@ package com.daemin.enumclass;
 public enum DrawMode {
     CURRENT(0);
 
-    int mode;  // 0 : 일반, 1 : 대학, 2 : 추천
+    int mode;  // 0 : 일반, 1 : 대학
 
     DrawMode(int mode) {
         this.mode = mode;

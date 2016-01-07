@@ -239,6 +239,9 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
             case R.id.btSettingInit:
                 EventBus.getDefault().post(new ChangeFragEvent(SettingInitFragment.class, "시간표 초기화"));
                 break;
+            case R.id.btSettingCalendar:
+                EventBus.getDefault().post(new ChangeFragEvent(SettingCalendarFragment.class, "달력 연동"));
+                break;
             case R.id.btSettingQA:
                 Intent i = new Intent(
                         Intent.ACTION_VIEW,
@@ -251,6 +254,7 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
         mCurrentPhotoPath = null;
         ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
         btSettingInit = (TextView)root.findViewById(R.id.btSettingInit);
+        btSettingCalendar = (TextView)root.findViewById(R.id.btSettingCalendar);
         btSettingQA = (TextView)root.findViewById(R.id.btSettingQA);
         File path = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
@@ -260,9 +264,10 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
         ivProfile.setOnClickListener(this);
         btSettingQA.setOnClickListener(this);
         btSettingInit.setOnClickListener(this);
+        btSettingCalendar.setOnClickListener(this);
     }
     private ImageView ivProfile;
-    private TextView btSettingInit,btSettingQA;
+    private TextView btSettingInit,btSettingCalendar,btSettingQA;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_ALBUM = 2;
     private static final int REQUEST_IMAGE_CROP = 3;

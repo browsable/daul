@@ -298,7 +298,7 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.btTimetable:
                 EventBus.getDefault().post(new ClearNormalEvent());
-                btMode.setVisibility(View.VISIBLE);
+                //btMode.setVisibility(View.VISIBLE);
                 llTitle.setVisibility(View.VISIBLE);
                 tvTitle.setVisibility(View.GONE);
                 btPlus.setVisibility(View.VISIBLE);
@@ -370,6 +370,8 @@ public class MainActivity extends FragmentActivity {
                     initSurfaceView.setMode(viewMode);
                 }
                 User.INFO.getEditor().putInt("viewMode", viewMode).commit();
+                if(!initSurfaceView.isDestroyed())
+                    initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
                 initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
                 surfaceFlag = false;
                 break;
@@ -463,7 +465,7 @@ public class MainActivity extends FragmentActivity {
         if(e.isDialFlag()) dialogFlag=true;
         else dialogFlag = false;
     }
-    public void onEventMainThread(BackKeyEvent e) {
+    /*public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();
         if(e.getVisibleBt()!=null) {
             for (String bt : e.getVisibleBt()){
@@ -471,15 +473,13 @@ public class MainActivity extends FragmentActivity {
                 ImageButton ib = (ImageButton)findViewById(resId);
                 ib.setVisibility(View.VISIBLE);
             }
-        }
-        if(e.getVisibleBt()!=null) {
             for (String bt : e.getGoneBt()){
                 int resId = getResources().getIdentifier(bt, "id", getPackageName());
                 ImageButton ib = (ImageButton)findViewById(resId);
                 ib.setVisibility(View.GONE);
             }
         }
-    }
+    }*/
     public void onEventMainThread(ChangeFragEvent e) {
         changeFragment(e.getCl(), e.getTitleName());
     }

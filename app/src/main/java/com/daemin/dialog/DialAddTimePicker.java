@@ -255,7 +255,7 @@ public class DialAddTimePicker extends Dialog {
         if(xth==0) xth=7;
         int yth = dayCnt/7+1;
         DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
-        if (DOMP.getPosState() == DayOfMonthPosState.NO_PAINT) {
+        if (DOMP.getPosState() != DayOfMonthPosState.PAINT) {
             DOMP.setPosState(DayOfMonthPosState.PAINT);
             if(!Common.getTempTimePos().contains(DOMP.name()))
             Common.getTempTimePos().add(DOMP.name());
@@ -266,7 +266,8 @@ public class DialAddTimePicker extends Dialog {
                     Convert.IntToString(npEndMin.getValue()),
                     xth));
             cancel();
-        }/*else{
+        }
+        /*else{
             Toast.makeText(context, context.getResources().getString(R.string.univ_overlap), Toast.LENGTH_SHORT).show();
         }*/
     }
