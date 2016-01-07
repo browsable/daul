@@ -56,7 +56,7 @@ import java.io.File;
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends FragmentActivity {
-    //hi2
+    
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
             mDrawerLayout.closeDrawer(mLeftDrawer);
