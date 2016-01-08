@@ -58,7 +58,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:text="text"
                 android:textSize="@dimen/textsize_xl"
                 android:textColor="@color/maincolor"
                 />
@@ -89,11 +88,13 @@
             android:background="@drawable/bt_click"
             android:padding="@dimen/margin_xl"
             android:text="@string/setting_calendar"
+            android:visibility="gone"
             android:textSize="@dimen/textsize_xl" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:background="@color/lightgray" />
 
         <TextView

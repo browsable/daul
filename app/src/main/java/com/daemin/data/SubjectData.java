@@ -14,6 +14,7 @@ public class SubjectData {
     private String dep;//학부명
     private String dep_detail; //이수형태
     private String dep_grade; //대상학년
+    private String place;
     private String time;
 
     public String getTime() {
@@ -100,4 +101,11 @@ public class SubjectData {
         this.dep = dep;
     }
 
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
 }

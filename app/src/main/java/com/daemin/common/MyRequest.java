@@ -43,7 +43,8 @@ public class MyRequest {
                         try {
                             if (response.getString(KEY_STATUS).equals("Success")) {
                                 JSONObject data = response.getJSONObject("data");
-                                if (!User.INFO.appVer.equals(data.getString("appversion"))) {
+                                User.INFO.appServerVer = data.getString("appversion");
+                                if (!User.INFO.appVer.equals(User.INFO.appServerVer)) {
                                     DialDefault dd = new DialDefault(context,
                                             context.getResources().getString(R.string.update_title),
                                             context.getResources().getString(R.string.update_content),

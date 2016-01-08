@@ -62,6 +62,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				subjectData.setDep_detail(cursor.getString(8));
 				subjectData.setTime(cursor.getString(9));
 				subjectData.setProf(cursor.getString(10));
+				subjectData.setPlace(cursor.getString(11));
 				subjectDataList.add(subjectData);
 			} while (cursor.moveToNext());
 		}
@@ -87,6 +88,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				subjectData.setDep_detail(cursor.getString(8));
 				subjectData.setTime(cursor.getString(9));
 				subjectData.setProf(cursor.getString(10));
+				subjectData.setPlace(cursor.getString(11));
 			} while (cursor.moveToNext());
 		}
 		return subjectData;
@@ -127,6 +129,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SubjectData.setDep_detail(cursor.getString(8));
 				SubjectData.setTime(cursor.getString(9));
 				SubjectData.setProf(cursor.getString(10));
+				SubjectData.setPlace(cursor.getString(11));
 				subjectDataList.add(SubjectData);
 			} while (cursor.moveToNext());
 		}
@@ -187,6 +190,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SubjectData.setDep_detail(cursor.getString(8));
 				SubjectData.setTime(cursor.getString(9));
 				SubjectData.setProf(cursor.getString(10));
+				SubjectData.setPlace(cursor.getString(11));
 				Log.i("test", SubjectData.getSubtitle());
 				subjectDataList.add(SubjectData);
 			} while (cursor.moveToNext());

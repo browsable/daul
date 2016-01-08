@@ -38,7 +38,8 @@ public enum User {
     SharedPreferences.Editor editor;
     public double latitude, longitude;
     public String userPK;
-    public String appVer;//어플버전;
+    public String appVer;//로컬기기버전;
+    public String appServerVer;//서버상의 버전;
     public List<MyTime> weekData;
     public List<MyTime> monthData;
     public List<GroupListData.Data> groupListData;

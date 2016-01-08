@@ -681,6 +681,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 String prof = subjectData.getProf();
                                 String credit = subjectData.getCredit();
                                 String classnum = subjectData.getClassnum();
+                                String place = subjectData.getPlace();
+                                Log.i("test",place);
                                 for (String timePos : getTimeList(subjectData.getTime())) {
                                     temps = timePos.split(":");
                                     if (!temps[0].equals(" ")) {
@@ -695,7 +697,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                                 Integer.parseInt(temps[4]),
                                                 null, null,
                                                 prof + "교수/" + credit + "학점/" + classnum + "분반",
-                                                null,
+                                                place,
                                                 User.INFO.latitude, User.INFO.longitude,
                                                 null,
                                                 null,

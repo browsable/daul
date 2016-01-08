@@ -38,11 +38,11 @@ public class HorizontalListAdapter extends ArrayAdapter<SubjectData> {
             holder.limitnum = (TextView) convertView.findViewById(R.id.limitnum);
             holder.dep_detail = (TextView) convertView.findViewById(R.id.dep_detail);
             holder.dep_grade = (TextView) convertView.findViewById(R.id.dep_grade);
+            holder.place = (TextView) convertView.findViewById(R.id.place);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
         }
-
         // Populate the text
         holder.id.setText(getItem(position).get_id());
         holder.time.setText(getItem(position).getTime());
@@ -53,7 +53,7 @@ public class HorizontalListAdapter extends ArrayAdapter<SubjectData> {
         holder.limitnum.setText(getItem(position).getLimitnum());
         holder.dep_detail.setText(getItem(position).getDep_detail());
         holder.dep_grade.setText(getItem(position).getDep_grade());
-
+        holder.dep_grade.setText(getItem(position).getPlace());
         return convertView;
     }
 
@@ -68,5 +68,6 @@ public class HorizontalListAdapter extends ArrayAdapter<SubjectData> {
         public TextView limitnum;
         public TextView dep_detail;
         public TextView dep_grade;
+        public TextView place;
     }
 }

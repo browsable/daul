@@ -43,21 +43,33 @@ public class SettingVerFragment extends BasicFragment {
             }
         });
         tvLocalVer = (TextView) root.findViewById(R.id.tvLocalVer);
-        tvServerVer  = (TextView) root.findViewById(R.id.tvLocalVer);
-        tvLocalVer.setText(User.INFO.appVer);
+        tvServerVer  = (TextView) root.findViewById(R.id.tvServerVer);
+        btUpdate  = (TextView) root.findViewById(R.id.btUpdate);
+        tvLocalVer.setText("v"+User.INFO.appVer);
+        tvServerVer.setText("v"+User.INFO.appServerVer);
+        if (User.INFO.appVer.equals(User.INFO.appServerVer)) {
+            equalFlag=true;
+            btUpdate.setText(getActivity().getResources().getString(R.string.setting_ver_equal));
+        }else{
+            equalFlag=false;
+            btUpdate.setText(getActivity().getResources().getString(R.string.setting_ver_update));
+        }
         btUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialDefault dd = new DialDefault(getActivity(),
-                        getActivity().getResources().getString(R.string.update_title),
-                        getActivity().getResources().getString(R.string.update_content),
-                        0);
-                dd.show();
+                if(!equalFlag) {
+                    DialDefault dd = new DialDefault(getActivity(),
+                            getActivity().getResources().getString(R.string.update_title),
+                            getActivity().getResources().getString(R.string.update_content),
+                            0);
+                    dd.show();
+                }
             }
         });
         return root;
     }
     ImageButton ibMenu, ibBack;
     TextView btUpdate,tvLocalVer,tvServerVer;
+    Boolean equalFlag;
 
 }
