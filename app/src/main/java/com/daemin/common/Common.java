@@ -1,7 +1,10 @@
 package com.daemin.common;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -16,6 +19,7 @@ import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.repository.MyTimeRepo;
+import com.daemin.widget.WidgetUpdateService;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -39,6 +43,7 @@ public class Common {
 	public static final String ACTION_BACK4_4 = "com.daemin.widget.ACTION_BACK4_4";
 	public static final String ACTION_FORWARD4_4 = "com.daemin.widget.ACTION_FORWARD4_4";
 	public static final String ACTION_DIAL4_4 = "com.daemin.widget.ACTION_DIAL4_4";
+	public static final String ALARM_PUSH = "com.daemin.common.ALARM_PUSH";
 	public static final String MAIN_COLOR = "#73C8BA";
 	public static final String TRANS_COLOR = "#00000000";
 
@@ -109,7 +114,7 @@ public class Common {
 		User.INFO.monthData.clear();
 		User.INFO.monthData.addAll(MyTimeRepo.getMonthTimes(AppController.getInstance(), month_startMillies, month_endMillies));
 		for (MyTime mt :User.INFO.monthData){
-			addMonth(mt.getName(),mt.getColor(), mt.getDayofweek(), mt.getDayofmonth());
+			addMonth(mt.getName(), mt.getColor(), mt.getDayofweek(), mt.getDayofmonth());
 		}
 	}
 	public static void addMonth(String title, String color, int xth, int dayOfMonth){
@@ -161,42 +166,26 @@ public class Common {
 		Common.getTempTimePos().clear();
 		return;
 	}
-
-
-	/**
-	 * TextView의 text를 보기 좋게 줄바꿈해준다.
-	 * 출처 - http://blog.naver.com/min_ting/110118117984
-	 * @param textPaint      TextView의 Paint 객체
-	 * @param strText        문자열
-	 * @param breakWidth     줄바꿈 하고 싶은 width값 지정
-	 * @return
-	 */
-	public static String breakText(Paint textPaint, String strText, int breakWidth) {
-		StringBuilder sb = new StringBuilder();
-		int endValue = 0;
-		do{
-			endValue = textPaint.breakText(strText, true, breakWidth, null);
-			if(endValue > 0) {
-				sb.append(strText.substring(0, endValue)).append("\n");
-				strText = strText.substring(endValue);
-			}
-		}while(endValue > 0);
-		return sb.toString().substring(0, sb.length()-1);  // 마지막 "\n"를 제거
+	public static void registerAlarm(Context context, int requestCode, Long triggerTime)
+	{
+		Log.i("alarm", " register");
+		Intent intent = new Intent(context, NotificationReceiver.class);
+		intent.setAction(ALARM_PUSH);
+		PendingIntent sender
+				= PendingIntent.getBroadcast(context, requestCode, intent, 0);
+		AlarmManager manager
+				= (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+		manager.set(AlarmManager.RTC_WAKEUP, triggerTime, sender);
 	}
-
-	private static Hashtable<String, Typeface> fontCache = new Hashtable<String, Typeface>();
-	//폰트 사용 예시 title.setTypeface(Utils.getFont("nexa-bold.ttf", getApplicationContext()));
-	public static Typeface getFont(String name, Context context) {
-		Typeface tf = fontCache.get(name);
-		if(tf == null) {
-			try {
-				tf = Typeface.createFromAsset(context.getAssets(), name);
-			}
-			catch (Exception e) {
-				return null;
-			}
-			fontCache.put(name, tf);
-		}
-		return tf;
+	public static void unregisterAlarm(Context context,int requestCode)
+	{
+		Log.i("alarm", "unregister");
+		Intent intent = new Intent();
+		PendingIntent sender
+				= PendingIntent.getBroadcast(context, requestCode, intent, 0);
+		AlarmManager manager =
+				(AlarmManager)context
+						.getSystemService(Context.ALARM_SERVICE);
+		manager.cancel(sender);
 	}
 }

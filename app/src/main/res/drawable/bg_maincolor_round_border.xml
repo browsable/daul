@@ -4,7 +4,7 @@
     android:shape="rectangle"
     >
 
-    <solid android:color="#FFFFFF"
+    <solid android:background="@drawable/bt_click"
         />
 
     <corners

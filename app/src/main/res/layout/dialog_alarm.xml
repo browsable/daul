@@ -75,20 +75,6 @@
             android:layout_weight="1"
             android:text="@string/alram_radio6"
             android:textSize="@dimen/textsize_default"/>
-        <RadioButton
-            android:id="@+id/radio7"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/alram_radio7"
-            android:textSize="@dimen/textsize_default"/>
-        <RadioButton
-            android:id="@+id/radio8"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/alram_radio8"
-            android:textSize="@dimen/textsize_default"/>
     </RadioGroup>
 
     <View

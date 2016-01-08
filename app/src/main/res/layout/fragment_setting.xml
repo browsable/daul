@@ -39,6 +39,35 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/lightgray" />
+        <RelativeLayout
+            android:id="@+id/btSettingVer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="@dimen/margin_xl"
+            android:background="@drawable/bt_click">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:text="@string/setting_ver"
+                android:textSize="@dimen/textsize_xl" />
+            <TextView
+                android:id="@+id/tvVer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:text="text"
+                android:textSize="@dimen/textsize_xl"
+                android:textColor="@color/maincolor"
+                />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
         <TextView
             android:id="@+id/btSettingInit"
             android:layout_width="match_parent"

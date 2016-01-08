@@ -75,7 +75,6 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -523,9 +522,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             repeat="1";
         }else{ //~주마다, ~개월마다, ~년마다
             s = repeat.split(":");
-            repeatNum=Convert.onlyNum(s[0])+1;
-            repeatPeriod=Convert.onlyNum(s[1]);
-            repeat = repeatNum+":"+String.valueOf(repeatType)+":"+repeatPeriod;
+            repeatPeriod=Convert.onlyNum(s[0]);
+            repeatNum=Convert.onlyNum(s[1])+1;
+            repeat = String.valueOf(repeatType)+":"+repeatPeriod+":"+repeatNum;
         }
         long nowMilis = Dates.NOW.getNowMillis();
         for(int i=0; i<repeatNum; i++){
@@ -543,11 +542,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 int endHour = Integer.parseInt(d.getEndHour());
                 int endMin = Integer.parseInt(d.getEndMin());
                 int xth;
-                if (viewMode == 0) xth = d.getXth();
-                else xth = Convert.mXthTowXth(d.getXth());
                 DateTime startDt = Dates.NOW.getDateMillisWithRepeat(year, monthOfYear, dayOfMonth, startHour, startMin, repeatType, repeatPeriod * i);
                 DateTime endDt =  Dates.NOW.getDateMillisWithRepeat(year, monthOfYear, dayOfMonth, endHour, endMin, repeatType, repeatPeriod * i);
                 long startMillis = startDt.getMillis();
+                if (viewMode == 0) xth =Convert.dayOfWeekTowXth(startDt.getDayOfWeek()); //getDayOfWeek index - mon:1,tue:2 ... sun:7
+                else xth = Convert.dayOfWeekTomXth(startDt.getDayOfWeek());
                 MyTime myTime = new MyTime(null,
                         String.valueOf(nowMilis), 0,
                         etName.getText().toString(),

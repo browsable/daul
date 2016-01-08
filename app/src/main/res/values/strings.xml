@@ -61,14 +61,12 @@
     <string name="share_radio2">전체공개</string>
     <!--알람 -->
     <string name="alram_radio0">알람 없음</string>
-    <string name="alram_radio1">3분 전</string>
-    <string name="alram_radio2">5분 전</string>
-    <string name="alram_radio3">10분 전</string>
-    <string name="alram_radio4">15분 전</string>
-    <string name="alram_radio5">20분 전</string>
-    <string name="alram_radio6">30분 전</string>
-    <string name="alram_radio7">1시간 전</string>
-    <string name="alram_radio8">1일 전</string>
+    <string name="alram_radio1">정각</string>
+    <string name="alram_radio2">10분 전</string>
+    <string name="alram_radio3">20분 전</string>
+    <string name="alram_radio4">30분 전</string>
+    <string name="alram_radio5">1시간 전</string>
+    <string name="alram_radio6">1일 전</string>
     <!--반복-->
     <string name="sun">일</string>
     <string name="mon">월</string>
@@ -110,11 +108,17 @@
     <!--커뮤니티-->
     <string name="community_search">커뮤니티 검색</string>
     <!--설정-->
+    <string name="setting_ver">버전정보</string>
     <string name="setting_init">초기화</string>
     <string name="setting_calendar">달력 연동</string>
+    <!--버전정보-->
+    <string name="setting_ver_local">현재 버전</string>
+    <string name="setting_ver_server">최신 버전</string>
+    <string name="setting_ver_update">업데이트</string>
+    <string name="setting_ver_equal">현재 최신 버전입니다.</string>
     <!--초기화-->
     <string name="setting_init_table_title">시간표 초기화</string>
-    <string name="setting_init_table_content">모든 저장된 시간표가 사라지며 복구가 불가능합니다</string>
+    <string name="setting_init_table_content">모든 저장된 시간표가 사라지며 복구가 불가능합니다.</string>
     <string name="setting_init_sub_title">과목 초기화</string>
     <string name="setting_init_sub_content">모든 저장된 과목 시간표가 사라지며 학점이 초기화됩니다.</string>
     <string name="setting_init_q">초기화하시겠습니까?</string>

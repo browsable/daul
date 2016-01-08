@@ -20,9 +20,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daemin.common.BasicFragment;
+import com.daemin.enumclass.User;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 
@@ -236,17 +238,20 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, REQUEST_IMAGE_ALBUM);
                 break;
+            case R.id.btSettingVer:
+                EventBus.getDefault().post(new ChangeFragEvent(SettingVerFragment.class, getActivity().getResources().getString(R.string.setting_ver)));
+                break;
             case R.id.btSettingInit:
-                EventBus.getDefault().post(new ChangeFragEvent(SettingInitFragment.class, "시간표 초기화"));
+                EventBus.getDefault().post(new ChangeFragEvent(SettingInitFragment.class, getActivity().getResources().getString(R.string.setting_init)));
                 break;
             case R.id.btSettingCalendar:
-                EventBus.getDefault().post(new ChangeFragEvent(SettingCalendarFragment.class, "달력 연동"));
+                EventBus.getDefault().post(new ChangeFragEvent(SettingCalendarFragment.class, getActivity().getResources().getString(R.string.setting_calendar)));
                 break;
             case R.id.btSettingQA:
                 Intent i = new Intent(
                         Intent.ACTION_VIEW,
                         Uri.parse("https://open.kakao.com/o/sqXjIpf"));
-                getActivity().startActivity(i );
+                getActivity().startActivity(i);
                 break;
         }
     }
@@ -256,18 +261,23 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
         btSettingInit = (TextView)root.findViewById(R.id.btSettingInit);
         btSettingCalendar = (TextView)root.findViewById(R.id.btSettingCalendar);
         btSettingQA = (TextView)root.findViewById(R.id.btSettingQA);
+        tvVer = (TextView)root.findViewById(R.id.tvVer);
+        tvVer.setText("v"+ User.INFO.appVer);
+        btSettingVer = (RelativeLayout)root.findViewById(R.id.btSettingVer);
         File path = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         if(!path.exists()) {
             path.mkdirs();
         }
         ivProfile.setOnClickListener(this);
-        btSettingQA.setOnClickListener(this);
+        btSettingVer.setOnClickListener(this);
         btSettingInit.setOnClickListener(this);
         btSettingCalendar.setOnClickListener(this);
+        btSettingQA.setOnClickListener(this);
     }
     private ImageView ivProfile;
-    private TextView btSettingInit,btSettingCalendar,btSettingQA;
+    private TextView btSettingInit,btSettingCalendar,btSettingQA, tvVer;
+    private RelativeLayout btSettingVer;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_ALBUM = 2;
     private static final int REQUEST_IMAGE_CROP = 3;

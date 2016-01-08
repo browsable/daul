@@ -173,32 +173,59 @@ public class Convert {
 				return "";
 		}
 	}
-	public static int mXthTowXth(int mXth) {
+	public static int dayOfWeekTowXth(int dayOfWeek) {
 		int wXth=0;
-		switch (mXth) {
+		switch (dayOfWeek) {
 			case 1:
-				wXth = 1;
-				break;
-			case 2:
 				wXth = 3;
 				break;
-			case 3:
+			case 2:
 				wXth = 5;
 				break;
-			case 4:
+			case 3:
 				wXth = 7;
 				break;
-			case 5:
+			case 4:
 				wXth = 9;
 				break;
-			case 6:
+			case 5:
 				wXth = 11;
 				break;
-			case 7:
+			case 6:
 				wXth = 13;
+				break;
+			case 7:
+				wXth = 1;
 				break;
 		}
 		return wXth;
+	}
+	public static int dayOfWeekTomXth(int dayOfWeek) {
+		int mXth=0;
+		switch (dayOfWeek) {
+			case 1:
+				mXth = 2;
+				break;
+			case 2:
+				mXth = 3;
+				break;
+			case 3:
+				mXth = 4;
+				break;
+			case 4:
+				mXth = 5;
+				break;
+			case 5:
+				mXth = 6;
+				break;
+			case 6:
+				mXth = 7;
+				break;
+			case 7:
+				mXth = 1;
+				break;
+		}
+		return mXth;
 	}
 	public static int wXthTomXth(int wXth) {
 		int mXth=0;
@@ -261,19 +288,13 @@ public class Convert {
 		long alarmMillis=0;
 		switch (grade) {
 			case "알람 없음":
-				alarmMillis=startmillis-0;
+				alarmMillis=0;
 				break;
-			case "3분 전":
-				alarmMillis=startmillis-3*60*1000;
-				break;
-			case "5분 전":
-				alarmMillis=startmillis-5*60*1000;
+			case "정각":
+				alarmMillis=startmillis;
 				break;
 			case "10분 전":
 				alarmMillis=startmillis-10*60*1000;
-				break;
-			case "15분 전":
-				alarmMillis=startmillis-15*60*1000;
 				break;
 			case "20분 전":
 				alarmMillis=startmillis-20*60*1000;
