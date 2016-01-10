@@ -44,8 +44,8 @@ public class SetRepeatEvent {
 
     @Override
     public String toString() {
-        if(!repeatType.equals(context.getResources().getString(R.string.repeat_radio0))&&!repeatType.equals(context.getResources().getString(R.string.repeat_radio1))) repeatNumber +=context.getResources().getString(R.string.term);
+        if(!repeatType.equals(context.getResources().getString(R.string.repeat_radio0))&&!repeatType.equals(context.getResources().getString(R.string.repeat_radio1))) repeatNumber= ":"+repeatNumber+context.getResources().getString(R.string.term);
         return repeatPeriod
-                + repeatType+":"+repeatNumber;
+                + repeatType+repeatNumber;
     }
 }

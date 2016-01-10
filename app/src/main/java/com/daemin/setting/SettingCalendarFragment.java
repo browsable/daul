@@ -2,7 +2,6 @@ package com.daemin.setting;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -10,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 
 import com.daemin.common.BasicFragment;
+import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
@@ -26,7 +26,7 @@ public class SettingCalendarFragment extends BasicFragment implements View.OnCli
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        ibMenu = MainActivity.getInstance().getIbMenu();
+        EventBus.getDefault().post(new BackKeyEvent("SettingCalendarFragment",new String[]{"ibBack"},new String[]{"ibMenu"}));
         ibBack = MainActivity.getInstance().getIbBack();
         btHoliKo = (RelativeLayout) root.findViewById(R.id.btHoliKo);
         btLunar = (RelativeLayout) root.findViewById(R.id.btLunar);
@@ -43,19 +43,16 @@ public class SettingCalendarFragment extends BasicFragment implements View.OnCli
         bt24.setOnClickListener(this);
         btSub.setOnClickListener(this);
         btRepeat.setOnClickListener(this);
-        ibMenu.setVisibility(View.GONE);
-        ibBack.setVisibility(View.VISIBLE);
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ibMenu.setVisibility(View.VISIBLE);
-                ibBack.setVisibility(View.GONE);
                 EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
+                EventBus.getDefault().post(new BackKeyEvent("",new String[]{"ibMenu"},new String[]{"ibBack"}));
             }
         });
         return root;
     }
-    ImageButton ibMenu, ibBack;
+    ImageButton ibBack;
     RelativeLayout btHoliKo,btLunar,bt24,btSub,btRepeat;
     ToggleButton switch1,switch2,switch3,switch4,switch5;
     @Override

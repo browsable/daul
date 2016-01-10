@@ -404,7 +404,6 @@ public class MainActivity extends FragmentActivity {
         widget5_5 = User.INFO.getWidget5_5();
         widget4_4 = User.INFO.getWidget4_4();
         dayIndex = 0;
-        ibMenu = (ImageButton) findViewById(R.id.ibMenu);
         ibBack = (ImageButton) findViewById(R.id.ibBack);
         mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
         llTitle = (LinearLayout) findViewById(R.id.llTitle);
@@ -430,7 +429,7 @@ public class MainActivity extends FragmentActivity {
     private DrawerLayout mDrawerLayout;
     private RoundedCornerNetworkImageView ivProfile;
     private LinearLayout mLeftDrawer, llTitle;
-    private ImageButton ibMenu, ibBack;
+    private ImageButton ibBack;
     private TextView tvTitle, tvTitleYear;
     private Button btPlus;
     private ToggleButton btMode;
@@ -447,9 +446,6 @@ public class MainActivity extends FragmentActivity {
     public ImageButton getIbBack() {
         return ibBack;
     }
-    public ImageButton getIbMenu() {
-        return ibMenu;
-    }
     public static MainActivity getInstance() {
         return singleton;
     }
@@ -465,7 +461,7 @@ public class MainActivity extends FragmentActivity {
         if(e.isDialFlag()) dialogFlag=true;
         else dialogFlag = false;
     }
-    /*public void onEventMainThread(BackKeyEvent e) {
+    public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();
         if(e.getVisibleBt()!=null) {
             for (String bt : e.getVisibleBt()){
@@ -479,7 +475,7 @@ public class MainActivity extends FragmentActivity {
                 ib.setVisibility(View.GONE);
             }
         }
-    }*/
+    }
     public void onEventMainThread(ChangeFragEvent e) {
         changeFragment(e.getCl(), e.getTitleName());
     }

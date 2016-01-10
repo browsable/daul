@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 
 import com.daemin.common.BasicFragment;
 import com.daemin.dialog.DialDefault;
+import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
@@ -17,7 +18,7 @@ import de.greenrobot.event.EventBus;
 
 public class SettingInitFragment extends BasicFragment {
     public SettingInitFragment() {
-        super(R.layout.fragment_setting_init,"SettingIdFragment");
+        super(R.layout.fragment_setting_init,"SettingInitFragment");
     }
 
     @Override
@@ -25,19 +26,15 @@ public class SettingInitFragment extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        ibMenu = MainActivity.getInstance().getIbMenu();
+        EventBus.getDefault().post(new BackKeyEvent("SettingInitFragment",new String[]{"ibBack"},new String[]{"ibMenu"}));
         ibBack = MainActivity.getInstance().getIbBack();
         btInitTable = (Button)root.findViewById(R.id.btInitTable);
         btInitSub = (Button)root.findViewById(R.id.btInitSub);
-        ibMenu.setVisibility(View.GONE);
-        ibBack.setVisibility(View.VISIBLE);
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ibMenu.setVisibility(View.VISIBLE);
-                ibBack.setVisibility(View.GONE);
                 EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
-                //EventBus.getDefault().post(new BackKeyEvent("",new String[]{"ibMenu"},new String[]{"ibBack"}));
+                EventBus.getDefault().post(new BackKeyEvent("",new String[]{"ibMenu"},new String[]{"ibBack"}));
             }
         });
         btInitTable.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +60,7 @@ public class SettingInitFragment extends BasicFragment {
         });
         return root;
     }
-    ImageButton ibMenu, ibBack;
+    ImageButton ibBack;
     Button btInitTable,btInitSub;
 
 }

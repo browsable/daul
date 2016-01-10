@@ -238,6 +238,7 @@
                 android:background="@drawable/bt_click"
                 android:gravity="center"
                 android:onClick="mOnClick"
+                android:visibility="invisible"
                 android:orientation="horizontal">
 
                 <LinearLayout

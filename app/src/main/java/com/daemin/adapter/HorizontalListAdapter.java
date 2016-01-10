@@ -53,7 +53,7 @@ public class HorizontalListAdapter extends ArrayAdapter<SubjectData> {
         holder.limitnum.setText(getItem(position).getLimitnum());
         holder.dep_detail.setText(getItem(position).getDep_detail());
         holder.dep_grade.setText(getItem(position).getDep_grade());
-        holder.dep_grade.setText(getItem(position).getPlace());
+        holder.place.setText(getItem(position).getPlace());
         return convertView;
     }
 

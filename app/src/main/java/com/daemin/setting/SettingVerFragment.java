@@ -1,18 +1,16 @@
 package com.daemin.setting;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.daemin.common.BasicFragment;
 import com.daemin.dialog.DialDefault;
 import com.daemin.enumclass.User;
+import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
@@ -29,17 +27,13 @@ public class SettingVerFragment extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        ibMenu = MainActivity.getInstance().getIbMenu();
+        EventBus.getDefault().post(new BackKeyEvent("SettingVerFragment",new String[]{"ibBack"},new String[]{"ibMenu"}));
         ibBack = MainActivity.getInstance().getIbBack();
-        ibMenu.setVisibility(View.GONE);
-        ibBack.setVisibility(View.VISIBLE);
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ibMenu.setVisibility(View.VISIBLE);
-                ibBack.setVisibility(View.GONE);
                 EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
-                //EventBus.getDefault().post(new BackKeyEvent("",new String[]{"ibMenu"},new String[]{"ibBack"}));
+                EventBus.getDefault().post(new BackKeyEvent("",new String[]{"ibMenu"},new String[]{"ibBack"}));
             }
         });
         tvLocalVer = (TextView) root.findViewById(R.id.tvLocalVer);
@@ -68,7 +62,7 @@ public class SettingVerFragment extends BasicFragment {
         });
         return root;
     }
-    ImageButton ibMenu, ibBack;
+    ImageButton ibBack;
     TextView btUpdate,tvLocalVer,tvServerVer;
     Boolean equalFlag;
 

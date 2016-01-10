@@ -1,6 +1,7 @@
 package com.daemin.dialog;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -319,10 +320,18 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
 
     class DownloadFileFromURL extends AsyncTask<String, String, String> {
+        Boolean downComplete;
         @Override
-
         protected void onPreExecute() {
             super.onPreExecute();
+            downComplete=false;
+            pDialog = new ProgressDialog(DialSchedule.this);
+            pDialog.setMessage(getString(R.string.downloding));
+            pDialog.setIndeterminate(false);
+            pDialog.setMax(100);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            pDialog.setCancelable(true);
+            pDialog.show();
         }
 
         @Override
@@ -332,13 +341,19 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 URL url = new URL("http://timenuri.com/ajax/app/get_univ_db?school=" + URLEncoder.encode(univName[0]));
                 URLConnection conection = url.openConnection();
                 conection.connect();
-                // input stream to read file - with 8k buffer
+                int lenghtOfFile = conection.getContentLength();
                 createFolder();
+                // input stream to read file - with 8k buffer
                 InputStream input = new BufferedInputStream(url.openStream(), 8192);
                 OutputStream output = new FileOutputStream("/sdcard/.TimeDAO/subject.sqlite");
                 ///data/data/com.daemin.timetable/databases
                 byte data[] = new byte[2048];
+                long total = 0;
                 while ((count = input.read(data)) != -1) {
+                    total += count;
+                    // publishing the progress....
+                    // After this onProgressUpdate will be called
+                    publishProgress(""+(int)((total*100)/lenghtOfFile));
                     // writing data to file
                     output.write(data, 0, count);
                 }
@@ -347,20 +362,34 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 // closing streams
                 output.close();
                 input.close();
+                if(total==lenghtOfFile) downComplete=true;
             } catch (Exception e) {
-                Log.e("Error: ", e.getMessage());
+                e.printStackTrace();
+                downComplete=false;
             }
             return null;
         }
+        protected void onProgressUpdate(String... progress) {
+            // setting progress percentage
+            pDialog.setProgress(Integer.parseInt(progress[0]));
 
+
+        }
         @Override
         protected void onPostExecute(String param) {
-            User.INFO.getEditor().putString("groupName", groupName);
-            settingUniv();
+            if(downComplete) {
+                pDialog.dismiss();
+                User.INFO.getEditor().putString("groupName", groupName).commit();
+                settingUniv();
+            }
+            else{//다운로드 실패
+                Toast.makeText(DialSchedule.this, getString(R.string.down_error), Toast.LENGTH_SHORT).show();
+                btShowUniv.setVisibility(View.VISIBLE);
+                btEnter.setVisibility(View.GONE);
+            }
         }
 
     }
-
     public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin) {
         if (endMin != 0) ++endHour;
         else endMin = 60;
@@ -384,8 +413,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
     }
     public void settingUniv() {
-        llSelectUniv.setVisibility(View.GONE);
-        llDep.setVisibility(View.VISIBLE);
+        try {
         ArrayList<String>
                 depList = new ArrayList<>(),
                 gradeList = new ArrayList<>(),
@@ -440,35 +468,49 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             }
         });
 
-        actvDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                actvSub.setText("");
-                subjects.clear();
-                subjects.add(db.getAllWithDepAndGrade(actvDep.getText().toString(), Convert.indexOfGrade(actvGrade.getText().toString())).remove(0));
-                hoAdapter.notifyDataSetChanged();
-            }
-        });
-        actvGrade.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                subjects.clear();
-                subjects.add(db.getAllWithDepAndGrade(actvDep.getText().toString(), Convert.indexOfGrade(actvGrade.getText().toString())).remove(0));
-                //actvSub.setText("");
-                hoAdapter.notifyDataSetChanged();
-            }
-        });
-        actvSub.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            actvDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                    actvSub.setText("");
+                    subjects.clear();
+                    List<SubjectData> sdlist = db.getAllWithDepAndGrade(actvDep.getText().toString(), Convert.indexOfGrade(actvGrade.getText().toString()));
+                    if (sdlist.size() != 0)
+                        subjects.add(sdlist.remove(0));
+                    hoAdapter.notifyDataSetChanged();
+                }
+            });
+            actvGrade.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                    subjects.clear();
+                    List<SubjectData> sdlist = db.getAllWithDepAndGrade(actvDep.getText().toString(), Convert.indexOfGrade(actvGrade.getText().toString()));
+                    if (sdlist.size() != 0)
+                        subjects.add(sdlist.remove(0));
+                    //actvSub.setText("");
+                    hoAdapter.notifyDataSetChanged();
+                }
+            });
+            actvSub.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                actvDep.setText("");
-                actvGrade.setText("");
-                subjects.clear();
-                subjects.add(db.getAllWithSubOrProf(actvSub.getText().toString()).remove(0));
-                hoAdapter.notifyDataSetChanged();
-            }
-        });
+                public void onItemClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                    actvDep.setText("");
+                    actvGrade.setText("");
+                    subjects.clear();
+                    List<SubjectData> sdlist = db.getAllWithSubOrProf(actvSub.getText().toString());
+                    if(sdlist.size()!=0)
+                        subjects.add(sdlist.remove(0));
+                    hoAdapter.notifyDataSetChanged();
+                }
+            });
+            llSelectUniv.setVisibility(View.GONE);
+            llDep.setVisibility(View.VISIBLE);
+        }catch(Exception e){ //다운로드 완전하게 성공하지 못한 경우
+            e.printStackTrace();
+            Toast.makeText(DialSchedule.this, getString(R.string.down_error), Toast.LENGTH_SHORT).show();
+            btShowUniv.setVisibility(View.VISIBLE);
+            btEnter.setVisibility(View.GONE);
+        }
     }
 
     public static void createFolder() {
@@ -886,7 +928,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight, viewMode,repeatType;
     private boolean widgetFlag, overlapEnrollFlag,weekFlag, subOverlapFlag;
-
+    // Progress Dialog
+    private ProgressDialog pDialog;
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
         EventBus.getDefault().post(new SetBtPlusEvent(true));
