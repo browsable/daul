@@ -80,7 +80,7 @@ public class DialDefault extends Dialog {
         tvContent = (TextView) findViewById(R.id.tvContent);
         tvUpdateList = (TextView) findViewById(R.id.tvUpdateList);
         sv = (ScrollView) findViewById(R.id.sv);
-        if(callFuncIndex==0) getUpdateList(context);
+        if(callFuncIndex==0) getUpdateList();
         tvTitle.setText(title);
         tvContent.setText(content);
         btDialSetting.setOnClickListener(new View.OnClickListener() {
@@ -122,8 +122,7 @@ public class DialDefault extends Dialog {
     private Window window;
 
     public static final String GET_UPDATE_LIST = "http://timenuri.com/ajax/app/get_update_history?v="+User.INFO.appVer;
-
-    public void getUpdateList(final Context context) {
+    public void getUpdateList() {
         CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET, GET_UPDATE_LIST, null,
                 new Response.Listener<JSONObject>() {
                     @Override
