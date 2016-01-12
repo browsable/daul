@@ -1,7 +1,8 @@
 package com.daemin.common;
 
-public class Convert {
+import com.daemin.repository.MyTimeRepo;
 
+public class Convert {
 	public static String getxyMerge(int Xth, int Yth) {
 		String x, y;
 		if (Xth < 10) {
@@ -199,33 +200,6 @@ public class Convert {
 				break;
 		}
 		return wXth;
-	}
-	public static int dayOfWeekTomXth(int dayOfWeek) {
-		int mXth=0;
-		switch (dayOfWeek) {
-			case 1:
-				mXth = 2;
-				break;
-			case 2:
-				mXth = 3;
-				break;
-			case 3:
-				mXth = 4;
-				break;
-			case 4:
-				mXth = 5;
-				break;
-			case 5:
-				mXth = 6;
-				break;
-			case 6:
-				mXth = 7;
-				break;
-			case 7:
-				mXth = 1;
-				break;
-		}
-		return mXth;
 	}
 	public static int wXthTomXth(int wXth) {
 		int mXth=0;

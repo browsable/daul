@@ -1,13 +1,21 @@
 package com.daemin.setting;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.daemin.common.BasicFragment;
+import com.daemin.common.CustomJSONObjectRequest;
+import com.daemin.common.MyRequest;
+import com.daemin.common.MyVolley;
 import com.daemin.dialog.DialDefault;
 import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
@@ -15,11 +23,14 @@ import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import de.greenrobot.event.EventBus;
 
 public class SettingVerFragment extends BasicFragment {
     public SettingVerFragment() {
-        super(R.layout.fragment_setting_ver,"SettingVerFragment");
+        super(R.layout.fragment_setting_ver, "SettingVerFragment");
     }
 
     @Override
@@ -27,34 +38,40 @@ public class SettingVerFragment extends BasicFragment {
                              Bundle savedInstanceState) {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        EventBus.getDefault().post(new BackKeyEvent("SettingVerFragment",new String[]{"ibBack"},new String[]{"ibMenu"}));
+        EventBus.getDefault().post(new BackKeyEvent("SettingVerFragment", new String[]{"ibBack"}, new String[]{"ibMenu"}));
         ibBack = MainActivity.getInstance().getIbBack();
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
-                EventBus.getDefault().post(new BackKeyEvent("",new String[]{"ibMenu"},new String[]{"ibBack"}));
+                EventBus.getDefault().post(new BackKeyEvent("", new String[]{"ibMenu"}, new String[]{"ibBack"}));
             }
         });
         tvLocalVer = (TextView) root.findViewById(R.id.tvLocalVer);
-        tvServerVer  = (TextView) root.findViewById(R.id.tvServerVer);
-        btUpdate  = (TextView) root.findViewById(R.id.btUpdate);
-        tvLocalVer.setText("v"+User.INFO.appVer);
-        tvServerVer.setText("v"+User.INFO.appServerVer);
+        tvServerVer = (TextView) root.findViewById(R.id.tvServerVer);
+        btUpdate = (TextView) root.findViewById(R.id.btUpdate);
+        tvLocalVer.setText("v" + User.INFO.appVer);
+        if (User.INFO.appServerVer == null) getVersionFromServer(getActivity());
+        else tvServerVer.setText("v" + User.INFO.appServerVer);
         if (User.INFO.appVer.equals(User.INFO.appServerVer)) {
-            equalFlag=true;
+            equalFlag = true;
             btUpdate.setText(getActivity().getResources().getString(R.string.setting_ver_equal));
-        }else{
-            equalFlag=false;
-            btUpdate.setText(getActivity().getResources().getString(R.string.setting_ver_update));
+        } else {
+            if (tvServerVer.getText().toString().equals("")) {
+                equalFlag = true;
+                btUpdate.setText(getActivity().getResources().getString(R.string.network_error2));
+            } else {
+                equalFlag = false;
+                btUpdate.setText(getActivity().getResources().getString(R.string.setting_ver_update));
+            }
         }
         btUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!equalFlag) {
+                if (!equalFlag) {
                     DialDefault dd = new DialDefault(getActivity(),
                             getActivity().getResources().getString(R.string.update_title),
-                            getActivity().getResources().getString(R.string.update_content),
+                            getActivity().getResources().getString(R.string.update_notice),
                             0);
                     dd.show();
                 }
@@ -62,8 +79,49 @@ public class SettingVerFragment extends BasicFragment {
         });
         return root;
     }
+
     ImageButton ibBack;
-    TextView btUpdate,tvLocalVer,tvServerVer;
+    TextView btUpdate, tvLocalVer, tvServerVer;
     Boolean equalFlag;
+
+    private static String KEY_STATUS = "status";
+    public static final String GET_VERSION = "http://timenuri.com/ajax/app/get_version";
+
+    public void getVersionFromServer(final Context context) {
+        CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET, GET_VERSION, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString(KEY_STATUS).equals("Success")) {
+                                JSONObject data = response.getJSONObject("data");
+                                User.INFO.appServerVer = data.getString("appversion");
+                                tvServerVer.setText("v" + User.INFO.appServerVer);
+                                if (User.INFO.appVer.equals(User.INFO.appServerVer)) {
+                                    equalFlag = true;
+                                    btUpdate.setText(getActivity().getResources().getString(R.string.setting_ver_equal));
+                                } else {
+                                    equalFlag = false;
+                                    btUpdate.setText(getActivity().getResources().getString(R.string.setting_ver_update));
+                                }
+                            } else {
+                                equalFlag = true;
+                                btUpdate.setText(getActivity().getResources().getString(R.string.network_error2));
+                                Toast.makeText(context, context.getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                equalFlag = true;
+                btUpdate.setText(getActivity().getResources().getString(R.string.network_error2));
+                Toast.makeText(context, context.getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+            }
+        });
+        MyVolley.getRequestQueue().add(rq);
+    }
 
 }

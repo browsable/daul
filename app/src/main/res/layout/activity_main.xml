@@ -116,7 +116,6 @@
             android:onClick="mOnClick"
             android:textOff="@string/week"
             android:textOn="@string/month"
-            android:visibility="gone"
             android:textStyle="bold"
             android:textSize="@dimen/textsize_l"/>
     </RelativeLayout>

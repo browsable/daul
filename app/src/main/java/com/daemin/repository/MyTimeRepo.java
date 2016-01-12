@@ -39,6 +39,11 @@ public class MyTimeRepo {
     public static List<MyTime> getAllMyTime(Context context) {
         return getMyTimeDao(context).loadAll();
     }
+    public static List<MyTime> getCreditSum(Context context){
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+        qb.where(MyTimeDao.Properties.Timetype.eq(1));
+        return qb.list();
+    }
     public static List<MyTime> getMyTimeWithTimeCode(Context context, String timeCode){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
         qb.where(MyTimeDao.Properties.Timecode.eq(timeCode));
@@ -113,7 +118,10 @@ public class MyTimeRepo {
             return overlap;
         }else return overlap;
     }
-   /* public static String getEngByKor(Context context, String key) {
+    private static MyTimeDao getMyTimeDao(Context c) {
+        return ((AppController) c.getApplicationContext()).getDaoSession().getMyTimeDao();
+    }
+    /*public static String getEngByKor(Context context, String key) {
         return getNormalDao(context)
                 .queryBuilder()
                 .where(normalDao.Properties)
@@ -121,7 +129,4 @@ public class MyTimeRepo {
                 .get(0)
                 .getEngname();
     }*/
-    private static MyTimeDao getMyTimeDao(Context c) {
-        return ((AppController) c.getApplicationContext()).getDaoSession().getMyTimeDao();
-    }
 }

@@ -74,7 +74,9 @@
             android:layout_height="wrap_content"
             android:text="@string/setting_ver_equal"
             android:padding="@dimen/margin_s"
-            android:textSize="@dimen/textsize_xl"
+            android:textSize="@dimen/textsize_l"
+            android:singleLine="true"
+            android:ellipsize="marquee"
             android:background="@drawable/bg_maincolor_round_border"
             />
     </LinearLayout>

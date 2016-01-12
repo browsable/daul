@@ -11,18 +11,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.daemin.data.GroupListData;
+import com.daemin.data.UpdateListData;
 import com.daemin.dialog.DialDefault;
 import com.daemin.enumclass.User;
 import com.daemin.event.PostGroupListEvent;
 import com.daemin.timetable.R;
 import com.navercorp.volleyextensions.request.Jackson2Request;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
@@ -34,7 +31,6 @@ public class MyRequest {
     public static Context context = AppController.getInstance();
     private static String KEY_STATUS = "status";
     public static final String GET_VERSION = "http://timenuri.com/ajax/app/get_version";
-
     public static void getVersionFromServer(final Context context) {
         CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET, GET_VERSION, null,
                 new Response.Listener<JSONObject>() {
@@ -47,7 +43,7 @@ public class MyRequest {
                                 if (!User.INFO.appVer.equals(User.INFO.appServerVer)) {
                                     DialDefault dd = new DialDefault(context,
                                             context.getResources().getString(R.string.update_title),
-                                            context.getResources().getString(R.string.update_content),
+                                            context.getResources().getString(R.string.update_notice),
                                             0);
                                     dd.show();
                                 }

@@ -191,11 +191,6 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
             @Override
             public void onClick(View v) {
                 MyTimeRepo.deleteWithTimeCode(context, holder.tvTimeCode.getText().toString());
-                if(holder.tvTimeType.getText().toString().equals("1")){
-                    String creditSum = String.valueOf(Integer.parseInt(User.INFO.getCreditSum())
-                            -Integer.parseInt(holder.tvCredit.getText().toString()));
-                    User.INFO.getEditor().putString("creditSum",creditSum).commit();
-                }
                 if(weekFlag)Common.fetchWeekData();
                 else Common.fetchMonthData();
                 EventBus.getDefault().post(new RemoveEnrollEvent(holder.tvTimeCode.getText().toString()));

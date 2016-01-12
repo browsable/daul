@@ -69,14 +69,14 @@ public enum User {
     public String getGroupName(){
         return pref.getString("groupName", "");
     }
+    public String getGroupDBVer(){
+        return pref.getString("groupDBVer", "v1");
+    }
     public int getGroupPK(){
         return pref.getInt("groupPK", 0);
     }
     public int getViewMode(){
         return pref.getInt("viewMode", 0);
-    }
-    public String getCreditSum(){
-        return pref.getString("creditSum", "0");
     }
     public boolean getWidget5_5(){
         return pref.getBoolean("widget5_5", false);

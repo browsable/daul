@@ -64,6 +64,17 @@ public class Common {
 		}
 		return false;
 	}
+	public static String calCredit(){
+		int sum=0;
+		String timecode="";
+		for(MyTime m : MyTimeRepo.getCreditSum(AppController.getInstance())){
+			if(!timecode.equals(m.getTimecode())) {
+				sum += m.getDayofmonth(); // 과목에서는 dayOfMonth에 학점을 저장중임
+				timecode=m.getTimecode();
+			}
+		}
+		return String.valueOf(sum);
+	}
 	public static void fetchWeekData(){
 		for (TimePos ETP : TimePos.values()) {
 			ETP.setPosState(PosState.NO_PAINT);

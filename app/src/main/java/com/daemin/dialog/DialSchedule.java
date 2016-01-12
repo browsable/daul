@@ -141,7 +141,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             }
             univList = new ArrayList<>();
             for (GroupListData.Data d :  User.INFO.groupListData) {
-                univList.add(d.getKo() + "/" + d.getTt_version());
+                univList.add(d.getKo() + "/" + d.getTt_version() + "/" + d.getDb_version());
             }
             lp.width = lp.MATCH_PARENT;
         }else{
@@ -380,6 +380,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             if(downComplete) {
                 pDialog.dismiss();
                 User.INFO.getEditor().putString("groupName", groupName).commit();
+                User.INFO.getEditor().putString("groupDBVer", DBVersion).commit();
                 settingUniv();
             }
             else{//다운로드 실패
@@ -587,8 +588,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 DateTime startDt = Dates.NOW.getDateMillisWithRepeat(year, monthOfYear, dayOfMonth, startHour, startMin, repeatType, repeatPeriod * i);
                 DateTime endDt =  Dates.NOW.getDateMillisWithRepeat(year, monthOfYear, dayOfMonth, endHour, endMin, repeatType, repeatPeriod * i);
                 long startMillis = startDt.getMillis();
-                if (viewMode == 0) xth =Convert.dayOfWeekTowXth(startDt.getDayOfWeek()); //getDayOfWeek index - mon:1,tue:2 ... sun:7
-                else xth = Convert.dayOfWeekTomXth(startDt.getDayOfWeek());
+                xth =Convert.dayOfWeekTowXth(startDt.getDayOfWeek()); //getDayOfWeek index - mon:1,tue:2 ... sun:7
                 MyTime myTime = new MyTime(null,
                         String.valueOf(nowMilis), 0,
                         etName.getText().toString(),
@@ -619,8 +619,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             case R.id.btNormal:
                 if(viewMode==0) {
                     clearView();
-                    creditSum = User.INFO.getCreditSum();
-                    tvCreditSum.setText(creditSum);
                     User.INFO.overlapFlag = false;
                     DrawMode.CURRENT.setMode(0);
                     btColor.setVisibility(View.VISIBLE);
@@ -648,7 +646,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                             int position, long id) {
                         String[] tmp = actvUniv.getText().toString().split("/");
                         groupName = tmp[0];
-                        DBVersion = tmp[1];
+                        ttVersion = tmp[1];
+                        try {
+                            DBVersion = tmp[2];
+                        }catch(ArrayIndexOutOfBoundsException e){ //등록대기중 인 경우
+                            e.printStackTrace();
+                            DBVersion="";
+                        }
                         // 열려있는 키패드 닫기
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(actvUniv.getWindowToken(), 0);
@@ -677,9 +681,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             case R.id.btEnter:
                 if (Common.isOnline()) {
                     if (User.INFO.getGroupName().equals(groupName)) { //처음 대학을 그대로 선택시
-                        settingUniv();
+                        if(User.INFO.getGroupDBVer().equals(DBVersion))settingUniv(); //DB버전에 변동이 없는경우
+                        else {
+                            Toast.makeText(DialSchedule.this, getString(R.string.univ_dbupdate), Toast.LENGTH_SHORT).show();
+                            new DownloadFileFromURL().execute(groupName);
+                        }
                     }else {
-                        if(DBVersion.equals(getResources().getString(R.string.wait1))){
+                        if(ttVersion.equals(getResources().getString(R.string.wait1))){
                             Toast.makeText(DialSchedule.this, getString(R.string.wait2), Toast.LENGTH_SHORT).show();
                             btShowUniv.setVisibility(View.VISIBLE);
                             btEnter.setVisibility(View.GONE);
@@ -729,9 +737,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                     temps = timePos.split(":");
                                     if (!temps[0].equals(" ")) {
                                         MyTime myTime = new MyTime(null,
-                                                User.INFO.groupPK + subtitle + prof, 1,
+                                                User.INFO.groupPK + subtitle + prof+classnum, 1,
                                                 subtitle,
-                                                null, null, null,
+                                                null, null, Integer.parseInt(credit),
                                                 Integer.parseInt(temps[0]),
                                                 Integer.parseInt(temps[1]),
                                                 Integer.parseInt(temps[2]),
@@ -754,7 +762,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 }
                                 creditSum = tvCreditSum.getText().toString();
                                 tvCreditSum.setText(creditSum);
-                                User.INFO.getEditor().putString("creditSum", creditSum).commit();
                                 Common.fetchWeekData();
                             }
                             break;
@@ -872,7 +879,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         tvHyperText = (TextView) findViewById(R.id.tvHyperText);
         tvHyperText.setMovementMethod(LinkMovementMethod.getInstance());
         tvCreditSum = (TextView) findViewById(R.id.tvCreditSum);
-        creditSum = User.INFO.getCreditSum();
+        creditSum = Common.calCredit();
         tvCreditSum.setText(creditSum);
         etName = (EditText) findViewById(R.id.etName);
         etPlace = (EditText) findViewById(R.id.etPlace);
@@ -916,7 +923,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private HorizontalListAdapter hoAdapter;
     private Window window;
     private GradientDrawable gd;
-    private String colorName, subId, creditSum, groupName,DBVersion, beforeYMD;
+    private String colorName, subId, creditSum, groupName,ttVersion,DBVersion, beforeYMD; //ttVersion: 학기버전
     private WindowManager.LayoutParams lp;
     private ArrayList<BottomNormalData> normalList;
     private ArrayAdapter<String> univAdapter;
@@ -983,7 +990,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
 
     public void onEventMainThread(SetCreditEvent e) {
-        creditSum = User.INFO.getCreditSum();
+        creditSum=Common.calCredit();
         tvCreditSum.setText(creditSum);
     }
 
@@ -998,7 +1005,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onEventMainThread(PostGroupListEvent e){
         univList.clear();
         for (GroupListData.Data d :  User.INFO.groupListData) {
-            univList.add(d.getKo() + "/" + d.getTt_version());
+            univList.add(d.getKo() + "/" + d.getTt_version() + "/" + d.getDb_version());
         }
     }
 }

@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -14,13 +15,26 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.daemin.common.CustomJSONObjectRequest;
+import com.daemin.common.MyRequest;
+import com.daemin.common.MyVolley;
+import com.daemin.data.UpdateListData;
 import com.daemin.enumclass.User;
 import com.daemin.event.SetCreditEvent;
 import com.daemin.event.SetShareEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
+import com.navercorp.volleyextensions.request.Jackson2Request;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.greenrobot.event.EventBus;
 
@@ -42,11 +56,11 @@ public class DialDefault extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_default);
         setCancelable(true);
-        Window window = getWindow();
+        window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(
                 android.graphics.Color.TRANSPARENT));
-        WindowManager.LayoutParams layoutParams = window.getAttributes();
-        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
+        layoutParams = window.getAttributes();
+        dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels * 2 / 3;
         layoutParams.height = dm.heightPixels* 3/10;
         window.setAttributes(layoutParams);
@@ -64,6 +78,9 @@ public class DialDefault extends Dialog {
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvContent = (TextView) findViewById(R.id.tvContent);
+        tvUpdateList = (TextView) findViewById(R.id.tvUpdateList);
+        sv = (ScrollView) findViewById(R.id.sv);
+        if(callFuncIndex==0) getUpdateList(context);
         tvTitle.setText(title);
         tvContent.setText(content);
         btDialSetting.setOnClickListener(new View.OnClickListener() {
@@ -95,8 +112,41 @@ public class DialDefault extends Dialog {
     private Button btDialSetting;
     private TextView tvTitle;
     private TextView tvContent;
+    private TextView tvUpdateList;
+    private ScrollView sv;
     private String title, content;
     private int callFuncIndex;
     private Context context;
+    private WindowManager.LayoutParams layoutParams;
+    private DisplayMetrics dm;
+    private Window window;
 
+    public static final String GET_UPDATE_LIST = "http://timenuri.com/ajax/app/get_update_history?v="+User.INFO.appVer;
+
+    public void getUpdateList(final Context context) {
+        CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET, GET_UPDATE_LIST, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("status").equals("Success")) {
+                                JSONObject data = response.getJSONObject("data");
+                                sv.setVisibility(View.VISIBLE);
+                                tvUpdateList.setText(data.getString("update_history"));
+                                layoutParams.height = layoutParams.WRAP_CONTENT;
+                                window.setAttributes(layoutParams);
+                                window.setGravity(Gravity.CENTER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        MyVolley.getRequestQueue().add(rq);
+    }
 }
