@@ -25,7 +25,7 @@
                 android:layout_height="60dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_profile3" />
+                android:src="@drawable/ic_profile" />
 
             <TextView
                 android:layout_width="wrap_content"

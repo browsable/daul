@@ -5,13 +5,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.daemin.data.BottomNormalData;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
@@ -19,12 +16,10 @@ import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.repository.MyTimeRepo;
-import com.daemin.widget.WidgetUpdateService;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import timedao.MyTime;
 
 
@@ -67,11 +62,19 @@ public class Common {
 	public static String calCredit(){
 		int sum=0;
 		String timecode="";
-		for(MyTime m : MyTimeRepo.getCreditSum(AppController.getInstance())){
-			if(!timecode.equals(m.getTimecode())) {
-				sum += m.getDayofmonth(); // 과목에서는 dayOfMonth에 학점을 저장중임
-				timecode=m.getTimecode();
+		try {
+			List<MyTime> mtList = MyTimeRepo.getCreditSum(AppController.getInstance());
+			if (mtList!= null) {
+				for (MyTime m : mtList) {
+					if (!timecode.equals(m.getTimecode())) {
+						sum += m.getDayofmonth(); // 과목에서는 dayOfMonth에 학점을 저장중임
+						timecode = m.getTimecode();
+					}
+				}
 			}
+		}catch (NullPointerException e){
+			e.printStackTrace();
+			sum=0;
 		}
 		return String.valueOf(sum);
 	}
