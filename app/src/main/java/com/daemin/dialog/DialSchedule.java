@@ -94,7 +94,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onResume() {
         super.onResume();
         if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
-
+        lp.height = lp.WRAP_CONTENT;
+        window.setAttributes(lp);
     }
 
     @Override
@@ -104,7 +105,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         Common.stateFilter(viewMode);
         DrawMode.CURRENT.setMode(0);
         Common.fetchWeekData();
-        System.gc();
     }
 
     @Override

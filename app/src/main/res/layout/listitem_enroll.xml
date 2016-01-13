@@ -47,7 +47,7 @@
             android:textSize="@dimen/textsize_default"
             android:enabled="false"
             android:singleLine="true"
-            android:ellipsize="end"
+            android:ellipsize="start"
             android:textColor="@android:color/black"
             android:background="@color/transparency"
             android:maxLines="1" />

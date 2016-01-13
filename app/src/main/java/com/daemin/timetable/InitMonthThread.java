@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.SurfaceHolder;
-import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
@@ -16,19 +14,16 @@ import com.daemin.dialog.DialEnroll;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
-import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.User;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.ExcuteMethodEvent;
-import com.daemin.main.MainActivity;
 
 import de.greenrobot.event.EventBus;
-import timedao.MyTime;
 
 @SuppressLint("DefaultLocale")
 public class InitMonthThread extends InitThread {
 	SurfaceHolder mholder;
-	private boolean isLoop = true;
+	private boolean isLoop = true,downFlag=false;
 	private int width;
 	private int height;
 	private int ty;
@@ -107,11 +102,13 @@ public class InitMonthThread extends InitThread {
 		}
 	}
 	public void getDownXY(int xth, int yth) {
+		downFlag=true;
 		if(!(xth>0&&xth+7*(yth-1)<Dates.NOW.dayOfWeek+2 || xth+7*(yth-1)>Dates.NOW.dayOfWeek + Dates.NOW.dayNumOfMonth + 1)) {
 			makeTimePos(xth, yth);
 			tempxth = xth;
 			tempyth = yth;
 		}
+		downFlag=false;
 	}
 
 	public void getMoveXY(int xth, int yth) {
@@ -139,12 +136,14 @@ public class InitMonthThread extends InitThread {
 				DOMP.setPosState(DayOfMonthPosState.NO_PAINT);
 			}else{
 				//월에서 일정 등록한 영역 터치시
-				EventBus.getDefault().post(new CreateDialEvent(false));
-				Intent i = new Intent(context, DialEnroll.class);
-				i.putExtra("xth", xth);
-				i.putExtra("yth", yth);
-				i.putExtra("weekFlag", false);
-				context.startActivity(i);
+				if(downFlag) {
+					EventBus.getDefault().post(new CreateDialEvent(false));
+					Intent i = new Intent(context, DialEnroll.class);
+					i.putExtra("xth", xth);
+					i.putExtra("yth", yth);
+					i.putExtra("weekFlag", false);
+					context.startActivity(i);
+				}
 
 			}
 		}catch (IllegalArgumentException e){

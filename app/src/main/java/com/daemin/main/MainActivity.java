@@ -297,6 +297,7 @@ public class MainActivity extends FragmentActivity {
                 }
                 break;
             case R.id.btTimetable:
+                backKeyName = "";
                 EventBus.getDefault().post(new ClearNormalEvent());
                 btMode.setVisibility(View.VISIBLE);
                 llTitle.setVisibility(View.VISIBLE);
@@ -436,7 +437,7 @@ public class MainActivity extends FragmentActivity {
     private FrameLayout flSurface, frame_container;
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
-    private String backKeyName, korName, engName;
+    private String backKeyName;
     private Boolean surfaceFlag, dialogFlag, widget5_5, widget4_4;
     private TextSwitcher switcher;
     private static MainActivity singleton;

@@ -27,7 +27,7 @@ import timedao.MyTime;
 @SuppressLint("DefaultLocale")
 public class InitWeekThread extends InitThread {
     SurfaceHolder mholder;
-    private boolean isLoop = true;
+    private boolean isLoop = true, downFlag=false;
     private int width, height,dayOfWeek,intervalSize,hourIntervalSize; //화면의 전체 너비, 높이
     Context context;
     private Paint hp; // 1시간 간격 수평선
@@ -97,10 +97,11 @@ public class InitWeekThread extends InitThread {
         }
     }
     public void getDownXY(int xth, int yth) {
+        downFlag=true;
         makeTimePos(xth, yth);
+        downFlag=false;
         tempxth = xth;
         tempyth = yth;
-
     }
 
     public void getMoveXY(int xth, int yth) {
@@ -133,14 +134,16 @@ public class InitWeekThread extends InitThread {
                         ETP.setPosState(PosState.NO_PAINT);
                         Common.getTempTimePos().remove(ETP.name());
                     }else{
-                        //등록된 다음주 시간표를 누를 때 위젯 업데이트로 날짜가 변동되는 현상을 막기위해 dialflag를 false로 해줌
-                        EventBus.getDefault().post(new CreateDialEvent(false));
-                        Intent i = new Intent(context, DialEnroll.class);
-                        i.putExtra("xth", xth);
-                        i.putExtra("yth", tmpYth);
-                        i.putExtra("startMin", ETP.getStartMin());
-                        i.putExtra("endMin", ETP.getEndMin());
-                        context.startActivity(i);
+                        if(downFlag) {
+                            //등록된 다음주 시간표를 누를 때 위젯 업데이트로 날짜가 변동되는 현상을 막기위해 dialflag를 false로 해줌
+                            EventBus.getDefault().post(new CreateDialEvent(false));
+                            Intent i = new Intent(context, DialEnroll.class);
+                            i.putExtra("xth", xth);
+                            i.putExtra("yth", tmpYth);
+                            i.putExtra("startMin", ETP.getStartMin());
+                            i.putExtra("endMin", ETP.getEndMin());
+                            context.startActivity(i);
+                        }
 
                     }
                     break;
@@ -154,14 +157,16 @@ public class InitWeekThread extends InitThread {
                     }
                     if (ETP.getPosState() == PosState.ENROLL) {
                         //등록된 다음주 시간표를 누를 때 위젯 업데이트로 날짜가 변동되는 현상을 막기위해 dialflag를 false로 해줌
-                        EventBus.getDefault().post(new CreateDialEvent(false));
-                        Intent i = new Intent(context, DialEnroll.class);
-                        i.putExtra("xth", xth);
-                        i.putExtra("yth", tmpYth);
-                        i.putExtra("startMin", ETP.getStartMin());
-                        i.putExtra("endMin", ETP.getEndMin());
-                        i.putExtra("weekFlag", true);
-                        context.startActivity(i);
+                        if(downFlag) {
+                            EventBus.getDefault().post(new CreateDialEvent(false));
+                            Intent i = new Intent(context, DialEnroll.class);
+                            i.putExtra("xth", xth);
+                            i.putExtra("yth", tmpYth);
+                            i.putExtra("startMin", ETP.getStartMin());
+                            i.putExtra("endMin", ETP.getEndMin());
+                            i.putExtra("weekFlag", true);
+                            context.startActivity(i);
+                        }
                     }
                     break;
             }

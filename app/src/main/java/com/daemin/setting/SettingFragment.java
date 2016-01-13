@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.daemin.common.BasicFragment;
 import com.daemin.enumclass.User;
+import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 
@@ -44,7 +45,7 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
-            setLayout(root);
+        setLayout(root);
         return root;
     }
 
@@ -256,6 +257,7 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
         }
     }
     public void setLayout(View root){
+        EventBus.getDefault().post(new BackKeyEvent("SettingFragment",null,null));
         mCurrentPhotoPath = null;
         ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
         btSettingInit = (TextView)root.findViewById(R.id.btSettingInit);
