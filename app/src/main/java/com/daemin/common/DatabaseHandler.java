@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.daemin.data.SubjectData;
 
@@ -149,7 +148,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		return stringList;
 	}
-	public List<String> getSubOrProfList() {
+	public List<String> getSubList() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		stringList.clear();
 		String selectSub = "SELECT DISTINCT subtitle FROM " + TABLE_SCHEDULE;
@@ -159,6 +158,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				stringList.add(subCursor.getString(0));
 			} while (subCursor.moveToNext());
 		}
+		return stringList;
+	}
+	public List<String> getProfList() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		stringList.clear();
 		String selectProf = "SELECT DISTINCT prof FROM " + TABLE_SCHEDULE;
 		Cursor profCursor = db.rawQuery(selectProf, null);
 		if (profCursor.moveToFirst()) {
@@ -168,11 +172,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		return stringList;
 	}
-	public List<SubjectData> getAllWithSubOrProf(String subOrProf) {
+	public List<SubjectData> getAllWithSub(String sub) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		subjectDataList.clear();
 		// Select All Query
-		String selectQuery = "SELECT DISTINCT * FROM " + TABLE_SCHEDULE + " WHERE (subtitle LIKE '%"+subOrProf+"%' or prof LIKE '%"+subOrProf+"%')";
+		String selectQuery = "SELECT DISTINCT * FROM " + TABLE_SCHEDULE + " WHERE (subtitle LIKE '%"+sub+"%')";
 		//SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		// looping through all rows and adding to list
@@ -191,11 +195,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SubjectData.setTime(cursor.getString(9));
 				SubjectData.setProf(cursor.getString(10));
 				SubjectData.setPlace(cursor.getString(11));
-				Log.i("test", SubjectData.getSubtitle());
 				subjectDataList.add(SubjectData);
 			} while (cursor.moveToNext());
 		}
 
+
+		// return SubjectData list
+		return subjectDataList;
+	}
+	public List<SubjectData> getAllWithProf(String prof) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		subjectDataList.clear();
+		// Select All Query
+		String selectQuery = "SELECT DISTINCT * FROM " + TABLE_SCHEDULE + " WHERE (prof LIKE '%"+prof+"%')";
+		//SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				SubjectData SubjectData = new SubjectData();
+				SubjectData.set_id(cursor.getInt(0));
+				SubjectData.setSubnum(cursor.getString(1));
+				SubjectData.setSubtitle(cursor.getString(2));
+				SubjectData.setCredit(cursor.getString(3));
+				SubjectData.setClassnum(cursor.getString(4));
+				SubjectData.setLimitnum(cursor.getString(5));
+				SubjectData.setDep(cursor.getString(6));
+				SubjectData.setDep_grade(cursor.getString(7));
+				SubjectData.setDep_detail(cursor.getString(8));
+				SubjectData.setTime(cursor.getString(9));
+				SubjectData.setProf(cursor.getString(10));
+				SubjectData.setPlace(cursor.getString(11));
+				subjectDataList.add(SubjectData);
+			} while (cursor.moveToNext());
+		}
 
 		// return SubjectData list
 		return subjectDataList;

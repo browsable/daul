@@ -101,15 +101,17 @@ public class Common {
 		User.INFO.weekData.clear();
 		User.INFO.weekData.addAll(MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies));
 		for(MyTime mt :User.INFO.weekData){
-			addWeek(mt.getName(),mt.getDayofweek(), mt.getStarthour(), mt.getEndhour(), mt.getEndmin());
+			addWeek(mt.getName(),mt.getDayofweek(), mt.getStarthour(),mt.getStartmin(), mt.getEndhour(), mt.getEndmin());
 		}
 	}
-	public static void addWeek(String title, int xth, int startHour,int endHour, int endMin){
+	public static void addWeek(String title, int xth, int startHour,int startMin, int endHour, int endMin){
 		if(endMin!=0) ++endHour;
 		TimePos[] tp = new TimePos[endHour - startHour];
 		int j = 0;
 		for (int i = startHour; i < endHour; i++) {
 			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+			if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
+			if (i == endHour - 1) tp[j].setMin(0, endMin);
 			tp[j].setPosState(PosState.ENROLL);
 			if(i==startHour)tp[j].setTitle(title);
 			++j;

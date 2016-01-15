@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -399,9 +398,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         int j = 0;
         for (int i = startHour; i < endHour; i++) {
             tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+            if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
+            if (i == endHour - 1) tp[j].setMin(0, endMin);
             if (tp[j].getPosState() == PosState.NO_PAINT) {
-                if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
-                if (i == endHour - 1) tp[j].setMin(0, endMin);
                 tp[j].setPosState(PosState.PAINT);
             } else {
                 tp[j].setPosState(PosState.OVERLAP);
@@ -418,25 +417,26 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         ArrayList<String>
                 depList = new ArrayList<>(),
                 gradeList = new ArrayList<>(),
-                subOrProfList = new ArrayList<>();
+                subList = new ArrayList<>(),
+                profList = new ArrayList<>();
         depList.addAll(db.getDepList());
         gradeList.add("학년 : 전체");
         gradeList.add("1학년");
         gradeList.add("2학년");
         gradeList.add("3학년");
         gradeList.add("4학년");
-        subOrProfList.addAll(db.getSubOrProfList());
+        subList.addAll(db.getSubList());
+        profList.addAll(db.getProfList());
         ArrayAdapter<String>
                 depAdapter = new ArrayAdapter<>(this, R.layout.dropdown_dep, depList),
                 gradeAdapter = new ArrayAdapter<>(this, R.layout.dropdown_dep, gradeList),
-                subAdapter = new ArrayAdapter<>(this, R.layout.dropdown_dep, subOrProfList);
+                subAdapter = new ArrayAdapter<>(this, R.layout.dropdown_dep, subList),
+                profAdapter = new ArrayAdapter<>(this, R.layout.dropdown_dep, profList);
         SettingACTV(actvDep, depAdapter);
         SettingACTV(actvGrade, gradeAdapter);
         SettingACTV(actvSub, subAdapter);
-        actvDep.setDropDownVerticalOffset(User.INFO.intervalSize);
-        actvGrade.setDropDownVerticalOffset(User.INFO.intervalSize);
-        actvGrade.setDropDownVerticalOffset(User.INFO.intervalSize);
-
+        SettingACTV(actvProf, profAdapter);
+        actvSub.requestFocus();
         //subject
         final List<SubjectData> subjects = db.getAllSubjectDatas();
         hoAdapter = new HorizontalListAdapter(this, subjects);
@@ -497,8 +497,23 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                         int position, long id) {
                     actvDep.setText("");
                     actvGrade.setText("");
+                    actvProf.setText("");
                     subjects.clear();
-                    List<SubjectData> sdlist = db.getAllWithSubOrProf(actvSub.getText().toString());
+                    List<SubjectData> sdlist = db.getAllWithSub(actvSub.getText().toString());
+                    if(sdlist.size()!=0)
+                        subjects.add(sdlist.remove(0));
+                    hoAdapter.notifyDataSetChanged();
+                }
+            });
+            actvProf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                public void onItemClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                    actvDep.setText("");
+                    actvGrade.setText("");
+                    actvSub.setText("");
+                    subjects.clear();
+                    List<SubjectData> sdlist = db.getAllWithProf(actvProf.getText().toString());
                     if(sdlist.size()!=0)
                         subjects.add(sdlist.remove(0));
                     hoAdapter.notifyDataSetChanged();
@@ -550,7 +565,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         actv.setThreshold(1);// will start working from first character
         actv.setAdapter(adapter);// setting the adapter data into the
         actv.setTextColor(Color.DKGRAY);
-        actv.setDropDownVerticalOffset(10);
+        actv.setDropDownVerticalOffset(User.INFO.intervalSize);
         return actv;
     }
     public void AddSchedule(int repeatType){
@@ -732,7 +747,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 String credit = subjectData.getCredit();
                                 String classnum = subjectData.getClassnum();
                                 String place = subjectData.getPlace();
-                                Log.i("test",place);
                                 for (String timePos : getTimeList(subjectData.getTime())) {
                                     temps = timePos.split(":");
                                     if (!temps[0].equals(" ")) {
@@ -890,6 +904,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         actvDep = (AutoCompleteTextView) findViewById(R.id.actvDep);
         actvGrade = (AutoCompleteTextView) findViewById(R.id.actvGrade);
         actvSub = (AutoCompleteTextView) findViewById(R.id.actvSub);
+        actvProf = (AutoCompleteTextView) findViewById(R.id.actvProf);
         gd = (GradientDrawable) btColor.getBackground().mutate();
         btNormal.setOnClickListener(this);
         btUniv.setOnClickListener(this);
@@ -915,9 +930,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
     private Button btNormal, btUniv, btAddSchedule, btCancel, btEnter, btColor;
     private LinearLayout llNormal, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat;
+    private View dragToggle;
     private TextView tvShare, tvAlarm, tvRepeat, tvCreditSum, tvHyperText;
     private EditText etName, etPlace, etMemo;
-    private View dragToggle;
     private ToggleButton btShowUniv,btShowDep, btShowGrade;
     private HorizontalListView lvTime, hlv;
     private HorizontalListAdapter hoAdapter;
@@ -930,7 +945,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private ArrayList<String> univList;
     private ArrayAdapter normalAdapter;
     private HashMap<Integer, Integer> dayIndex;//어느 요일이 선택됬는지
-    private AutoCompleteTextView actvUniv, actvDep, actvGrade, actvSub;
+    private AutoCompleteTextView actvUniv, actvDep, actvGrade, actvSub, actvProf;
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight, viewMode,repeatType;

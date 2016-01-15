@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:background="@color/transparency"
     android:orientation="vertical">
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,13 +36,12 @@
             android:textColor="@color/gray"
             android:textSize="@dimen/textsize_l"
             android:textStyle="bold" />
-
         <View
             android:id="@+id/dragToggle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.7" />
-
+            android:layout_weight="0.66"
+            />
         <Button
             android:id="@+id/btColor"
             android:layout_width="26dp"
@@ -70,7 +71,16 @@
             android:layout_marginRight="@dimen/margin_l"
             android:layout_marginTop="@dimen/margin_s"
             android:background="@drawable/ic_cancel" />
-    </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:focusable="false"
+            android:clickable="false"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_updown"
+            />
+    </RelativeLayout>
     <LinearLayout
         android:id="@+id/llNormal"
         android:layout_width="match_parent"

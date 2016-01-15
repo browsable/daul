@@ -123,21 +123,51 @@
                     android:textSize="@dimen/textsize_default" />
             </LinearLayout>
         </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
         <AutoCompleteTextView
             android:id="@+id/actvSub"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:layout_weight="1"
             android:background="@android:color/white"
             android:dropDownHeight="116dp"
             android:dropDownWidth="250dp"
+            android:ellipsize="end"
             android:ems="10"
-            android:hint="@string/univ_search"
+            android:hint="@string/univ_search_sub"
             android:padding="@dimen/margin_s"
             android:popupBackground="@color/whitesmoke"
             android:singleLine="true"
             android:textColor="@color/dimgray"
             android:textColorHint="@color/gray"
             android:textSize="@dimen/textsize_default" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightgray" />
+                <AutoCompleteTextView
+                    android:id="@+id/actvProf"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="3"
+                    android:background="@android:color/white"
+                    android:dropDownHeight="116dp"
+                    android:dropDownWidth="90dp"
+                    android:ellipsize="end"
+                    android:ems="10"
+                    android:hint="@string/univ_search_prof"
+                    android:padding="@dimen/margin_s"
+                    android:popupBackground="@color/whitesmoke"
+                    android:singleLine="true"
+                    android:textColor="@color/dimgray"
+                    android:textColorHint="@color/gray"
+                    android:textSize="@dimen/textsize_default" />
+                </LinearLayout>
             </LinearLayout>
             <com.daemin.common.HorizontalListView
                 android:id="@+id/hlv"
