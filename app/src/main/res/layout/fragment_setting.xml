@@ -61,6 +61,18 @@
                 android:textColor="@color/maincolor"
                 />
         </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
+        <TextView
+            android:id="@+id/btSettingGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bt_click"
+            android:padding="@dimen/margin_xl"
+            android:text="@string/setting_group"
+            android:textSize="@dimen/textsize_xl" />
 
         <View
             android:layout_width="match_parent"

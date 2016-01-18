@@ -109,21 +109,22 @@ public class Common {
 		else endMin = 60;
 		TimePos[] tp = new TimePos[endHour - startHour];
 		int j = 0;
-		int startYth=1;
 		for (int i = startHour; i < endHour; i++) {
 			int yth = Convert.HourOfDayToYth(i);
 			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth,yth));
-			if (i == startHour) {
-				startYth = yth;
-				if(startMin != 0) tp[j].setMin(startMin, 60);
+			if (tp[j].getPosState() == PosState.NO_PAINT) {
+				if (i == startHour) {
+					tp[j].setText(title, place, yth, startMin);
+					if (startMin != 0) tp[j].setMin(startMin, 60);
+				}
+				if (i == endHour - 1) {
+					tp[j].setMin(0, endMin);
+				}
+				tp[j].setPosState(PosState.ENROLL);
+			}else if(tp[j].getPosState() == PosState.ENROLL){
+				if(i == endHour - 1) tp[j].setMin(0, endMin);
+				else if(i != startHour) tp[j].setMin(0, 60);
 			}
-			if (i == endHour - 1){
-				tp[j].setMin(0, endMin);
-				Log.i("test yth"+i, String.valueOf(startYth));
-				Log.i("test min"+i,String.valueOf(startMin));
-				tp[j].setText(title, place,startYth,startMin);
-			}
-			tp[j].setPosState(PosState.ENROLL);
 			++j;
 		}
 	}

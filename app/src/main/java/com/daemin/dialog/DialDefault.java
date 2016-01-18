@@ -7,36 +7,25 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.daemin.common.CustomJSONObjectRequest;
-import com.daemin.common.MyRequest;
 import com.daemin.common.MyVolley;
-import com.daemin.data.UpdateListData;
 import com.daemin.enumclass.User;
-import com.daemin.event.SetCreditEvent;
-import com.daemin.event.SetShareEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
-import com.navercorp.volleyextensions.request.Jackson2Request;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-09-08.
@@ -62,7 +51,6 @@ public class DialDefault extends Dialog {
         layoutParams = window.getAttributes();
         dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels * 2 / 3;
-        layoutParams.height = dm.heightPixels* 3/10;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();
@@ -132,9 +120,6 @@ public class DialDefault extends Dialog {
                                 JSONObject data = response.getJSONObject("data");
                                 sv.setVisibility(View.VISIBLE);
                                 tvUpdateList.setText(data.getString("update_history"));
-                                layoutParams.height = layoutParams.WRAP_CONTENT;
-                                window.setAttributes(layoutParams);
-                                window.setGravity(Gravity.CENTER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

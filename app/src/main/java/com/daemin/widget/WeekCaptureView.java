@@ -1,7 +1,6 @@
 package com.daemin.widget;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 
 import com.daemin.common.Convert;
 import com.daemin.enumclass.Dates;
-import com.daemin.enumclass.User;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
@@ -27,7 +25,7 @@ import timedao.MyTime;
  */
 public class WeekCaptureView extends ImageView {
     private Context context;
-    private int width, height,dayOfWeek, textSize,dateSize,intervalSize,hourIntervalSize; //화면의 전체 너비, 높이
+    private int width, height,dayOfWeek, textSize,dateSize,intervalSize,hourIntervalSize,posIndex; //화면의 전체 너비, 높이
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
     private Paint tp, tpred, tpblue, rp; // 시간 텍스트
@@ -97,24 +95,52 @@ public class WeekCaptureView extends ImageView {
             week_endYear=week_startYear=Dates.NOW.year;
         long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
         long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
-        String title;
+        int realStartYth;
+        int realStartMin;
+        tp.setTextSize(textSize);
+        tp.setTextAlign(Paint.Align.CENTER);
+        tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         for(MyTime mt :  MyTimeRepo.getWeekTimes(context, week_startMillies, week_endMillies)) {
+            String title="";
+            String second ="";
+            String place=mt.getPlace();
+            if(place.equals(""))place=" ";
+            posIndex=0;
             rp.setColor(Color.parseColor(mt.getColor()));
             rp.setAlpha(130);
             int xth = mt.getDayofweek();
             int startMin = mt.getStartmin();
             int endMin = mt.getEndmin();
-            int startYth = Convert.HourOfDayToYth(mt.getStarthour());
-            int endYth = Convert.HourOfDayToYth(mt.getEndhour());
+            int startHour = mt.getStarthour();
+            int endHour = mt.getEndhour();
+            int startYth = Convert.HourOfDayToYth(startHour);
+            int endYth = Convert.HourOfDayToYth(endHour);
+            realStartYth = startYth;
+            realStartMin = startMin;
             canvas.drawRect(width * xth / 15, (height * startYth / 32 + intervalSize) + (2 * height / 32) * startMin / 60,
                     width * (xth + 2) / 15, (height * endYth / 32 + intervalSize) + (2 * height / 32) * endMin / 60, rp);
-            String ETPName = Convert.getxyMerge(xth,startYth);
-            String second ="";
-            if(ETP.containsKey(ETPName)){
-                title = ETP.get(ETPName);
-            }else{
-                title = mt.getName();
-                ETP.put(ETPName,title);
+            if (endHour==startHour&&endMin != 0) ++endHour;
+            String[] ETPName = new String[endHour - startHour];
+            for (int i = 0; i < ETPName.length; i++) {
+                ETPName[i] = Convert.getxyMerge(xth,Convert.HourOfDayToYth(startHour++));
+            }
+            for(int i=0;i<ETPName.length;i++) {
+                if (ETP.containsKey(ETPName[i])) {
+                    if (i == 0) {
+                        String[] tmp = ETP.get(ETPName[i]).split(":");
+                        title = tmp[0];
+                        place = tmp[1];
+                        realStartYth = Integer.parseInt(tmp[2]);
+                        realStartMin = Integer.parseInt(tmp[3]);
+                    }
+                } else {
+                    if (i == 0) {
+                        title = mt.getName();
+                        ETP.put(ETPName[i], title + ":" + place + ":" + realStartYth + ":" + realStartMin);
+                    } else {
+                        ETP.put(ETPName[i], " " + ":" + " " + ":" + realStartYth + ":" + realStartMin);
+                    }
+                }
             }
             if(title.length()>5){
                 second = title.substring(5);
@@ -122,12 +148,17 @@ public class WeekCaptureView extends ImageView {
                 if(second.length()>5){
                     second = second.substring(0,5)+"..";
                 }
+                ++posIndex;
             }
-            tp.setTextSize(textSize);
-            tp.setTextAlign(Paint.Align.CENTER);
-            tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            canvas.drawText(title, width * (xth+1) / 15, (height * (startYth + 1) / 32), tp);
-            canvas.drawText(second, width * (xth+1) / 15, (height * (startYth+1) / 32 + dateSize), tp);
+            if(place!=null){
+                ++posIndex;
+                if(place.length()>5) place = place.substring(0,5);
+            }
+            canvas.drawText(title, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60-intervalSize/2, tp);
+            if (posIndex == 2)
+                canvas.drawText(second, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60-intervalSize/2 + (posIndex - 1) * dateSize*9/10, tp);
+            canvas.drawText(place, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60-intervalSize/2 + posIndex * dateSize*9/10, tp);
+
         }
     }
     @Override

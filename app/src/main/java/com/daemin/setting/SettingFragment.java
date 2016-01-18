@@ -242,6 +242,9 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
             case R.id.btSettingVer:
                 EventBus.getDefault().post(new ChangeFragEvent(SettingVerFragment.class, getActivity().getResources().getString(R.string.setting_ver)));
                 break;
+            case R.id.btSettingGroup:
+                EventBus.getDefault().post(new ChangeFragEvent(SettingGroupFragment.class, getActivity().getResources().getString(R.string.setting_group)));
+                break;
             case R.id.btSettingInit:
                 EventBus.getDefault().post(new ChangeFragEvent(SettingInitFragment.class, getActivity().getResources().getString(R.string.setting_init)));
                 break;
@@ -261,6 +264,7 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
         mCurrentPhotoPath = null;
         ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
         btSettingInit = (TextView)root.findViewById(R.id.btSettingInit);
+        btSettingGroup = (TextView)root.findViewById(R.id.btSettingGroup);
         btSettingCalendar = (TextView)root.findViewById(R.id.btSettingCalendar);
         btSettingQA = (TextView)root.findViewById(R.id.btSettingQA);
         tvVer = (TextView)root.findViewById(R.id.tvVer);
@@ -273,12 +277,13 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
         }
         ivProfile.setOnClickListener(this);
         btSettingVer.setOnClickListener(this);
+        btSettingGroup.setOnClickListener(this);
         btSettingInit.setOnClickListener(this);
         btSettingCalendar.setOnClickListener(this);
         btSettingQA.setOnClickListener(this);
     }
     private ImageView ivProfile;
-    private TextView btSettingInit,btSettingCalendar,btSettingQA, tvVer;
+    private TextView btSettingGroup,btSettingInit,btSettingCalendar,btSettingQA, tvVer;
     private RelativeLayout btSettingVer;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_ALBUM = 2;

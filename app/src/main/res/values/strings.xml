@@ -116,6 +116,7 @@
     <string name="community_search">커뮤니티 검색</string>
     <!--설정-->
     <string name="setting_ver">버전정보</string>
+    <string name="setting_group">그룹설정</string>
     <string name="setting_init">초기화</string>
     <string name="setting_calendar">달력 연동</string>
     <!--버전정보-->

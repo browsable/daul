@@ -1,16 +1,11 @@
 package com.daemin.enumclass;
 
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.util.Log;
-import android.util.TypedValue;
 
 import com.daemin.common.Common;
-import com.daemin.main.MainActivity;
-import com.daemin.timetable.R;
 
 
 /**
@@ -34,9 +29,9 @@ public enum PosState {
     ENROLL(){
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, String title, String second, String place, int realStartYth,int realStartMin,int posIndex, int xth, int yth, int startMin, int endMin) {
-            canvas.drawText(title, width * (xth+1) / 15, (height * (realStartYth+1) / 32)+(2*height/32)*realStartMin/60, tp);
-            if(posIndex==2)canvas.drawText(second, width * (xth+1) / 15, (height * (realStartYth+1) / 32) +(2*height/32)*realStartMin/60+(posIndex-1)*dateSize, tp);
-            canvas.drawText(place, width * (xth + 1) / 15,(height * (realStartYth+1) / 32) +(2*height/32)*realStartMin/60+posIndex*dateSize,tp);
+            canvas.drawText(title, width * (xth+1) / 15, (height * (realStartYth+1) / 32)+(2*height/32)*realStartMin/60-intervalSize/2, tp);
+            if(posIndex==2)canvas.drawText(second, width * (xth+1) / 15, (height * (realStartYth+1) / 32) +(2*height/32)*realStartMin/60-intervalSize/2+(posIndex-1)*dateSize*9/10, tp);
+            canvas.drawText(place, width * (xth + 1) / 15,(height * (realStartYth+1) / 32) +(2*height/32)*realStartMin/60-intervalSize/2+posIndex*dateSize*9/10,tp);
 
         }
     };

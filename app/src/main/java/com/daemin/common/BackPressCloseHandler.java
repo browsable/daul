@@ -35,6 +35,10 @@ public class BackPressCloseHandler {
                 EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
                 EventBus.getDefault().post(new BackKeyEvent("", new String[]{"ibMenu"}, new String[]{"ibBack"}));
                 break;
+            case "SettingGroupFragment":
+                EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
+                EventBus.getDefault().post(new BackKeyEvent("", new String[]{"ibMenu"}, new String[]{"ibBack"}));
+                break;
             case "SettingInitFragment":
                 EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
                 EventBus.getDefault().post(new BackKeyEvent("", new String[]{"ibMenu"}, new String[]{"ibBack"}));

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +24,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -882,6 +882,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btShowUniv = (ToggleButton)findViewById(R.id.btShowUniv);
         btShowDep = (ToggleButton)findViewById(R.id.btShowDep);
         btShowGrade = (ToggleButton)findViewById(R.id.btShowGrade);
+        llDialog = (LinearLayout) findViewById(R.id.llDialog);
         llNormal = (LinearLayout) findViewById(R.id.llNormal);
         llUniv = (LinearLayout) findViewById(R.id.llUniv);
         btNew = (LinearLayout) findViewById(R.id.btNew);
@@ -892,6 +893,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         llDep = (LinearLayout) findViewById(R.id.llDep);
         llSelectUniv = (LinearLayout) findViewById(R.id.llSelectUniv);
         dragToggle = findViewById(R.id.dragToggle);
+        sb = (SeekBar) findViewById(R.id.sb);
         tvShare = (TextView) findViewById(R.id.tvShare);
         tvAlarm = (TextView) findViewById(R.id.tvAlarm);
         tvRepeat = (TextView) findViewById(R.id.tvRepeat);
@@ -929,13 +931,36 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         subOverlapFlag = true;
         User.INFO.overlapFlag = false;
         colorName = Common.MAIN_COLOR;
+        brightness=100;
         dy = 0; mPosY = 0; repeatType = 0;
         dayIndex = new HashMap<>();
+        sb.setProgress(brightness);
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(progress<10)brightness=10;
+                else if(progress>100) brightness=100;
+                else brightness =progress;
+
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                lp.alpha=(float)brightness/100;
+                window.setAttributes(lp);
+            }
+        });
+
     }
 
     private Button btNormal, btUniv, btAddSchedule, btCancel, btEnter, btColor;
-    private LinearLayout llNormal, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat;
+    private LinearLayout llDialog,llNormal, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat;
     private View dragToggle;
+    private SeekBar sb;
     private TextView tvShare, tvAlarm, tvRepeat, tvCreditSum, tvHyperText;
     private EditText etName, etPlace, etMemo;
     private ToggleButton btShowUniv,btShowDep, btShowGrade;
@@ -953,7 +978,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private AutoCompleteTextView actvUniv, actvDep, actvGrade, actvSub, actvProf;
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
-    private int dy, mPosY, screenHeight, viewMode,repeatType;
+    private int dy, mPosY, screenHeight, viewMode,repeatType,brightness;
     private boolean widgetFlag, overlapEnrollFlag,weekFlag, subOverlapFlag;
     // Progress Dialog
     private ProgressDialog pDialog;
