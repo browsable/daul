@@ -1,9 +1,6 @@
 package com.daemin.enumclass;
 
 import android.graphics.Canvas;
-import android.util.Log;
-
-import com.daemin.common.Common;
 
 /**
  * Created by hernia on 2015-06-27.
@@ -19,8 +16,8 @@ public enum TimePos {
 
     private PosState posState;
     private int xth;
-    private int yth,realStartYth;
-    private int startMin,realStartMin;
+    public int yth,realStartYth;
+    public int startMin,realStartMin;
     private int endMin;
     private int posIndex;
     private String title,second,place;
@@ -61,9 +58,11 @@ public enum TimePos {
         this.place="";
         this.posIndex=0;
     }
-    public void setText(String title,String place, int realStartYth, int realStartMin) {
+    public void setRealStart(int realStartYth, int realStartMin){
         this.realStartYth = realStartYth;
         this.realStartMin = realStartMin;
+    }
+    public void setText(String title, String place) {
         if(this.title.equals("")){
             if(title.length()>5){
                 this.title = title.substring(0,5);
