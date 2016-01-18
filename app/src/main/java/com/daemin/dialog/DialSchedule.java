@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -156,6 +157,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 getIntent().getIntExtra("yth", 1)));
                 tp.setPosState(PosState.PAINT);
                 tp.setMin(0, 60);
+                //tp.setT
             } else {
                 DayOfMonthPos DOMP = DayOfMonthPos.valueOf(
                         Convert.getxyMergeForMonth(
@@ -393,7 +395,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin) {
         if (endMin != 0) ++endHour;
         else endMin = 60;
-
         TimePos[] tp = new TimePos[endHour - startHour];
         int j = 0;
         for (int i = startHour; i < endHour; i++) {
@@ -402,10 +403,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             if (i == endHour - 1) tp[j].setMin(0, endMin);
             if (tp[j].getPosState() == PosState.NO_PAINT) {
                 tp[j].setPosState(PosState.PAINT);
-            } else {
-                tp[j].setPosState(PosState.OVERLAP);
-                if (MyTimeRepo.overLapCheck(this, xth, i) == 1) {
-                    User.INFO.overlapFlag = true;
+            }else if(tp[j].getPosState() == PosState.ENROLL){
+                List<MyTime> mtList = MyTimeRepo.overLapCheck(this,xth,startHour,startMin);
+                if(mtList.size()==0){
+                    tp[j].setPosState(PosState.PAINT);
+                }
+                else {
+                    tp[j].setPosState(PosState.OVERLAP);
+                    User.INFO.overlapFlag=true;
                 }
             }
             Common.getTempTimePos().add(tp[j].name());

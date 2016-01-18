@@ -19,10 +19,11 @@ public enum TimePos {
 
     private PosState posState;
     private int xth;
-    private int yth;
-    private int startMin;
+    private int yth,realStartYth;
+    private int startMin,realStartMin;
     private int endMin;
-    private String title, second;
+    private int posIndex;
+    private String title,second,place;
     TimePos() {
     }
     TimePos(int xth, int yth) {
@@ -33,6 +34,8 @@ public enum TimePos {
         endMin = 60;
         title ="";
         second="";
+        place="";
+        posIndex=0;
     }
     public int getXth() {
         return xth;
@@ -47,15 +50,20 @@ public enum TimePos {
         if(endMin==60) return 0;
         else return endMin;
     }
+
     public void setMin(int startMin,int endMin) {
         this.startMin = startMin;
         this.endMin = endMin;
     }
-    public void setInitTitle(){
+    public void setInitText(){
         this.title="";
         this.second="";
+        this.place="";
+        this.posIndex=0;
     }
-    public void setTitle(String title) {
+    public void setText(String title,String place, int realStartYth, int realStartMin) {
+        this.realStartYth = realStartYth;
+        this.realStartMin = realStartMin;
         if(this.title.equals("")){
             if(title.length()>5){
                 this.title = title.substring(0,5);
@@ -63,14 +71,17 @@ public enum TimePos {
                 if(this.second.length()>5){
                     this.second = second.substring(0,5)+"..";
                 }
+                ++posIndex;
             }else{
                 this.title = title;
                 this.second="";
             }
-        }/*else{
-            if(this.second.equals("")) this.second = "외";
-            else this.second = this.second.substring(0,this.second.length())+"외";
-        }*/
+        }
+        if(this.place.equals("")){
+            ++posIndex;
+            if(place.length()>5) this.place = place.substring(0,5);
+            else this.place = place;
+        }
     }
     public void setPosState(PosState posState) {
         this.posState = posState;
@@ -79,6 +90,6 @@ public enum TimePos {
         return posState;
     }
     public void drawTimePos(Canvas canvas, int width, int height) {
-        posState.drawTimePos(canvas, width, height,title, second, xth, yth, startMin,endMin);
+        posState.drawTimePos(canvas, width, height,title, second, place, realStartYth, realStartMin, posIndex, xth, yth, startMin,endMin);
     }
 }

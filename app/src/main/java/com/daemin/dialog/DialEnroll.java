@@ -89,7 +89,7 @@ public class DialEnroll extends Activity {
             enrollMyTime(MyTimeRepo.getHourTimes(DialEnroll.this,
                     Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, 0),//startmillis
                     Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour + 1, 0) - 1,//endmillis
-                    xth, startHour, endMin));
+                    xth, startHour,startMin, endMin));
             if(xth==1){
                 tvMonthDay.setTextColor(getResources().getColor(R.color.red));
             }else if(xth==13){
@@ -174,7 +174,7 @@ public class DialEnroll extends Activity {
         }else {
             enrollAdapter.notifyDataSetChanged();
             for (TimePos ETP : TimePos.values()) {
-                ETP.setInitTitle();
+                ETP.setInitText();
             }
             Common.fetchWeekData();
         }

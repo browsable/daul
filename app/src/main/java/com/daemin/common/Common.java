@@ -82,7 +82,7 @@ public class Common {
 		for (TimePos ETP : TimePos.values()) {
 			ETP.setPosState(PosState.NO_PAINT);
 			ETP.setMin(0, 60);
-			ETP.setInitTitle();
+			ETP.setInitText();
 		}
 		int week_startMonth = Dates.NOW.monthOfSun;
 		int week_startDay = Dates.NOW.dayOfSun;
@@ -101,19 +101,29 @@ public class Common {
 		User.INFO.weekData.clear();
 		User.INFO.weekData.addAll(MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies));
 		for(MyTime mt :User.INFO.weekData){
-			addWeek(mt.getName(),mt.getDayofweek(), mt.getStarthour(),mt.getStartmin(), mt.getEndhour(), mt.getEndmin());
+			addWeek(mt.getName(),mt.getPlace(),mt.getDayofweek(), mt.getStarthour(),mt.getStartmin(), mt.getEndhour(), mt.getEndmin());
 		}
 	}
-	public static void addWeek(String title, int xth, int startHour,int startMin, int endHour, int endMin){
+	public static void addWeek(String title,String place, int xth, int startHour,int startMin, int endHour, int endMin){
 		if(endMin!=0) ++endHour;
+		else endMin = 60;
 		TimePos[] tp = new TimePos[endHour - startHour];
 		int j = 0;
+		int startYth=1;
 		for (int i = startHour; i < endHour; i++) {
-			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
-			if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
-			if (i == endHour - 1) tp[j].setMin(0, endMin);
+			int yth = Convert.HourOfDayToYth(i);
+			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth,yth));
+			if (i == startHour) {
+				startYth = yth;
+				if(startMin != 0) tp[j].setMin(startMin, 60);
+			}
+			if (i == endHour - 1){
+				tp[j].setMin(0, endMin);
+				Log.i("test yth"+i, String.valueOf(startYth));
+				Log.i("test min"+i,String.valueOf(startMin));
+				tp[j].setText(title, place,startYth,startMin);
+			}
 			tp[j].setPosState(PosState.ENROLL);
-			if(i==startHour)tp[j].setTitle(title);
 			++j;
 		}
 	}
