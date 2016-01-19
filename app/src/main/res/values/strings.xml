@@ -91,7 +91,7 @@
     <string name="input_measure">단위를 입력하세요</string>
     <string name="repeat_term">반복기한은 5년 이하로 가능합니다</string>
     <!--대학-->
-    <string name="univ_dbupdate">데이터 갱신</string>
+    <string name="univ_dbupdate">데이터가 최신 정보로 업데이트되었습니다.</string>
     <string name="univ_search_sub">강의 검색</string>
     <string name="univ_search_prof">교수명 검색</string>
     <string name="univ_searchdep">학과 검색</string>

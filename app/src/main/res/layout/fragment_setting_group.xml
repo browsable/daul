@@ -1,84 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llSelectUniv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fadeScrollbars="false">
+    android:layout_weight="1"
+    android:background="@drawable/bg_lightgray_bottomline"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_l"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="30dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_launcher" />
+            android:layout_height="68dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="20dp"
-                android:orientation="vertical"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/setting_ver_local"
-                    android:textSize="@dimen/textsize_xl"
-                    android:layout_marginBottom="@dimen/margin_xs"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/setting_ver_server"
-                    android:textColor="@color/maincolor"
-                    android:textSize="@dimen/textsize_xl"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_margin="20dp"
-                android:orientation="vertical"
-                >
-                <TextView
-                    android:id="@+id/tvLocalVer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/textsize_xl"
-                    android:layout_marginBottom="@dimen/margin_xs"
-                    />
-                <TextView
-                    android:id="@+id/tvServerVer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/maincolor"
-                    android:textSize="@dimen/textsize_xl"
-                    />
+                android:layout_marginLeft="@dimen/margin_default"
+                android:layout_marginRight="@dimen/margin_default"
+                android:background="@drawable/bg_black_bottomline"
+                android:orientation="horizontal">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actvUniv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/white"
+                    android:dropDownHeight="wrap_content"
+                    android:ems="10"
+                    android:hint="대학을 검색하세요"
+                    android:paddingLeft="@dimen/margin_xs"
+                    android:singleLine="true"
+                    android:textSize="@dimen/textsize_l" />
+
+                <requestFocus />
+                <ToggleButton
+                    android:id="@+id/btShowUniv"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:textOff=""
+                    android:textOn=""
+                    android:background="@drawable/bt_show" />
+                <Button
+                    android:id="@+id/btEnter"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/ic_action_forward"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:id="@+id/btUpdate"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/setting_ver_equal"
-            android:padding="@dimen/margin_s"
-            android:textSize="@dimen/textsize_l"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-            android:background="@drawable/bg_maincolor_round_border"
-            />
-    </LinearLayout>
+            android:gravity="center"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/margin_default"
+            android:orientation="vertical">
 
-</ScrollView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/univ_notice_enroll"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/textsize_default" />
+            <TextView
+                android:id="@+id/tvHyperText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="end"
+                android:text="@string/QandA"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/textsize_default"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

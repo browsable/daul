@@ -264,11 +264,13 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
         mCurrentPhotoPath = null;
         ivProfile = (ImageView)root.findViewById(R.id.ivProfile);
         btSettingInit = (TextView)root.findViewById(R.id.btSettingInit);
-        btSettingGroup = (TextView)root.findViewById(R.id.btSettingGroup);
+        btSettingGroup = (RelativeLayout)root.findViewById(R.id.btSettingGroup);
         btSettingCalendar = (TextView)root.findViewById(R.id.btSettingCalendar);
         btSettingQA = (TextView)root.findViewById(R.id.btSettingQA);
         tvVer = (TextView)root.findViewById(R.id.tvVer);
+        tvUnivName = (TextView)root.findViewById(R.id.tvUnivName);
         tvVer.setText("v"+ User.INFO.appVer);
+        tvUnivName.setText(User.INFO.getGroupName());
         btSettingVer = (RelativeLayout)root.findViewById(R.id.btSettingVer);
         File path = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
@@ -283,8 +285,8 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
         btSettingQA.setOnClickListener(this);
     }
     private ImageView ivProfile;
-    private TextView btSettingGroup,btSettingInit,btSettingCalendar,btSettingQA, tvVer;
-    private RelativeLayout btSettingVer;
+    private TextView btSettingInit,btSettingCalendar,btSettingQA, tvVer, tvUnivName;
+    private RelativeLayout btSettingVer,btSettingGroup;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_ALBUM = 2;
     private static final int REQUEST_IMAGE_CROP = 3;

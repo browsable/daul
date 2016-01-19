@@ -153,7 +153,7 @@
                     android:layout_marginRight="@dimen/margin_default"
                     android:visibility="invisible"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/ic_clear" />
+                    android:background="@drawable/ic_clear2" />
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"

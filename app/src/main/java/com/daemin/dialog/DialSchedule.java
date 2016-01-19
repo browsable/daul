@@ -139,7 +139,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (sbue.isSetVisable())
                     btUniv.setVisibility(View.VISIBLE);
                 else
-                    btUniv.setVisibility(View.INVISIBLE);
+                    btUniv.setVisibility(View.GONE);
             }
             univList = new ArrayList<>();
             for (GroupListData.Data d :  User.INFO.groupListData) {
