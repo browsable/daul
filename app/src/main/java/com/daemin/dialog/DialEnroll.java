@@ -63,13 +63,11 @@ public class DialEnroll extends Activity {
         setLayout();
     }
     private void setLayout() {
-        int endMin =0;
         if(getIntent()!=null) {
             this.xth = getIntent().getIntExtra("xth", 1);
             this.yth = getIntent().getIntExtra("yth", 1);
             this.weekFlag = getIntent().getBooleanExtra("weekFlag", true);
             this.startMin = getIntent().getIntExtra("startMin", 1);
-            endMin = getIntent().getIntExtra("endMin", 1);
         }
         mtList = new ArrayList<>();
         enrollList = new HashMap<>();
@@ -89,7 +87,7 @@ public class DialEnroll extends Activity {
             enrollMyTime(MyTimeRepo.getHourTimes(DialEnroll.this,
                     Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, 0),//startmillis
                     Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour + 1, 0) - 1,//endmillis
-                    xth, startHour,startMin, endMin));
+                    xth, startHour,1, 59));
             if(xth==1){
                 tvMonthDay.setTextColor(getResources().getColor(R.color.red));
             }else if(xth==13){

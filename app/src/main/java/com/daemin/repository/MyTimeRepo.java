@@ -1,12 +1,10 @@
 package com.daemin.repository;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.daemin.common.AppController;
 
 import java.util.List;
-import java.util.Objects;
 
 import de.greenrobot.dao.query.QueryBuilder;
 import timedao.MyTime;
@@ -73,7 +71,7 @@ public class MyTimeRepo {
         ));
         return qb.orderAsc(MyTimeDao.Properties.Startmillis).list();
     }
-    public static List<MyTime> getHourTimes2(Context context, long startmillis, long endmillis, int xth, int startHour, int startMin, int endMin){
+    public static List<MyTime> getHourTimes(Context context, long startmillis, long endmillis, int xth, int startHour, int startMin, int endMin){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
             qb.where(qb.or(qb.and(MyTimeDao.Properties.Timetype.eq(1),
                             MyTimeDao.Properties.Dayofweek.eq(xth),
@@ -82,72 +80,23 @@ public class MyTimeRepo {
                             qb.and(MyTimeDao.Properties.Timetype.eq(1),
                                     MyTimeDao.Properties.Dayofweek.eq(xth),
                                 MyTimeDao.Properties.Endhour.eq(startHour),
-                                MyTimeDao.Properties.Endmin.gt(startMin)),
+                                MyTimeDao.Properties.Endmin.ge(startMin)),
                             qb.and(MyTimeDao.Properties.Timetype.eq(1),
                                     MyTimeDao.Properties.Dayofweek.eq(xth),
                                 MyTimeDao.Properties.Starthour.eq(startHour),
                                 MyTimeDao.Properties.Startmin.ge(startMin),
                                 MyTimeDao.Properties.Endhour.eq(startHour),
-                                    qb.or(MyTimeDao.Properties.Endmin.eq(0),
-                                          MyTimeDao.Properties.Endmin.le(endMin)),
+                                MyTimeDao.Properties.Endmin.le(endMin)),
                             qb.and(MyTimeDao.Properties.Timetype.eq(1),
                                     MyTimeDao.Properties.Dayofweek.eq(xth),
-                                    MyTimeDao.Properties.Starthour.le(startHour),
-                                    MyTimeDao.Properties.Startmin.le(startMin),
-                                    MyTimeDao.Properties.Endhour.ge(startHour),
-                                    MyTimeDao.Properties.Endmin.ge(startMin)),
+                                    MyTimeDao.Properties.Starthour.lt(startHour),
+                                    MyTimeDao.Properties.Endhour.gt(startHour)),
                             qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
                                     qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
                                             MyTimeDao.Properties.Endmillis.gt(endmillis)),
                                     MyTimeDao.Properties.Endmillis.between(startmillis, endmillis))
                             )
-            ));
-        return qb.orderAsc(MyTimeDao.Properties.Starthour).orderAsc(MyTimeDao.Properties.Startmin).list();
-    }
-    public static List<MyTime> getHourTimes(Context context, long startmillis, long endmillis, int xth, int startHour, int startMin, int endMin){
-        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
-        Log.i("test xth",""+xth);
-        Log.i("test startH",""+startHour);
-        Log.i("test startM",""+startMin);
-        Log.i("test endM",""+endMin);
-
-        if(endMin==0) {
-                qb.where(qb.or(qb.and(MyTimeDao.Properties.Timetype.eq(1),
-                                MyTimeDao.Properties.Dayofweek.eq(xth),
-                                MyTimeDao.Properties.Starthour.le(startHour),
-                                MyTimeDao.Properties.Endhour.gt(startHour)),
-                        qb.and(MyTimeDao.Properties.Timetype.eq(1),
-                                MyTimeDao.Properties.Dayofweek.eq(xth),
-                                MyTimeDao.Properties.Endhour.eq(startHour),
-                                MyTimeDao.Properties.Endmin.gt(startMin)),
-                        qb.and(MyTimeDao.Properties.Repeat.eq(1),
-                                MyTimeDao.Properties.Dayofweek.eq(xth),
-                                MyTimeDao.Properties.Starthour.le(startHour),
-                                MyTimeDao.Properties.Endhour.gt(startHour)),
-                        qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
-                                qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
-                                        MyTimeDao.Properties.Endmillis.gt(endmillis)),
-                                MyTimeDao.Properties.Endmillis.between(startmillis, endmillis))
-                ));
-            }else{
-                qb.where(qb.or(qb.and(MyTimeDao.Properties.Timetype.eq(1),
-                                MyTimeDao.Properties.Dayofweek.eq(xth),
-                                MyTimeDao.Properties.Starthour.le(startHour),
-                                MyTimeDao.Properties.Endhour.ge(startHour)),
-                        qb.and(MyTimeDao.Properties.Timetype.eq(1),
-                                MyTimeDao.Properties.Dayofweek.eq(xth),
-                                MyTimeDao.Properties.Endhour.eq(startHour),
-                                MyTimeDao.Properties.Endmin.ge(startMin)),
-                        qb.and(MyTimeDao.Properties.Repeat.eq(1),
-                                MyTimeDao.Properties.Dayofweek.eq(xth),
-                                MyTimeDao.Properties.Starthour.le(startHour),
-                                MyTimeDao.Properties.Endhour.gt(startHour)),
-                        qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
-                                qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
-                                        MyTimeDao.Properties.Endmillis.gt(endmillis)),
-                                MyTimeDao.Properties.Endmillis.between(startmillis, endmillis))
-                ));
-            }
+            );
         return qb.orderAsc(MyTimeDao.Properties.Starthour).orderAsc(MyTimeDao.Properties.Startmin).list();
     }
     public static List<MyTime> overLapCheck(Context context,int xth, int startHour, int startMin, int endHour, int endMin){

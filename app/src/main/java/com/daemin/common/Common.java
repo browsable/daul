@@ -122,18 +122,16 @@ public class Common {
 					tp[j].setMin(0, endMin);
 				}
 				tp[j].setPosState(PosState.ENROLL);
-			}else if(tp[j].getPosState() == PosState.ENROLL){/*
-				if(i==startHour){
-					tp[j].setRealStart(yth,startMin);
-					tp[j].setText(title, place);
-				}*/
+			}else if(tp[j].getPosState() == PosState.ENROLL){
 				if (i == startHour) {
 					tp[j].setText(title, place);
-					tp[j].setRealStart(yth, startMin);
+					tp[j].setRealStart(yth, tp[j].realStartMin);
 					if (startMin != 0) tp[j].setMin(startMin, 60);
 				}
 				if (i == endHour - 1) {
 					tp[j].setMin(0, endMin);
+				}else if(i!=startHour){
+					tp[j].setMin(startMin, endMin);
 				}
 			}
 			++j;

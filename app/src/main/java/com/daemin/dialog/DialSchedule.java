@@ -14,7 +14,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -414,7 +413,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 else {
                     if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
                     if (i == endHour - 1) tp[j].setMin(0, endMin);
-                    else tp[j].setMin(startMin,endMin);
+                    else if(i != startHour)tp[j].setMin(startMin,endMin);
                     tp[j].setPosState(PosState.OVERLAP);
                     User.INFO.overlapFlag=true;
                 }
@@ -536,7 +535,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if(actvSub.getText().toString().equals(""))
+                    if (actvSub.getText().toString().equals(""))
                         btClear.setVisibility(View.INVISIBLE);
                 }
             });

@@ -63,7 +63,7 @@
             android:name="com.daemin.dialog.DialSchedule"
             android:theme="@android:style/Theme.Holo.Light.Dialog"
             android:launchMode="singleTask"/>
-        <activity android:name="com.daemin.dialog.DialEnroll2" android:theme="@android:style/Theme.Holo.Light.Dialog" />
+        <activity android:name="com.daemin.dialog.DialEnroll" android:theme="@android:style/Theme.Holo.Light.Dialog" />
 
         <receiver android:name="com.daemin.widget.Widget4_4">
             <meta-data
