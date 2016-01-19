@@ -41,7 +41,7 @@ public class Common {
 	public static final String ALARM_PUSH = "com.daemin.common.ALARM_PUSH";
 	public static final String MAIN_COLOR = "#73C8BA";
 	public static final String TRANS_COLOR = "#00000000";
-
+	public static boolean firstEnrollFlag = false;
 	public static boolean isOnline() { // network 연결 상태 확인
 		try {
 			ConnectivityManager conMan = (ConnectivityManager) AppController.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -79,6 +79,7 @@ public class Common {
 		return String.valueOf(sum);
 	}
 	public static void fetchWeekData(){
+		firstEnrollFlag=false;
 		for (TimePos ETP : TimePos.values()) {
 			ETP.setPosState(PosState.NO_PAINT);
 			ETP.setMin(0, 60);
@@ -101,10 +102,10 @@ public class Common {
 		User.INFO.weekData.clear();
 		User.INFO.weekData.addAll(MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies));
 		for(MyTime mt :User.INFO.weekData){
-			addWeek(mt.getName(),mt.getPlace(),mt.getDayofweek(), mt.getStarthour(),mt.getStartmin(), mt.getEndhour(), mt.getEndmin());
+			addWeek(mt.getName(),mt.getPlace(),mt.getTimecode(),mt.getDayofweek(),mt.getStarthour(),mt.getStartmin(), mt.getEndhour(), mt.getEndmin());
 		}
 	}
-	public static void addWeek(String title,String place, int xth, int startHour,int startMin, int endHour, int endMin){
+	public static void addWeek(String title,String place,String timeCode, int xth, int startHour,int startMin, int endHour, int endMin){
 		if(endMin!=0) ++endHour;
 		else endMin = 60;
 		TimePos[] tp = new TimePos[endHour - startHour];
@@ -124,9 +125,12 @@ public class Common {
 				tp[j].setPosState(PosState.ENROLL);
 			}else if(tp[j].getPosState() == PosState.ENROLL){
 				if (i == startHour) {
-					tp[j].setText(title, place);
-					tp[j].setRealStart(yth, tp[j].realStartMin);
-					if (startMin != 0) tp[j].setMin(startMin, 60);
+					if(!firstEnrollFlag || timeCode.equals("1")) {
+						tp[j].setText(title, place);
+						tp[j].setRealStart(yth, startMin);
+						if (startMin != 0) tp[j].setMin(startMin, 60);
+						firstEnrollFlag=true;
+					}
 				}
 				if (i == endHour - 1) {
 					tp[j].setMin(0, endMin);
