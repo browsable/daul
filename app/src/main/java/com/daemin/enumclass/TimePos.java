@@ -18,7 +18,7 @@ public enum TimePos {
     private int xth;
     public int yth,realStartYth;
     public int startMin,realStartMin;
-    private int endMin;
+    public int endMin;
     private int posIndex;
     private String title,second,place;
     TimePos() {

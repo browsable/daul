@@ -133,7 +133,7 @@
             android:id="@+id/actvSub"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_weight="1"
+            android:layout_weight="1.3"
             android:background="@android:color/white"
             android:dropDownHeight="116dp"
             android:dropDownWidth="250dp"
@@ -146,6 +146,14 @@
             android:textColor="@color/dimgray"
             android:textColorHint="@color/gray"
             android:textSize="@dimen/textsize_default" />
+                <Button
+                    android:id="@+id/btClear"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="@dimen/margin_default"
+                    android:visibility="invisible"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_clear" />
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"

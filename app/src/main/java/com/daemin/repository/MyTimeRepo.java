@@ -73,9 +73,45 @@ public class MyTimeRepo {
         ));
         return qb.orderAsc(MyTimeDao.Properties.Startmillis).list();
     }
+    public static List<MyTime> getHourTimes2(Context context, long startmillis, long endmillis, int xth, int startHour, int startMin, int endMin){
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+            qb.where(qb.or(qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                            MyTimeDao.Properties.Dayofweek.eq(xth),
+                                MyTimeDao.Properties.Starthour.eq(startHour),
+                                MyTimeDao.Properties.Startmin.le(endMin)),
+                            qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                                    MyTimeDao.Properties.Dayofweek.eq(xth),
+                                MyTimeDao.Properties.Endhour.eq(startHour),
+                                MyTimeDao.Properties.Endmin.gt(startMin)),
+                            qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                                    MyTimeDao.Properties.Dayofweek.eq(xth),
+                                MyTimeDao.Properties.Starthour.eq(startHour),
+                                MyTimeDao.Properties.Startmin.ge(startMin),
+                                MyTimeDao.Properties.Endhour.eq(startHour),
+                                    qb.or(MyTimeDao.Properties.Endmin.eq(0),
+                                          MyTimeDao.Properties.Endmin.le(endMin)),
+                            qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                                    MyTimeDao.Properties.Dayofweek.eq(xth),
+                                    MyTimeDao.Properties.Starthour.le(startHour),
+                                    MyTimeDao.Properties.Startmin.le(startMin),
+                                    MyTimeDao.Properties.Endhour.ge(startHour),
+                                    MyTimeDao.Properties.Endmin.ge(startMin)),
+                            qb.or(MyTimeDao.Properties.Startmillis.between(startmillis, endmillis),
+                                    qb.and(MyTimeDao.Properties.Startmillis.lt(startmillis),
+                                            MyTimeDao.Properties.Endmillis.gt(endmillis)),
+                                    MyTimeDao.Properties.Endmillis.between(startmillis, endmillis))
+                            )
+            ));
+        return qb.orderAsc(MyTimeDao.Properties.Starthour).orderAsc(MyTimeDao.Properties.Startmin).list();
+    }
     public static List<MyTime> getHourTimes(Context context, long startmillis, long endmillis, int xth, int startHour, int startMin, int endMin){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
-            if(endMin==0) {
+        Log.i("test xth",""+xth);
+        Log.i("test startH",""+startHour);
+        Log.i("test startM",""+startMin);
+        Log.i("test endM",""+endMin);
+
+        if(endMin==0) {
                 qb.where(qb.or(qb.and(MyTimeDao.Properties.Timetype.eq(1),
                                 MyTimeDao.Properties.Dayofweek.eq(xth),
                                 MyTimeDao.Properties.Starthour.le(startHour),
@@ -101,7 +137,7 @@ public class MyTimeRepo {
                         qb.and(MyTimeDao.Properties.Timetype.eq(1),
                                 MyTimeDao.Properties.Dayofweek.eq(xth),
                                 MyTimeDao.Properties.Endhour.eq(startHour),
-                                MyTimeDao.Properties.Endmin.gt(startMin)),
+                                MyTimeDao.Properties.Endmin.ge(startMin)),
                         qb.and(MyTimeDao.Properties.Repeat.eq(1),
                                 MyTimeDao.Properties.Dayofweek.eq(xth),
                                 MyTimeDao.Properties.Starthour.le(startHour),
@@ -114,19 +150,34 @@ public class MyTimeRepo {
             }
         return qb.orderAsc(MyTimeDao.Properties.Starthour).orderAsc(MyTimeDao.Properties.Startmin).list();
     }
-    public static List<MyTime> overLapCheck(Context context,int xth, int startHour, int startMin){
+    public static List<MyTime> overLapCheck(Context context,int xth, int startHour, int startMin, int endHour, int endMin){
+        if(endMin==60)endMin=0;
+        else --endHour;
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
-        qb.where(qb.or(
-                qb.and(MyTimeDao.Properties.Timetype.eq(1),
-                        MyTimeDao.Properties.Dayofweek.eq(xth),
-                        MyTimeDao.Properties.Endhour.eq(startHour),
-                        MyTimeDao.Properties.Endmin.gt(startMin)),
-                qb.and(MyTimeDao.Properties.Timetype.eq(1),
-                        MyTimeDao.Properties.Dayofweek.eq(xth),
-                        MyTimeDao.Properties.Starthour.eq(startHour),
-                        MyTimeDao.Properties.Startmin.eq(startMin))
-                )
-        );
+        qb.where(qb.and(MyTimeDao.Properties.Timetype.eq(1),
+                MyTimeDao.Properties.Dayofweek.eq(xth),
+                qb.or(qb.and(MyTimeDao.Properties.Starthour.le(startHour),
+                                MyTimeDao.Properties.Endhour.ge(startHour),
+                                MyTimeDao.Properties.Endmin.gt(startMin)),
+                        qb.and(MyTimeDao.Properties.Starthour.le(endHour),
+                                MyTimeDao.Properties.Startmin.lt(endMin),
+                                MyTimeDao.Properties.Endhour.ge(endHour)),
+                        qb.and(MyTimeDao.Properties.Starthour.le(startHour),
+                                MyTimeDao.Properties.Startmin.le(startMin),
+                                MyTimeDao.Properties.Endhour.gt(startHour)),
+                        qb.and(MyTimeDao.Properties.Starthour.lt(endHour),
+                                MyTimeDao.Properties.Endhour.ge(endHour),
+                                MyTimeDao.Properties.Endmin.ge(endMin)),
+                        qb.and(MyTimeDao.Properties.Starthour.ge(startHour),
+                                MyTimeDao.Properties.Startmin.ge(startMin),
+                                MyTimeDao.Properties.Endhour.le(endHour),
+                                MyTimeDao.Properties.Endmin.le(endMin)),
+                        qb.and(MyTimeDao.Properties.Starthour.le(startHour),
+                                MyTimeDao.Properties.Startmin.le(startMin),
+                                MyTimeDao.Properties.Endhour.ge(endHour),
+                                MyTimeDao.Properties.Endmin.ge(endMin))
+
+                )));
         return qb.list();
     }
     private static MyTimeDao getMyTimeDao(Context c) {

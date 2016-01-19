@@ -115,20 +115,26 @@ public class Common {
 			if (tp[j].getPosState() == PosState.NO_PAINT) {
 				if (i == startHour) {
 					tp[j].setText(title, place);
+					tp[j].setRealStart(yth, startMin);
 					if (startMin != 0) tp[j].setMin(startMin, 60);
 				}
 				if (i == endHour - 1) {
 					tp[j].setMin(0, endMin);
 				}
-				tp[j].setRealStart(yth, startMin);
 				tp[j].setPosState(PosState.ENROLL);
-			}else if(tp[j].getPosState() == PosState.ENROLL){
+			}else if(tp[j].getPosState() == PosState.ENROLL){/*
 				if(i==startHour){
-					tp[j].setRealStart(tp[j].realStartYth,startMin);
+					tp[j].setRealStart(yth,startMin);
 					tp[j].setText(title, place);
+				}*/
+				if (i == startHour) {
+					tp[j].setText(title, place);
+					tp[j].setRealStart(yth, startMin);
+					if (startMin != 0) tp[j].setMin(startMin, 60);
 				}
-				else if(i == endHour - 1) tp[j].setMin(0, endMin);
-				else if(i != startHour) tp[j].setMin(0, 60);
+				if (i == endHour - 1) {
+					tp[j].setMin(0, endMin);
+				}
 			}
 			++j;
 		}

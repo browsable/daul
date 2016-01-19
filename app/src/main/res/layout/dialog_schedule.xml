@@ -5,48 +5,47 @@
     android:layout_height="match_parent"
     android:background="@color/transparency"
     android:orientation="vertical">
-    <SeekBar
-        android:id="@+id/sb"
-        android:layout_width="100dp"
-        android:layout_height="26dp"
-        android:background="@color/transparency"
-        />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/dimgray"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/margin_s">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btNormal"
-            android:layout_width="match_parent"
+            android:layout_width="36dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.1"
             android:background="@color/transparency"
             android:text="일반"
+            android:layout_marginLeft="@dimen/margin_xs"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textsize_l"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/btUniv"
-            android:layout_width="match_parent"
+            android:layout_width="36dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.1"
             android:background="@color/transparency"
             android:text="대학"
             android:textColor="@color/gray"
             android:textSize="@dimen/textsize_l"
             android:textStyle="bold" />
+        <SeekBar
+            android:id="@+id/sb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:thumb="@drawable/seekbar_thumb"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:background="@color/transparency"
+            />
         <View
             android:id="@+id/dragToggle"
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.68" />
+            android:layout_height="match_parent"/>
         <Button
             android:id="@+id/btColor"
             android:layout_width="26dp"
@@ -77,15 +76,6 @@
             android:layout_marginTop="@dimen/margin_s"
             android:background="@drawable/ic_cancel" />
         </LinearLayout>
-        <View
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:focusable="false"
-            android:clickable="false"
-            android:layout_centerInParent="true"
-            android:background="@drawable/ic_updown"
-            />
-    </RelativeLayout>
     <LinearLayout
         android:id="@+id/llNormal"
         android:layout_width="match_parent"
@@ -99,7 +89,7 @@
     <LinearLayout
         android:id="@+id/llUniv"
         android:layout_width="match_parent"
-        android:layout_height="179dp"
+        android:layout_height="180dp"
         android:layout_weight="1"
         android:orientation="vertical"
         android:visibility="gone">

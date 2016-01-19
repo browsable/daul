@@ -10,8 +10,11 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -404,11 +407,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             if (tp[j].getPosState() == PosState.NO_PAINT) {
                 tp[j].setPosState(PosState.PAINT);
             }else if(tp[j].getPosState() == PosState.ENROLL){
-                List<MyTime> mtList = MyTimeRepo.overLapCheck(this,xth,startHour,startMin);
+                List<MyTime> mtList = MyTimeRepo.overLapCheck(this,xth,startHour,startMin,endHour,endMin);
                 if(mtList.size()==0){
                     tp[j].setPosState(PosState.PAINT);
                 }
                 else {
+                    if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
+                    if (i == endHour - 1) tp[j].setMin(0, endMin);
+                    else tp[j].setMin(startMin,endMin);
                     tp[j].setPosState(PosState.OVERLAP);
                     User.INFO.overlapFlag=true;
                 }
@@ -483,6 +489,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     if (sdlist.size() != 0)
                         subjects.add(sdlist.remove(0));
                     hoAdapter.notifyDataSetChanged();
+                    InputMethodManager imm= (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(actvDep.getWindowToken(), 0);
                 }
             });
             actvGrade.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -494,12 +502,15 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         subjects.add(sdlist.remove(0));
                     //actvSub.setText("");
                     hoAdapter.notifyDataSetChanged();
+                    InputMethodManager imm= (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(actvGrade.getWindowToken(), 0);
                 }
             });
             actvSub.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> parent, View v,
                                         int position, long id) {
+                    btClear.setVisibility(View.VISIBLE);
                     actvDep.setText("");
                     actvGrade.setText("");
                     actvProf.setText("");
@@ -508,6 +519,25 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     if(sdlist.size()!=0)
                         subjects.add(sdlist.remove(0));
                     hoAdapter.notifyDataSetChanged();
+                    InputMethodManager imm= (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(actvSub.getWindowToken(), 0);
+                }
+            });
+            actvSub.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    btClear.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if(actvSub.getText().toString().equals(""))
+                        btClear.setVisibility(View.INVISIBLE);
                 }
             });
             actvProf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -522,6 +552,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     if(sdlist.size()!=0)
                         subjects.add(sdlist.remove(0));
                     hoAdapter.notifyDataSetChanged();
+                    InputMethodManager imm= (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(actvProf.getWindowToken(), 0);
                 }
             });
             llSelectUniv.setVisibility(View.GONE);
@@ -693,6 +725,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             case R.id.btShowDep:
                 if (btShowDep.isChecked()) actvDep.showDropDown();
                 else actvDep.dismissDropDown();
+                break;
+            case R.id.btClear:
+                actvSub.setText("");
+                btClear.setVisibility(View.INVISIBLE);
                 break;
             case R.id.btShowGrade:
                 if (btShowGrade.isChecked()) actvGrade.showDropDown();
@@ -869,7 +905,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
         return true;
     }
-
     private void setLayout() {
         db = new DatabaseHandler(this);
         btUniv = (Button) findViewById(R.id.btUniv);
@@ -882,7 +917,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btShowUniv = (ToggleButton)findViewById(R.id.btShowUniv);
         btShowDep = (ToggleButton)findViewById(R.id.btShowDep);
         btShowGrade = (ToggleButton)findViewById(R.id.btShowGrade);
-        llDialog = (LinearLayout) findViewById(R.id.llDialog);
+        btClear = (Button) findViewById(R.id.btClear);
         llNormal = (LinearLayout) findViewById(R.id.llNormal);
         llUniv = (LinearLayout) findViewById(R.id.llUniv);
         btNew = (LinearLayout) findViewById(R.id.btNew);
@@ -922,6 +957,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btShowDep.setOnClickListener(this);
         btShowGrade.setOnClickListener(this);
         btEnter.setOnClickListener(this);
+        btClear.setOnClickListener(this);
         btNew.setOnClickListener(this);
         btPlace.setOnClickListener(this);
         btShare.setOnClickListener(this);
@@ -957,8 +993,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
     }
 
-    private Button btNormal, btUniv, btAddSchedule, btCancel, btEnter, btColor;
-    private LinearLayout llDialog,llNormal, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat;
+    private Button btNormal, btUniv, btAddSchedule, btCancel, btEnter, btColor,btClear;
+    private LinearLayout llNormal, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat;
     private View dragToggle;
     private SeekBar sb;
     private TextView tvShare, tvAlarm, tvRepeat, tvCreditSum, tvHyperText;

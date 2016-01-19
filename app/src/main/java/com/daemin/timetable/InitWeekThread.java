@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.dialog.DialEnroll;
+import com.daemin.dialog.DialEnroll2;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.PosState;
@@ -137,11 +138,10 @@ public class InitWeekThread extends InitThread {
                         if(downFlag) {
                             //등록된 다음주 시간표를 누를 때 위젯 업데이트로 날짜가 변동되는 현상을 막기위해 dialflag를 false로 해줌
                             EventBus.getDefault().post(new CreateDialEvent(false));
-                            Intent i = new Intent(context, DialEnroll.class);
+                            Intent i = new Intent(context, DialEnroll2.class);
                             i.putExtra("xth", xth);
                             i.putExtra("yth", tmpYth);
                             i.putExtra("startMin", ETP.getStartMin());
-                            i.putExtra("endMin", ETP.getEndMin());
                             context.startActivity(i);
                         }
 
