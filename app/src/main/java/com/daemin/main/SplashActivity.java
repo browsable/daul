@@ -43,14 +43,11 @@ public class SplashActivity extends Activity{
 		setContentView(R.layout.activity_splash);
 		initialize();
 		String groupName = User.INFO.getGroupName();
-		//MyRequest.getGroupList(this);
 		if(groupName.equals(""))MyRequest.getGroupList(this);
 		else MyRequest.getDBVerWithMyGroup(this, User.INFO.groupPK);
-		//else User.INFO.dbServerVer="v1.2";//
 	}
 
 	private void initialize() {
-		Log.i("userPK",User.INFO.getUserPK());
 		if(User.INFO.getFirstFlag())
 			firstSetting();
 		/*GPSInfo gps = new GPSInfo(this);

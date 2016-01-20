@@ -92,10 +92,8 @@ public class MyRequest {
                         try {
                             int success = response.getInt("success");
                             if (success==1) {
-                                JSONObject data = response.getJSONObject("product");
+                                JSONObject data = response.getJSONArray("product").getJSONObject(0);
                                 User.INFO.dbServerVer = data.getString("db_version");
-                                Log.i("test 1", data.getString("db_version"));
-                                Log.i("test 2", User.INFO.dbServerVer);
                             }else {
                                 Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
                             }
@@ -119,7 +117,7 @@ public class MyRequest {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("no", String.valueOf(groupPK));
+                params.put("num", String.valueOf(groupPK));
                 return params;
             }
         };
