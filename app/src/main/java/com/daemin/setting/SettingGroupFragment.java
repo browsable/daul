@@ -98,6 +98,7 @@ public class SettingGroupFragment extends BasicFragment {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 String[] tmp = actvUniv.getText().toString().split("/");
+                User.INFO.groupPK = position+1;
                 groupName = tmp[0];
                 ttVersion = tmp[1];
                 try {
@@ -258,6 +259,7 @@ public class SettingGroupFragment extends BasicFragment {
                 tvGroupName.setText(groupName);
                 User.INFO.getEditor().putString("groupName", groupName).commit();
                 User.INFO.getEditor().putString("groupDBVer", User.INFO.dbServerVer).commit();
+                User.INFO.getEditor().putInt("groupPK", User.INFO.groupPK).commit();
             } else {//다운로드 실패
                 Toast.makeText(getActivity(), getString(R.string.down_error), Toast.LENGTH_SHORT).show();
                 btShowUniv.setVisibility(View.VISIBLE);

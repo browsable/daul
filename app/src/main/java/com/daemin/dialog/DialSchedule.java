@@ -385,9 +385,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         protected void onPostExecute(String param) {
             if(downComplete) {
                 pDialog.dismiss();
+                settingUniv();
                 User.INFO.getEditor().putString("groupName", groupName).commit();
                 User.INFO.getEditor().putString("groupDBVer", User.INFO.dbServerVer).commit();
-                settingUniv();
+                User.INFO.getEditor().putInt("groupPK", User.INFO.groupPK).commit();
             }
             else{//다운로드 실패
                 Toast.makeText(DialSchedule.this, getString(R.string.down_error), Toast.LENGTH_SHORT).show();
@@ -703,6 +704,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         public void onItemClick(AdapterView<?> parent, View v,
                                                 int position, long id) {
                             String[] tmp = actvUniv.getText().toString().split("/");
+                            User.INFO.groupPK = position+1;
                             groupName = tmp[0];
                             ttVersion = tmp[1];
                             try {

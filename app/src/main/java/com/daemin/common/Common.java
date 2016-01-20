@@ -79,7 +79,6 @@ public class Common {
 		return String.valueOf(sum);
 	}
 	public static void fetchWeekData(){
-		firstEnrollFlag=false;
 		for (TimePos ETP : TimePos.values()) {
 			ETP.setPosState(PosState.NO_PAINT);
 			ETP.setMin(0, 60);
@@ -102,10 +101,11 @@ public class Common {
 		User.INFO.weekData.clear();
 		User.INFO.weekData.addAll(MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies));
 		for(MyTime mt :User.INFO.weekData){
-			addWeek(mt.getName(),mt.getPlace(),mt.getTimecode(),mt.getDayofweek(),mt.getStarthour(),mt.getStartmin(), mt.getEndhour(), mt.getEndmin());
+			addWeek(mt.getName(),mt.getPlace(),mt.getTimetype(),mt.getDayofweek(),mt.getStarthour(),mt.getStartmin(), mt.getEndhour(), mt.getEndmin());
 		}
 	}
-	public static void addWeek(String title,String place,String timeCode, int xth, int startHour,int startMin, int endHour, int endMin){
+	public static void addWeek(String title,String place,int timeType, int xth, int startHour,int startMin, int endHour, int endMin){
+		firstEnrollFlag=false;
 		if(endMin!=0) ++endHour;
 		else endMin = 60;
 		TimePos[] tp = new TimePos[endHour - startHour];
@@ -123,20 +123,23 @@ public class Common {
 					tp[j].setMin(0, endMin);
 				}
 				tp[j].setPosState(PosState.ENROLL);
-			}else if(tp[j].getPosState() == PosState.ENROLL){
-				if (i == startHour) {
-					if(!firstEnrollFlag || timeCode.equals("1")) {
-						tp[j].setText(title, place);
-						tp[j].setRealStart(yth, startMin);
-						if (startMin != 0) tp[j].setMin(startMin, 60);
-						firstEnrollFlag=true;
+			}else if(tp[j].getPosState() == PosState.ENROLL) {
+					if (i == startHour) {
+						if (!firstEnrollFlag||timeType==1) {
+							tp[j].setText(title, place);
+							if(timeType ==0) {
+								tp[j].setText(title, place);
+								tp[j].setRealStart(yth,tp[j].realStartMin);
+							}else tp[j].setRealStart(yth, startMin);
+							if (startMin != 0) tp[j].setMin(startMin, 60);
+							firstEnrollFlag = true;
+						}
 					}
-				}
-				if (i == endHour - 1) {
-					tp[j].setMin(0, endMin);
-				}else if(i!=startHour){
-					tp[j].setMin(startMin, endMin);
-				}
+					if (i == endHour - 1) {
+						tp[j].setMin(0, endMin);
+					} else if (i != startHour) {
+						tp[j].setMin(startMin, endMin);
+					}
 			}
 			++j;
 		}

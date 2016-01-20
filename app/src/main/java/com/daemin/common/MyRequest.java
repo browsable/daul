@@ -2,6 +2,7 @@ package com.daemin.common;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -82,17 +83,20 @@ public class MyRequest {
         requestQueue.add(jackson2Request);
     }
 
-    public static final String GET_DBVERSION = "http://timenuri.com/ajax/app/get_dbversion";
-    public static void getDBVerWithMyGroup(final Context context,final String groupName) {
+    public static final String GET_DBVERSION = " http://browsable.cafe24.com/timetable/get_version.php";
+    public static void getDBVerWithMyGroup(final Context context,final int groupPK) {
         CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.POST, GET_DBVERSION, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            if (response.getString(KEY_STATUS).equals("Success")) {
-                                JSONObject data = response.getJSONObject("data");
+                            int success = response.getInt("success");
+                            if (success==1) {
+                                JSONObject data = response.getJSONObject("product");
                                 User.INFO.dbServerVer = data.getString("db_version");
-                            } else {
+                                Log.i("test 1", data.getString("db_version"));
+                                Log.i("test 2", User.INFO.dbServerVer);
+                            }else {
                                 Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
@@ -115,7 +119,7 @@ public class MyRequest {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("groupName", groupName);
+                params.put("no", String.valueOf(groupPK));
                 return params;
             }
         };

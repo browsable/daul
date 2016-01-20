@@ -45,7 +45,8 @@ public class SplashActivity extends Activity{
 		String groupName = User.INFO.getGroupName();
 		//MyRequest.getGroupList(this);
 		if(groupName.equals(""))MyRequest.getGroupList(this);
-		else User.INFO.dbServerVer="v1.2";//MyRequest.getDBVerWithMyGroup(this,groupName);
+		else MyRequest.getDBVerWithMyGroup(this, User.INFO.groupPK);
+		//else User.INFO.dbServerVer="v1.2";//
 	}
 
 	private void initialize() {
