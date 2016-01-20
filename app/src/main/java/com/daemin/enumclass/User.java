@@ -40,6 +40,7 @@ public enum User {
     public String userPK;
     public String appVer;//로컬기기버전;
     public String appServerVer;//서버상의 버전;
+    public String dbServerVer;//서버상의 디비 버전;
     public List<MyTime> weekData;
     public List<MyTime> monthData;
     public List<GroupListData.Data> groupListData;
@@ -70,7 +71,7 @@ public enum User {
         return pref.getString("groupName", "");
     }
     public String getGroupDBVer(){
-        return pref.getString("groupDBVer", "v1");
+        return pref.getString("groupDBVer", "");
     }
     public int getGroupPK(){
         return pref.getInt("groupPK", 0);

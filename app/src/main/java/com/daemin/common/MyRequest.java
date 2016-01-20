@@ -2,7 +2,6 @@ package com.daemin.common;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -11,7 +10,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.daemin.data.GroupListData;
-import com.daemin.data.UpdateListData;
 import com.daemin.dialog.DialDefault;
 import com.daemin.enumclass.User;
 import com.daemin.event.PostGroupListEvent;
@@ -20,6 +18,8 @@ import com.navercorp.volleyextensions.request.Jackson2Request;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 
@@ -80,6 +80,46 @@ public class MyRequest {
             }
         });
         requestQueue.add(jackson2Request);
+    }
+
+    public static final String GET_DBVERSION = "http://timenuri.com/ajax/app/get_dbversion";
+    public static void getDBVerWithMyGroup(final Context context,final String groupName) {
+        CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.POST, GET_DBVERSION, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString(KEY_STATUS).equals("Success")) {
+                                JSONObject data = response.getJSONObject("data");
+                                User.INFO.dbServerVer = data.getString("db_version");
+                            } else {
+                                Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                return headers;
+            }
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("groupName", groupName);
+                return params;
+            }
+        };
+        requestQueue.add(rq);
     }
     /*
     public static ArrayList<String> getGroupListFromLocal() {

@@ -42,7 +42,10 @@ public class SplashActivity extends Activity{
 		singleton = this;
 		setContentView(R.layout.activity_splash);
 		initialize();
-		MyRequest.getGroupList(this);
+		String groupName = User.INFO.getGroupName();
+		//MyRequest.getGroupList(this);
+		if(groupName.equals(""))MyRequest.getGroupList(this);
+		else User.INFO.dbServerVer="v1.2";//MyRequest.getDBVerWithMyGroup(this,groupName);
 	}
 
 	private void initialize() {

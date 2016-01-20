@@ -91,7 +91,8 @@
     <string name="input_measure">단위를 입력하세요</string>
     <string name="repeat_term">반복기한은 5년 이하로 가능합니다</string>
     <!--대학-->
-    <string name="univ_dbupdate">데이터가 최신 정보로 업데이트되었습니다.</string>
+    <string name="univ_dbupdate">데이터가 업데이트되었습니다.</string>
+    <string name="univ_search">대학을 검색하세요</string>
     <string name="univ_search_sub">강의 검색</string>
     <string name="univ_search_prof">교수명 검색</string>
     <string name="univ_searchdep">학과 검색</string>
@@ -119,6 +120,10 @@
     <string name="setting_group">그룹설정</string>
     <string name="setting_init">초기화</string>
     <string name="setting_calendar">달력 연동</string>
+    <!--그룹설정-->
+    <string name="setting_group_in">소속그룹</string>
+    <string name="setting_group_ver">시간표 버전</string>
+    <string name="setting_group_modify">그룹이 설정되었습니다</string>
     <!--버전정보-->
     <string name="setting_ver_local">현재 버전</string>
     <string name="setting_ver_server">최신 버전</string>

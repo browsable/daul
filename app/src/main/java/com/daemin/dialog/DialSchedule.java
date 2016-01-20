@@ -141,9 +141,12 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 else
                     btUniv.setVisibility(View.GONE);
             }
-            univList = new ArrayList<>();
-            for (GroupListData.Data d :  User.INFO.groupListData) {
-                univList.add(d.getKo() + "/" + d.getTt_version() + "/" + d.getDb_version());
+            groupName = User.INFO.getGroupName();
+            if(groupName.equals("")) { //학교를 한번도 선택한 적 없는 경우
+                univList = new ArrayList<>();
+                for (GroupListData.Data d : User.INFO.groupListData) {
+                    univList.add(d.getKo() + "/" + d.getTt_version() + "/" + d.getDb_version());
+                }
             }
             lp.width = lp.MATCH_PARENT;
         }else{
@@ -383,7 +386,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             if(downComplete) {
                 pDialog.dismiss();
                 User.INFO.getEditor().putString("groupName", groupName).commit();
-                User.INFO.getEditor().putString("groupDBVer", DBVersion).commit();
+                User.INFO.getEditor().putString("groupDBVer", User.INFO.dbServerVer).commit();
                 settingUniv();
             }
             else{//다운로드 실패
@@ -424,6 +427,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
     public void settingUniv() {
         try {
+        llSelectUniv.setVisibility(View.GONE);
+        llDep.setVisibility(View.VISIBLE);
         ArrayList<String>
                 depList = new ArrayList<>(),
                 gradeList = new ArrayList<>(),
@@ -501,7 +506,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         subjects.add(sdlist.remove(0));
                     //actvSub.setText("");
                     hoAdapter.notifyDataSetChanged();
-                    InputMethodManager imm= (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(actvGrade.getWindowToken(), 0);
                 }
             });
@@ -548,15 +553,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     actvSub.setText("");
                     subjects.clear();
                     List<SubjectData> sdlist = db.getAllWithProf(actvProf.getText().toString());
-                    if(sdlist.size()!=0)
+                    if (sdlist.size() != 0)
                         subjects.add(sdlist.remove(0));
                     hoAdapter.notifyDataSetChanged();
-                    InputMethodManager imm= (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(actvProf.getWindowToken(), 0);
                 }
             });
-            llSelectUniv.setVisibility(View.GONE);
-            llDep.setVisibility(View.VISIBLE);
         }catch(Exception e){ //다운로드 완전하게 성공하지 못한 경우
             e.printStackTrace();
             Toast.makeText(DialSchedule.this, getString(R.string.down_error), Toast.LENGTH_SHORT).show();
@@ -564,7 +567,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             btEnter.setVisibility(View.GONE);
         }
     }
-
     public static void createFolder() {
         try {
             //check sdcard mount state
@@ -690,27 +692,51 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         R.color.gray));
                 btUniv.setTextColor(getResources().getColor(
                         android.R.color.white));
-                univAdapter = new ArrayAdapter<>(DialSchedule.this, R.layout.dropdown_univ, univList);
-                SettingACTV(actvUniv, univAdapter);
-                actvUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> parent, View v,
-                                            int position, long id) {
-                        String[] tmp = actvUniv.getText().toString().split("/");
-                        groupName = tmp[0];
-                        ttVersion = tmp[1];
-                        try {
-                            DBVersion = tmp[2];
-                        }catch(ArrayIndexOutOfBoundsException e){ //등록대기중 인 경우
-                            e.printStackTrace();
-                            DBVersion="";
-                        }
-                        // 열려있는 키패드 닫기
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(actvUniv.getWindowToken(), 0);
-                        btShowUniv.setVisibility(View.GONE);
-                        btEnter.setVisibility(View.VISIBLE);
+                if(groupName.equals("")) { //학교를 한번도 선택한 적 없는 경우
+                    univList = new ArrayList<>();
+                    for (GroupListData.Data d : User.INFO.groupListData) {
+                        univList.add(d.getKo() + "/" + d.getTt_version() + "/" + d.getDb_version());
                     }
-                });
+                    univAdapter = new ArrayAdapter<>(DialSchedule.this, R.layout.dropdown_univ, univList);
+                    SettingACTV(actvUniv, univAdapter);
+                    actvUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> parent, View v,
+                                                int position, long id) {
+                            String[] tmp = actvUniv.getText().toString().split("/");
+                            groupName = tmp[0];
+                            ttVersion = tmp[1];
+                            try {
+                                User.INFO.dbServerVer = tmp[2];
+                            } catch (ArrayIndexOutOfBoundsException e) { //등록대기중 인 경우
+                                e.printStackTrace();
+                                User.INFO.dbServerVer = "";
+                            }
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(actvUniv.getWindowToken(), 0);
+                            btShowUniv.setVisibility(View.GONE);
+                            btEnter.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    actvUniv.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        }
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            btEnter.setVisibility(View.GONE);
+                            btShowUniv.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }else{
+                    if(User.INFO.getGroupDBVer().equals(User.INFO.dbServerVer))settingUniv(); //DB버전에 변동이 없는경우
+                    else {
+                        Toast.makeText(DialSchedule.this, getString(R.string.univ_dbupdate), Toast.LENGTH_SHORT).show();
+                        new DownloadFileFromURL().execute(groupName);
+                    }
+                }
                 break;
             case R.id.btShowUniv:
                 if (!Common.isOnline())
@@ -735,27 +761,17 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 break;
             case R.id.btEnter:
                 if (Common.isOnline()) {
-                    if (User.INFO.getGroupName().equals(groupName)) { //처음 대학을 그대로 선택시
-                        if(User.INFO.getGroupDBVer().equals(DBVersion))settingUniv(); //DB버전에 변동이 없는경우
-                        else {
-                            Toast.makeText(DialSchedule.this, getString(R.string.univ_dbupdate), Toast.LENGTH_SHORT).show();
-                            new DownloadFileFromURL().execute(groupName);
-                        }
+                    if(ttVersion.equals(getResources().getString(R.string.wait1))){
+                        Toast.makeText(DialSchedule.this, getString(R.string.wait2), Toast.LENGTH_SHORT).show();
+                        btShowUniv.setVisibility(View.VISIBLE);
+                        btEnter.setVisibility(View.GONE);
+                        btShowUniv.setChecked(false);
+                        actvUniv.setText("");
                     }else {
-                        if(ttVersion.equals(getResources().getString(R.string.wait1))){
-                            Toast.makeText(DialSchedule.this, getString(R.string.wait2), Toast.LENGTH_SHORT).show();
-                            btShowUniv.setVisibility(View.VISIBLE);
-                            btEnter.setVisibility(View.GONE);
-                        }else {
-                            new DownloadFileFromURL().execute(groupName);
-                        }
+                        new DownloadFileFromURL().execute(groupName);
                     }
                 } else {
-                    if (User.INFO.getGroupName().equals(groupName)) {
-                        settingUniv();
-                    }else {
-                        Toast.makeText(DialSchedule.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(DialSchedule.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btColor:
@@ -989,9 +1005,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 window.setAttributes(lp);
             }
         });
-
     }
-
     private Button btNormal, btUniv, btAddSchedule, btCancel, btEnter, btColor,btClear;
     private LinearLayout llNormal, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat;
     private View dragToggle;
@@ -1003,7 +1017,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private HorizontalListAdapter hoAdapter;
     private Window window;
     private GradientDrawable gd;
-    private String colorName, subId, creditSum, groupName,ttVersion,DBVersion, beforeYMD; //ttVersion: 학기버전
+    private String colorName, subId, creditSum, groupName,ttVersion, beforeYMD; //ttVersion: 학기버전
     private WindowManager.LayoutParams lp;
     private ArrayList<BottomNormalData> normalList;
     private ArrayAdapter<String> univAdapter;
@@ -1085,7 +1099,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onEventMainThread(PostGroupListEvent e){
         univList.clear();
         for (GroupListData.Data d :  User.INFO.groupListData) {
-            univList.add(d.getKo() + "/" + d.getTt_version() + "/" + d.getDb_version());
+            univList.add(d.getKo() + "/" + d.getTt_version() + "/" +d.getDb_version());
         }
+        univAdapter.notifyDataSetChanged();
     }
 }

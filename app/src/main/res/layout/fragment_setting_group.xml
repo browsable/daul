@@ -2,14 +2,65 @@
     android:id="@+id/llSelectUniv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:background="@drawable/bg_lightgray_bottomline"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/margin_l"
     >
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin_l"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_group_in"
+                android:textSize="@dimen/textsize_xl"
+                android:layout_marginBottom="@dimen/margin_l"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_group_ver"
+                android:textSize="@dimen/textsize_xl"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_margin="20dp"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/tvGroupName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textsize_xl"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:textColor="@color/maincolor"
+                android:layout_marginBottom="@dimen/margin_l"
+                />
+            <TextView
+                android:id="@+id/tvVer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/maincolor"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:textSize="@dimen/textsize_xl"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
@@ -22,8 +73,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_default"
-                android:layout_marginRight="@dimen/margin_default"
                 android:background="@drawable/bg_black_bottomline"
                 android:orientation="horizontal">
 
@@ -34,8 +83,8 @@
                     android:layout_weight="1"
                     android:background="@android:color/white"
                     android:dropDownHeight="wrap_content"
+                    android:hint="@string/univ_search"
                     android:ems="10"
-                    android:hint="대학을 검색하세요"
                     android:paddingLeft="@dimen/margin_xs"
                     android:singleLine="true"
                     android:textSize="@dimen/textsize_l" />
@@ -56,6 +105,7 @@
                     android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="@string/univ_notice_enroll"
+                android:layout_marginBottom="@dimen/margin_xxs"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/textsize_default" />
             <TextView
