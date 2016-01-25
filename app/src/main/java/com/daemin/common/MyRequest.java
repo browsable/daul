@@ -83,22 +83,23 @@ public class MyRequest {
         requestQueue.add(jackson2Request);
     }
 
-    public static final String GET_DBVERSION = " http://browsable.cafe24.com/timetable/get_version.php";
     public static void getDBVerWithMyGroup(final Context context,final int groupPK) {
-        CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.POST, GET_DBVERSION, null,
+        CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.POST,
+                "http://timenuri.com/ajax/app/get_univ_db_version?n="+groupPK, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            int success = response.getInt("success");
-                            if (success==1) {
-                                JSONObject data = response.getJSONArray("product").getJSONObject(0);
+                            if (response.getString(KEY_STATUS).equals("Success")) {
+                                JSONObject data = response.getJSONObject("data");
                                 User.INFO.dbServerVer = data.getString("db_version");
                             }else {
                                 Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
+                                User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -106,23 +107,12 @@ public class MyRequest {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                User.INFO.dbServerVer=User.INFO.getGroupDBVer();
             }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
-                return headers;
-            }
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("num", String.valueOf(groupPK));
-                return params;
-            }
-        };
+        });
         requestQueue.add(rq);
     }
+
     /*
     public static ArrayList<String> getGroupListFromLocal() {
         ArrayList<String> groupListFomServer = new ArrayList<>();

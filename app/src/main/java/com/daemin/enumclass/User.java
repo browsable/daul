@@ -71,7 +71,7 @@ public enum User {
         return pref.getString("groupName", "");
     }
     public String getGroupDBVer(){
-        return pref.getString("groupDBVer", "");
+        return pref.getString("groupDBVer", "v1.0");
     }
     public int getGroupPK(){
         return pref.getInt("groupPK", 0);

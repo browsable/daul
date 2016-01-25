@@ -258,9 +258,13 @@ public class SettingGroupFragment extends BasicFragment {
                 tvVer.setText(User.INFO.dbServerVer);
                 tvGroupName.setText(groupName);
                 User.INFO.getEditor().putString("groupName", groupName).commit();
+                if(User.INFO.dbServerVer==null){
+                    User.INFO.dbServerVer=User.INFO.getGroupDBVer();
+                }
                 User.INFO.getEditor().putString("groupDBVer", User.INFO.dbServerVer).commit();
                 User.INFO.getEditor().putInt("groupPK", User.INFO.groupPK).commit();
             } else {//다운로드 실패
+                User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                 Toast.makeText(getActivity(), getString(R.string.down_error), Toast.LENGTH_SHORT).show();
                 btShowUniv.setVisibility(View.VISIBLE);
                 btEnter.setVisibility(View.GONE);

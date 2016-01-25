@@ -78,7 +78,7 @@ public enum TimePos {
         }
         if(this.place.equals("")){
             ++posIndex;
-            if(place.length()>5) this.place = place.substring(0,5);
+            if(place.length()>5) this.place = place.substring(0,6);
             else this.place = place;
         }
     }

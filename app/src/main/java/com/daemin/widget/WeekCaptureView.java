@@ -152,7 +152,7 @@ public class WeekCaptureView extends ImageView {
             }
             if(place!=null){
                 ++posIndex;
-                if(place.length()>5) place = place.substring(0,5);
+                if(place.length()>5) place = place.substring(0,6);
             }
             canvas.drawText(title, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60-intervalSize/2, tp);
             if (posIndex == 2)

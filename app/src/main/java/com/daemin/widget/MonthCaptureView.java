@@ -200,7 +200,7 @@ public class MonthCaptureView extends ImageView {
         if(Dates.NOW.isToday)canvas.drawRect(width * (tx - 1) / 7, height * ((ty / 7) * 10 + 2) / 64 + intervalSize,width * tx / 7, height * ((ty / 7 + 1) * 10 + 2) / 64 + intervalSize, hp);
         hp.setAlpha(100);
         for(int i = 0; i<Dates.NOW.dayOfWeek+1; i++){
-            canvas.drawText(Dates.NOW.mData[i], width * (i % 7) / 7+intervalSize, height * ((10 * (i / 7)) + 4) / 64, tpgray);
+            canvas.drawText(Dates.NOW.mData[i], width * (i % 7) / 7+2*intervalSize, height * ((10 * (i / 7)) + 4) / 64, tpgray);
         }
         for(int i = Dates.NOW.dayOfWeek+1; i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1; i++){
             int j = i%7;

@@ -387,10 +387,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 pDialog.dismiss();
                 settingUniv();
                 User.INFO.getEditor().putString("groupName", groupName).commit();
+                if(User.INFO.dbServerVer==null){
+                    User.INFO.dbServerVer=User.INFO.getGroupDBVer();
+                }
                 User.INFO.getEditor().putString("groupDBVer", User.INFO.dbServerVer).commit();
                 User.INFO.getEditor().putInt("groupPK", User.INFO.groupPK).commit();
             }
             else{//다운로드 실패
+                User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                 Toast.makeText(DialSchedule.this, getString(R.string.down_error), Toast.LENGTH_SHORT).show();
                 btShowUniv.setVisibility(View.VISIBLE);
                 btEnter.setVisibility(View.GONE);
@@ -733,7 +737,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         }
                     });
                 }else{
-                    if(User.INFO.getGroupDBVer().equals(User.INFO.dbServerVer))settingUniv(); //DB버전에 변동이 없는경우
+                    if (User.INFO.getGroupDBVer().equals(User.INFO.dbServerVer))
+                        settingUniv(); //DB버전에 변동이 없는경우
                     else {
                         Toast.makeText(DialSchedule.this, getString(R.string.univ_dbupdate), Toast.LENGTH_SHORT).show();
                         new DownloadFileFromURL().execute(groupName);
