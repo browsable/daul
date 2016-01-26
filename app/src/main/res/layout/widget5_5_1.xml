@@ -3,12 +3,13 @@
     android:id="@+id/mywidget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
     android:background="#99ffffff"
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:focusable="false"
+        android:clickable="false"
         android:background="#40F5F5F5">
 
         <LinearLayout
@@ -193,7 +194,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -214,7 +221,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
             </LinearLayout>
         <LinearLayout
@@ -235,7 +248,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
             </LinearLayout>
         <LinearLayout
@@ -256,7 +275,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
             </LinearLayout>
         <LinearLayout
@@ -278,7 +303,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
             </LinearLayout>
         <LinearLayout
@@ -300,7 +331,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
             </LinearLayout>
         <LinearLayout
@@ -322,7 +359,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
             </LinearLayout>
     </LinearLayout>
@@ -350,8 +393,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
+                android:layout_marginBottom="@dimen/margin_xxxs"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
             </LinearLayout>
         <LinearLayout
@@ -373,7 +422,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -395,7 +450,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l9"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -417,7 +478,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -439,7 +506,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l11"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -461,7 +534,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l12"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -483,7 +562,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l13"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
     </LinearLayout>
@@ -512,7 +597,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l14"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -534,7 +625,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l15"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -556,7 +653,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l16"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -578,7 +681,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l17"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -600,7 +709,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l18"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -622,7 +737,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l19"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -644,7 +765,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l20"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
     </LinearLayout>
@@ -673,7 +800,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l21"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -695,7 +828,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l22"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -717,7 +856,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l23"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -739,7 +884,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l24"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
 
@@ -762,7 +913,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l25"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -784,7 +941,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l26"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -806,7 +969,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l27"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
     </LinearLayout>
@@ -835,7 +1004,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l28"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -857,7 +1032,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l29"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -879,7 +1060,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l30"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -901,7 +1088,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l31"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -923,7 +1116,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l32"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -945,7 +1144,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l33"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -967,7 +1172,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l34"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
     </LinearLayout>
@@ -996,7 +1207,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l35"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -1018,7 +1235,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l36"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -1040,7 +1263,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l37"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -1062,7 +1291,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l38"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -1084,7 +1319,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l39"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -1106,7 +1347,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l40"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -1128,7 +1375,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_default"
                 android:gravity="left"
-                android:paddingLeft="@dimen/textsize_xxxs"
+                android:paddingLeft="@dimen/margin_xxxs"
+                android:layout_marginBottom="@dimen/margin_xxxs"
+                android:orientation="vertical"/>
+            <LinearLayout
+                android:id="@+id/l41"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"/>
         </LinearLayout>
     </LinearLayout>

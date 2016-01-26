@@ -79,6 +79,8 @@ public class Widget5_5_1 extends AppWidgetProvider {
 				main5.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(main5);
 				break;
+			case Common.ACTION_DUMMY5_5_1:
+				break;
 		}
 	}
 

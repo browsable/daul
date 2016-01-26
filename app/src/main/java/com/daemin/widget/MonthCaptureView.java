@@ -94,7 +94,6 @@ public class MonthCaptureView extends ImageView {
         height = canvas.getHeight();
         initScreen();
         fetchMonthData();
-
     }
     public void fetchMonthData(){
         int year = Dates.NOW.year;

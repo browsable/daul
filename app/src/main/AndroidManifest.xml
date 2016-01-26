@@ -99,6 +99,7 @@
                 android:resource="@xml/widget5_1config" />
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.daemin.widget.ACTION_DUMMY5_5_1" />
                 <action android:name="com.daemin.widget.ACTION_WEEK5_5_1" />
                 <action android:name="com.daemin.widget.ACTION_MONTH5_5_1" />
                 <action android:name="com.daemin.widget.ACTION_BACK5_5_1" />

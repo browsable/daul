@@ -294,7 +294,7 @@ public enum Dates {
         todayIndex = index;
         year = getLastDayOfWeek().minusMonths(index).getYear();
         month = LocalDate.now().minusMonths(index).getMonthOfYear();
-       LocalDate firstDay = LocalDate.now().minusMonths(index).minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
+        LocalDate firstDay = LocalDate.now().minusMonths(index).minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
         for(int i =0; i<42; i++){
             mData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
         }

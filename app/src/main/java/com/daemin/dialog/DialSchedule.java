@@ -98,6 +98,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
         lp.height = lp.WRAP_CONTENT;
         window.setAttributes(lp);
+        if(User.INFO.dbServerVer==null){
+            User.INFO.dbServerVer=User.INFO.getGroupDBVer();
+        }
     }
 
     @Override
@@ -120,6 +123,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             widgetFlag = getIntent().getBooleanExtra("widgetFlag", false);
             overlapEnrollFlag = getIntent().getBooleanExtra("overlapEnrollFlag", false);
             weekFlag = getIntent().getBooleanExtra("weekFlag", true);
+        }
+        if(User.INFO.dbServerVer==null){
+            User.INFO.dbServerVer=User.INFO.getGroupDBVer();
         }
         setLayout();
         makeNormalList();
