@@ -33,6 +33,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/margin_default"
                 android:text="daul@"
+                android:visibility="invisible"
                 android:textSize="@dimen/textsize_xxxl" />
         </LinearLayout>
         <View

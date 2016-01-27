@@ -38,9 +38,17 @@ public class MonthCaptureView extends ImageView {
     static int tempyth;
     private Canvas canvas;
     private HashMap<String,DOMPData> DOMP;
+    public String sun,mon,tue,wed,thr,fri,sat;
     public MonthCaptureView(Context context)
     {
         super(context);
+        sun=context.getResources().getString(R.string.sun);
+        mon=context.getResources().getString(R.string.mon);
+        tue=context.getResources().getString(R.string.tue);
+        wed=context.getResources().getString(R.string.wed);
+        thr=context.getResources().getString(R.string.thr);
+        fri=context.getResources().getString(R.string.fri);
+        sat=context.getResources().getString(R.string.sat);
         tempxth = 0;
         tempyth = 0;
         int textSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_s);
@@ -221,13 +229,13 @@ public class MonthCaptureView extends ImageView {
         tp.setTextAlign(Paint.Align.CENTER);
         tpred.setTextAlign(Paint.Align.CENTER);
         tpblue.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("SUN", width * 1 / 14, height * 2 / 62 - 1, tpred);
-        canvas.drawText("MON", width * 3 / 14, height * 2 / 62 - 1, tp);
-        canvas.drawText("TUE", width * 5 / 14, height * 2 / 62 - 1, tp);
-        canvas.drawText("WED", width * 7 / 14, height * 2 / 62 - 1, tp);
-        canvas.drawText("THU", width * 9 / 14, height * 2 / 62 - 1, tp);
-        canvas.drawText("FRI", width * 11 / 14, height * 2 / 62 - 1, tp);
-        canvas.drawText("SAT", width * 13 / 14, height * 2 / 62 - 1, tpblue);
+        canvas.drawText(sun, width * 1 / 14, height * 2 / 62 - 1, tpred);
+        canvas.drawText(mon, width * 3 / 14, height * 2 / 62 - 1, tp);
+        canvas.drawText(tue, width * 5 / 14, height * 2 / 62 - 1, tp);
+        canvas.drawText(wed, width * 7 / 14, height * 2 / 62 - 1, tp);
+        canvas.drawText(thr, width * 9 / 14, height * 2 / 62 - 1, tp);
+        canvas.drawText(fri, width * 11 / 14, height * 2 / 62 - 1, tp);
+        canvas.drawText(sat, width * 13 / 14, height * 2 / 62 - 1, tpblue);
         tp.setTextAlign(Paint.Align.LEFT);
         tpred.setTextAlign(Paint.Align.LEFT);
         tpblue.setTextAlign(Paint.Align.LEFT);

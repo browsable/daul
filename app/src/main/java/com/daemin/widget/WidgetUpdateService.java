@@ -125,6 +125,10 @@ public class WidgetUpdateService extends Service {
                     break;
             }
         }else{
+            if(pref.getBoolean("widget5_5_1", false)) {
+                if (viewMode == 0) widget5_5_1Week(views5_5_1,manager);
+                else widget5_5_1Month(views5_5_1, manager);
+            }
             if(pref.getBoolean("widget5_5", false)) {
                 if (viewMode == 0) widget5_5Week(views5_5,manager);
                 else widget5_5Month(views5_5,manager);
@@ -158,54 +162,58 @@ public class WidgetUpdateService extends Service {
         }
     }
     public void widget5_5_1Setting(RemoteViews views, AppWidgetManager manager){
-        for(int i=0; i<42; i++){
-            int llID = getResources().getIdentifier("ll" + i, "id", "com.daemin.timetable");
-            int tvID = getResources().getIdentifier("tv" + i, "id", "com.daemin.timetable");
-            if(i>=Dates.NOW.dayOfWeek+1&&i<Dates.NOW.dayOfWeek+Dates.NOW.dayNumOfMonth+1){
-                Intent dial = new Intent(Common.ACTION_DIAL5_5_1);
-                PendingIntent dialP = PendingIntent.getBroadcast(this, 0, dial, 0);
-                views.setOnClickPendingIntent(llID, dialP);
-                int j = i%7;
-                switch(j){
-                    case 0:
-                        views.setTextColor(tvID, getResources().getColor(R.color.red));
-                        break;
-                    case 6:
-                        views.setTextColor(tvID, getResources().getColor(R.color.blue));
-                        break;
-                    default:
-                        views.setTextColor(tvID, getResources().getColor(android.R.color.black));
-                        break;
-                }
-                views.setTextViewText(tvID, Dates.NOW.mData[i]);
-            }
-            else{ //달력에서 월에 해당하는 날짜 이외의 날짜들은 회색으로 표시
-                Intent dial = new Intent(Common.ACTION_DUMMY5_5_1);
-                PendingIntent dialP = PendingIntent.getBroadcast(this, 0, dial, 0);
-                views.setOnClickPendingIntent(llID, dialP);
-                views.setTextViewText(tvID, Dates.NOW.mData[i]);
-            }
-
-        }
-        fetchMonthData(views);
         Intent main5 = new Intent(Common.ACTION_HOME5_5_1);
         PendingIntent mainP5 = PendingIntent.getBroadcast(this, 0, main5, 0);
         views.setOnClickPendingIntent(R.id.btHome, mainP5);
         Intent dial = new Intent(Common.ACTION_DIAL5_5_1);
         PendingIntent dialP = PendingIntent.getBroadcast(this, 0, dial, 0);
         views.setOnClickPendingIntent(R.id.timetableimage, dialP);
-        Intent week5 = new Intent(Common.ACTION_WEEK5_5_1);
-        PendingIntent weekP5 = PendingIntent.getBroadcast(this, 0, week5, 0);
-        views.setOnClickPendingIntent(R.id.btWeek, weekP5);
         Intent month5 = new Intent(Common.ACTION_MONTH5_5_1);
         PendingIntent monthP5 = PendingIntent.getBroadcast(this, 0, month5, 0);
         views.setOnClickPendingIntent(R.id.btMonth, monthP5);
+        Intent week5 = new Intent(Common.ACTION_WEEK5_5_1);
+        PendingIntent weekP5 = PendingIntent.getBroadcast(this, 0, week5, 0);
+        views.setOnClickPendingIntent(R.id.btWeek, weekP5);
         Intent back5 = new Intent(Common.ACTION_BACK5_5_1);
         PendingIntent backP5 = PendingIntent.getBroadcast(this, 0, back5, 0);
         views.setOnClickPendingIntent(R.id.btBack, backP5);
         Intent forward5 = new Intent(Common.ACTION_FORWARD5_5_1);
         PendingIntent forwardP5 = PendingIntent.getBroadcast(this, 0, forward5, 0);
         views.setOnClickPendingIntent(R.id.btForward, forwardP5);
+        if(viewMode==0){
+
+        }else {
+            for (int i = 0; i < 42; i++) {
+                int llID = getResources().getIdentifier("ll" + i, "id", "com.daemin.timetable");
+                int tvID = getResources().getIdentifier("tv" + i, "id", "com.daemin.timetable");
+                if (i >= Dates.NOW.dayOfWeek + 1 && i < Dates.NOW.dayOfWeek + Dates.NOW.dayNumOfMonth + 1) {
+                    Intent in = new Intent(Common.ACTION_DIAL5_5_1);
+                    PendingIntent dP = PendingIntent.getBroadcast(this, 0, in, 0);
+                    views.setOnClickPendingIntent(llID, dP);
+                    int j = i % 7;
+                    switch (j) {
+                        case 0:
+                            views.setTextColor(tvID, getResources().getColor(R.color.red));
+                            break;
+                        case 6:
+                            views.setTextColor(tvID, getResources().getColor(R.color.blue));
+                            break;
+                        default:
+                            views.setTextColor(tvID, getResources().getColor(android.R.color.black));
+                            break;
+                    }
+                    views.setTextViewText(tvID, Dates.NOW.mData[i]);
+                } else { //달력에서 월에 해당하는 날짜 이외의 날짜들은 회색으로 표시
+                    Intent in = new Intent(Common.ACTION_DUMMY5_5_1);
+                    PendingIntent dP = PendingIntent.getBroadcast(this, 0, in, 0);
+                    views.setOnClickPendingIntent(llID, dP);
+                    views.setTextViewText(tvID, Dates.NOW.mData[i]);
+                    views.setTextColor(tvID, getResources().getColor(android.R.color.darker_gray));
+                }
+
+            }
+            fetchMonthData(views);
+        }
         for (int appWidgetId : manager.getAppWidgetIds(new ComponentName(this, Widget5_5_1.class))) {
             manager.updateAppWidget(appWidgetId, views);
         }
@@ -218,11 +226,12 @@ public class WidgetUpdateService extends Service {
         views.setViewVisibility(R.id.tvYear, View.VISIBLE);
         views.setViewVisibility(R.id.btWeek, View.GONE);
         views.setViewVisibility(R.id.btMonth, View.VISIBLE); //Visible
-        //Dates.NOW.setWeekData();
+        views.setViewVisibility(R.id.ivWeek, View.VISIBLE);
+        views.setViewVisibility(R.id.llMonth, View.GONE);
+        Dates.NOW.setWeekData();
         views.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
         views.setTextViewText(R.id.tvDate, setMonthWeek());
-        //
-        //widget5_5_1Setting(views, manager);
+        widget5_5_1Setting(views, manager);
 
     }
     public void widget5_5_1Month(RemoteViews views, AppWidgetManager manager) {
@@ -232,6 +241,8 @@ public class WidgetUpdateService extends Service {
         mIndex5_5_1 = 0;
         views.setViewVisibility(R.id.tvYear, View.GONE);
         views.setViewVisibility(R.id.btWeek, View.VISIBLE); //Visible
+        views.setViewVisibility(R.id.ivWeek, View.GONE);
+        views.setViewVisibility(R.id.llMonth, View.VISIBLE);
         Dates.NOW.setMonthData();
         views.setViewVisibility(R.id.btMonth, View.GONE);
         views.setTextViewText(R.id.tvDate, setYearMonth());
@@ -274,6 +285,7 @@ public class WidgetUpdateService extends Service {
             }
         }
         widget5_5_1Setting(views, manager);
+
         //bitmap.recycle();
     }
     public void widget5_5_1Forward(RemoteViews views, AppWidgetManager manager){

@@ -45,7 +45,9 @@
                     android:text="daul@"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/textsize_l"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    />
 
                 <View
                     android:layout_marginTop="@dimen/margin_xxl"

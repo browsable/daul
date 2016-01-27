@@ -32,11 +32,19 @@ public class WeekCaptureView extends ImageView {
     static int tempxth, tempyth;
     private Canvas canvas;
     private HashMap<String,String> ETP;
+    public String sun,mon,tue,wed,thr,fri,sat;
     public WeekCaptureView(Context context)
     {
         super(context);
         this.context = context;
         this.dayOfWeek = Dates.NOW.getDayOfWeek();
+        sun=context.getResources().getString(R.string.sun);
+        mon=context.getResources().getString(R.string.mon);
+        tue=context.getResources().getString(R.string.tue);
+        wed=context.getResources().getString(R.string.wed);
+        thr=context.getResources().getString(R.string.thr);
+        fri=context.getResources().getString(R.string.fri);
+        sat=context.getResources().getString(R.string.sat);
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
         dateSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_s);
         textSize=context.getResources().getDimensionPixelSize(R.dimen.textsize_xs);
@@ -248,13 +256,13 @@ public class WeekCaptureView extends ImageView {
         canvas.drawText(Dates.NOW.mdOfFri, width * 12 / 15, (height / 32 + intervalSize) * 7 / 16, tp);
         canvas.drawText(Dates.NOW.mdOfSat, width * 14 / 15, (height / 32 + intervalSize) * 7 / 16, tpblue);
 
-        canvas.drawText("SUN", width * 2 / 15, (height / 32 + intervalSize) * 15 / 16, tpred);
-        canvas.drawText("MON", width * 4 / 15, (height / 32 + intervalSize) * 15 / 16, tp);
-        canvas.drawText("TUE", width * 6 / 15, (height / 32 + intervalSize) * 15 / 16, tp);
-        canvas.drawText("WED", width * 8 / 15, (height / 32 + intervalSize) * 15 / 16, tp);
-        canvas.drawText("THU", width * 10 / 15, (height / 32 + intervalSize) * 15 / 16, tp);
-        canvas.drawText("FRI", width * 12 / 15, (height / 32 + intervalSize) * 15 / 16, tp);
-        canvas.drawText("SAT", width * 14 / 15, (height / 32 + intervalSize) * 15 / 16, tpblue);
+        canvas.drawText(sun, width * 2 / 15, (height / 32 + intervalSize) * 15 / 16-1, tpred);
+        canvas.drawText(mon, width * 4 / 15, (height / 32 + intervalSize) * 15 / 16-1, tp);
+        canvas.drawText(tue, width * 6 / 15, (height / 32 + intervalSize) * 15 / 16-1, tp);
+        canvas.drawText(wed, width * 8 / 15, (height / 32 + intervalSize) * 15 / 16-1, tp);
+        canvas.drawText(thr, width * 10 / 15, (height / 32 + intervalSize) * 15 / 16-1, tp);
+        canvas.drawText(fri, width * 12 / 15, (height / 32 + intervalSize) * 15 / 16-1, tp);
+        canvas.drawText(sat, width * 14 / 15, (height / 32 + intervalSize) * 15 / 16-1, tpblue);
         hp.setAlpha(40);
         if(Dates.NOW.isToday)canvas.drawRect(width * (2 * dayOfWeek + 1) / 15, ((height * 2) - 10) / 64 + intervalSize, width * (2 * dayOfWeek + 3) / 15, height * 62 / 64 + intervalSize, hp);
         hp.setAlpha(100);

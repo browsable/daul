@@ -300,6 +300,8 @@ public enum Dates {
         }
         dayOfWeek = LocalDate.now().minusMonths(index).minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
         dayNumOfMonth = LocalDate.now().minusMonths(index).dayOfMonth().withMaximumValue().getDayOfMonth();
+        Log.i("test dayOfWeek",dayOfWeek+"");
+        Log.i("test dayNumOfMonth",dayNumOfMonth+"");
         setToday();
     }
 

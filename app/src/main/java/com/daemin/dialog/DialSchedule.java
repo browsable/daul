@@ -124,9 +124,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             overlapEnrollFlag = getIntent().getBooleanExtra("overlapEnrollFlag", false);
             weekFlag = getIntent().getBooleanExtra("weekFlag", true);
         }
-        if(User.INFO.dbServerVer==null){
-            User.INFO.dbServerVer=User.INFO.getGroupDBVer();
-        }
+
         setLayout();
         makeNormalList();
         window = getWindow();
@@ -695,6 +693,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btUniv:
+                if(User.INFO.dbServerVer==null){
+                    User.INFO.dbServerVer=User.INFO.getGroupDBVer();
+                }
                 clearView();
                 DrawMode.CURRENT.setMode(1);
                 llNormal.setVisibility(View.GONE);
@@ -703,7 +704,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         R.color.gray));
                 btUniv.setTextColor(getResources().getColor(
                         android.R.color.white));
-                if(groupName.equals("")) { //학교를 한번도 선택한 적 없는 경우
+                if(groupName.equals("")||ttVersion.equals(getResources().getString(R.string.wait1))) { //학교를 한번도 선택한 적 없거나 등록대기중
                     univList = new ArrayList<>();
                     for (GroupListData.Data d : User.INFO.groupListData) {
                         univList.add(d.getKo() + "/" + d.getTt_version() + "/" + d.getDb_version());
@@ -994,6 +995,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         dragToggle.setOnTouchListener(this);
         subOverlapFlag = true;
         User.INFO.overlapFlag = false;
+        ttVersion="";
         colorName = Common.MAIN_COLOR;
         brightness=100;
         dy = 0; mPosY = 0; repeatType = 0;
