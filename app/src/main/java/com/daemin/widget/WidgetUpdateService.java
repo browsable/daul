@@ -46,7 +46,13 @@ public class WidgetUpdateService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.i("widget", "service start");
-        tvIdList= new ArrayList<>();
+        if(tvIdList==null) {
+            Log.i("test", "tvidList null");
+            tvIdList= new ArrayList<>();
+        }
+        else{
+            Log.i("test", "tvidList not null");
+        }
         pref = getSharedPreferences("USERINFO", MODE_PRIVATE);
         deviceWidth = pref.getInt("deviceWidth", 0);
         deviceHeight= pref.getInt("deviceHeight", 0);
@@ -138,13 +144,14 @@ public class WidgetUpdateService extends Service {
                 else widget4_4Month(views4_4,manager);
             }
         }
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
     public void fetchMonthData(RemoteViews views){
+        Log.i("test",tvIdList.size()+"");
         for(Integer id : tvIdList){
             views.removeAllViews(id);
         }
