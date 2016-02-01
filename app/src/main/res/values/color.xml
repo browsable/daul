@@ -13,6 +13,7 @@
     <color name="middlegray">#50000000</color>
     <color name="red">#FF4A4A</color>
     <color name="blue">#7D97FF</color>
+    <color name="oringinalblue">#990000FF</color>
     <color name="holo_blue">#0099cc</color>
     <!-- 시간표 입력 시 선택 색상 -->
     <color name="btcolor1">#FFF1A6</color>

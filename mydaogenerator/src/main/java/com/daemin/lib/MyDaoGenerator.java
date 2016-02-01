@@ -31,7 +31,9 @@ public class MyDaoGenerator {
         MyTime.addLongProperty("alarm");
         MyTime.addStringProperty("repeat");
         MyTime.addStringProperty("color");
-
+        Entity WidgetID = schema.addEntity("WidgetID");
+        WidgetID.addIdProperty().autoincrement();
+        WidgetID.addIntProperty("tvID").notNull();
         new DaoGenerator().generateAll(schema, args[0]);
     }
 }

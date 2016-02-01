@@ -116,6 +116,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/margin_xxxs"
         android:scaleType="fitXY"
+        android:background="@color/transparency"
         />
     <LinearLayout
         android:id="@+id/llMonth"
@@ -196,7 +197,7 @@
                 android:gravity="bottom|center_horizontal"
                 android:orientation="vertical"
                 android:text="@string/sat"
-                android:textColor="@color/blue"
+                android:textColor="@color/oringinalblue"
                 android:textSize="@dimen/textsize_default" />
         </LinearLayout>
 

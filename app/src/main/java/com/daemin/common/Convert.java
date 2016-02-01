@@ -1,7 +1,5 @@
 package com.daemin.common;
 
-import com.daemin.repository.MyTimeRepo;
-
 public class Convert {
 	public static String getxyMerge(int Xth, int Yth) {
 		String x, y;

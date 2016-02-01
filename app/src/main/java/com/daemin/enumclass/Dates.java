@@ -1,7 +1,5 @@
 package com.daemin.enumclass;
 
-import android.util.Log;
-
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -16,7 +14,7 @@ public enum Dates {
         mData = new String[42];
         dayOfWeek = getDayOfWeek();
         dayOfMonth = getDayOfMonth();
-        setWeekData();
+        setWeekData(0);
 
     }
     public String[] mData;
@@ -179,35 +177,8 @@ public enum Dates {
         if(dayOfWeek==7) dayOfWeek=0;
         return dayOfWeek;
     }
-    public void setWeekData() {
-        todayIndex = 0;
-        year = getYear();
-        int lastDayofWeek = getLastDayOfWeek().getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
-        int firstDayOfMonth = getFirstDayOfWeekYear().getWeekOfWeekyear();
-        int calWeekOfMonth = lastDayofWeek-firstDayOfMonth+1;
-        if(calWeekOfMonth<0) calWeekOfMonth = lastDayofWeek+1;
-        month = getLastDayOfWeek().getMonthOfYear();
-        weekOfMonth = calWeekOfMonth;
-        if(LocalDate.now().getDayOfWeek()==7) fst = LocalDate.now().plusWeeks(1).weekOfWeekyear().roundFloorCopy().minusDays(1);
-        else fst = LocalDate.now().weekOfWeekyear().roundFloorCopy().minusDays(1);
-        setMD(fst.getDayOfMonth(),
-                fst.plusDays(1).getDayOfMonth(),
-                fst.plusDays(2).getDayOfMonth(),
-                fst.plusDays(3).getDayOfMonth(),
-                fst.plusDays(4).getDayOfMonth(),
-                fst.plusDays(5).getDayOfMonth(),
-                fst.plusDays(6).getDayOfMonth(),
-                fst.getMonthOfYear(),
-                fst.plusDays(1).getMonthOfYear(),
-                fst.plusDays(2).getMonthOfYear(),
-                fst.plusDays(3).getMonthOfYear(),
-                fst.plusDays(4).getMonthOfYear(),
-                fst.plusDays(5).getMonthOfYear(),
-                fst.plusDays(6).getMonthOfYear()
-        );
-        isToday=true;
-    }
-    public void setPreWeekData(int index) {
+
+    public void setWeekData(int index) {
         todayIndex = index;
         year = getLastDayOfWeek().plusWeeks(index).getYear();
         int lastDayofWeek = getPlusDayOfWeek(index).getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
@@ -216,6 +187,8 @@ public enum Dates {
         if(calWeekOfMonth < 0) calWeekOfMonth = lastDayofWeek+1;
         month = getPlusDayOfWeek(index).getMonthOfYear();
         weekOfMonth = calWeekOfMonth;
+        if(LocalDate.now().getDayOfWeek()==7) fst = LocalDate.now().plusWeeks(1).weekOfWeekyear().roundFloorCopy().minusDays(1);
+        else fst = LocalDate.now().weekOfWeekyear().roundFloorCopy().minusDays(1);
         LocalDate pre = fst.plusWeeks(index);
         setMD(pre.getDayOfMonth(),
                 pre.plusDays(1).getDayOfMonth(),
@@ -234,51 +207,12 @@ public enum Dates {
         );
         setToday();
     }
-    public void setBackWeekData(int index) {
-        todayIndex = index;
-        year = getLastDayOfWeek().minusWeeks(index).getYear();
-        int lastDayofWeek = getMinusDayOfWeek(index).getWeekOfWeekyear(); //이번주의 토요일의 년대비 주차
-        int firstDayOfMonth = getMinusFirstDayOfWeek(index).getWeekOfWeekyear();
-        int calWeekOfMonth = lastDayofWeek - firstDayOfMonth + 1;
-        if (calWeekOfMonth < 0) calWeekOfMonth = lastDayofWeek + 1;
-        month = getMinusDayOfWeek(index).getMonthOfYear();
-        weekOfMonth = calWeekOfMonth;
-        LocalDate back = fst.minusWeeks(index);
-        setMD(back.getDayOfMonth(),
-                back.plusDays(1).getDayOfMonth(),
-                back.plusDays(2).getDayOfMonth(),
-                back.plusDays(3).getDayOfMonth(),
-                back.plusDays(4).getDayOfMonth(),
-                back.plusDays(5).getDayOfMonth(),
-                back.plusDays(6).getDayOfMonth(),
-                back.getMonthOfYear(),
-                back.plusDays(1).getMonthOfYear(),
-                back.plusDays(2).getMonthOfYear(),
-                back.plusDays(3).getMonthOfYear(),
-                back.plusDays(4).getMonthOfYear(),
-                back.plusDays(5).getMonthOfYear(),
-                back.plusDays(6).getMonthOfYear()
-        );
-        setToday();
-    }
     //month
     public int getDayOfWeekOfLastMonth(){
         int dayOfWeek = LocalDate.now().minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
         return dayOfWeek;
     }
-    public void setMonthData() {
-        todayIndex = 0;
-        year = getYear();
-        month = LocalDate.now().getMonthOfYear();
-        LocalDate firstDay = LocalDate.now().minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
-        for(int i =0; i<42; i++){
-            mData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
-        }
-        dayOfWeek = LocalDate.now().minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
-        dayNumOfMonth = LocalDate.now().dayOfMonth().withMaximumValue().getDayOfMonth();
-        isToday=true;
-    }
-    public void setPreMonthData(int index) {
+    public void setMonthData(int index) {
         todayIndex = index;
         year = getLastDayOfWeek().plusMonths(index).getYear();
         month = LocalDate.now().plusMonths(index).getMonthOfYear();
@@ -290,19 +224,4 @@ public enum Dates {
         dayNumOfMonth = LocalDate.now().plusMonths(index).dayOfMonth().withMaximumValue().getDayOfMonth();
         setToday();
     }
-    public void setBackMonthData(int index) {
-        todayIndex = index;
-        year = getLastDayOfWeek().minusMonths(index).getYear();
-        month = LocalDate.now().minusMonths(index).getMonthOfYear();
-        LocalDate firstDay = LocalDate.now().minusMonths(index).minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
-        for(int i =0; i<42; i++){
-            mData[i] = String.valueOf(firstDay.plusDays(i).getDayOfMonth());
-        }
-        dayOfWeek = LocalDate.now().minusMonths(index).minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
-        dayNumOfMonth = LocalDate.now().minusMonths(index).dayOfMonth().withMaximumValue().getDayOfMonth();
-        Log.i("test dayOfWeek",dayOfWeek+"");
-        Log.i("test dayNumOfMonth",dayNumOfMonth+"");
-        setToday();
-    }
-
 }

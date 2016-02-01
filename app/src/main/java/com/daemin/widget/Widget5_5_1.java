@@ -70,7 +70,7 @@ public class Widget5_5_1 extends AppWidgetProvider {
 				Intent dial = new Intent(context, DialSchedule.class);
 				dial.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				dial.putExtra("widgetFlag",true);
+				dial.putExtra("widgetFlag", true);
 				context.startActivity(dial);
 				break;
 			case Common.ACTION_HOME5_5_1:

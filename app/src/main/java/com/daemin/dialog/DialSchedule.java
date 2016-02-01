@@ -10,11 +10,11 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -137,6 +137,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         lp = window.getAttributes();
         DisplayMetrics dm = getResources().getDisplayMetrics();
         lp.height = lp.WRAP_CONTENT;
+        lp.width = lp.MATCH_PARENT;
         if (!widgetFlag) {
             SetBtUnivEvent sbue = EventBus.getDefault().getStickyEvent(SetBtUnivEvent.class);
             if (sbue != null) {
@@ -153,10 +154,24 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     univList.add(d.getKo() + "/" + d.getTt_version() + "/" + d.getDb_version());
                 }
             }
-            lp.width = lp.MATCH_PARENT;
+
         }else{
             btUniv.setVisibility(View.INVISIBLE);
-            lp.width = dm.widthPixels * 9/10;
+            if(getIntent().getBooleanExtra("widget5_5_1", false)){
+                int dayCnt = getIntent().getIntExtra("dayCnt",0);
+                int xth = dayCnt%7+1;
+                int yth = dayCnt/7+1;
+                //String day= getIntent().getStringExtra("day");
+                DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
+                DOMP.setPosState(DayOfMonthPosState.PAINT);
+                etName.requestFocus();
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(findViewById(R.id.etName), InputMethodManager.SHOW_IMPLICIT);
+                    }
+                }, 100);
+            }
         }
         screenHeight = dm.heightPixels - lp.height;
         if (overlapEnrollFlag) {
@@ -852,6 +867,12 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                             break;
                     }
                     if (widgetFlag) {
+                        if (User.INFO.getWidget5_5_1()) {
+                            Intent update = new Intent(this, WidgetUpdateService.class);
+                            update.putExtra("action", "update5_5_1");
+                            update.putExtra("viewMode", viewMode);
+                            this.startService(update);
+                        }
                         if (User.INFO.getWidget5_5()) {
                             Intent update = new Intent(this, WidgetUpdateService.class);
                             update.putExtra("action", "update5_5");
@@ -864,6 +885,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                             update.putExtra("viewMode", viewMode);
                             this.startService(update);
                         }
+                        finish();
                     }
                 }
                 break;

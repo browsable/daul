@@ -147,11 +147,11 @@ public class MainActivity extends FragmentActivity {
         switcher.setInAnimation(in);
         switcher.setOutAnimation(out);
         if (viewMode == 0) {
-            Dates.NOW.setWeekData();
+            Dates.NOW.setWeekData(0);
             switcher.setText(setMonthWeek());
             tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
         } else {
-            Dates.NOW.setMonthData();
+            Dates.NOW.setMonthData(0);
             switcher.setText(setYearMonth());
             tvTitleYear.setVisibility(View.GONE);
         }
@@ -235,27 +235,14 @@ public class MainActivity extends FragmentActivity {
     public void btBackEvent() {
         switch (viewMode) {
             case 0:
-                --dayIndex;
-                if (dayIndex < 0) {
-                    Dates.NOW.setBackWeekData(-dayIndex);
-                    tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
-                    switcher.setText(setMonthWeek());
-                } else {
-                    Dates.NOW.setPreWeekData(dayIndex);
-                    tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
-                    switcher.setText(setMonthWeek());
-                }
+                Dates.NOW.setWeekData(--dayIndex);
+                tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
+                switcher.setText(setMonthWeek());
                 Common.fetchWeekData();
                 break;
             case 1:
-                --dayIndex;
-                if (dayIndex < 0) {
-                    Dates.NOW.setBackMonthData(-dayIndex);
-                    switcher.setText(setYearMonth());
-                } else {
-                    Dates.NOW.setPreMonthData(dayIndex);
-                    switcher.setText(setYearMonth());
-                }
+                Dates.NOW.setMonthData(--dayIndex);
+                switcher.setText(setYearMonth());
                 Common.fetchMonthData();
                 break;
         }
@@ -264,27 +251,14 @@ public class MainActivity extends FragmentActivity {
     public void btForwardEvent() {
         switch (viewMode) {
             case 0:
-                ++dayIndex;
-                if (dayIndex < 0) {
-                    Dates.NOW.setBackWeekData(-dayIndex);
-                    tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
-                    switcher.setText(setMonthWeek());
-                } else {
-                    Dates.NOW.setPreWeekData(dayIndex);
-                    tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
-                    switcher.setText(setMonthWeek());
-                }
+                Dates.NOW.setWeekData(++dayIndex);
+                tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
+                switcher.setText(setMonthWeek());
                 Common.fetchWeekData();
                 break;
             case 1:
-                ++dayIndex;
-                if (dayIndex < 0) {
-                    Dates.NOW.setBackMonthData(-dayIndex);
-                    switcher.setText(setYearMonth());
-                } else {
-                    Dates.NOW.setPreMonthData(dayIndex);
-                    switcher.setText(setYearMonth());
-                }
+                Dates.NOW.setMonthData(++dayIndex);
+                switcher.setText(setYearMonth());
                 Common.fetchMonthData();
                 break;
         }
@@ -354,7 +328,7 @@ public class MainActivity extends FragmentActivity {
                 if (btMode.isChecked()) {
                     viewMode = 1;
                     EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
-                    Dates.NOW.setMonthData();
+                    Dates.NOW.setMonthData(0);
                     switcher.setText("");
                     switcher.setText(setYearMonth());
                     tvTitleYear.setVisibility(View.GONE);
@@ -365,7 +339,7 @@ public class MainActivity extends FragmentActivity {
                     initSurfaceView.setMode(viewMode);
                 }else{
                     viewMode = 0;
-                    Dates.NOW.setWeekData();
+                    Dates.NOW.setWeekData(0);
                     EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
                     tvTitleYear.setVisibility(View.VISIBLE);
                     tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
