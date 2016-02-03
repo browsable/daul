@@ -1,7 +1,9 @@
 package com.daemin.main;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -12,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -24,15 +27,18 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.ViewSwitcher;
 
 import com.daemin.area.AreaFragment;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.Common;
+import com.daemin.common.GPSInfo;
 import com.daemin.common.MyRequest;
 import com.daemin.common.RoundedCornerNetworkImageView;
 import com.daemin.community.CommunityFragment2;
+import com.daemin.dialog.DialDefault;
 import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
@@ -117,6 +123,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         viewMode = User.INFO.getViewMode();
         singleton = this;
+        checkLocationPermission();
         EventBus.getDefault().register(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
@@ -284,9 +291,7 @@ public class MainActivity extends FragmentActivity {
                 initSurfaceView.setVisibility(View.VISIBLE);
                 break;
             case R.id.btFriend:
-                btMode.setVisibility(View.GONE);
-                changeSetting();
-                changeFragment(FriendFragment.class, "친구시간표");
+                checkContactsPermission();
                 break;
             case R.id.btArea:
                 btMode.setVisibility(View.GONE);
@@ -304,16 +309,7 @@ public class MainActivity extends FragmentActivity {
                 changeFragment(SettingFragment.class, "설정");
                 break;
             case R.id.btPlus:
-                if(viewMode==1) EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
-                dialogFlag = false;
-                Intent i = new Intent(MainActivity.this, DialSchedule.class);
-                startActivity(i);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                if(User.INFO.getExplain1()) {
-                    Intent in = new Intent(MainActivity.this, ExplainActivity.class);
-                    startActivity(in);
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                }
+                checkStoragePermission();
                 break;
             case R.id.btMode:
                 EventBus.getDefault().post(new FinishDialogEvent());
@@ -456,5 +452,148 @@ public class MainActivity extends FragmentActivity {
     }
     public void onEventMainThread(ChangeFragEvent e) {
         changeFragment(e.getCl(), e.getTitleName());
+    }
+
+    public void GPSSetting(){
+        GPSInfo gps = new GPSInfo(this);
+        // GPS 사용유무 가져오기
+        if (gps.isGetLocation()) {
+            User.INFO.setLatitude(gps.getLatitude());
+            User.INFO.setLongitude(gps.getLongitude());
+            gps.stopUsingGPS();
+        } else {
+            // GPS 를 사용할수 없으므로
+			/*Toast.makeText(
+					this,
+					"현재 GPS가 켜져있지 않습니다.",
+					Toast.LENGTH_LONG).show();*/
+            gps.stopUsingGPS();
+        }
+    }
+    public void btFriendEvent(){
+        btMode.setVisibility(View.GONE);
+        changeSetting();
+        changeFragment(FriendFragment.class, "친구시간표");
+    }
+    public void btPlusEvent(){
+        if(viewMode==1) EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
+        dialogFlag = false;
+        Intent i = new Intent(MainActivity.this, DialSchedule.class);
+        startActivity(i);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        if(User.INFO.getExplain1()) {
+            Intent in = new Intent(MainActivity.this, ExplainActivity.class);
+            startActivity(in);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
+    }
+    private final int REQUEST_LOCATION = 101;
+    private void checkLocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Should we show an explanation?
+                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                    // Explain to the user why we need to write the permission.
+                    Toast.makeText(this, getString(R.string.permission_location), Toast.LENGTH_LONG).show();
+                }
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_LOCATION);
+                // MY_PERMISSION_REQUEST_STORAGE is an
+                // app-defined int constant
+            }else {
+                // 다음 부분은 항상 허용일 경우에 해당이 됩니다.
+                GPSSetting();
+            }
+
+        }else {
+            // 다음 부분은 항상 허용일 경우에 해당이 됩니다.
+            GPSSetting();
+        }
+    }
+    private final int REQUEST_CONTACTS = 102;
+    private void checkContactsPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                    != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.WRITE_CONTACTS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Should we show an explanation?
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+                    // Explain to the user why we need to write the permission.
+                    Toast.makeText(this, getString(R.string.permission_contacts), Toast.LENGTH_LONG).show();
+                }
+                requestPermissions(new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS},
+                        REQUEST_CONTACTS);
+            }else {
+                btFriendEvent();
+            }
+        }else {
+            btFriendEvent();
+        }
+    }
+    private final int REQUEST_STORAGE = 103;
+    private void checkStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Should we show an explanation?
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    // Explain to the user why we need to write the permission.
+                    Toast.makeText(this, getString(R.string.permission_storage), Toast.LENGTH_LONG).show();
+                }
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_STORAGE);
+            }else {
+                btPlusEvent();
+            }
+        }else {
+            btPlusEvent();
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_LOCATION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){ //&& grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    GPSSetting();
+                } else {
+                    DialDefault dd = new DialDefault(this,
+                            getString(R.string.permission_request),
+                            getString(R.string.permission_location)+
+                            getString(R.string.permission_deny),
+                            4);
+                    dd.show();
+                }
+                break;
+            case REQUEST_CONTACTS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){ //&& grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    btFriendEvent();
+                } else {
+                    DialDefault dd = new DialDefault(this,
+                            getString(R.string.permission_request),
+                            getString(R.string.permission_contacts)+
+                                    getString(R.string.permission_deny),
+                            5);
+                    dd.show();
+                }
+                break;
+            case REQUEST_STORAGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){ //&& grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    btPlusEvent();
+                } else {
+                    DialDefault dd = new DialDefault(this,
+                            getString(R.string.permission_request),
+                            getString(R.string.permission_storage)+
+                                    getString(R.string.permission_deny),
+                            5);
+                    dd.show();
+                }
+                break;
+        }
     }
 }

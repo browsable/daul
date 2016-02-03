@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.daemin.common.CustomJSONObjectRequest;
 import com.daemin.common.MyVolley;
 import com.daemin.enumclass.User;
+import com.daemin.main.MainActivity;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
@@ -69,6 +72,7 @@ public class DialDefault extends Dialog {
         tvUpdateList = (TextView) findViewById(R.id.tvUpdateList);
         sv = (ScrollView) findViewById(R.id.sv);
         if(callFuncIndex==0) getUpdateList();
+        if(callFuncIndex==3||callFuncIndex==4||callFuncIndex==5) btDialCancel.setVisibility(View.GONE);
         tvTitle.setText(title);
         tvContent.setText(content);
         btDialSetting.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +87,23 @@ public class DialDefault extends Dialog {
                             break;
                         case 2: //과목시간표 초기화
                             User.INFO.getEditor().putString("creditSum", "0").commit();
-                            MyTimeRepo.deleteWithTimetype(context,1);
+                            MyTimeRepo.deleteWithTimetype(context, 1);
+                            break;
+                        case 3: //폰상태권한시
+                            Handler handler = new Handler() {
+
+                                public void handleMessage(Message msg) {
+                                    Intent i = new Intent(context, MainActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    context.startActivity(i);
+                                }
+                            };
+                            handler.sendEmptyMessageDelayed(0, 1000);
+                            cancel();
+                            break;
+                        default:
+                            cancel();
                             break;
                     }
                     cancel();

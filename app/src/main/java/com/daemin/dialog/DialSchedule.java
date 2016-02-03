@@ -1,13 +1,16 @@
 package com.daemin.dialog;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -15,6 +18,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -1141,4 +1145,51 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
         univAdapter.notifyDataSetChanged();
     }
+    private final int REQUEST_STORAGE = 101;
+    private void checkStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Should we show an explanation?
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
+                    // Explain to the user why we need to write the permission.
+                    Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+                }
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_STORAGE);
+                // MY_PERMISSION_REQUEST_STORAGE is an
+                // app-defined int constant
+            }else {
+                // 다음 부분은 항상 허용일 경우에 해당이 됩니다.
+                //firstSetting();
+            }
+
+        }else {
+            // 다음 부분은 항상 허용일 경우에 해당이 됩니다.
+            //firstSetting();
+        }
+    }
+    /*@Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PHONESTATE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){ //&& grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                    //firstSetting();
+
+                    // permission was granted, yay! do the
+                    // calendar task you need to do.
+
+                } else {
+
+                    Log.i("test", "Permission always deny");
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                break;
+        }
+    }*/
 }

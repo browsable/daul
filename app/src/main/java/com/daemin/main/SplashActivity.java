@@ -1,12 +1,16 @@
 package com.daemin.main;
 
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,8 +18,11 @@ import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.daemin.common.GPSInfo;
 import com.daemin.common.MyRequest;
+import com.daemin.dialog.DialDefault;
 import com.daemin.encryption.MyHash;
 import com.daemin.enumclass.User;
 import com.daemin.timetable.R;
@@ -32,7 +39,7 @@ import javax.crypto.NoSuchPaddingException;
 
 public class SplashActivity extends Activity{
 	static SplashActivity singleton;
-
+	private final int REQUEST_PHONESTATE = 100;
 	public static SplashActivity getInstance() {
 		return singleton;
 	}
@@ -48,40 +55,10 @@ public class SplashActivity extends Activity{
 	}
 
 	private void initialize() {
-		if(User.INFO.getFirstFlag())
-			firstSetting();
-		/*GPSInfo gps = new GPSInfo(this);
-		// GPS 사용유무 가져오기
-		if (gps.isGetLocation()) {
-			User.INFO.setLatitude(gps.getLatitude());
-			User.INFO.setLongitude(gps.getLongitude());
-			*//*Toast.makeText(
-					this,
-					"내 위치 - \n위도: " + gps.getLatitude() + "\n경도: " + gps.getLongitude(),
-					Toast.LENGTH_LONG).show();*//*
-			gps.stopUsingGPS();
-		} else {
-			// GPS 를 사용할수 없으므로
-			Toast.makeText(
-					this,
-					"현재 GPS가 켜져있지 않습니다.",
-					Toast.LENGTH_LONG).show();
-			gps.stopUsingGPS();
-		}*/
-
+		checkPhoneStatePermission();
 		//MyRequest.test(singleton);
-		Handler handler = new Handler() {
-
-			public void handleMessage(Message msg) {
-				finish();
-
-				Intent i = new Intent(SplashActivity.this, MainActivity.class);
-				startActivity(i);
-				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			}
-		};
-		handler.sendEmptyMessageDelayed(0, 1000);
 	}
+
 	//앱 설치시 맨 처음 한 번만 셋팅
 	public void firstSetting(){
 		//기기 해상도 너비,높이
@@ -144,5 +121,62 @@ public class SplashActivity extends Activity{
 			e.printStackTrace();
 		}
 		editor.commit();
+	}
+	public void Splash(){
+		Handler handler = new Handler() {
+
+			public void handleMessage(Message msg) {
+				finish();
+
+				Intent i = new Intent(SplashActivity.this, MainActivity.class);
+				startActivity(i);
+				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			}
+		};
+		handler.sendEmptyMessageDelayed(0, 1000);
+	}
+	/**
+	 * Permission check.
+	 */
+	private void checkPhoneStatePermission() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Should we show an explanation?
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
+                    // Explain to the user why we need to write the permission.
+                    Toast.makeText(this, getString(R.string.permission_phonestate), Toast.LENGTH_LONG).show();
+                }
+                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE},
+                                REQUEST_PHONESTATE);
+            } else {
+                // 권한 항상 허용일
+				if(User.INFO.getFirstFlag())firstSetting();
+				Splash();
+            }
+		}else {
+			// 권한 항상 허용일 경우
+			if(User.INFO.getFirstFlag())firstSetting();
+			Splash();
+		}
+	}
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		switch (requestCode) {
+			case REQUEST_PHONESTATE:
+				if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+					firstSetting();
+					Splash();
+				} else {
+					//권한 거부시
+					DialDefault dd = new DialDefault(this,
+							getString(R.string.permission_request),
+							getString(R.string.permission_phonestate)+
+							getString(R.string.permission_deny),
+							3);
+					dd.show();
+				}
+				break;
+		}
 	}
 }

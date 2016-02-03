@@ -22,7 +22,13 @@
     <string name="wait2">등록대기중입니다</string>
     <string name="QandA"><a href="https://open.kakao.com/o/sqXjIpf">문의하기</a></string>
     <string name="QandA2">문의하기</string>
-
+    <!--권한-->
+    <string name="permission_phonestate">사용자의 고유 아이디 생성을 위해\n폰 상태 권한이 필요합니다.</string>
+    <string name="permission_contacts">친구 목록을 불러오기 위해\n연락처 접근 권한이 필요합니다.</string>
+    <string name="permission_storage">시간표 저장을 위해\n저장소 접근 권한이 필요합니다.</string>
+    <string name="permission_location">지도 검색을 위해\n위치 권한이 필요합니다.</string>
+    <string name="permission_request">권한승인 요청</string>
+    <string name="permission_deny">\n일부 기능이 동작하지 않을 수 있습니다.</string>
     <!--메인화면-->
     <!--좌측드로어메뉴-->
     <string name="timetable">시간표</string>

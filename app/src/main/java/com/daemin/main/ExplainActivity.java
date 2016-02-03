@@ -39,6 +39,12 @@ public class ExplainActivity extends Activity {
 		return singleton;
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		User.INFO.getEditor().putBoolean("explain1",false).commit();
+	}
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		singleton = this;
@@ -47,7 +53,6 @@ public class ExplainActivity extends Activity {
 		ivExplain.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				User.INFO.getEditor().putBoolean("explain1",false).commit();
 				finish();
 				return true;
 			}

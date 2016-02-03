@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#99000000"
     >
    <ImageView
    android:id="@+id/ivExplain"
@@ -11,5 +10,12 @@
    android:layout_height="match_parent"
    android:scaleType="fitXY"
    android:background="@drawable/explain"
-   ></ImageView>
+   />
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="@dimen/margin_default"
+        android:background="@drawable/ic_cancel2"
+        android:layout_alignParentRight="true"
+        />
 </RelativeLayout>
