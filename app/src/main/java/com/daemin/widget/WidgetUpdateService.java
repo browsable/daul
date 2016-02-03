@@ -212,6 +212,13 @@ public class WidgetUpdateService extends Service {
                     in.putExtra("day", Dates.NOW.mData[i]);
                     PendingIntent dP = PendingIntent.getActivity(this, i, in,PendingIntent.FLAG_UPDATE_CURRENT);
                     views.setOnClickPendingIntent(llID, dP);
+                    if(Dates.NOW.isToday)  {
+                        if(i==Dates.NOW.dayOfMonth+Dates.NOW.dayOfWeek) {
+                            views.setInt(llID, "setBackgroundResource", R.color.transmaincolor);
+                        }
+                    }else{
+                        views.setInt(llID, "setBackgroundResource", R.drawable.bt_click);
+                    }
                     int j = i % 7;
                     switch (j) {
                         case 0:
@@ -250,7 +257,7 @@ public class WidgetUpdateService extends Service {
         views.setViewVisibility(R.id.btMonth, View.VISIBLE); //Visible
         views.setViewVisibility(R.id.ivWeek, View.VISIBLE);
         views.setViewVisibility(R.id.llMonth, View.GONE);
-        WeekCaptureView iv = new WeekCaptureView(this);
+        WeekCaptureView5_5 iv = new WeekCaptureView5_5(this);
         Dates.NOW.setWeekData(wIndex5_5_1);
         views.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
         views.setTextViewText(R.id.tvDate, setMonthWeek());

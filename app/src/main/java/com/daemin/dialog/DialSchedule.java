@@ -94,6 +94,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onBackPressed() {
         EventBus.getDefault().post(new SetBtPlusEvent(true));
         DrawMode.CURRENT.setMode(0);
+        if(viewMode==0)Common.fetchWeekData();
+        else Common.fetchMonthData();
         finish();
     }
 
@@ -160,7 +162,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             }
 
         }else{
-            btUniv.setVisibility(View.INVISIBLE);
+            btNormal.setVisibility(View.GONE);
+            btUniv.setVisibility(View.GONE);
             if(getIntent().getBooleanExtra("widget5_5_1", false)){
                 int dayCnt = getIntent().getIntExtra("dayCnt",0);
                 int xth = dayCnt%7+1;
@@ -175,6 +178,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         imm.showSoftInput(findViewById(R.id.etName), InputMethodManager.SHOW_IMPLICIT);
                     }
                 }, 100);
+                updateMonthList();
             }
         }
         screenHeight = dm.heightPixels - lp.height;
