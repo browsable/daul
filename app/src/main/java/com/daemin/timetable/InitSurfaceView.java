@@ -62,6 +62,12 @@ public class InitSurfaceView extends SurfaceView implements
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
+		for (TimePos ETP : TimePos.values()) {
+			//시간표 사각형 그려진 영역 초기화
+			if(ETP.getPosState()!= PosState.NO_PAINT){
+				ETP.setPosState(PosState.NO_PAINT);
+			}
+		}
 		boolean done = true;
 		destroyFlag = true;
 		initThread.setRunning(false);
@@ -69,12 +75,6 @@ public class InitSurfaceView extends SurfaceView implements
 			try {
 				initThread.join();
 				done = false;
-				for (TimePos ETP : TimePos.values()) {
-					//시간표 사각형 그려진 영역 초기화
-					if(ETP.getPosState()!= PosState.NO_PAINT){
-						ETP.setPosState(PosState.NO_PAINT);
-					}
-				}
 			} catch (InterruptedException e) {
 
 			}

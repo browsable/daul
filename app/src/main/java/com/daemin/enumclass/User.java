@@ -88,4 +88,7 @@ public enum User {
     public boolean getWidget4_4(){
         return pref.getBoolean("widget4_4",false);
     }
+    public boolean getExplain1(){
+        return pref.getBoolean("explain1",true);
+    }
 }

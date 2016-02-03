@@ -54,6 +54,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name="com.daemin.main.ExplainActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="com.daemin.map.MapActivity" />
        <activity android:name="com.daemin.community.github.GithubActivity" />
         <activity android:name="com.daemin.community.amazon.AmazonActivity" />

@@ -68,10 +68,6 @@ public class MainActivity extends FragmentActivity {
     public void onResume() {
         super.onResume();
         if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
-        if (surfaceFlag) {
-            initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
-            surfaceFlag = false;
-        }
     }
 
     @Override
@@ -228,8 +224,7 @@ public class MainActivity extends FragmentActivity {
         btPlus.setVisibility(View.GONE);
         flSurface.setVisibility(View.GONE);
         frame_container.setVisibility(View.VISIBLE);
-        surfaceFlag = true;
-        initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
+        initSurfaceView.setVisibility(View.GONE);
     }
 
     public void btBackEvent() {
@@ -286,10 +281,7 @@ public class MainActivity extends FragmentActivity {
                 changeFragment(TimetableFragment.class, "");
                 flSurface.setVisibility(View.VISIBLE);
                 frame_container.setVisibility(View.GONE);
-                if (surfaceFlag) {
-                    initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
-                    surfaceFlag = false;
-                }
+                initSurfaceView.setVisibility(View.VISIBLE);
                 break;
             case R.id.btFriend:
                 btMode.setVisibility(View.GONE);
@@ -317,6 +309,11 @@ public class MainActivity extends FragmentActivity {
                 Intent i = new Intent(MainActivity.this, DialSchedule.class);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                if(User.INFO.getExplain1()) {
+                    Intent in = new Intent(MainActivity.this, ExplainActivity.class);
+                    startActivity(in);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
                 break;
             case R.id.btMode:
                 EventBus.getDefault().post(new FinishDialogEvent());
@@ -327,6 +324,7 @@ public class MainActivity extends FragmentActivity {
                 Common.stateFilter(viewMode);
                 if (btMode.isChecked()) {
                     viewMode = 1;
+                    initSurfaceView.setMode(viewMode);
                     EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
                     Dates.NOW.setMonthData(0);
                     switcher.setText("");
@@ -336,9 +334,9 @@ public class MainActivity extends FragmentActivity {
                     changeFragment(TimetableFragment.class, "");
                     flSurface.setVisibility(View.VISIBLE);
                     frame_container.setVisibility(View.GONE);
-                    initSurfaceView.setMode(viewMode);
                 }else{
                     viewMode = 0;
+                    initSurfaceView.setMode(viewMode);
                     Dates.NOW.setWeekData(0);
                     EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
                     tvTitleYear.setVisibility(View.VISIBLE);
@@ -348,13 +346,12 @@ public class MainActivity extends FragmentActivity {
                     changeFragment(TimetableFragment.class, "");
                     flSurface.setVisibility(View.VISIBLE);
                     frame_container.setVisibility(View.GONE);
-                    initSurfaceView.setMode(viewMode);
+                }
+                if(!initSurfaceView.isDestroyed()){
+                    initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
                 }
                 User.INFO.getEditor().putInt("viewMode", viewMode).commit();
-                if(!initSurfaceView.isDestroyed())
-                    initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
                 initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
-                surfaceFlag = false;
                 break;
             case R.id.btBack:
                 Common.stateFilter(viewMode);
@@ -375,7 +372,6 @@ public class MainActivity extends FragmentActivity {
     private void setLayout() {
         backKeyName = "";
         mContent = null;
-        surfaceFlag = false;
         dialogFlag = true;
         DrawMode.CURRENT.setMode(0);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -419,7 +415,7 @@ public class MainActivity extends FragmentActivity {
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
     private String backKeyName;
-    private Boolean surfaceFlag, dialogFlag, widget5_5_1,widget5_5, widget4_4;
+    private Boolean dialogFlag, widget5_5_1,widget5_5, widget4_4;
     private TextSwitcher switcher;
     private static MainActivity singleton;
     private int viewMode;
