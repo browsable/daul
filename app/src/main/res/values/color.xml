@@ -6,6 +6,7 @@
     <color name="drawercolor">#3AA4B0</color>
     <color name="profilecolor">#2E929C</color>
     <color name="whitesmoke">#F5F5F5</color>
+    <color name="widgetwhitesmoke">#40F5F5F5</color>
     <color name="transwhitesmoke">#10F5F5F5</color>
     <color name="darkgray">#4E4E4F</color>
     <color name="dimgray">#636363</color>

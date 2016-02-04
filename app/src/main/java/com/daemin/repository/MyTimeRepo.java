@@ -73,7 +73,8 @@ public class MyTimeRepo {
     }
     public static List<MyTime> getHourTimes(Context context, long startmillis, long endmillis, int xth, int startHour, int startMin, int endMin){
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
-            qb.where(qb.or(qb.and(MyTimeDao.Properties.Timetype.eq(1),
+            qb.where(qb.or(MyTimeDao.Properties.Repeat.eq(1),
+                            qb.and(MyTimeDao.Properties.Timetype.eq(1),
                             MyTimeDao.Properties.Dayofweek.eq(xth),
                                 MyTimeDao.Properties.Starthour.eq(startHour),
                                 MyTimeDao.Properties.Startmin.le(endMin)),

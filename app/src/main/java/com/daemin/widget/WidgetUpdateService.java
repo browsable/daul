@@ -172,9 +172,9 @@ public class WidgetUpdateService extends Service {
         Intent main5 = new Intent(Common.ACTION_HOME5_5_1);
         PendingIntent mainP5 = PendingIntent.getBroadcast(this, 0, main5, 0);
         views.setOnClickPendingIntent(R.id.btHome, mainP5);
-        Intent dial = new Intent(Common.ACTION_DIAL5_5_1);
-        PendingIntent dialP = PendingIntent.getBroadcast(this, 0, dial, 0);
-        views.setOnClickPendingIntent(R.id.timetableimage, dialP);
+        Intent home = new Intent(Common.ACTION_HOME5_5_1);
+        PendingIntent dialP = PendingIntent.getBroadcast(this, 0, home, 0);
+        views.setOnClickPendingIntent(R.id.ivWeek, dialP);
         Intent month5 = new Intent(Common.ACTION_MONTH5_5_1);
         PendingIntent monthP5 = PendingIntent.getBroadcast(this, 0, month5, 0);
         views.setOnClickPendingIntent(R.id.btMonth, monthP5);
@@ -257,6 +257,8 @@ public class WidgetUpdateService extends Service {
         views.setViewVisibility(R.id.btMonth, View.VISIBLE); //Visible
         views.setViewVisibility(R.id.ivWeek, View.VISIBLE);
         views.setViewVisibility(R.id.llMonth, View.GONE);
+        int rlBar = getResources().getIdentifier("rlBar", "id", "com.daemin.timetable");
+        views.setInt(rlBar, "setBackgroundResource", R.color.whitesmoke);
         WeekCaptureView5_5 iv = new WeekCaptureView5_5(this);
         Dates.NOW.setWeekData(wIndex5_5_1);
         views.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
@@ -274,6 +276,8 @@ public class WidgetUpdateService extends Service {
         viewMode = 1;
         wIndex5_5_1 = 0;
         //mIndex5_5_1 = 0;
+        int rlBar = getResources().getIdentifier("rlBar", "id", "com.daemin.timetable");
+        views.setInt(rlBar, "setBackgroundResource", R.color.widgetwhitesmoke);
         views.setViewVisibility(R.id.tvYear, View.GONE);
         views.setViewVisibility(R.id.btWeek, View.VISIBLE); //Visible
         views.setViewVisibility(R.id.ivWeek, View.GONE);

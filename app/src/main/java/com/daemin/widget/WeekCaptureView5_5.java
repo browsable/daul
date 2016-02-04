@@ -217,14 +217,17 @@ public class WeekCaptureView5_5 extends ImageView {
 
         float[] hp_hour = {
                 // 가로선 : 1시간 간격
-                width / 20, height / 12 + intervalSize, width, height / 12 + intervalSize, width / 20, height * 2 / 12 + intervalSize, width,
-                height * 2 / 12 + intervalSize, width / 20, height * 3 / 12 + intervalSize, width, height * 3 / 12 + intervalSize, width / 20,
-                height * 4 / 12 + intervalSize, width, height * 4 / 12 + intervalSize, width / 20, height * 5 / 12 + intervalSize, width,
-                height * 5 / 12 + intervalSize, width / 20, height * 6 / 12 + intervalSize, width, height * 6 / 12 + intervalSize, width / 20,
-                height * 7 / 12 + intervalSize, width, height * 7 / 12 + intervalSize, width / 20, height * 8 / 12 + intervalSize, width,
-                height * 8 / 12 + intervalSize, width / 20, height * 9 / 12 + intervalSize, width, height * 9 / 12 + intervalSize, width / 20,
-                height * 10 / 12 + intervalSize, width, height * 10 / 12 + intervalSize, width / 20, height * 11 / 12 + intervalSize, width,
-                height * 11 / 12 + intervalSize};
+                width / 20, height / 30 + intervalSize, width, height / 32 + intervalSize,
+                width / 20, height * (28*1+11) / (30*11) + + intervalSize, width,height * (28*1+11) / (30*11) + intervalSize,
+                width / 20, height * (28*2+11) / (30*11) + + intervalSize, width,height * (28*2+11) / (30*11) + intervalSize,
+                width / 20, height * (28*3+11) / (30*11) + + intervalSize, width,height * (28*3+11) / (30*11) + intervalSize,
+                width / 20, height * (28*4+11) / (30*11) + + intervalSize, width,height * (28*4+11) / (30*11) + intervalSize,
+                width / 20, height * (28*5+11) / (30*11) + + intervalSize, width,height * (28*5+11) / (30*11) + intervalSize,
+                width / 20, height * (28*6+11) / (30*11) + + intervalSize, width,height * (28*6+11) / (30*11) + intervalSize,
+                width / 20, height * (28*7+11) / (30*11) + + intervalSize, width,height * (28*7+11) / (30*11) + intervalSize,
+                width / 20, height * (28*8+11) / (30*11) + + intervalSize, width,height * (28*8+11) / (30*11) + intervalSize,
+                width / 20, height * (28*9+11) / (30*11) + + intervalSize, width,height * (28*9+11) / (30*11) + intervalSize,
+                width / 20, height * (28*10+11) / (30*11) + + intervalSize, width,height * (28*10+11) / (30*11) + intervalSize};
         float[] vp = {
                 // 세로 선
                 width / 15, height / 32 + intervalSize, width / 15, height * 31 / 32 + intervalSize, width * 3 / 15,

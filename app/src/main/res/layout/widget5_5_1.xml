@@ -7,9 +7,10 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rlBar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="#40F5F5F5"
+        android:background="@color/widgetwhitesmoke"
         android:clickable="false"
         android:focusable="false">
 
@@ -114,7 +115,6 @@
         android:id="@+id/ivWeek"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_xxxs"
         android:scaleType="fitXY"
         android:background="@color/transparency"
         />
