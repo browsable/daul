@@ -121,52 +121,54 @@ public class WeekCaptureView5_5 extends ImageView {
             int endMin = mt.getEndmin();
             int startHour = mt.getStarthour();
             int endHour = mt.getEndhour();
-            int startYth = Convert.HourOfDayToYth(startHour);
-            int endYth = Convert.HourOfDayToYth(endHour);
+            int startYth = Convert.HourOfDayToYthForWidget(startHour);
+            int endYth = Convert.HourOfDayToYthForWidget(endHour);
             realStartYth = startYth;
             realStartMin = startMin;
-            canvas.drawRect(width * xth / 15, (height * startYth / 32 + intervalSize) + (2 * height / 32) * startMin / 60,
-                    width * (xth + 2) / 15, (height * endYth / 32 + intervalSize) + (2 * height / 32) * endMin / 60, rp);
-            if (endHour==startHour&&endMin != 0) ++endHour;
-            String[] ETPName = new String[endHour - startHour];
-            for (int i = 0; i < ETPName.length; i++) {
-                ETPName[i] = Convert.getxyMerge(xth,Convert.HourOfDayToYth(startHour++));
-            }
-            for(int i=0;i<ETPName.length;i++) {
-                if (ETP.containsKey(ETPName[i])) {
-                    if (i == 0) {
-                        String[] tmp = ETP.get(ETPName[i]).split(":");
-                        title = tmp[0];
-                        place = tmp[1];
-                        realStartYth = Integer.parseInt(tmp[2]);
-                        realStartMin = Integer.parseInt(tmp[3]);
-                    }
-                } else {
-                    if (i == 0) {
-                        title = mt.getName();
-                        ETP.put(ETPName[i], title + ":" + place + ":" + realStartYth + ":" + realStartMin);
-                    } else {
-                        ETP.put(ETPName[i], " " + ":" + " " + ":" + realStartYth + ":" + realStartMin);
-                    }
-                }
-            }
-            if(title.length()>5){
-                second = title.substring(5);
-                title = title.substring(0,5);
-                if(second.length()>5){
-                    second = second.substring(0,5)+"..";
-                }
-                ++posIndex;
-            }
-            if(place!=null){
-                ++posIndex;
-                if(place.length()>5) place = place.substring(0,6);
-            }
-            canvas.drawText(title, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60-intervalSize/2, tp);
-            if (posIndex == 2)
-                canvas.drawText(second, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60-intervalSize/2 + (posIndex - 1) * dateSize*9/10, tp);
-            canvas.drawText(place, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60-intervalSize/2 + posIndex * dateSize*9/10, tp);
+             if(startYth!=11) { //18시 내의 시간대에서만 그려줌
+                canvas.drawRect(width * xth / 15, height * (28 * startYth + 10) / (30 * 10) + intervalSize + (28 * height / (30 * 10)) * startMin / 60,
+                        width * (xth + 2) / 15, height * (28 * endYth + 10) / (30 * 10) + (28 * height / (30 * 10)) * endMin / 60, rp);
 
+                if (endHour == startHour && endMin != 0) ++endHour;
+                String[] ETPName = new String[endHour - startHour];
+                for (int i = 0; i < ETPName.length; i++) {
+                    ETPName[i] = Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour++));
+                }
+                for (int i = 0; i < ETPName.length; i++) {
+                    if (ETP.containsKey(ETPName[i])) {
+                        if (i == 0) {
+                            String[] tmp = ETP.get(ETPName[i]).split(":");
+                            title = tmp[0];
+                            place = tmp[1];
+                            realStartYth = Integer.parseInt(tmp[2]);
+                            realStartMin = Integer.parseInt(tmp[3]);
+                        }
+                    } else {
+                        if (i == 0) {
+                            title = mt.getName();
+                            ETP.put(ETPName[i], title + ":" + place + ":" + realStartYth + ":" + realStartMin);
+                        } else {
+                            ETP.put(ETPName[i], " " + ":" + " " + ":" + realStartYth + ":" + realStartMin);
+                        }
+                    }
+                }
+                if (title.length() > 5) {
+                    second = title.substring(5);
+                    title = title.substring(0, 5);
+                    if (second.length() > 5) {
+                        second = second.substring(0, 5) + "..";
+                    }
+                    ++posIndex;
+                }
+                if (place != null) {
+                    ++posIndex;
+                    if (place.length() > 5) place = place.substring(0, 6);
+                }
+                canvas.drawText(title, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60 - intervalSize / 2, tp);
+                if (posIndex == 2)
+                    canvas.drawText(second, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60 - intervalSize / 2 + (posIndex - 1) * dateSize * 9 / 10, tp);
+                canvas.drawText(place, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60 - intervalSize / 2 + posIndex * dateSize * 9 / 10, tp);
+            }
         }
     }
     @Override
@@ -218,16 +220,16 @@ public class WeekCaptureView5_5 extends ImageView {
         float[] hp_hour = {
                 // 가로선 : 1시간 간격
                 width / 20, height / 30 + intervalSize, width, height / 32 + intervalSize,
-                width / 20, height * (28*1+11) / (30*11) + + intervalSize, width,height * (28*1+11) / (30*11) + intervalSize,
-                width / 20, height * (28*2+11) / (30*11) + + intervalSize, width,height * (28*2+11) / (30*11) + intervalSize,
-                width / 20, height * (28*3+11) / (30*11) + + intervalSize, width,height * (28*3+11) / (30*11) + intervalSize,
-                width / 20, height * (28*4+11) / (30*11) + + intervalSize, width,height * (28*4+11) / (30*11) + intervalSize,
-                width / 20, height * (28*5+11) / (30*11) + + intervalSize, width,height * (28*5+11) / (30*11) + intervalSize,
-                width / 20, height * (28*6+11) / (30*11) + + intervalSize, width,height * (28*6+11) / (30*11) + intervalSize,
-                width / 20, height * (28*7+11) / (30*11) + + intervalSize, width,height * (28*7+11) / (30*11) + intervalSize,
-                width / 20, height * (28*8+11) / (30*11) + + intervalSize, width,height * (28*8+11) / (30*11) + intervalSize,
-                width / 20, height * (28*9+11) / (30*11) + + intervalSize, width,height * (28*9+11) / (30*11) + intervalSize,
-                width / 20, height * (28*10+11) / (30*11) + + intervalSize, width,height * (28*10+11) / (30*11) + intervalSize};
+                width / 20, height * (28*1+10) / (30*10) + + intervalSize, width,height * (28*1+10) / (30*10) + intervalSize,
+                width / 20, height * (28*2+10) / (30*10) + + intervalSize, width,height * (28*2+10) / (30*10) + intervalSize,
+                width / 20, height * (28*3+10) / (30*10) + + intervalSize, width,height * (28*3+10) / (30*10) + intervalSize,
+                width / 20, height * (28*4+10) / (30*10) + + intervalSize, width,height * (28*4+10) / (30*10) + intervalSize,
+                width / 20, height * (28*5+10) / (30*10) + + intervalSize, width,height * (28*5+10) / (30*10) + intervalSize,
+                width / 20, height * (28*6+10) / (30*10) + + intervalSize, width,height * (28*6+10) / (30*10) + intervalSize,
+                width / 20, height * (28*7+10) / (30*10) + + intervalSize, width,height * (28*7+10) / (30*10) + intervalSize,
+                width / 20, height * (28*8+10) / (30*10) + + intervalSize, width,height * (28*8+10) / (30*10) + intervalSize,
+                width / 20, height * (28*9+10) / (30*10) + + intervalSize, width,height * (28*9+10) / (30*10) + intervalSize,
+                width / 20, height * 29/30 + + intervalSize, width,height *29/30 + intervalSize};
         float[] vp = {
                 // 세로 선
                 width / 15, height / 32 + intervalSize, width / 15, height * 31 / 32 + intervalSize, width * 3 / 15,
@@ -242,11 +244,11 @@ public class WeekCaptureView5_5 extends ImageView {
         canvas.drawColor(Color.WHITE);
         canvas.drawLines(hp_hour, hp);
         canvas.drawLines(vp, hpvp);
-        canvas.drawText("8", (width / 20) * 5 / 8, height * 1 / 32 + hourIntervalSize, tp);
-        canvas.drawText("9", (width / 20) * 5 / 8, height * 3 / 32 + hourIntervalSize, tp);
+        canvas.drawText("8", (width / 20) * 5 / 8, height * 1 / 30 + hourIntervalSize, tp);
+        canvas.drawText("9", (width / 20) * 5 / 8,height * (28*1+10) / (30*10) + hourIntervalSize, tp);
         for (int i = 2; i < 11; i++) {
             canvas.drawText(String.valueOf(i + 8), width / 40,
-                    ((2 * i + 1) * height / 32) + hourIntervalSize, tp);
+                    height *(28*i+10)/(30*10) + hourIntervalSize, tp);
         }
         canvas.drawText(Dates.NOW.mdOfSun, width * 2 / 15, (height / 32 + intervalSize) * 7 / 16, tpred);
         canvas.drawText(Dates.NOW.mdOfMon, width * 4 / 15, (height / 32 + intervalSize) * 7 / 16, tp);

@@ -1,5 +1,6 @@
 package com.daemin.widget;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.daemin.common.AppController;
 import com.daemin.common.Common;
 import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.Dates;
@@ -71,7 +73,9 @@ public class Widget5_5_1 extends AppWidgetProvider {
 				dial.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				dial.putExtra("widgetFlag", true);
-				context.startActivity(dial);
+				Activity activity = (Activity) context;
+				activity.startActivity(dial);
+				activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
 			case Common.ACTION_HOME5_5_1:
 				Intent main5 = new Intent(context, MainActivity.class);

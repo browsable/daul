@@ -27,7 +27,6 @@ public class Common {
 
 	/* BroadCastReceiver Filter */
 	public static final String ACTION_HOME5_5 = "com.daemin.widget.ACTION_HOME5_5";
-	public static final String ACTION_DIAL5_5 = "com.daemin.widget.ACTION_DIAL5_5";
 	public static final String ACTION_WEEK5_5 = "com.daemin.widget.ACTION_WEEK5_5";
 	public static final String ACTION_MONTH5_5 = "com.daemin.widget.ACTION_MONTH5_5";
 	public static final String ACTION_BACK5_5 = "com.daemin.widget.ACTION_BACK5_5";
@@ -44,7 +43,6 @@ public class Common {
 	public static final String ACTION_MONTH4_4 = "com.daemin.widget.ACTION_MONTH4_4";
 	public static final String ACTION_BACK4_4 = "com.daemin.widget.ACTION_BACK4_4";
 	public static final String ACTION_FORWARD4_4 = "com.daemin.widget.ACTION_FORWARD4_4";
-	public static final String ACTION_DIAL4_4 = "com.daemin.widget.ACTION_DIAL4_4";
 	public static final String ALARM_PUSH = "com.daemin.common.ALARM_PUSH";
 	public static final String MAIN_COLOR = "#73C8BA";
 	public static final String TRANS_COLOR = "#00000000";

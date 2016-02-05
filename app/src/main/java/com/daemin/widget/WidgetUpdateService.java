@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.RemoteViews;
 import com.daemin.common.Common;
 import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.Dates;
+import com.daemin.enumclass.User;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.repository.WidgetIDRepo;
 import com.daemin.timetable.R;
@@ -159,7 +161,7 @@ public class WidgetUpdateService extends Service {
                     WidgetIDRepo.insertOrUpdate(this, new WidgetID(lID));
                 }
             }else{
-                enrollCntHash.put(lID,0);
+                enrollCntHash.put(lID, 0);
                 RemoteViews tv = new RemoteViews(getPackageName(), R.layout.widget_item);
                 tv.setTextViewText(R.id.widget_item, mt.getName());
                 views.addView(lID, tv);
@@ -225,7 +227,7 @@ public class WidgetUpdateService extends Service {
                             views.setTextColor(tvID, getResources().getColor(R.color.red));
                             break;
                         case 6:
-                            views.setTextColor(tvID, getResources().getColor(R.color.oringinalblue));
+                            views.setTextColor(tvID, getResources().getColor(R.color.blue));
                             break;
                         default:
                             views.setTextColor(tvID, getResources().getColor(android.R.color.black));
@@ -237,7 +239,7 @@ public class WidgetUpdateService extends Service {
                     PendingIntent dP = PendingIntent.getBroadcast(this, 0, in, 0);
                     views.setOnClickPendingIntent(llID, dP);
                     views.setTextViewText(tvID, Dates.NOW.mData[i]);
-                    views.setTextColor(tvID, getResources().getColor(R.color.gray));
+                    views.setTextColor(tvID, getResources().getColor(R.color.middlegray));
                 }
 
             }
@@ -257,16 +259,22 @@ public class WidgetUpdateService extends Service {
         views.setViewVisibility(R.id.btMonth, View.VISIBLE); //Visible
         views.setViewVisibility(R.id.ivWeek, View.VISIBLE);
         views.setViewVisibility(R.id.llMonth, View.GONE);
-        int rlBar = getResources().getIdentifier("rlBar", "id", "com.daemin.timetable");
-        views.setInt(rlBar, "setBackgroundResource", R.color.whitesmoke);
-        WeekCaptureView5_5 iv = new WeekCaptureView5_5(this);
+        /*int rlBar = getResources().getIdentifier("rlBar", "id", "com.daemin.timetable");
+        views.setInt(rlBar, "setBackgroundResource", R.color.whitesmoke);*/
+        WeekCaptureView iv = new WeekCaptureView(this);
         Dates.NOW.setWeekData(wIndex5_5_1);
         views.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
         views.setTextViewText(R.id.tvDate, setMonthWeek());
         Common.fetchWeekData();
-        iv.layout(0, 0, deviceWidth, deviceHeight);
+        iv.layout(0, 0, deviceWidth, deviceHeight*7/10);
         iv.setDrawingCacheEnabled(true);
         Bitmap bitmap = iv.getDrawingCache();
+        /*Bitmap rtnBitmap;
+        Matrix matrix = new Matrix();
+        matrix.postScale(1.05f, 0.75f);
+        int w	= bitmap.getWidth();
+        int h	= bitmap.getHeight();
+        rtnBitmap	= Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, false);*/
         views.setImageViewBitmap(R.id.ivWeek, bitmap);
         widget5_5_1Setting(views, manager);
 
@@ -276,8 +284,8 @@ public class WidgetUpdateService extends Service {
         viewMode = 1;
         wIndex5_5_1 = 0;
         //mIndex5_5_1 = 0;
-        int rlBar = getResources().getIdentifier("rlBar", "id", "com.daemin.timetable");
-        views.setInt(rlBar, "setBackgroundResource", R.color.widgetwhitesmoke);
+        /*int rlBar = getResources().getIdentifier("rlBar", "id", "com.daemin.timetable");
+        views.setInt(rlBar, "setBackgroundResource", R.color.widgetwhitesmoke);*/
         views.setViewVisibility(R.id.tvYear, View.GONE);
         views.setViewVisibility(R.id.btWeek, View.VISIBLE); //Visible
         views.setViewVisibility(R.id.ivWeek, View.GONE);
@@ -290,14 +298,14 @@ public class WidgetUpdateService extends Service {
     public void widget5_5_1Back(RemoteViews views, AppWidgetManager manager){
         if (viewMode == 0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);
-            WeekCaptureView iv = new WeekCaptureView(this);
+            WeekCaptureView5_5 iv = new WeekCaptureView5_5(this);
             views.setViewVisibility(R.id.btWeek, View.GONE);
             views.setViewVisibility(R.id.btMonth, View.VISIBLE); //Visible
             Dates.NOW.setWeekData(--wIndex5_5_1);
             views.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
             views.setTextViewText(R.id.tvDate, setMonthWeek());
             Common.fetchWeekData();
-            iv.layout(0, 0, deviceWidth, deviceHeight);
+            iv.layout(0, 0, deviceWidth, deviceHeight*7/10);
             iv.setDrawingCacheEnabled(true);
             Bitmap bitmap = iv.getDrawingCache();
             views.setImageViewBitmap(R.id.ivWeek, bitmap);
@@ -316,14 +324,14 @@ public class WidgetUpdateService extends Service {
     public void widget5_5_1Forward(RemoteViews views, AppWidgetManager manager){
         if(viewMode==0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);
-            WeekCaptureView iv = new WeekCaptureView(this);
+            WeekCaptureView5_5 iv = new WeekCaptureView5_5(this);
             views.setViewVisibility(R.id.btWeek, View.GONE);
             views.setViewVisibility(R.id.btMonth, View.VISIBLE); //Visible
             Dates.NOW.setWeekData(++wIndex5_5_1);
             views.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
             views.setTextViewText(R.id.tvDate, setMonthWeek());
             Common.fetchWeekData();
-            iv.layout(0, 0, deviceWidth, deviceHeight);
+            iv.layout(0, 0, deviceWidth, deviceHeight*7/10);
             iv.setDrawingCacheEnabled(true);
             Bitmap bitmap=iv.getDrawingCache();
             views.setImageViewBitmap(R.id.ivWeek, bitmap);
@@ -343,7 +351,7 @@ public class WidgetUpdateService extends Service {
         Intent main5 = new Intent(Common.ACTION_HOME5_5);
         PendingIntent mainP5 = PendingIntent.getBroadcast(this, 0, main5, 0);
         views.setOnClickPendingIntent(R.id.btHome, mainP5);
-        Intent dial = new Intent(Common.ACTION_DIAL5_5);
+        Intent dial = new Intent(Common.ACTION_HOME5_5);
         PendingIntent dialP = PendingIntent.getBroadcast(this, 0, dial, 0);
         views.setOnClickPendingIntent(R.id.timetableimage, dialP);
         Intent week5 = new Intent(Common.ACTION_WEEK5_5);
@@ -366,7 +374,7 @@ public class WidgetUpdateService extends Service {
         Intent main4 = new Intent(Common.ACTION_HOME4_4);
         PendingIntent mainP4 = PendingIntent.getBroadcast(this, 0, main4, 0);
         views.setOnClickPendingIntent(R.id.btHome, mainP4);
-        Intent dial = new Intent(Common.ACTION_DIAL4_4);
+        Intent dial = new Intent(Common.ACTION_HOME4_4);
         PendingIntent dialP = PendingIntent.getBroadcast(this, 0, dial, 0);
         views.setOnClickPendingIntent(R.id.timetableimage, dialP);
         Intent week4 = new Intent(Common.ACTION_WEEK4_4);

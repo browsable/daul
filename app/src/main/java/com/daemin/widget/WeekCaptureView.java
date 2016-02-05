@@ -162,10 +162,10 @@ public class WeekCaptureView extends ImageView {
                 ++posIndex;
                 if(place.length()>5) place = place.substring(0,6);
             }
-            canvas.drawText(title, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60-intervalSize/2, tp);
+            canvas.drawText(title, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60, tp);
             if (posIndex == 2)
-                canvas.drawText(second, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60-intervalSize/2 + (posIndex - 1) * dateSize*9/10, tp);
-            canvas.drawText(place, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60-intervalSize/2 + posIndex * dateSize*9/10, tp);
+                canvas.drawText(second, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60 + (posIndex - 1) * dateSize*9/10, tp);
+            canvas.drawText(place, width * (xth + 1) / 15, (height * (realStartYth + 1) / 32) + (2 * height / 32) * realStartMin / 60+ posIndex * dateSize*9/10, tp);
 
         }
     }

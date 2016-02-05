@@ -65,13 +65,6 @@ public class Widget4_4 extends AppWidgetProvider {
                 forward.putExtra("action", "forward4_4");
                 context.startService(forward);
                 break;
-            case Common.ACTION_DIAL4_4:
-                Intent dial = new Intent(context, DialSchedule.class);
-                dial.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                dial.putExtra("widgetFlag",true);
-                context.startActivity(dial);
-                break;
             case Common.ACTION_HOME4_4:
                 Intent main4 = new Intent(context, MainActivity.class);
                 main4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
