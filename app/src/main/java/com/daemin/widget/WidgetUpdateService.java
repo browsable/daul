@@ -8,7 +8,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -18,7 +17,6 @@ import android.widget.RemoteViews;
 import com.daemin.common.Common;
 import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.Dates;
-import com.daemin.enumclass.User;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.repository.WidgetIDRepo;
 import com.daemin.timetable.R;
@@ -259,8 +257,6 @@ public class WidgetUpdateService extends Service {
         views.setViewVisibility(R.id.btMonth, View.VISIBLE); //Visible
         views.setViewVisibility(R.id.ivWeek, View.VISIBLE);
         views.setViewVisibility(R.id.llMonth, View.GONE);
-        /*int rlBar = getResources().getIdentifier("rlBar", "id", "com.daemin.timetable");
-        views.setInt(rlBar, "setBackgroundResource", R.color.whitesmoke);*/
         WeekCaptureView iv = new WeekCaptureView(this);
         Dates.NOW.setWeekData(wIndex5_5_1);
         views.setTextViewText(R.id.tvYear, Dates.NOW.year + getString(R.string.year));
@@ -269,12 +265,6 @@ public class WidgetUpdateService extends Service {
         iv.layout(0, 0, deviceWidth, deviceHeight*7/10);
         iv.setDrawingCacheEnabled(true);
         Bitmap bitmap = iv.getDrawingCache();
-        /*Bitmap rtnBitmap;
-        Matrix matrix = new Matrix();
-        matrix.postScale(1.05f, 0.75f);
-        int w	= bitmap.getWidth();
-        int h	= bitmap.getHeight();
-        rtnBitmap	= Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, false);*/
         views.setImageViewBitmap(R.id.ivWeek, bitmap);
         widget5_5_1Setting(views, manager);
 
@@ -283,9 +273,6 @@ public class WidgetUpdateService extends Service {
         pref.edit().putInt("viewMode", 1).apply();
         viewMode = 1;
         wIndex5_5_1 = 0;
-        //mIndex5_5_1 = 0;
-        /*int rlBar = getResources().getIdentifier("rlBar", "id", "com.daemin.timetable");
-        views.setInt(rlBar, "setBackgroundResource", R.color.widgetwhitesmoke);*/
         views.setViewVisibility(R.id.tvYear, View.GONE);
         views.setViewVisibility(R.id.btWeek, View.VISIBLE); //Visible
         views.setViewVisibility(R.id.ivWeek, View.GONE);
@@ -298,7 +285,7 @@ public class WidgetUpdateService extends Service {
     public void widget5_5_1Back(RemoteViews views, AppWidgetManager manager){
         if (viewMode == 0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);
-            WeekCaptureView5_5 iv = new WeekCaptureView5_5(this);
+            WeekCaptureView iv = new WeekCaptureView(this);
             views.setViewVisibility(R.id.btWeek, View.GONE);
             views.setViewVisibility(R.id.btMonth, View.VISIBLE); //Visible
             Dates.NOW.setWeekData(--wIndex5_5_1);
@@ -324,7 +311,7 @@ public class WidgetUpdateService extends Service {
     public void widget5_5_1Forward(RemoteViews views, AppWidgetManager manager){
         if(viewMode==0) {
             views.setViewVisibility(R.id.tvYear, View.VISIBLE);
-            WeekCaptureView5_5 iv = new WeekCaptureView5_5(this);
+            WeekCaptureView iv = new WeekCaptureView(this);
             views.setViewVisibility(R.id.btWeek, View.GONE);
             views.setViewVisibility(R.id.btMonth, View.VISIBLE); //Visible
             Dates.NOW.setWeekData(++wIndex5_5_1);

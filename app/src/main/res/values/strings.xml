@@ -11,6 +11,7 @@
     <string name="downloding">Downloading Subject. Please wait...</string>
     <string name="e_learning">이러닝 혹은 시간정보가 없습니다</string>
     <string name="backpress">\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.</string>
+    <string name="time_error">데이터 형식에 오류가 있습니다.\n설정-문의하기를 통해 관리자에게 문의주세요.</string>
     <string name="year">년</string>
     <string name="month">월</string>
     <string name="week">주</string>

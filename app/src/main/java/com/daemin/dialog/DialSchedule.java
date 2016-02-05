@@ -18,7 +18,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -492,28 +491,34 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[] temps;
-                subId = ((TextView) view.findViewById(R.id._id)).getText().toString();
-                User.INFO.overlapFlag = false;
-                subOverlapFlag = true;
-                Common.stateFilter(viewMode);
-                for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
-                        .toString())) {
-                    temps = timePos.split(":");
-                    if (!temps[0].equals(" ")) {
-                        addWeek(Integer.parseInt(temps[0])
-                                , Integer.parseInt(temps[1])
-                                , Integer.parseInt(temps[2])
-                                , Integer.parseInt(temps[3])
-                                , Integer.parseInt(temps[4]));
-                    } else {
-                        Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
+                try {
+                    String[] temps;
+                    subId = ((TextView) view.findViewById(R.id._id)).getText().toString();
+                    User.INFO.overlapFlag = false;
+                    subOverlapFlag = true;
+                    Common.stateFilter(viewMode);
+
+                        for (String timePos : getTimeList(((TextView) view.findViewById(R.id.time)).getText()
+                                .toString())) {
+                            temps = timePos.split(":");
+                            if (!temps[0].equals(" ")) {
+                                addWeek(Integer.parseInt(temps[0])
+                                        , Integer.parseInt(temps[1])
+                                        , Integer.parseInt(temps[2])
+                                        , Integer.parseInt(temps[3])
+                                        , Integer.parseInt(temps[4]));
+                            } else {
+                                Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                        }
+
+                    String credit = ((TextView) view.findViewById(R.id.credit)).getText().toString();
+                    tvCreditSum.setText(String.valueOf(Integer.parseInt(creditSum)
+                            + Integer.parseInt(credit)));
+                }catch (Exception e){
+                    Toast.makeText(DialSchedule.this, getResources().getString(R.string.time_error), Toast.LENGTH_SHORT).show();
                 }
-                String credit = ((TextView) view.findViewById(R.id.credit)).getText().toString();
-                tvCreditSum.setText(String.valueOf(Integer.parseInt(creditSum)
-                        + Integer.parseInt(credit)));
             }
         });
 
@@ -553,10 +558,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     actvProf.setText("");
                     subjects.clear();
                     List<SubjectData> sdlist = db.getAllWithSub(actvSub.getText().toString());
-                    if(sdlist.size()!=0)
+                    if (sdlist.size() != 0)
                         subjects.add(sdlist.remove(0));
                     hoAdapter.notifyDataSetChanged();
-                    InputMethodManager imm= (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(actvSub.getWindowToken(), 0);
                 }
             });
