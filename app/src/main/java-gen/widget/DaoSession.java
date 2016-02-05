@@ -1,4 +1,4 @@
-package timedao;
+package widget;
 
 import android.database.sqlite.SQLiteDatabase;
 
@@ -18,28 +18,28 @@ import de.greenrobot.dao.internal.DaoConfig;
  */
 public class DaoSession extends AbstractDaoSession {
 
-    private final DaoConfig myTimeDaoConfig;
+    private final DaoConfig widgetIDDaoConfig;
 
-    private final MyTimeDao myTimeDao;
+    private final WidgetIDDao widgetIDDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
         super(db);
 
-        myTimeDaoConfig = daoConfigMap.get(MyTimeDao.class).clone();
-        myTimeDaoConfig.initIdentityScope(type);
+        widgetIDDaoConfig = daoConfigMap.get(WidgetIDDao.class).clone();
+        widgetIDDaoConfig.initIdentityScope(type);
 
-        myTimeDao = new MyTimeDao(myTimeDaoConfig, this);
+        widgetIDDao = new WidgetIDDao(widgetIDDaoConfig, this);
 
-        registerDao(MyTime.class, myTimeDao);
+        registerDao(WidgetID.class, widgetIDDao);
     }
     
     public void clear() {
-        myTimeDaoConfig.getIdentityScope().clear();
+        widgetIDDaoConfig.getIdentityScope().clear();
     }
 
-    public MyTimeDao getMyTimeDao() {
-        return myTimeDao;
+    public WidgetIDDao getWidgetIDDao() {
+        return widgetIDDao;
     }
 
 }

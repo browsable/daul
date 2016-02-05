@@ -6,8 +6,9 @@ import com.daemin.common.AppController;
 
 import java.util.List;
 
-import timedao.WidgetID;
-import timedao.WidgetIDDao;
+import widget.WidgetID;
+import widget.WidgetIDDao;
+
 
 public class WidgetIDRepo {
     public static void insertOrUpdate(Context context, WidgetID widgetID) {
@@ -26,6 +27,6 @@ public class WidgetIDRepo {
         return getWidgetIDDao(context).loadAll();
     }
     private static WidgetIDDao getWidgetIDDao(Context c) {
-        return ((AppController) c.getApplicationContext()).getDaoSession().getWidgetIDDao();
+        return ((AppController) c.getApplicationContext()).getWidSession().getWidgetIDDao();
     }
 }

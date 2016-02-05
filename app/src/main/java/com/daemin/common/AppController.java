@@ -14,7 +14,8 @@ import timedao.DaoSession;
  * Created by hernia on 2015-06-13.
  */
 public class AppController extends Application {
-    public DaoSession daoSession;
+    public timedao.DaoSession timedaoSession;
+    public widget.DaoSession widgetSession;
     static AppController singleton;
     public static AppController getInstance() {
         return singleton;
@@ -42,10 +43,18 @@ public class AppController extends Application {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "timedao", null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
+        timedaoSession = daoMaster.newSession();
+
+        widget.DaoMaster.DevOpenHelper helper2 = new widget.DaoMaster.DevOpenHelper(this, "widget", null);
+        SQLiteDatabase db2 = helper2.getWritableDatabase();
+        widget.DaoMaster daoMaster2 = new widget.DaoMaster(db2);
+        widgetSession = daoMaster2.newSession();
     }
 
     public DaoSession getDaoSession() {
-        return daoSession;
+        return timedaoSession;
+    }
+    public widget.DaoSession getWidSession() {
+        return widgetSession;
     }
 }

@@ -24,7 +24,7 @@ import com.daemin.timetable.R;
 import java.util.HashMap;
 
 import timedao.MyTime;
-import timedao.WidgetID;
+import widget.WidgetID;
 
 /**
  * Created by hernia on 2015-11-03.

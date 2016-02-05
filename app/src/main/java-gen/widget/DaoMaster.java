@@ -1,4 +1,4 @@
-package timedao;
+package widget;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,12 +18,12 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
-        MyTimeDao.createTable(db, ifNotExists);
+        WidgetIDDao.createTable(db, ifNotExists);
     }
     
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
-        MyTimeDao.dropTable(db, ifExists);
+        WidgetIDDao.dropTable(db, ifExists);
     }
     
     public static abstract class OpenHelper extends SQLiteOpenHelper {
@@ -55,7 +55,7 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(SQLiteDatabase db) {
         super(db, SCHEMA_VERSION);
-        registerDaoClass(MyTimeDao.class);
+        registerDaoClass(WidgetIDDao.class);
     }
     
     public DaoSession newSession() {
