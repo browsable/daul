@@ -79,14 +79,8 @@ public enum User {
     public int getViewMode(){
         return pref.getInt("viewMode", 0);
     }
-    public boolean getWidget5_5_1(){
-        return pref.getBoolean("widget5_5_1", false);
-    }
     public boolean getWidget5_5(){
         return pref.getBoolean("widget5_5", false);
-    }
-    public boolean getWidget4_4(){
-        return pref.getBoolean("widget4_4",false);
     }
     public boolean getExplain1(){
         return pref.getBoolean("explain1",true);

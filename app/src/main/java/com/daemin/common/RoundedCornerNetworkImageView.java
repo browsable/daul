@@ -221,7 +221,7 @@ public class RoundedCornerNetworkImageView extends NetworkImageView{
     }
 
     /* (non-Javadoc)
-     * @see android.widget.ImageView#setImageBitmap(android.graphics.Bitmap)
+     * @see android.widget5_5.ImageView#setImageBitmap(android.graphics.Bitmap)
      */
     @Override
     public void setImageBitmap(Bitmap bm) {

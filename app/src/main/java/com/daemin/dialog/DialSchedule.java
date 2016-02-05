@@ -163,7 +163,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }else{
             btNormal.setVisibility(View.GONE);
             btUniv.setVisibility(View.GONE);
-            if(getIntent().getBooleanExtra("widget5_5_1", false)){
+            if(getIntent().getBooleanExtra("widget5_5", false)){
                 int dayCnt = getIntent().getIntExtra("dayCnt",0);
                 int xth = dayCnt%7+1;
                 int yth = dayCnt/7+1;
@@ -880,21 +880,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                             break;
                     }
                     if (widgetFlag) {
-                        if (User.INFO.getWidget5_5_1()) {
-                            Intent update = new Intent(this, WidgetUpdateService.class);
-                            update.putExtra("action", "update5_5_1");
-                            update.putExtra("viewMode", viewMode);
-                            this.startService(update);
-                        }
                         if (User.INFO.getWidget5_5()) {
                             Intent update = new Intent(this, WidgetUpdateService.class);
                             update.putExtra("action", "update5_5");
-                            update.putExtra("viewMode", viewMode);
-                            this.startService(update);
-                        }
-                        if (User.INFO.getWidget4_4()) {
-                            Intent update = new Intent(this, WidgetUpdateService.class);
-                            update.putExtra("action", "update4_4");
                             update.putExtra("viewMode", viewMode);
                             this.startService(update);
                         }

@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -80,21 +79,9 @@ public class MainActivity extends FragmentActivity {
     protected void onPause() {
         super.onPause();
         if (dialogFlag) {
-            if(widget5_5_1){
-                Intent update = new Intent(this, WidgetUpdateService.class);
-                update.putExtra("action", "update5_5_1");
-                update.putExtra("viewMode", viewMode);
-                this.startService(update);
-            }
-            if (widget5_5) {
+            if(widget5_5){
                 Intent update = new Intent(this, WidgetUpdateService.class);
                 update.putExtra("action", "update5_5");
-                update.putExtra("viewMode", viewMode);
-                this.startService(update);
-            }
-            if (widget4_4) {
-                Intent update = new Intent(this, WidgetUpdateService.class);
-                update.putExtra("action", "update4_4");
                 update.putExtra("viewMode", viewMode);
                 this.startService(update);
             }
@@ -375,8 +362,6 @@ public class MainActivity extends FragmentActivity {
                 GravityCompat.START);
         mDrawerLayout.setScrimColor(getResources().getColor(R.color.middlegray));
         widget5_5 = User.INFO.getWidget5_5();
-        widget4_4 = User.INFO.getWidget4_4();
-        widget5_5_1 = User.INFO.getWidget5_5_1();
         dayIndex = 0;
         ibBack = (ImageButton) findViewById(R.id.ibBack);
         mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
@@ -396,6 +381,8 @@ public class MainActivity extends FragmentActivity {
         if(viewMode==1){
             btMode.setChecked(true);
             EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
+        }else{
+            EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
         }
     }
     private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
@@ -411,7 +398,7 @@ public class MainActivity extends FragmentActivity {
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
     private String backKeyName;
-    private Boolean dialogFlag, widget5_5_1,widget5_5, widget4_4;
+    private Boolean dialogFlag, widget5_5;
     private TextSwitcher switcher;
     private static MainActivity singleton;
     private int viewMode;

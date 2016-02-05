@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.daemin.common.Common;
-import com.daemin.dialog.DialSchedule;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.User;
 import com.daemin.main.MainActivity;
@@ -72,6 +71,8 @@ public class Widget5_5 extends AppWidgetProvider {
 				main5.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(main5);
 				break;
+			case Common.ACTION_DUMMY5_5:
+				break;
 		}
 	}
 
@@ -79,14 +80,14 @@ public class Widget5_5 extends AppWidgetProvider {
 	{
 		Log.i("widget", "alarm register");
 		Intent init = new Intent(context, WidgetUpdateService.class);
-		init.putExtra("action","update5_5");
+		init.putExtra("action","update");
 		PendingIntent sender
 				= PendingIntent.getService(context, 0, init, PendingIntent.FLAG_ONE_SHOT);
 		AlarmManager manager
 				= (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-		/*Log.i("widget", String.valueOf(CalTime.getMidnight()));
-		Log.i("widget", String.valueOf(CalTime.getNowMillis()));
-		Log.i("widget", CalTime.getDatefromMillis(CalTime.getMidnight()));*/
+		/*Log.i("widget5_5", String.valueOf(CalTime.getMidnight()));
+		Log.i("widget5_5", String.valueOf(CalTime.getNowMillis()));
+		Log.i("widget5_5", CalTime.getDatefromMillis(CalTime.getMidnight()));*/
 		manager.setRepeating(AlarmManager.RTC_WAKEUP, Dates.NOW.getMidnight()+5000, AlarmManager.INTERVAL_DAY, sender);
 	}
 	public static void unregisterAlarm(Context context)

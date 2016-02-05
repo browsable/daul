@@ -230,7 +230,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         }
 
         /**
-         * Parse the XML configuration for this widget
+         * Parse the XML configuration for this widget5_5
          *
          * @param context Context used for extracting attributes
          * @param attrs The Attribute Set containing the ColumnView attributes
