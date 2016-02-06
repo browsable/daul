@@ -18,6 +18,8 @@
     <string name="day">일</string>
     <string name="am">오전</string>
     <string name="pm">오후</string>
+    <string name="widget4_4">TimeDAO 4X4</string>
+    <string name="widget5_5">TimeDAO 5X5</string>
     <string name="weekofmonth">째주</string>
     <string name="wait1">등록대기중</string>
     <string name="wait2">등록대기중입니다</string>
@@ -50,6 +52,7 @@
     <string name="normal_friend">친구공개</string>
     <string name="normal_all">전체공개</string>
     <string name="normal_empty">이름입력은 필수입니다.</string>
+    <string name="normal_empty_time">시간 영역을 선택해주세요.</string>
     <!--다이얼 -->
     <string name="tvDialTime">시간설정</string>
     <string name="tvDialShare">공유설정</string>

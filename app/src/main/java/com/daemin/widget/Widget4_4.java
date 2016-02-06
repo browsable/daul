@@ -13,12 +13,12 @@ import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.User;
 import com.daemin.main.MainActivity;
 
-public class Widget5_5 extends AppWidgetProvider {
+public class Widget4_4 extends AppWidgetProvider {
 	@Override
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
 		registerAlarm(context);
-		User.INFO.getEditor().putBoolean("widget5_5", true).commit();
+		User.INFO.getEditor().putBoolean("widget4_4", true).commit();
 
 	}
 
@@ -28,7 +28,7 @@ public class Widget5_5 extends AppWidgetProvider {
 		Log.i("widget", "service end");
 		unregisterAlarm(context);
 		context.stopService(new Intent(context, WidgetUpdateService.class));
-		User.INFO.getEditor().putBoolean("widget5_5", false).commit();
+		User.INFO.getEditor().putBoolean("widget4_4", false).commit();
 	}
 
 	@Override
@@ -42,36 +42,36 @@ public class Widget5_5 extends AppWidgetProvider {
 		switch(intent.getAction()){
 			case AppWidgetManager.ACTION_APPWIDGET_UPDATE:
 				Intent init = new Intent(context, WidgetUpdateService.class);
-				init.putExtra("action","update5_5");
+				init.putExtra("action","update4_4");
 				context.startService(init);
 				break;
-			case Common.ACTION_WEEK5_5:
+			case Common.ACTION_WEEK4_4:
 				Intent week = new Intent(context, WidgetUpdateService.class);
-				week.putExtra("action","week5_5");
+				week.putExtra("action","week4_4");
 				context.startService(week);
 				break;
-			case Common.ACTION_MONTH5_5:
+			case Common.ACTION_MONTH4_4:
 				Intent month = new Intent(context, WidgetUpdateService.class);
-				month.putExtra("action","month5_5");
+				month.putExtra("action","month4_4");
 				context.startService(month);
 				break;
-			case Common.ACTION_BACK5_5:
+			case Common.ACTION_BACK4_4:
 				Intent back = new Intent(context, WidgetUpdateService.class);
-				back.putExtra("action","back5_5");
+				back.putExtra("action","back4_4");
 				context.startService(back);
 				break;
-			case Common.ACTION_FORWARD5_5:
+			case Common.ACTION_FORWARD4_4:
 				Intent forward = new Intent(context, WidgetUpdateService.class);
-				forward.putExtra("action", "forward5_5");
+				forward.putExtra("action", "forward4_4");
 				context.startService(forward);
 				break;
-			case Common.ACTION_HOME5_5:
+			case Common.ACTION_HOME4_4:
 				Intent main5 = new Intent(context, MainActivity.class);
 				main5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				main5.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(main5);
 				break;
-			case Common.ACTION_DUMMY5_5:
+			case Common.ACTION_DUMMY4_4:
 				break;
 		}
 	}
@@ -80,7 +80,7 @@ public class Widget5_5 extends AppWidgetProvider {
 	{
 		Log.i("widget", "alarm register");
 		Intent init = new Intent(context, WidgetUpdateService.class);
-		init.putExtra("action","update5_5");
+		init.putExtra("action","update4_4");
 		PendingIntent sender
 				= PendingIntent.getService(context, 0, init, PendingIntent.FLAG_ONE_SHOT);
 		AlarmManager manager

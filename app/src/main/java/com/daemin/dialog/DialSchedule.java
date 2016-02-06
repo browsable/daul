@@ -112,6 +112,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().post(new SetBtPlusEvent(true));
+        EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
         EventBus.getDefault().unregister(this);
         Common.stateFilter(viewMode);
         DrawMode.CURRENT.setMode(0);
@@ -163,7 +165,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }else{
             btNormal.setVisibility(View.GONE);
             btUniv.setVisibility(View.GONE);
-            if(getIntent().getBooleanExtra("widget5_5", false)){
+            if(getIntent().getBooleanExtra("widget5_5", false)||getIntent().getBooleanExtra("widget4_4", false)){
                 int dayCnt = getIntent().getIntExtra("dayCnt",0);
                 int xth = dayCnt%7+1;
                 int yth = dayCnt/7+1;
@@ -825,69 +827,81 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (User.INFO.overlapFlag) {
                     Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_overlap), Toast.LENGTH_SHORT).show();
                 } else {
-                    switch (DrawMode.CURRENT.getMode()) {
-                        case 0:
-                            if (etName.getText().toString().equals("")) {
-                                etName.requestFocus();
-                                etName.setHintTextColor(Color.RED);
-                                Toast.makeText(DialSchedule.this, getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
-                                break;
-                            }
-                            Common.stateFilter(viewMode);
-                            AddSchedule(repeatType);
-                            break;
-                        case 1:
-                            Common.stateFilter(viewMode);
-                            if (subId != null && subOverlapFlag) {
-                                SubjectData subjectData = db.getSubjectData(subId);
-                                String[] temps;
-                                String subtitle = subjectData.getSubtitle();
-                                String prof = subjectData.getProf();
-                                String credit = subjectData.getCredit();
-                                String classnum = subjectData.getClassnum();
-                                String place = subjectData.getPlace();
-                                for (String timePos : getTimeList(subjectData.getTime())) {
-                                    temps = timePos.split(":");
-                                    if (!temps[0].equals(" ")) {
-                                        MyTime myTime = new MyTime(null,
-                                                User.INFO.groupPK + subtitle + prof+classnum, 1,
-                                                subtitle,
-                                                null, null, Integer.parseInt(credit),
-                                                Integer.parseInt(temps[0]),
-                                                Integer.parseInt(temps[1]),
-                                                Integer.parseInt(temps[2]),
-                                                Integer.parseInt(temps[3]),
-                                                Integer.parseInt(temps[4]),
-                                                null, null,
-                                                prof + "교수/" + credit + "학점/" + classnum + "분반",
-                                                place,
-                                                User.INFO.latitude, User.INFO.longitude,
-                                                null,
-                                                null,
-                                                "10:10",
-                                                colorName);
-                                        MyTimeRepo.insertOrUpdate(this, myTime);
-                                        subOverlapFlag = false;
-                                    } else {
-                                        Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
-                                        break;
+                        switch (DrawMode.CURRENT.getMode()) {
+                            case 0:
+                                if (etName.getText().toString().equals("")) {
+                                    etName.requestFocus();
+                                    etName.setHintTextColor(Color.RED);
+                                    Toast.makeText(DialSchedule.this, getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
+                                    break;
+                                }else {
+                                    if(normalList.size()==0){
+                                        Toast.makeText(DialSchedule.this, getResources().getString(R.string.normal_empty_time), Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        etName.setHintTextColor(getResources().getColor(R.color.gray));
+                                        Common.stateFilter(viewMode);
+                                        AddSchedule(repeatType);
+                                        finish();
                                     }
                                 }
-                                creditSum = tvCreditSum.getText().toString();
-                                tvCreditSum.setText(creditSum);
-                                Common.fetchWeekData();
-                            }
-                            break;
-                    }
-                    if (widgetFlag) {
-                        if (User.INFO.getWidget5_5()) {
-                            Intent update = new Intent(this, WidgetUpdateService.class);
-                            update.putExtra("action", "update5_5");
-                            update.putExtra("viewMode", viewMode);
-                            this.startService(update);
+                                break;
+                            case 1:
+                                Common.stateFilter(viewMode);
+                                if (subId != null && subOverlapFlag) {
+                                    SubjectData subjectData = db.getSubjectData(subId);
+                                    String[] temps;
+                                    String subtitle = subjectData.getSubtitle();
+                                    String prof = subjectData.getProf();
+                                    String credit = subjectData.getCredit();
+                                    String classnum = subjectData.getClassnum();
+                                    String place = subjectData.getPlace();
+                                    for (String timePos : getTimeList(subjectData.getTime())) {
+                                        temps = timePos.split(":");
+                                        if (!temps[0].equals(" ")) {
+                                            MyTime myTime = new MyTime(null,
+                                                    User.INFO.groupPK + subtitle + prof + classnum, 1,
+                                                    subtitle,
+                                                    null, null, Integer.parseInt(credit),
+                                                    Integer.parseInt(temps[0]),
+                                                    Integer.parseInt(temps[1]),
+                                                    Integer.parseInt(temps[2]),
+                                                    Integer.parseInt(temps[3]),
+                                                    Integer.parseInt(temps[4]),
+                                                    null, null,
+                                                    prof + "교수/" + credit + "학점/" + classnum + "분반",
+                                                    place,
+                                                    User.INFO.latitude, User.INFO.longitude,
+                                                    null,
+                                                    null,
+                                                    "10:10",
+                                                    colorName);
+                                            MyTimeRepo.insertOrUpdate(this, myTime);
+                                            subOverlapFlag = false;
+                                        } else {
+                                            Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
+                                            break;
+                                        }
+                                    }
+                                    creditSum = tvCreditSum.getText().toString();
+                                    tvCreditSum.setText(creditSum);
+                                    Common.fetchWeekData();
+                                }
+                                break;
                         }
-                        finish();
-                    }
+                        if (widgetFlag) {
+                            if (User.INFO.getWidget5_5()) {
+                                Intent update = new Intent(this, WidgetUpdateService.class);
+                                update.putExtra("action", "update5_5");
+                                update.putExtra("viewMode", viewMode);
+                                this.startService(update);
+                            }
+                            if (User.INFO.getWidget4_4()) {
+                                Intent update = new Intent(this, WidgetUpdateService.class);
+                                update.putExtra("action", "update4_4");
+                                update.putExtra("viewMode", viewMode);
+                                this.startService(update);
+                            }
+                        }
                 }
                 break;
             case R.id.btCancel:

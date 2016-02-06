@@ -85,6 +85,12 @@ public class MainActivity extends FragmentActivity {
                 update.putExtra("viewMode", viewMode);
                 this.startService(update);
             }
+            if (widget4_4) {
+                Intent update = new Intent(this, WidgetUpdateService.class);
+                update.putExtra("action", "update4_4");
+                update.putExtra("viewMode", viewMode);
+                this.startService(update);
+            }
         }
     }
 
@@ -362,6 +368,7 @@ public class MainActivity extends FragmentActivity {
                 GravityCompat.START);
         mDrawerLayout.setScrimColor(getResources().getColor(R.color.middlegray));
         widget5_5 = User.INFO.getWidget5_5();
+        widget4_4 = User.INFO.getWidget4_4();
         dayIndex = 0;
         ibBack = (ImageButton) findViewById(R.id.ibBack);
         mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
@@ -398,7 +405,7 @@ public class MainActivity extends FragmentActivity {
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
     private String backKeyName;
-    private Boolean dialogFlag, widget5_5;
+    private Boolean dialogFlag, widget5_5,widget4_4;
     private TextSwitcher switcher;
     private static MainActivity singleton;
     private int viewMode;

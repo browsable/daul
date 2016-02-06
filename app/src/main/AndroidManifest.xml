@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.daemin.timetable"
-    android:versionCode="28"
-    android:versionName="2.2.0" >
+    android:versionCode="29"
+    android:versionName="2.2.1" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -66,7 +66,7 @@
             android:launchMode="singleTask"/>
         <activity android:name="com.daemin.dialog.DialEnroll" android:theme="@android:style/Theme.Holo.Light.Dialog" />
 
-        <receiver android:name="com.daemin.widget.Widget5_5">
+        <receiver android:name="com.daemin.widget.Widget5_5" android:label="@string/widget5_5">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget5_5config" />
@@ -80,6 +80,21 @@
                 <action android:name="com.daemin.widget.ACTION_HOME5_5" />
             </intent-filter>
         </receiver>
+        <receiver android:name="com.daemin.widget.Widget4_4" android:label="@string/widget4_4">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget4_4config" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.daemin.widget.ACTION_DUMMY4_4" />
+                <action android:name="com.daemin.widget.ACTION_WEEK4_4" />
+                <action android:name="com.daemin.widget.ACTION_MONTH4_4" />
+                <action android:name="com.daemin.widget.ACTION_BACK4_4" />
+                <action android:name="com.daemin.widget.ACTION_FORWARD4_4" />
+                <action android:name="com.daemin.widget.ACTION_HOME4_4" />
+            </intent-filter>
+        </receiver>
+
 
         <receiver android:name="com.daemin.common.NotificationReceiver" android:enabled="true" >
             <intent-filter>
