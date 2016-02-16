@@ -62,7 +62,7 @@
             android:ellipsize="end"
             android:textColor="@android:color/black"
             android:background="@color/transparency"
-            android:maxLines="7" />
+            android:maxLines="30" />
     </LinearLayout>
 
     <RelativeLayout
