@@ -78,9 +78,29 @@ public class SettingGroupFragment extends BasicFragment {
         btEnter = (Button) root.findViewById(R.id.btEnter);
         tvHyperText = (TextView) root.findViewById(R.id.tvHyperText);
         tvHyperText.setMovementMethod(LinkMovementMethod.getInstance());
-        tvVer = (TextView) root.findViewById(R.id.tvVer);
+        tvServerVer = (TextView) root.findViewById(R.id.tvServerVer);
+        tvLocalVer = (TextView) root.findViewById(R.id.tvLocalVer);
         tvGroupName = (TextView) root.findViewById(R.id.tvGroupName);
-        tvVer.setText(User.INFO.getGroupDBVer());
+        try {
+            String[] tmp = User.INFO.getGroupTtVer().split("-");
+            String tmpS = tmp[0] + getActivity().getResources().getString(R.string.year) + " "
+                    + Integer.parseInt(tmp[1]) + getActivity().getResources().getString(R.string.semester) + " "
+                    + User.INFO.getGroupDBVer();
+            tvLocalVer.setText(tmpS);
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            tvLocalVer.setText("");
+        }
+        try {
+            String[] tmp2 = User.INFO.ttServerVer.split("-");
+            String tmpS2 = tmp2[0] + getActivity().getResources().getString(R.string.year) + " "
+                    + Integer.parseInt(tmp2[1]) + getActivity().getResources().getString(R.string.semester) + " "
+                    + User.INFO.dbServerVer;
+            tvServerVer.setText(tmpS2);
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            tvServerVer.setText("");
+        }
         tvGroupName.setText(User.INFO.getGroupName());
         if(User.INFO.groupListData.size()==0) {
             getGroupList(getActivity());
@@ -97,14 +117,16 @@ public class SettingGroupFragment extends BasicFragment {
         actvUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                String[] tmp = actvUniv.getText().toString().split("/");
-                User.INFO.groupPK = position+1;
-                groupName = tmp[0];
-                ttVersion = tmp[1];
                 try {
+                    String[] tmp = actvUniv.getText().toString().split("/");
+                    User.INFO.groupPK = position+1;
+                    groupName = tmp[0];
+                    ttVersion =tmp[1];
+                    User.INFO.ttServerVer = ttVersion;
                     User.INFO.dbServerVer = tmp[2];
                 } catch (ArrayIndexOutOfBoundsException e) { //등록대기중 인 경우
                     e.printStackTrace();
+                    User.INFO.ttServerVer ="";
                     User.INFO.dbServerVer = "";
                 }
                 // 열려있는 키패드 닫기
@@ -255,15 +277,22 @@ public class SettingGroupFragment extends BasicFragment {
         protected void onPostExecute(String param) {
             if (downComplete) {
                 pDialog.dismiss();
-                tvVer.setText(User.INFO.dbServerVer);
+                String[] tmp = User.INFO.ttServerVer.split("-");
+                String tmpS = tmp[0]+getActivity().getResources().getString(R.string.year)+" "
+                        +Integer.parseInt(tmp[1]) +getActivity().getResources().getString(R.string.semester)+" "
+                        +User.INFO.dbServerVer;
+                tvLocalVer.setText(tmpS);
+                tvServerVer.setText(tmpS);
                 tvGroupName.setText(groupName);
                 User.INFO.getEditor().putString("groupName", groupName).commit();
                 if(User.INFO.dbServerVer==null){
                     User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                 }
+                User.INFO.getEditor().putString("groupTtVer", User.INFO.ttServerVer).commit();
                 User.INFO.getEditor().putString("groupDBVer", User.INFO.dbServerVer).commit();
                 User.INFO.getEditor().putInt("groupPK", User.INFO.groupPK).commit();
             } else {//다운로드 실패
+                User.INFO.ttServerVer=User.INFO.getGroupTtVer();
                 User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                 Toast.makeText(getActivity(), getString(R.string.down_error), Toast.LENGTH_SHORT).show();
                 btShowUniv.setVisibility(View.VISIBLE);
@@ -291,7 +320,7 @@ public class SettingGroupFragment extends BasicFragment {
     ImageButton ibBack;
     ToggleButton btShowUniv;
     Button btEnter;
-    TextView tvHyperText,tvGroupName,tvVer;
+    TextView tvHyperText,tvGroupName,tvLocalVer,tvServerVer;
     private ArrayAdapter<String> univAdapter;
     private ArrayList<String> univList;
     private AutoCompleteTextView actvUniv;

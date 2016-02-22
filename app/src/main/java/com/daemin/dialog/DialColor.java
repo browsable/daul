@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.daemin.event.SetColorEvent;
 import com.daemin.timetable.R;
@@ -41,7 +42,7 @@ public class DialColor extends Dialog {
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels * 7/ 9;
-        layoutParams.height = dm.widthPixels * 7/ 9;
+        layoutParams.height = dm.heightPixels * 5/ 9;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();
@@ -49,6 +50,10 @@ public class DialColor extends Dialog {
 
     private void setLayout() {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
+        btBack = (Button) findViewById(R.id.btBack);
+        btForward = (Button) findViewById(R.id.btForward);
+        llColor1 = (LinearLayout) findViewById(R.id.llColor1);
+        llColor2 = (LinearLayout) findViewById(R.id.llColor2);
         btDialCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,9 +80,30 @@ public class DialColor extends Dialog {
                 }
             });
         }
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btBack.setBackgroundResource(R.drawable.ic_back_on2);
+                btForward.setBackgroundResource(R.drawable.ic_forward_off2);
+                llColor1.setVisibility(View.VISIBLE);
+                llColor2.setVisibility(View.GONE);
+            }
+        });
+        btForward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btBack.setBackgroundResource(R.drawable.ic_back_off2);
+                btForward.setBackgroundResource(R.drawable.ic_forward_on2);
+                llColor1.setVisibility(View.GONE);
+                llColor2.setVisibility(View.VISIBLE);
+            }
+        });
     }
     private Context context;
     private Button btDialCancel;
     private Button btColor;
+    private Button btBack;
+    private Button btForward;
     private GradientDrawable gd;
+    private LinearLayout llColor1,llColor2;
 }

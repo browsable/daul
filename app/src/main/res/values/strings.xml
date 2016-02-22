@@ -18,6 +18,7 @@
     <string name="day">일</string>
     <string name="am">오전</string>
     <string name="pm">오후</string>
+    <string name="semester">학기</string>
     <string name="widget4_4">TimeDAO 4X4</string>
     <string name="widget5_5">TimeDAO 5X5</string>
     <string name="weekofmonth">째주</string>
@@ -132,7 +133,7 @@
     <string name="setting_calendar">달력 연동</string>
     <!--그룹설정-->
     <string name="setting_group_in">소속그룹</string>
-    <string name="setting_group_ver">시간표 버전</string>
+    <string name="setting_group_timetable">시간표</string>
     <string name="setting_group_modify">그룹이 설정되었습니다</string>
     <!--버전정보-->
     <string name="setting_ver_local">현재 버전</string>

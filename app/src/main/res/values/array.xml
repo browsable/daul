@@ -10,6 +10,15 @@
         <item>btcolor7</item>
         <item>btcolor8</item>
         <item>btcolor9</item>
+        <item>btcolor10</item>
+        <item>btcolor11</item>
+        <item>btcolor12</item>
+        <item>btcolor13</item>
+        <item>btcolor14</item>
+        <item>btcolor15</item>
+        <item>btcolor16</item>
+        <item>btcolor17</item>
+        <item>btcolor18</item>
     </string-array>
     <string-array name="area_distance">
         <item>@string/list_item_01</item>

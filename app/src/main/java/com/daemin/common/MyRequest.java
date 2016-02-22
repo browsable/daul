@@ -92,13 +92,16 @@ public class MyRequest {
                         try {
                             if (response.getString(KEY_STATUS).equals("Success")) {
                                 JSONObject data = response.getJSONObject("data");
+                                User.INFO.ttServerVer = data.getString("tt_version");
                                 User.INFO.dbServerVer = data.getString("db_version");
                             }else {
                                 Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
+                                User.INFO.ttServerVer =User.INFO.getGroupTtVer();
                                 User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            User.INFO.ttServerVer =User.INFO.getGroupTtVer();
                             User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                         }
                     }
@@ -107,6 +110,7 @@ public class MyRequest {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                User.INFO.ttServerVer =User.INFO.getGroupTtVer();
                 User.INFO.dbServerVer=User.INFO.getGroupDBVer();
             }
         });

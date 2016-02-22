@@ -41,6 +41,7 @@ public enum User {
     public String appVer;//로컬기기버전;
     public String appServerVer;//서버상의 버전;
     public String dbServerVer;//서버상의 디비 버전;
+    public String ttServerVer;//서버상의 학기 버전;
     public List<MyTime> weekData;
     public List<MyTime> monthData;
     public List<GroupListData.Data> groupListData;
@@ -72,6 +73,9 @@ public enum User {
     }
     public String getGroupDBVer(){
         return pref.getString("groupDBVer", "v1.0");
+    }
+    public String getGroupTtVer(){
+        return pref.getString("groupTtVer", "");
     }
     public int getGroupPK(){
         return pref.getInt("groupPK", 0);

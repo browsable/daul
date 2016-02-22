@@ -419,10 +419,12 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if(User.INFO.dbServerVer==null){
                     User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                 }
+                User.INFO.getEditor().putString("groupTtVer", User.INFO.ttServerVer).commit();
                 User.INFO.getEditor().putString("groupDBVer", User.INFO.dbServerVer).commit();
                 User.INFO.getEditor().putInt("groupPK", User.INFO.groupPK).commit();
             }
             else{//다운로드 실패
+                User.INFO.ttServerVer=User.INFO.getGroupTtVer();
                 User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                 Toast.makeText(DialSchedule.this, getString(R.string.down_error), Toast.LENGTH_SHORT).show();
                 btShowUniv.setVisibility(View.VISIBLE);
@@ -745,14 +747,16 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     actvUniv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v,
                                                 int position, long id) {
-                            String[] tmp = actvUniv.getText().toString().split("/");
-                            User.INFO.groupPK = position+1;
-                            groupName = tmp[0];
-                            ttVersion = tmp[1];
                             try {
+                                String[] tmp = actvUniv.getText().toString().split("/");
+                                User.INFO.groupPK = position+1;
+                                groupName = tmp[0];
+                                ttVersion = tmp[1];
+                                User.INFO.ttServerVer = ttVersion;
                                 User.INFO.dbServerVer = tmp[2];
                             } catch (ArrayIndexOutOfBoundsException e) { //등록대기중 인 경우
                                 e.printStackTrace();
+                                User.INFO.ttServerVer ="";
                                 User.INFO.dbServerVer = "";
                             }
                             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

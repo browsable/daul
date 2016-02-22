@@ -19,12 +19,21 @@
     <!-- 시간표 입력 시 선택 색상 -->
     <color name="btcolor1">#FFF1A6</color>
     <color name="btcolor2">#FDDA7B</color>
-    <color name="btcolor3">#FBC392</color>
+    <color name="btcolor3">#FBC699</color>
     <color name="btcolor4">#F8AE99</color>
     <color name="btcolor5">#F4877A</color>
-    <color name="btcolor6">#83CDC2</color>
-    <color name="btcolor7">#A6DBE1</color>
+    <color name="btcolor6">#79CDAC</color>
+    <color name="btcolor7">#98D0E3</color>
     <color name="btcolor8">#AED8AD</color>
     <color name="btcolor9">#C6BBDC</color>
+    <color name="btcolor10">#E8E8E8</color>
+    <color name="btcolor11">#C9C9C9</color>
+    <color name="btcolor12">#DDED9F</color>
+    <color name="btcolor13">#F6CAC9</color>
+    <color name="btcolor14">#A6B3D0</color>
+    <color name="btcolor15">#C3D8EB</color>
+    <color name="btcolor16">#C9EBC7</color>
+    <color name="btcolor17">#FBAE5F</color>
+    <color name="btcolor18">#C394EB</color>
 
 </resources>
