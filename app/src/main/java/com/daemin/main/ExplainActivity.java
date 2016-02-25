@@ -15,6 +15,7 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.daemin.common.MyRequest;
@@ -49,8 +50,8 @@ public class ExplainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		singleton = this;
 		setContentView(R.layout.activity_explain);
-		ImageView ivExplain = (ImageView)findViewById(R.id.ivExplain);
-		ivExplain.setOnTouchListener(new View.OnTouchListener() {
+		ImageButton ibCancel = (ImageButton)findViewById(R.id.ibCancel);
+		ibCancel.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				finish();

@@ -36,6 +36,7 @@ import javax.crypto.NoSuchPaddingException;
 
 public class SplashActivity extends Activity{
 	static SplashActivity singleton;
+	int SPLASH_TIME=1000;
 	private final int REQUEST_PHONESTATE = 100;
 	public static SplashActivity getInstance() {
 		return singleton;
@@ -117,18 +118,17 @@ public class SplashActivity extends Activity{
 		editor.commit();
 	}
 	public void Splash(){
-		Handler handler = new Handler() {
-
-			public void handleMessage(Message msg) {
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
 				finish();
-
 				Intent i = new Intent(SplashActivity.this, MainActivity.class);
 				startActivity(i);
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 			}
-		};
-		handler.sendEmptyMessageDelayed(0, 1000);
+		}, SPLASH_TIME);
 	}
+
 	/**
 	 * Permission check.
 	 */

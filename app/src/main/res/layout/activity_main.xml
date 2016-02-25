@@ -83,7 +83,7 @@
 
         <ImageButton
             android:id="@+id/ibBack"
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"

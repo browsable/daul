@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -736,6 +737,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 llUniv.setVisibility(View.VISIBLE);
                 btNormal.setTextColor(getResources().getColor(
                         R.color.gray));
+                btColor.setVisibility(View.INVISIBLE);
                 btUniv.setTextColor(getResources().getColor(
                         android.R.color.white));
                 if(groupName.equals("")||ttVersion.equals(getResources().getString(R.string.wait1))) { //학교를 한번도 선택한 적 없거나 등록대기중
@@ -852,12 +854,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 break;
                             case 1:
                                 Random mRand = new Random();
-                                int nResult = mRand.nextInt(19)+1;
+                                int nResult = mRand.nextInt(18) + 1;
                                 int resId = getResources().getIdentifier("btcolor" + nResult, "color", getPackageName());
-                                int color = getResources().getColor(resId);
-                                Log.i("test", "#" + Integer.toHexString(color));
-                                colorName="#" + Integer.toHexString(color);
-                                //colorName = getResources().getStringArray(R.array.dialogColorBtn)[nResult];
+                                try {
+                                    colorName="#" + Integer.toHexString(getResources().getColor(resId));
+                                }catch(Resources.NotFoundException e){
+                                    e.printStackTrace();
+                                }
                                 Common.stateFilter(viewMode);
                                 if (subId != null && subOverlapFlag) {
                                     SubjectData subjectData = db.getSubjectData(subId);
