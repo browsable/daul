@@ -1,3 +1,4 @@
+/*
 package com.daemin.common;
 
 import android.app.Service;
@@ -98,18 +99,22 @@ public class GPSInfo extends Service implements LocationListener {
         return location;
     }
 
-    /**
+    */
+/**
      * GPS 종료 
-     * */
+     * *//*
+
     public void stopUsingGPS(){
         if(locationManager != null){
             locationManager.removeUpdates(GPSInfo.this);
         }
     }
 
-    /**
+    */
+/**
      * 위도값을 가져옵니다. 
-     * */
+     * *//*
+
     public double getLatitude(){
         if(location != null){
             lat = location.getLatitude();
@@ -117,9 +122,11 @@ public class GPSInfo extends Service implements LocationListener {
         return lat;
     }
 
-    /**
+    */
+/**
      * 경도값을 가져옵니다. 
-     * */
+     * *//*
+
     public double getLongitude(){
         if(location != null){
             lon = location.getLongitude();
@@ -127,9 +134,11 @@ public class GPSInfo extends Service implements LocationListener {
         return lon;
     }
 
-    /**
+    */
+/**
      * GPS 나 wife 정보가 켜져있는지 확인합니다. 
-     * */
+     * *//*
+
     public boolean isGetLocation() {
         return this.isGetLocation;
     }
@@ -158,4 +167,4 @@ public class GPSInfo extends Service implements LocationListener {
         // TODO Auto-generated method stub
 
     }
-}
+}*/

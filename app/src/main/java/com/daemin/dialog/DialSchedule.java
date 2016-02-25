@@ -18,6 +18,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -66,7 +67,6 @@ import com.daemin.event.SetPlaceEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
 import com.daemin.event.UpdateNormalEvent;
-import com.daemin.map.MapActivity;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 import com.daemin.widget.WidgetUpdateService;
@@ -85,6 +85,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import de.greenrobot.event.EventBus;
 import timedao.MyTime;
@@ -850,6 +851,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 }
                                 break;
                             case 1:
+                                Random mRand = new Random();
+                                int nResult = mRand.nextInt(19)+1;
+                                int resId = getResources().getIdentifier("btcolor" + nResult, "color", getPackageName());
+                                int color = getResources().getColor(resId);
+                                Log.i("test", "#" + Integer.toHexString(color));
+                                colorName="#" + Integer.toHexString(color);
+                                //colorName = getResources().getStringArray(R.array.dialogColorBtn)[nResult];
                                 Common.stateFilter(viewMode);
                                 if (subId != null && subOverlapFlag) {
                                     SubjectData subjectData = db.getSubjectData(subId);
@@ -929,9 +937,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 datp.show();
                 break;
             case R.id.btPlace:
-                Intent in = new Intent(DialSchedule.this, MapActivity.class);
+               /* Intent in = new Intent(DialSchedule.this, MapActivity.class);
                 startActivity(in);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);*/
                 break;
             case R.id.btShare:
                 DialShare ds = new DialShare(DialSchedule.this);

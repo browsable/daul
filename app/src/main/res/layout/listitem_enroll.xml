@@ -69,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingTop="@dimen/margin_s"
         android:paddingLeft="@dimen/margin_default"
         android:paddingRight="@dimen/margin_default"
         android:paddingBottom="@dimen/margin_default">
@@ -97,11 +98,19 @@
             android:visibility="gone"
             android:background="@drawable/ic_alarm" />
         <Button
+            android:id="@+id/btTime"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="@dimen/margin_l"
+            android:layout_alignParentLeft="true"
+            android:visibility="gone"
+            android:background="@drawable/ic_time" />
+        <Button
             android:id="@+id/btRepeat"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginRight="@dimen/margin_l"
-            android:layout_toRightOf="@+id/btAlarm"
+            android:layout_toRightOf="@+id/btTime"
             android:visibility="gone"
             android:background="@drawable/ic_repeat" />
         <Button

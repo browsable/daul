@@ -1,8 +1,11 @@
+/*
 package com.daemin.map;
 
+*/
 /**
  * Created by hernia on 2015-10-12.
- */
+ *//*
+
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -48,10 +51,12 @@ public class MapActivity extends FragmentActivity
         implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks
         , LocationListener {
 
-    /**
+    */
+/**
      * GoogleApiClient wraps our service connection to Google Play Services and provides access
      * to the user's sign in state as well as the Google's APIs.
-     */
+     *//*
+
     protected GoogleApiClient mGoogleApiClient;
     private PlaceAutocompleteAdapter mAdapter;
     private AutoCompleteTextView mAutocompleteView;
@@ -111,7 +116,8 @@ public class MapActivity extends FragmentActivity
         });
     }
 
-    /**
+    */
+/**
      * Listener that handles selections from suggestions from the AutoCompleteTextView that
      * displays Place suggestions.
      * Gets the place id of the selected item and issues a request to the Places Geo Data API
@@ -119,35 +125,42 @@ public class MapActivity extends FragmentActivity
      *
      * @see com.google.android.gms.location.places.GeoDataApi#getPlaceById(com.google.android.gms.common.api.GoogleApiClient,
      * String...)
-     */
+     *//*
+
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            /*
+            */
+/*
              Retrieve the place ID of the selected item from the Adapter.
              The adapter stores each Place suggestion in a AutocompletePrediction from which we
              read the place ID and title.
-              */
+              *//*
+
             final AutocompletePrediction item = mAdapter.getItem(position);
             final String placeId = item.getPlaceId();
             final CharSequence primaryText = item.getPrimaryText(null);
 
 
-            /*
+            */
+/*
              Issue a request to the Places Geo Data API to retrieve a Place object with additional
              details about the place.
-              */
+              *//*
+
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
         }
     };
 
-    /**
+    */
+/**
      * Callback for results from a Places Geo Data API query that shows the first place result in
      * the details view on screen.
-     */
+     *//*
+
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
             = new ResultCallback<PlaceBuffer>() {
         @Override
@@ -161,9 +174,11 @@ public class MapActivity extends FragmentActivity
             final Place place = places.get(0);
 
             // Format details of the place for display and show it in a TextView.
-            /*mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
+            */
+/*mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
                     place.getId(), place.getAddress(), place.getPhoneNumber(),
-                    place.getWebsiteUri()));*/
+                    place.getWebsiteUri()));*//*
+
 
             //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon01));
             marking(place.getLatLng());
@@ -244,23 +259,29 @@ public class MapActivity extends FragmentActivity
             Toast.makeText(this, "Couldn't get the location. Make sure location is enabled on the device", Toast.LENGTH_SHORT).show();
         }
     }
-    /**
+    */
+/**
      * Creating google api client object
-     * */
+     * *//*
+
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
-                .enableAutoManage(this, 0 /* clientId */, this)
+                .enableAutoManage(this, 0 */
+/* clientId *//*
+, this)
                 .addApi(Places.GEO_DATA_API)
                 .build();
 
     }
 
-    /**
+    */
+/**
      * Creating location request object
-     * */
+     * *//*
+
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(UPDATE_INTERVAL);
@@ -269,9 +290,11 @@ public class MapActivity extends FragmentActivity
         mLocationRequest.setSmallestDisplacement(DISPLACEMENT);
     }
 
-    /**
+    */
+/**
      * Method to verify google play services on the device
-     * */
+     * *//*
+
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil
                 .isGooglePlayServicesAvailable(this);
@@ -337,9 +360,11 @@ public class MapActivity extends FragmentActivity
         mAutocompleteView.setText("");
         mAutocompleteView.setText(bf.toString());
     }
-    /**
+    */
+/**
      * Starting the location updates
-     * */
+     * *//*
+
     protected void startLocationUpdates() {
 
         LocationServices.FusedLocationApi.requestLocationUpdates(
@@ -347,9 +372,11 @@ public class MapActivity extends FragmentActivity
 
     }
 
-    /**
+    */
+/**
      * Stopping location updates
-     */
+     *//*
+
     protected void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
@@ -417,4 +444,4 @@ public class MapActivity extends FragmentActivity
         super.onDestroy();
         System.gc();
     }
-}
+}*/

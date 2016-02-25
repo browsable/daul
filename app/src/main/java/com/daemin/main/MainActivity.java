@@ -33,7 +33,6 @@ import android.widget.ViewSwitcher;
 import com.daemin.area.AreaFragment;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.Common;
-import com.daemin.common.GPSInfo;
 import com.daemin.common.MyRequest;
 import com.daemin.common.RoundedCornerNetworkImageView;
 import com.daemin.community.CommunityFragment2;
@@ -114,9 +113,12 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewMode = User.INFO.getViewMode();
         singleton = this;
-        checkLocationPermission();
+        viewMode = User.INFO.getViewMode();
+        String groupName = User.INFO.getGroupName();
+        if(groupName.equals(""))MyRequest.getGroupList(this);
+        else MyRequest.getDBVerWithMyGroup(this, User.INFO.groupPK);
+        //checkLocationPermission();
         EventBus.getDefault().register(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
@@ -448,7 +450,7 @@ public class MainActivity extends FragmentActivity {
         changeFragment(e.getCl(), e.getTitleName());
     }
 
-    public void GPSSetting(){
+    /*public void GPSSetting(){
         GPSInfo gps = new GPSInfo(this);
         // GPS 사용유무 가져오기
         if (gps.isGetLocation()) {
@@ -457,13 +459,13 @@ public class MainActivity extends FragmentActivity {
             gps.stopUsingGPS();
         } else {
             // GPS 를 사용할수 없으므로
-			/*Toast.makeText(
+			*//*Toast.makeText(
 					this,
 					"현재 GPS가 켜져있지 않습니다.",
-					Toast.LENGTH_LONG).show();*/
+					Toast.LENGTH_LONG).show();*//*
             gps.stopUsingGPS();
         }
-    }
+    }*/
     public void btFriendEvent(){
         btMode.setVisibility(View.GONE);
         changeSetting();
@@ -481,8 +483,8 @@ public class MainActivity extends FragmentActivity {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
-    private final int REQUEST_LOCATION = 101;
-    private void checkLocationPermission() {
+    //private final int REQUEST_LOCATION = 101;
+    /*private void checkLocationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED
@@ -506,7 +508,7 @@ public class MainActivity extends FragmentActivity {
             // 다음 부분은 항상 허용일 경우에 해당이 됩니다.
             GPSSetting();
         }
-    }
+    }*/
     private final int REQUEST_CONTACTS = 102;
     private void checkContactsPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -552,7 +554,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_LOCATION:
+            /*case REQUEST_LOCATION:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED){ //&& grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     GPSSetting();
                 } else {
@@ -563,7 +565,7 @@ public class MainActivity extends FragmentActivity {
                             4);
                     dd.show();
                 }
-                break;
+                break;*/
             case REQUEST_CONTACTS:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED){ //&& grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     btFriendEvent();

@@ -89,6 +89,6 @@ public enum TimePos {
         return posState;
     }
     public void drawTimePos(Canvas canvas, int width, int height) {
-        posState.drawTimePos(canvas, width, height,title, second, place, realStartYth, realStartMin, posIndex, xth, yth, startMin,endMin);
+        posState.drawTimePos(canvas, width, height,title, second, place,realStartYth, realStartMin, posIndex, xth, yth, startMin,endMin);
     }
 }

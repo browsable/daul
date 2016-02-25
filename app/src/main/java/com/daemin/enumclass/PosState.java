@@ -51,7 +51,7 @@ public enum PosState {
         tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
     }
     public void drawTimePos(Canvas canvas, int width, int height, String title, String second, String place, int realStartYth,int realStartMin, int posIndex, int xth, int yth, int startMin, int endMin) {
-        canvas.drawRect(width * xth / 15, (height * yth / 32 + intervalSize)+(2*height/32)*startMin/60,
+       canvas.drawRect(width * xth / 15, (height * yth / 32 + intervalSize)+(2*height/32)*startMin/60,
                 width * (xth + 2) / 15, (height * yth / 32 + intervalSize)+(2*height/32)*endMin/60, rp);
     }
 }

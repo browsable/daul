@@ -90,6 +90,8 @@ public class SettingGroupFragment extends BasicFragment {
         }
         catch (ArrayIndexOutOfBoundsException e){
             tvLocalVer.setText("");
+        }catch(NullPointerException e){
+            tvLocalVer.setText("");
         }
         try {
             String[] tmp2 = User.INFO.ttServerVer.split("-");
@@ -99,6 +101,9 @@ public class SettingGroupFragment extends BasicFragment {
             tvServerVer.setText(tmpS2);
         }
         catch (ArrayIndexOutOfBoundsException e) {
+            tvServerVer.setText("");
+        }
+        catch(NullPointerException e){
             tvServerVer.setText("");
         }
         tvGroupName.setText(User.INFO.getGroupName());
@@ -170,14 +175,14 @@ public class SettingGroupFragment extends BasicFragment {
                 btEnter.setVisibility(View.GONE);
                 actvUniv.setText("");
                 if (User.INFO.getGroupName().equals(groupName)) { //처음 대학을 그대로 선택시
-                    if(!User.INFO.getGroupDBVer().equals(User.INFO.dbServerVer)){
+                    if (!User.INFO.getGroupDBVer().equals(User.INFO.dbServerVer)) {
                         Toast.makeText(getActivity(), getString(R.string.univ_dbupdate), Toast.LENGTH_SHORT).show();
                         new DownloadFileFromURL().execute(groupName);
                     }
-                }else {
-                    if(ttVersion.equals(getResources().getString(R.string.wait1))){
+                } else {
+                    if (ttVersion.equals(getResources().getString(R.string.wait1))) {
                         Toast.makeText(getActivity(), getString(R.string.wait2), Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         new DownloadFileFromURL().execute(groupName);
                         Toast.makeText(getActivity(), getString(R.string.setting_group_modify), Toast.LENGTH_SHORT).show();
                     }

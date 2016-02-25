@@ -17,11 +17,8 @@ import android.os.Message;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.daemin.common.GPSInfo;
-import com.daemin.common.MyRequest;
 import com.daemin.dialog.DialDefault;
 import com.daemin.encryption.MyHash;
 import com.daemin.enumclass.User;
@@ -49,9 +46,6 @@ public class SplashActivity extends Activity{
 		singleton = this;
 		setContentView(R.layout.activity_splash);
 		initialize();
-		String groupName = User.INFO.getGroupName();
-		if(groupName.equals(""))MyRequest.getGroupList(this);
-		else MyRequest.getDBVerWithMyGroup(this, User.INFO.groupPK);
 	}
 
 	private void initialize() {

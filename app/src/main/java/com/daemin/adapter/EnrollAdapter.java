@@ -69,6 +69,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
             holder.btCheck  = (Button) convertView.findViewById(R.id.btCheck);
             holder.btEdit = (Button) convertView.findViewById(R.id.btEdit);
             holder.btRemove  = (Button) convertView.findViewById(R.id.btRemove);
+            holder.btTime  = (Button) convertView.findViewById(R.id.btTime);
             holder.btColor  = (Button) convertView.findViewById(R.id.btColor);
             holder.btExpand = (Button) convertView.findViewById(R.id.btExpand);
             holder.btShare = (Button) convertView.findViewById(R.id.btShare);
@@ -115,6 +116,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                     holder.btEdit.setVisibility(View.VISIBLE);
                     holder.btCheck.setVisibility(View.GONE);
                     holder.btExpand.setVisibility(View.GONE);
+                    holder.btTime.setVisibility(View.GONE);
                     holder.btColor.setVisibility(View.GONE);
                     holder.btShare.setVisibility(View.GONE);
                     holder.btAlarm.setVisibility(View.GONE);
@@ -172,14 +174,29 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
             @Override
             public void onClick(View v) {
                 holder.btExpand.setVisibility(View.GONE);
+                //holder.btTime.setVisibility(View.VISIBLE);
+                //holder.btRepeat.setVisibility(View.VISIBLE);
                 holder.btColor.setVisibility(View.VISIBLE);
                 //holder.btShare.setVisibility(View.VISIBLE);
                 //holder.btAlarm.setVisibility(View.VISIBLE);
-                //holder.btRepeat.setVisibility(View.VISIBLE);
                 holder.gd.setColor(Color.parseColor(holder.tvColor.getText().toString()));
                 holder.gd.invalidateSelf();
             }
         });
+        /*holder.btTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialColor dc = new DialColor(context,holder.btColor);
+                dc.show();
+            }
+        });
+        holder.btRepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialColor dc = new DialColor(context,holder.btColor);
+                dc.show();
+            }
+        });*/
         holder.btColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,7 +219,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
     private static class Holder {
         public TextView tvTime, tvId, tvTimeCode, tvTimeType, tvCredit,tvColor;
         public EditText etTitle, etMemo, etPlace;
-        public Button btCommunity,btCheck,btEdit,btInvite, btRemove,btColor,btShare,btAlarm,btRepeat,btExpand;
+        public Button btCommunity,btCheck,btEdit,btInvite, btRemove,btTime,btColor,btShare,btAlarm,btRepeat,btExpand;
         private GradientDrawable gd;
     }
 }
