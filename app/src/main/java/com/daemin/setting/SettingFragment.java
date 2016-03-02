@@ -254,7 +254,7 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
             case R.id.btSettingQA:
                 Intent i = new Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("https://open.kakao.com/o/sqXjIpf"));
+                        Uri.parse("http://plus.kakao.com/home/@timedao"));
                 getActivity().startActivity(i);
                 break;
         }

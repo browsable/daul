@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -76,6 +77,7 @@ public class SettingGroupFragment extends BasicFragment {
         actvUniv = (AutoCompleteTextView) root.findViewById(R.id.actvUniv);
         btShowUniv = (ToggleButton) root.findViewById(R.id.btShowUniv);
         btEnter = (Button) root.findViewById(R.id.btEnter);
+        llVer = (LinearLayout) root.findViewById(R.id.llVer);
         tvHyperText = (TextView) root.findViewById(R.id.tvHyperText);
         tvHyperText.setMovementMethod(LinkMovementMethod.getInstance());
         tvServerVer = (TextView) root.findViewById(R.id.tvServerVer);
@@ -90,8 +92,10 @@ public class SettingGroupFragment extends BasicFragment {
         }
         catch (ArrayIndexOutOfBoundsException e){
             tvLocalVer.setText("");
+            llVer.setVisibility(View.GONE);
         }catch(NullPointerException e){
             tvLocalVer.setText("");
+            llVer.setVisibility(View.GONE);
         }
         try {
             String[] tmp2 = User.INFO.ttServerVer.split("-");
@@ -326,6 +330,7 @@ public class SettingGroupFragment extends BasicFragment {
     ToggleButton btShowUniv;
     Button btEnter;
     TextView tvHyperText,tvGroupName,tvLocalVer,tvServerVer;
+    LinearLayout llVer;
     private ArrayAdapter<String> univAdapter;
     private ArrayList<String> univList;
     private AutoCompleteTextView actvUniv;

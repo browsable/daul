@@ -133,7 +133,7 @@
     <string name="setting_calendar">달력 연동</string>
     <!--그룹설정-->
     <string name="setting_group_in">소속그룹</string>
-    <string name="setting_group_timetable">시간표</string>
+    <string name="setting_group_nothing">등록된 그룹이 없습니다</string>
     <string name="setting_group_modify">그룹이 설정되었습니다</string>
     <!--버전정보-->
     <string name="setting_ver_local">현재 버전</string>

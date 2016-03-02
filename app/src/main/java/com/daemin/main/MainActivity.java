@@ -118,7 +118,7 @@ public class MainActivity extends FragmentActivity {
         String groupName = User.INFO.getGroupName();
         if(groupName.equals(""))MyRequest.getGroupList(this);
         else MyRequest.getDBVerWithMyGroup(this, User.INFO.groupPK);
-        //checkLocationPermission();
+        checkLocationPermission();
         EventBus.getDefault().register(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
@@ -483,8 +483,8 @@ public class MainActivity extends FragmentActivity {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
-    //private final int REQUEST_LOCATION = 101;
-    /*private void checkLocationPermission() {
+    private final int REQUEST_LOCATION = 101;
+    private void checkLocationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED
@@ -501,14 +501,14 @@ public class MainActivity extends FragmentActivity {
                 // app-defined int constant
             }else {
                 // 다음 부분은 항상 허용일 경우에 해당이 됩니다.
-                GPSSetting();
+                //GPSSetting();
             }
 
         }else {
             // 다음 부분은 항상 허용일 경우에 해당이 됩니다.
-            GPSSetting();
+            //GPSSetting();
         }
-    }*/
+    }
     private final int REQUEST_CONTACTS = 102;
     private void checkContactsPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

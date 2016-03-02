@@ -6,7 +6,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.daemin.common.Common;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.event.ExcuteMethodEvent;

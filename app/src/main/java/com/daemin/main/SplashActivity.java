@@ -19,6 +19,7 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
 
+import com.daemin.common.MyRequest;
 import com.daemin.dialog.DialDefault;
 import com.daemin.encryption.MyHash;
 import com.daemin.enumclass.User;
