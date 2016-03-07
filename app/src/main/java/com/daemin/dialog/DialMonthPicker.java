@@ -45,7 +45,7 @@ public class DialMonthPicker extends Dialog {
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-        layoutParams.width = dm.widthPixels*5/6;;
+        layoutParams.width = dm.widthPixels*5/6;
         layoutParams.height = dm.heightPixels*4/9;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
@@ -61,6 +61,11 @@ public class DialMonthPicker extends Dialog {
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                npStartHour.clearFocus();
+                npStartMin.clearFocus();
+                npEndHour.clearFocus();
+                npEndMin.clearFocus();
+
                 EventBus.getDefault().post(new UpdateNormalEvent(
                         String.valueOf(npStartHour.getValue()),
                         Convert.IntToString(npStartMin.getValue()),
@@ -192,10 +197,10 @@ public class DialMonthPicker extends Dialog {
         npStartMin = (NumberPicker) findViewById(R.id.npStartMin);
         npEndHour = (NumberPicker) findViewById(R.id.npEndHour);
         npEndMin = (NumberPicker) findViewById(R.id.npEndMin);
-        npStartHour.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        /*npStartHour.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         npEndHour.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);*/
     }
     private Button btDialCancel;
     private Button btDialSetting;

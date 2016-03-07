@@ -2,29 +2,28 @@ package com.daemin.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.daemin.common.Common;
 import com.daemin.data.EnrollData;
 import com.daemin.dialog.DialColor;
-import com.daemin.enumclass.User;
+import com.daemin.dialog.DialRepeat;
+import com.daemin.event.CalListHeightEvent;
 import com.daemin.event.RemoveEnrollEvent;
-import com.daemin.event.SetColorEvent;
 import com.daemin.event.SetCreditEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
+import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -37,11 +36,14 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
     private LayoutInflater mInflater;
     private Context context;
     private Boolean weekFlag;
-    public EnrollAdapter(Context context, List<EnrollData> values, Boolean weekFlag) {
+    private int dayOfWeek;
+    private int timeType;
+    public EnrollAdapter(Context context, List<EnrollData> values, Boolean weekFlag, int xth) {
         super(context, R.layout.listitem_enroll, values);
         mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
         this.weekFlag = weekFlag;
+        this.dayOfWeek = xth;
     }
 
     @Override
@@ -55,25 +57,27 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         if (convertView == null) {
             holder = new Holder();
             convertView = mInflater.inflate(R.layout.listitem_enroll, parent, false);
-            holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
+            holder.tvStartHour = (TextView) convertView.findViewById(R.id.tvStartHour);
+            holder.tvStartMin = (TextView) convertView.findViewById(R.id.tvStartMin);
+            holder.tvEndHour = (TextView) convertView.findViewById(R.id.tvEndHour);
+            holder.tvEndMin = (TextView) convertView.findViewById(R.id.tvEndMin);
             holder.etTitle = (EditText) convertView.findViewById(R.id.etTitle);
             holder.etMemo = (EditText) convertView.findViewById(R.id.etMemo);
             holder.etPlace = (EditText) convertView.findViewById(R.id.etPlace);
             holder.tvId = (TextView) convertView.findViewById(R.id.tvId);
             holder.tvTimeCode = (TextView) convertView.findViewById(R.id.tvTimeCode);
             holder.tvTimeType = (TextView) convertView.findViewById(R.id.tvTimeType);
-            holder.tvCredit = (TextView) convertView.findViewById(R.id.tvCredit);
+            holder.tvRepeat = (TextView) convertView.findViewById(R.id.tvRepeat);
             holder.tvColor = (TextView) convertView.findViewById(R.id.tvColor);
             holder.btCommunity  = (Button) convertView.findViewById(R.id.btCommunity);
             holder.btInvite  = (Button) convertView.findViewById(R.id.btInvite);
             holder.btCheck  = (Button) convertView.findViewById(R.id.btCheck);
             holder.btEdit = (Button) convertView.findViewById(R.id.btEdit);
             holder.btRemove  = (Button) convertView.findViewById(R.id.btRemove);
-            holder.btTime  = (Button) convertView.findViewById(R.id.btTime);
             holder.btColor  = (Button) convertView.findViewById(R.id.btColor);
-            holder.btExpand = (Button) convertView.findViewById(R.id.btExpand);
             holder.btShare = (Button) convertView.findViewById(R.id.btShare);
             holder.btAlarm = (Button) convertView.findViewById(R.id.btAlarm);
+            holder.btTime = (Button) convertView.findViewById(R.id.btTime);
             holder.btRepeat = (Button) convertView.findViewById(R.id.btRepeat);
             holder.gd = (GradientDrawable) holder.btColor.getBackground().mutate();
             convertView.setTag(holder);
@@ -81,15 +85,18 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
             holder = (Holder) convertView.getTag();
         }
         // Populate the text
-        holder.tvTime.setText(getItem(position).getTime());
+        holder.tvStartHour.setText(getItem(position).getStartHour());
+        holder.tvStartMin.setText(getItem(position).getStartMin());
+        holder.tvEndHour.setText(getItem(position).getEndHour());
+        holder.tvEndMin.setText(getItem(position).getEndMin());
         holder.etTitle.setText(getItem(position).getTitle());
         holder.etPlace.setText(getItem(position).getPlace());
-        holder.etMemo.setText(getItem(position).getMemo());
         holder.tvId.setText(String.valueOf(getItem(position).get_id()));
         holder.tvTimeCode.setText(getItem(position).getTimeCode());
         holder.tvTimeType.setText(getItem(position).getTimeType());
-        holder.tvCredit.setText(getItem(position).getCredit());
         holder.tvColor.setText(getItem(position).getColor());
+        timeType = Integer.parseInt(holder.tvTimeType.getText().toString());
+        holder.etMemo.setText(getItem(position).getMemo());
         holder.btCommunity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,9 +112,9 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         holder.btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title =  holder.etTitle.getText().toString();
-                String place =  holder.etPlace.getText().toString();
-                String memo =  holder.etMemo.getText().toString();
+                String title = holder.etTitle.getText().toString();
+                String place = holder.etPlace.getText().toString();
+                String memo = holder.etMemo.getText().toString();
                 if(holder.etTitle.length()==0){
                     Toast.makeText(context, context.getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
                     holder.etTitle.setHintTextColor(Color.RED);
@@ -115,21 +122,20 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                     holder.btRemove.setVisibility(View.VISIBLE);
                     holder.btEdit.setVisibility(View.VISIBLE);
                     holder.btCheck.setVisibility(View.GONE);
-                    holder.btExpand.setVisibility(View.GONE);
-                    holder.btTime.setVisibility(View.GONE);
                     holder.btColor.setVisibility(View.GONE);
                     holder.btShare.setVisibility(View.GONE);
                     holder.btAlarm.setVisibility(View.GONE);
                     holder.btRepeat.setVisibility(View.GONE);
                     holder.etTitle.setEnabled(false);
                     holder.etPlace.setEnabled(false);
-                    holder.etMemo.setEnabled(false);
                     holder.etTitle.setTextColor(Color.BLACK);
                     holder.etPlace.setTextColor(Color.BLACK);
-                    holder.etMemo.setTextColor(Color.BLACK);
                     holder.etTitle.setHint("");
                     holder.etPlace.setHint("");
+                    holder.etMemo.setEnabled(false);
+                    holder.etMemo.setTextColor(Color.BLACK);
                     holder.etMemo.setHint("");
+
                     String colorName;
                     if(holder.btColor.getTag()==null) colorName = holder.tvColor.getText().toString();
                     else colorName = context.getResources().getString((int)holder.btColor.getTag());
@@ -144,59 +150,55 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                     if(weekFlag)Common.fetchWeekData();
                     else Common.fetchMonthData();
                 }
+                EventBus.getDefault().post(new CalListHeightEvent());
             }
         });
         holder.btEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.gd.setColor(Color.parseColor(holder.tvColor.getText().toString()));
+                holder.gd.invalidateSelf();
                 holder.btRemove.setVisibility(View.GONE);
                 holder.btEdit.setVisibility(View.GONE);
                 holder.btCheck.setVisibility(View.VISIBLE);
-                holder.btExpand.setVisibility(View.VISIBLE);
+                holder.btColor.setVisibility(View.VISIBLE);
+                holder.btTime.setVisibility(View.VISIBLE);
+                //holder.btShare.setVisibility(View.GONE);
+                //holder.btAlarm.setVisibility(View.GONE);
                 holder.etPlace.setEnabled(true);
                 holder.etPlace.setTextColor(Color.GRAY);
                 holder.etPlace.setHint(context.getResources().getString(R.string.normal_place));
                 holder.etPlace.setSelection(holder.etPlace.length());
                 holder.etPlace.requestFocus();
-                if(holder.tvTimeType.getText().toString().equals("0")){
+                holder.etMemo.setEnabled(true);
+                holder.etMemo.setTextColor(Color.GRAY);
+                holder.etMemo.setHint(context.getResources().getString(R.string.normal_memo));
+                if(timeType==0){
+                    holder.btRepeat.setVisibility(View.VISIBLE);
                     holder.etTitle.setEnabled(true);
-                    holder.etMemo.setEnabled(true);
                     holder.etTitle.setTextColor(Color.GRAY);
-                    holder.etMemo.setTextColor(Color.GRAY);
                     holder.etTitle.setHint(context.getResources().getString(R.string.normal_name));
-                    holder.etMemo.setHint(context.getResources().getString(R.string.normal_memo));
                     holder.etTitle.setSelection(holder.etTitle.length());
                     holder.etTitle.requestFocus();
+                }else{
+                    holder.btRepeat.setVisibility(View.GONE);
                 }
             }
         });
-        holder.btExpand.setOnClickListener(new View.OnClickListener() {
+        holder.btTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.btExpand.setVisibility(View.GONE);
-                //holder.btTime.setVisibility(View.VISIBLE);
-                //holder.btRepeat.setVisibility(View.VISIBLE);
-                holder.btColor.setVisibility(View.VISIBLE);
-                //holder.btShare.setVisibility(View.VISIBLE);
-                //holder.btAlarm.setVisibility(View.VISIBLE);
-                holder.gd.setColor(Color.parseColor(holder.tvColor.getText().toString()));
-                holder.gd.invalidateSelf();
-            }
-        });
-        /*holder.btTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialColor dc = new DialColor(context,holder.btColor);
-                dc.show();
             }
         });
         holder.btRepeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialColor dc = new DialColor(context,holder.btColor);
-                dc.show();
+                HashMap dayIndex = new HashMap<>();
+                dayIndex.put(dayOfWeek,dayOfWeek);
+                DialRepeat dr = new DialRepeat(context,dayIndex);
+                dr.show();
             }
-        });*/
+        });
         holder.btColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,9 +219,9 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         return convertView;
     }
     private static class Holder {
-        public TextView tvTime, tvId, tvTimeCode, tvTimeType, tvCredit,tvColor;
-        public EditText etTitle, etMemo, etPlace;
-        public Button btCommunity,btCheck,btEdit,btInvite, btRemove,btTime,btColor,btShare,btAlarm,btRepeat,btExpand;
+        public TextView tvId, tvTimeCode, tvTimeType,tvRepeat,tvColor,tvStartHour,tvStartMin,tvEndHour,tvEndMin;
+        public EditText etTitle, etPlace,etMemo;
+        public Button btCommunity,btCheck,btEdit,btInvite, btRemove,btColor,btTime,btShare,btAlarm,btRepeat;
         private GradientDrawable gd;
     }
 }

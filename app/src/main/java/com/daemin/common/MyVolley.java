@@ -50,8 +50,7 @@ public class MyVolley {
         return imageLoader;
     }
     private static ImageCache getDefaultImageCache(Context context) {
-        return new UniversalLimitedAgeMemoryCache(new UniversalLruMemoryCache(
-                DEFAULT_CACHE_SIZE), DEFAULT_MAX_AGE);
+        return new UniversalLimitedAgeMemoryCache(new UniversalLruMemoryCache(DEFAULT_CACHE_SIZE), DEFAULT_MAX_AGE);
     }
 
     private static Cache getDefaultDiskCache(Context context) {

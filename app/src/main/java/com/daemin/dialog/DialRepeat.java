@@ -52,8 +52,8 @@ public class DialRepeat extends Dialog {
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-        layoutParams.width = dm.widthPixels * 2 / 3;
-        layoutParams.height = dm.heightPixels * 5 / 9;
+        layoutParams.width = dm.widthPixels * 7/ 9;
+        layoutParams.height = dm.heightPixels * 2 / 3;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();

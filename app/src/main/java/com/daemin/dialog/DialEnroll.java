@@ -21,6 +21,7 @@ import com.daemin.common.Convert;
 import com.daemin.data.EnrollData;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.TimePos;
+import com.daemin.event.CalListHeightEvent;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RemoveEnrollEvent;
@@ -41,6 +42,7 @@ public class DialEnroll extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+
     }
 
     @Override
@@ -128,27 +130,34 @@ public class DialEnroll extends Activity {
             }
         });
         lv = (ListView) findViewById(R.id.lv);
-        enrollAdapter = new EnrollAdapter(DialEnroll.this, mtList,weekFlag);
+        enrollAdapter = new EnrollAdapter(DialEnroll.this, mtList,weekFlag,xth);
         lv.setAdapter(enrollAdapter);
     }
     private void enrollMyTime(List<MyTime> mt){
         for(MyTime m : mt){
-            String time = m.getStarthour()+":"+Convert.IntToString(m.getStartmin())+" ~ "
-                    +m.getEndhour()+ ":"+Convert.IntToString(m.getEndmin());
+
             int timeType = m.getTimetype();
             if(timeType==0){
                 String timeCode = m.getTimecode();
-                EnrollData ed = new EnrollData(time,m.getName(),m.getMemo(),timeCode,
-                        String.valueOf(timeType),
-                        "0",m.getColor(),m.getPlace(),m.getId());
+                EnrollData ed = new EnrollData(
+                        Convert.IntToString(m.getStarthour()),
+                        Convert.IntToString(m.getStartmin()),
+                        Convert.IntToString(m.getEndhour()),
+                        Convert.IntToString(m.getEndmin()),
+                        m.getName(),m.getMemo(),timeCode,
+                        String.valueOf(timeType),m.getColor(),m.getPlace(),m.getRepeat(),m.getId());
                 mtList.add(ed);
                 enrollList.put(timeCode,ed);
             }else{
                 String timeCode = m.getTimecode();
                 String memo = m.getMemo();
-                EnrollData ed =new EnrollData(time, m.getName(), memo, timeCode,
-                        String.valueOf(timeType),
-                        memo.split("/")[1].substring(0, 1),m.getColor(), m.getPlace(), m.getId());
+                EnrollData ed =new EnrollData(
+                        Convert.IntToString(m.getStarthour()),
+                        Convert.IntToString(m.getStartmin()),
+                        Convert.IntToString(m.getEndhour()),
+                        Convert.IntToString(m.getEndmin()),
+                        m.getName(), memo, timeCode,
+                        String.valueOf(timeType),m.getColor(), m.getPlace(),m.getRepeat(), m.getId());
                 mtList.add(ed);
                 enrollList.put(timeCode, ed);
             }
@@ -157,7 +166,6 @@ public class DialEnroll extends Activity {
     private int xth,yth,startHour,startMin;
     private Boolean weekFlag;
     private TextView tvMonthDay;
-    private String dayOfWeek;
     private Button btDialCancel;
     private ListView lv;
     private List<EnrollData> mtList;
@@ -177,4 +185,8 @@ public class DialEnroll extends Activity {
             Common.fetchWeekData();
         }
     }
+    public void onEventMainThread(CalListHeightEvent e) {
+        enrollAdapter.notifyDataSetChanged();
+    }
+
 }

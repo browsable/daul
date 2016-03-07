@@ -11,8 +11,8 @@ public class EnrollData {
     private String place;
     private String timeCode;
     private String timeType;
-    private String credit;
-    private String time;
+    private String startHour, startMin, endHour, endMin;
+    private String repeat;
 
     private String color;
     private long _id;
@@ -21,18 +21,33 @@ public class EnrollData {
         return title;
     }
 
-    public String getTime() {
-        return time;
-    }
-
     public String getMemo() {
         return memo;
+    }
+    public String getRepeat() {
+        return repeat;
+    }
+
+    public String getStartHour() {
+        return startHour;
+    }
+
+    public String getEndHour() {
+        return endHour;
+    }
+
+    public String getStartMin() {
+        return startMin;
+    }
+
+    public String getEndMin() {
+        return endMin;
     }
 
     public String getPlace() {
         return place;
-    }
 
+    }
     public long get_id() {
         return _id;
     }
@@ -44,22 +59,21 @@ public class EnrollData {
     public String getTimeType() {
         return timeType;
     }
-
-    public String getCredit() {
-        return credit;
-    }
     public String getColor() {
         return color;
     }
-    public EnrollData(String time,String title,String memo,String timeCode,String timeType,String credit,String color, String place,long _id) {
-        this.time = time;
+    public EnrollData(String startHour,String startMin, String endHour, String endMin,String title,String memo,String timeCode,String timeType,String color, String place,String repeat, long _id) {
+        this.startHour = startHour;
+        this.startMin = startMin;
+        this.endHour = endHour;
+        this.endMin = endMin;
         this.title = title;
         this.memo = memo;
         this.place = place;
         this.timeCode = timeCode;
         this.timeType = timeType;
-        this.credit = credit;
         this.color = color;
         this._id = _id;
+        this.repeat = repeat;
     }
 }

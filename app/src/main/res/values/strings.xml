@@ -18,13 +18,16 @@
     <string name="day">일</string>
     <string name="am">오전</string>
     <string name="pm">오후</string>
+    <string name="prof">교수</string>
+    <string name="credit">학점</string>
+    <string name="classnum">분반</string>
     <string name="semester">학기</string>
     <string name="widget4_4">TimeDAO 4X4</string>
     <string name="widget5_5">TimeDAO 5X5</string>
     <string name="weekofmonth">째주</string>
     <string name="wait1">등록대기중</string>
     <string name="wait2">등록대기중입니다</string>
-    <string name="QandA"><a href="https://open.kakao.com/o/sqXjIpf">문의하기</a></string>
+    <string name="QandA"><a href="http://plus.kakao.com/home/@timedao">소속 대학이 없는경우</a></string>
     <string name="QandA2">문의하기</string>
     <!--권한-->
     <string name="permission_phonestate">사용자의 고유 아이디 생성을 위해\n폰 상태 권한이 필요합니다.</string>
@@ -112,7 +115,6 @@
     <string name="univ_credit">학점 :</string>
     <string name="univ_overlap">중복되는 시간을 확인하세요</string>
     <string name="univ_notice_setting">대학은 설정 메뉴에서 재설정 가능합니다.</string>
-    <string name="univ_notice_enroll">소속대학이 없나요?</string>
     <string name="univ_notice_emtpy">정해진 시간이 없습니다</string>
     <!--친구-->
     <string name="friend_favorite">즐겨찾기</string>
@@ -133,7 +135,7 @@
     <string name="setting_calendar">달력 연동</string>
     <!--그룹설정-->
     <string name="setting_group_in">소속그룹</string>
-    <string name="setting_group_nothing">등록된 그룹이 없습니다</string>
+    <string name="setting_group_nothing">그룹이 없습니다</string>
     <string name="setting_group_modify">그룹이 설정되었습니다</string>
     <!--버전정보-->
     <string name="setting_ver_local">현재 버전</string>

@@ -16,8 +16,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/setting_group_nothing"
-        android:textSize="@dimen/textsize_xxxl"
-        android:layout_margin="@dimen/margin_default"
+        android:textSize="@dimen/textsize_xxl"
+        android:layout_margin="@dimen/margin_xs"
         android:textStyle="bold"
         android:gravity="center"
         />
@@ -41,13 +41,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/setting_ver_local"
-                android:textSize="@dimen/textsize_xl"
+                android:textSize="@dimen/textsize_l"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/setting_ver_server"
-                android:textSize="@dimen/textsize_xl"
+                android:textSize="@dimen/textsize_l"
                 android:textColor="@color/maincolor"
                 />
         </LinearLayout>
@@ -56,6 +56,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical"
+            android:layout_marginLeft="@dimen/margin_default"
             >
             <TextView
                 android:id="@+id/tvLocalVer"
@@ -65,7 +66,7 @@
                 android:singleLine="true"
                 android:ellipsize="marquee"
                 android:text="test"
-                android:textSize="@dimen/textsize_xl"
+                android:textSize="@dimen/textsize_l"
                 />
             <TextView
                 android:id="@+id/tvServerVer"
@@ -75,7 +76,7 @@
                 android:singleLine="true"
                 android:text="test"
                 android:ellipsize="marquee"
-                android:textSize="@dimen/textsize_xl"
+                android:textSize="@dimen/textsize_l"
                 />
         </LinearLayout>
     </LinearLayout>
@@ -139,17 +140,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="end"
-            android:layout_marginRight="@dimen/margin_default"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:text="@string/univ_notice_enroll"
-                android:layout_marginBottom="@dimen/margin_xxs"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/textsize_default" />
             <TextView
                 android:id="@+id/tvHyperText"
                 android:layout_width="wrap_content"

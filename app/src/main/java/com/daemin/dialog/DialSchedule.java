@@ -520,8 +520,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         }
 
                     String credit = ((TextView) view.findViewById(R.id.credit)).getText().toString();
-                    tvCreditSum.setText(String.valueOf(Integer.parseInt(creditSum)
-                            + Integer.parseInt(credit)));
+                    tvCreditSum.setText(String.valueOf(Float.parseFloat(creditSum)
+                            + Float.parseFloat(credit)));
                 }catch (Exception e){
                     Toast.makeText(DialSchedule.this, getResources().getString(R.string.time_error), Toast.LENGTH_SHORT).show();
                 }
@@ -737,7 +737,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 llUniv.setVisibility(View.VISIBLE);
                 btNormal.setTextColor(getResources().getColor(
                         R.color.gray));
-                btColor.setVisibility(View.INVISIBLE);
+                btColor.setVisibility(View.VISIBLE);
                 btUniv.setTextColor(getResources().getColor(
                         android.R.color.white));
                 if(groupName.equals("")||ttVersion.equals(getResources().getString(R.string.wait1))) { //학교를 한번도 선택한 적 없거나 등록대기중
@@ -834,6 +834,16 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (User.INFO.overlapFlag) {
                     Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_overlap), Toast.LENGTH_SHORT).show();
                 } else {
+                        if(!setColorFlag) {
+                            Random mRand = new Random();
+                            int nResult = mRand.nextInt(18) + 1;
+                            int resId = getResources().getIdentifier("btcolor" + nResult, "color", getPackageName());
+                            try {
+                                colorName = "#" + Integer.toHexString(getResources().getColor(resId));
+                            } catch (Resources.NotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         switch (DrawMode.CURRENT.getMode()) {
                             case 0:
                                 if (etName.getText().toString().equals("")) {
@@ -853,14 +863,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 }
                                 break;
                             case 1:
-                                Random mRand = new Random();
-                                int nResult = mRand.nextInt(18) + 1;
-                                int resId = getResources().getIdentifier("btcolor" + nResult, "color", getPackageName());
-                                try {
-                                    colorName="#" + Integer.toHexString(getResources().getColor(resId));
-                                }catch(Resources.NotFoundException e){
-                                    e.printStackTrace();
-                                }
                                 Common.stateFilter(viewMode);
                                 if (subId != null && subOverlapFlag) {
                                     SubjectData subjectData = db.getSubjectData(subId);
@@ -876,22 +878,24 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                             MyTime myTime = new MyTime(null,
                                                     User.INFO.groupPK + subtitle + prof + classnum, 1,
                                                     subtitle,
-                                                    null, null, Integer.parseInt(credit),
+                                                    null, null, null,
                                                     Integer.parseInt(temps[0]),
                                                     Integer.parseInt(temps[1]),
                                                     Integer.parseInt(temps[2]),
                                                     Integer.parseInt(temps[3]),
                                                     Integer.parseInt(temps[4]),
                                                     null, null,
-                                                    prof + "교수/" + credit + "학점/" + classnum + "분반",
+                                                    prof + "교수/" + credit + "학점/" + classnum+"분반",
                                                     place,
                                                     User.INFO.latitude, User.INFO.longitude,
                                                     null,
                                                     null,
-                                                    "10:10",
+                                                    credit,
                                                     colorName);
                                             MyTimeRepo.insertOrUpdate(this, myTime);
+                                            gd.setColor(Color.parseColor(Common.MAIN_COLOR));
                                             subOverlapFlag = false;
+                                            setColorFlag=false;
                                         } else {
                                             Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_notice_emtpy), Toast.LENGTH_SHORT).show();
                                             break;
@@ -1096,7 +1100,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
     private int dy, mPosY, screenHeight, viewMode,repeatType,brightness;
-    private boolean widgetFlag, overlapEnrollFlag,weekFlag, subOverlapFlag;
+    private boolean widgetFlag, overlapEnrollFlag,weekFlag, subOverlapFlag, setColorFlag;
     // Progress Dialog
     private ProgressDialog pDialog;
     public void onEventMainThread(FinishDialogEvent e) {
@@ -1125,6 +1129,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         colorName = getResources().getString(e.getResColor());
         gd.setColor(getResources().getColor(e.getResColor()));
         gd.invalidateSelf();
+        setColorFlag=true;
     }
 
     public void onEventMainThread(BottomNormalData e) {
@@ -1197,25 +1202,4 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             //firstSetting();
         }
     }
-    /*@Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_PHONESTATE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){ //&& grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
-                    //firstSetting();
-
-                    // permission was granted, yay! do the
-                    // calendar task you need to do.
-
-                } else {
-
-                    Log.i("test", "Permission always deny");
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                break;
-        }
-    }*/
 }

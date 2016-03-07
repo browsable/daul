@@ -110,7 +110,9 @@ public class SettingGroupFragment extends BasicFragment {
         catch(NullPointerException e){
             tvServerVer.setText("");
         }
-        tvGroupName.setText(User.INFO.getGroupName());
+        groupName = User.INFO.getGroupName();
+        if(!groupName.equals(""))tvGroupName.setText(groupName);
+
         if(User.INFO.groupListData.size()==0) {
             getGroupList(getActivity());
         }
@@ -285,6 +287,7 @@ public class SettingGroupFragment extends BasicFragment {
         @Override
         protected void onPostExecute(String param) {
             if (downComplete) {
+                llVer.setVisibility(View.VISIBLE);
                 pDialog.dismiss();
                 String[] tmp = User.INFO.ttServerVer.split("-");
                 String tmpS = tmp[0]+getActivity().getResources().getString(R.string.year)+" "

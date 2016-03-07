@@ -8,6 +8,10 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
@@ -60,14 +64,14 @@ public class Common {
 		return false;
 	}
 	public static String calCredit(){
-		int sum=0;
+		float sum=0;
 		String timecode="";
 		try {
 			List<MyTime> mtList = MyTimeRepo.getCreditSum(AppController.getInstance());
 			if (mtList!= null) {
 				for (MyTime m : mtList) {
 					if (!timecode.equals(m.getTimecode())) {
-						sum += m.getDayofmonth(); // 과목에서는 dayOfMonth에 학점을 저장중임
+						sum += Float.parseFloat(m.getRepeat()); // 과목에서는 dayOfMonth에 학점을 저장중임
 						timecode = m.getTimecode();
 					}
 				}
@@ -230,5 +234,25 @@ public class Common {
 				(AlarmManager)context
 						.getSystemService(Context.ALARM_SERVICE);
 		manager.cancel(sender);
+	}
+	public static void setListViewHeightBasedOnChildren(ListView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
+
+		int totalHeight = 0;
+		int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
+		listView.requestLayout();
 	}
 }
