@@ -3,13 +3,14 @@ package com.daemin.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +18,8 @@ import com.daemin.common.Common;
 import com.daemin.data.EnrollData;
 import com.daemin.dialog.DialColor;
 import com.daemin.dialog.DialRepeat;
-import com.daemin.event.CalListHeightEvent;
+import com.daemin.event.EditCompleteEvent;
+import com.daemin.event.EditMemoEnterKeyEvent;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.event.SetCreditEvent;
 import com.daemin.repository.MyTimeRepo;
@@ -94,6 +96,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         holder.tvId.setText(String.valueOf(getItem(position).get_id()));
         holder.tvTimeCode.setText(getItem(position).getTimeCode());
         holder.tvTimeType.setText(getItem(position).getTimeType());
+        holder.tvRepeat.setText(getItem(position).getRepeat());
         holder.tvColor.setText(getItem(position).getColor());
         timeType = Integer.parseInt(holder.tvTimeType.getText().toString());
         holder.etMemo.setText(getItem(position).getMemo());
@@ -150,7 +153,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                     if(weekFlag)Common.fetchWeekData();
                     else Common.fetchMonthData();
                 }
-                EventBus.getDefault().post(new CalListHeightEvent());
+                EventBus.getDefault().post(new EditCompleteEvent());
             }
         });
         holder.btEdit.setOnClickListener(new View.OnClickListener() {
@@ -169,17 +172,16 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                 holder.etPlace.setTextColor(Color.GRAY);
                 holder.etPlace.setHint(context.getResources().getString(R.string.normal_place));
                 holder.etPlace.setSelection(holder.etPlace.length());
-                holder.etPlace.requestFocus();
                 holder.etMemo.setEnabled(true);
                 holder.etMemo.setTextColor(Color.GRAY);
                 holder.etMemo.setHint(context.getResources().getString(R.string.normal_memo));
+                holder.etMemo.requestFocus();
                 if(timeType==0){
                     holder.btRepeat.setVisibility(View.VISIBLE);
                     holder.etTitle.setEnabled(true);
                     holder.etTitle.setTextColor(Color.GRAY);
                     holder.etTitle.setHint(context.getResources().getString(R.string.normal_name));
                     holder.etTitle.setSelection(holder.etTitle.length());
-                    holder.etTitle.requestFocus();
                 }else{
                     holder.btRepeat.setVisibility(View.GONE);
                 }
@@ -195,7 +197,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
             public void onClick(View v) {
                 HashMap dayIndex = new HashMap<>();
                 dayIndex.put(dayOfWeek,dayOfWeek);
-                DialRepeat dr = new DialRepeat(context,dayIndex);
+                DialRepeat dr = new DialRepeat(context,dayIndex,holder.tvRepeat.getText().toString());
                 dr.show();
             }
         });
@@ -216,8 +218,21 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                 EventBus.getDefault().post(new SetCreditEvent());
             }
         });
+        final ViewGroup.LayoutParams oldparams = holder.etMemo.getLayoutParams();
+        holder.etMemo.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // TODO Auto-generated method stub
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    ViewGroup.LayoutParams params = holder.etMemo.getLayoutParams();
+                    EventBus.getDefault().post(new EditMemoEnterKeyEvent(params.height-oldparams.height));
+                }
+                return false;
+            }
+        });
         return convertView;
     }
+
     private static class Holder {
         public TextView tvId, tvTimeCode, tvTimeType,tvRepeat,tvColor,tvStartHour,tvStartMin,tvEndHour,tvEndMin;
         public EditText etTitle, etPlace,etMemo;

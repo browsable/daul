@@ -98,12 +98,12 @@
             android:maxLines="1" />
         <EditText
             android:id="@+id/etMemo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_xs"
             android:textSize="@dimen/textsize_default"
             android:enabled="false"
-            android:ellipsize="end"
+            android:ellipsize="start"
             android:textColor="@android:color/black"
             android:background="@color/transparency"
             android:maxLines="30" />
@@ -112,8 +112,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/margin_s"
+        android:paddingTop="@dimen/margin_default"
         android:paddingLeft="@dimen/margin_default"
         android:paddingRight="@dimen/margin_default"
         android:paddingBottom="@dimen/margin_default">
@@ -123,6 +122,7 @@
             android:layout_height="24dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:visibility="gone"
             android:background="@drawable/ic_share" />
         <Button
@@ -131,14 +131,16 @@
             android:layout_height="24dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_toRightOf="@+id/btShare"
+            android:layout_centerVertical="true"
             android:visibility="gone"
             android:background="@drawable/ic_alarm" />
         <Button
             android:id="@+id/btTime"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_toRightOf="@+id/btAlarm"
+            android:layout_centerVertical="true"
             android:visibility="gone"
             android:background="@drawable/ic_time2" />
         <Button
@@ -147,6 +149,7 @@
             android:layout_height="24dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_toRightOf="@+id/btTime"
+            android:layout_centerVertical="true"
             android:visibility="gone"
             android:background="@drawable/ic_repeat2" />
         <Button
@@ -155,6 +158,7 @@
             android:layout_height="22dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_toRightOf="@+id/btRepeat"
+            android:layout_centerVertical="true"
             android:visibility="gone"
             android:background="@drawable/bg_circle_maincolor" />
         <Button
@@ -163,6 +167,7 @@
             android:layout_height="24dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_toLeftOf="@+id/btInvite"
+            android:layout_centerVertical="true"
             android:background="@drawable/ic_community_black"
             android:visibility="gone" />
 
@@ -172,6 +177,7 @@
             android:layout_height="24dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_toLeftOf="@+id/btEdit"
+            android:layout_centerVertical="true"
             android:background="@drawable/ic_invite"
             android:visibility="gone" />
         <Button
@@ -180,6 +186,7 @@
             android:layout_height="24dp"
             android:visibility="gone"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/ic_check_on" />
         <Button
             android:id="@+id/btEdit"
@@ -187,6 +194,7 @@
             android:layout_height="24dp"
             android:layout_toLeftOf="@+id/btRemove"
             android:layout_marginRight="@dimen/margin_l"
+            android:layout_centerVertical="true"
             android:background="@drawable/ic_write" />
 
         <Button
@@ -194,6 +202,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/ic_remove" />
     </RelativeLayout>
 

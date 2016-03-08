@@ -145,7 +145,7 @@ public class WidgetUpdateService extends Service {
         }
     }
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void widget5_5Setting(RemoteViews views, AppWidgetManager manager){
+    public void widget5_5Setting(RemoteViews views, AppWidgetManager manager, Bitmap bitmap){
         Intent main5 = new Intent(Common.ACTION_HOME5_5);
         PendingIntent mainP5 = PendingIntent.getBroadcast(this, 0, main5, 0);
         views.setOnClickPendingIntent(R.id.btHome, mainP5);
@@ -210,6 +210,8 @@ public class WidgetUpdateService extends Service {
         for (int appWidgetId : manager.getAppWidgetIds(new ComponentName(this, Widget5_5.class))) {
             manager.updateAppWidget(appWidgetId, views);
         }
+        if(bitmap!=null)
+            bitmap.recycle();
     }
     public void widget5_5Week(RemoteViews views, AppWidgetManager manager) {
         pref.edit().putInt("viewMode", 0).apply();
@@ -230,7 +232,7 @@ public class WidgetUpdateService extends Service {
         iv.setDrawingCacheEnabled(true);
         Bitmap bitmap = iv.getDrawingCache();
         views.setImageViewBitmap(R.id.ivWeek, bitmap);
-        widget5_5Setting(views, manager);
+        widget5_5Setting(views, manager,bitmap);
 
     }
     public void widget5_5Month(RemoteViews views, AppWidgetManager manager) {
@@ -244,7 +246,7 @@ public class WidgetUpdateService extends Service {
         Dates.NOW.setMonthData(mIndex5_5);
         views.setViewVisibility(R.id.btMonth, View.GONE);
         views.setTextViewText(R.id.tvDate, setYearMonth());
-        widget5_5Setting(views, manager);
+        widget5_5Setting(views, manager, null);
     }
     public void widget5_5Back(RemoteViews views, AppWidgetManager manager){
         if (viewMode == 0) {
@@ -260,7 +262,7 @@ public class WidgetUpdateService extends Service {
             iv.setDrawingCacheEnabled(true);
             Bitmap bitmap = iv.getDrawingCache();
             views.setImageViewBitmap(R.id.ivWeek, bitmap);
-            widget5_5Setting(views, manager);
+            widget5_5Setting(views, manager,bitmap);
 
         } else {
             views.setViewVisibility(R.id.tvYear, View.GONE);
@@ -268,7 +270,7 @@ public class WidgetUpdateService extends Service {
             views.setViewVisibility(R.id.btMonth, View.GONE);
             Dates.NOW.setMonthData(--mIndex5_5);
             views.setTextViewText(R.id.tvDate, setYearMonth());
-            widget5_5Setting(views, manager);
+            widget5_5Setting(views, manager,null);
         }
 
     }
@@ -286,7 +288,7 @@ public class WidgetUpdateService extends Service {
             iv.setDrawingCacheEnabled(true);
             Bitmap bitmap=iv.getDrawingCache();
             views.setImageViewBitmap(R.id.ivWeek, bitmap);
-            widget5_5Setting(views, manager);
+            widget5_5Setting(views, manager, bitmap);
         }
         else {
             views.setViewVisibility(R.id.tvYear, View.GONE);
@@ -294,12 +296,12 @@ public class WidgetUpdateService extends Service {
             views.setViewVisibility(R.id.btMonth, View.GONE);
             Dates.NOW.setMonthData(++mIndex5_5);
             views.setTextViewText(R.id.tvDate, setYearMonth());
-            widget5_5Setting(views, manager);
+            widget5_5Setting(views, manager, null);
         }
 
     }
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void widget4_4Setting(RemoteViews views, AppWidgetManager manager){
+    public void widget4_4Setting(RemoteViews views, AppWidgetManager manager, Bitmap bitmap){
         Intent main4 = new Intent(Common.ACTION_HOME4_4);
         PendingIntent mainP4 = PendingIntent.getBroadcast(this, 0, main4, 0);
         views.setOnClickPendingIntent(R.id.btHome, mainP4);
@@ -364,6 +366,7 @@ public class WidgetUpdateService extends Service {
         for (int appWidgetId : manager.getAppWidgetIds(new ComponentName(this, Widget4_4.class))) {
             manager.updateAppWidget(appWidgetId, views);
         }
+        bitmap.recycle();
     }
     public void widget4_4Week(RemoteViews views, AppWidgetManager manager) {
         pref.edit().putInt("viewMode", 0).apply();
@@ -384,7 +387,7 @@ public class WidgetUpdateService extends Service {
         iv.setDrawingCacheEnabled(true);
         Bitmap bitmap = iv.getDrawingCache();
         views.setImageViewBitmap(R.id.ivWeek, bitmap);
-        widget4_4Setting(views, manager);
+        widget4_4Setting(views, manager, bitmap);
 
     }
     public void widget4_4Month(RemoteViews views, AppWidgetManager manager) {
@@ -398,7 +401,7 @@ public class WidgetUpdateService extends Service {
         Dates.NOW.setMonthData(mIndex4_4);
         views.setViewVisibility(R.id.btMonth, View.GONE);
         views.setTextViewText(R.id.tvDate, setYearMonth());
-        widget4_4Setting(views, manager);
+        widget4_4Setting(views, manager, null);
     }
     public void widget4_4Back(RemoteViews views, AppWidgetManager manager){
         if (viewMode == 0) {
@@ -414,7 +417,7 @@ public class WidgetUpdateService extends Service {
             iv.setDrawingCacheEnabled(true);
             Bitmap bitmap = iv.getDrawingCache();
             views.setImageViewBitmap(R.id.ivWeek, bitmap);
-            widget4_4Setting(views, manager);
+            widget4_4Setting(views, manager, bitmap);
 
         } else {
             views.setViewVisibility(R.id.tvYear, View.GONE);
@@ -422,7 +425,7 @@ public class WidgetUpdateService extends Service {
             views.setViewVisibility(R.id.btMonth, View.GONE);
             Dates.NOW.setMonthData(--mIndex4_4);
             views.setTextViewText(R.id.tvDate, setYearMonth());
-            widget4_4Setting(views, manager);
+            widget4_4Setting(views, manager, null);
         }
 
     }
@@ -440,14 +443,14 @@ public class WidgetUpdateService extends Service {
             iv.setDrawingCacheEnabled(true);
             Bitmap bitmap=iv.getDrawingCache();
             views.setImageViewBitmap(R.id.ivWeek, bitmap);
-            widget4_4Setting(views, manager);
+            widget4_4Setting(views, manager, bitmap);
         } else {
             views.setViewVisibility(R.id.tvYear, View.GONE);
             views.setViewVisibility(R.id.btWeek, View.VISIBLE); //Visible
             views.setViewVisibility(R.id.btMonth, View.GONE);
             Dates.NOW.setMonthData(++mIndex4_4);
             views.setTextViewText(R.id.tvDate, setYearMonth());
-            widget4_4Setting(views, manager);
+            widget4_4Setting(views, manager, null);
         }
 
     }

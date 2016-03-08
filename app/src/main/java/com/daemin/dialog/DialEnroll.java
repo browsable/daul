@@ -6,12 +6,15 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,8 +24,9 @@ import com.daemin.common.Convert;
 import com.daemin.data.EnrollData;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.TimePos;
-import com.daemin.event.CalListHeightEvent;
+import com.daemin.event.EditCompleteEvent;
 import com.daemin.event.CreateDialEvent;
+import com.daemin.event.EditMemoEnterKeyEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.repository.MyTimeRepo;
@@ -39,9 +43,12 @@ import timedao.MyTime;
  * Created by hernia on 2015-09-08.
  */
 public class DialEnroll extends Activity {
+
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        mtList.clear();
+        enrollList.clear();
 
     }
 
@@ -125,7 +132,6 @@ public class DialEnroll extends Activity {
         btDialCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.gc();
                 finish();
             }
         });
@@ -135,7 +141,6 @@ public class DialEnroll extends Activity {
     }
     private void enrollMyTime(List<MyTime> mt){
         for(MyTime m : mt){
-
             int timeType = m.getTimetype();
             if(timeType==0){
                 String timeCode = m.getTimecode();
@@ -162,6 +167,7 @@ public class DialEnroll extends Activity {
                 enrollList.put(timeCode, ed);
             }
         }
+        mt.clear();
     }
     private int xth,yth,startHour,startMin;
     private Boolean weekFlag;
@@ -185,8 +191,16 @@ public class DialEnroll extends Activity {
             Common.fetchWeekData();
         }
     }
-    public void onEventMainThread(CalListHeightEvent e) {
-        enrollAdapter.notifyDataSetChanged();
+    public void onEventMainThread(EditCompleteEvent e) {
+
+    }
+    public void onEventMainThread(EditMemoEnterKeyEvent e) {
+        /*Log.i("test", e.getHeight() + "");
+
+        layoutParams.height = layoutParams.WRAP_CONTENT + e.getHeight();
+        window.setAttributes(layoutParams);
+        window.setGravity(Gravity.CENTER);
+        Log.i("test", layoutParams.height + "");*/
     }
 
 }

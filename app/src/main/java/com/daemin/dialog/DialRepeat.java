@@ -20,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daemin.common.Convert;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.timetable.R;
 
@@ -31,13 +32,19 @@ import de.greenrobot.event.EventBus;
  * Created by hernia on 2015-09-08.
  */
 public class DialRepeat extends Dialog {
-    Context context;
-    HashMap<Integer, Integer> dayIndex;
 
     public DialRepeat(Context context, HashMap<Integer, Integer> dayIndex) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
         this.dayIndex = dayIndex;
+        this.repeat="";
+    }
+
+    public DialRepeat(Context context, HashMap<Integer, Integer> dayIndex, String repeat) {
+        super(context, android.R.style.Theme_Holo_Light_Dialog);
+        this.context = context;
+        this.dayIndex = dayIndex;
+        this.repeat = repeat;
     }
 
     @Override
@@ -67,6 +74,11 @@ public class DialRepeat extends Dialog {
         etMonth = (EditText) findViewById(R.id.etMonth);
         etYear = (EditText) findViewById(R.id.etYear);
         repeatGroup = (RadioGroup) findViewById(R.id.repeatGroup);
+        repeat_radio0 = (RadioButton) findViewById(R.id.repeat_radio0);
+        repeat_radio1 = (RadioButton) findViewById(R.id.repeat_radio1);
+        repeat_radio2 = (RadioButton) findViewById(R.id.repeat_radio2);
+        repeat_radio3 = (RadioButton) findViewById(R.id.repeat_radio3);
+        repeat_radio4 = (RadioButton) findViewById(R.id.repeat_radio4);
         llTerm = (LinearLayout) findViewById(R.id.llTerm);
         llWeek = (LinearLayout) findViewById(R.id.llWeek);
         llMonth = (LinearLayout) findViewById(R.id.llMonth);
@@ -78,6 +90,47 @@ public class DialRepeat extends Dialog {
         tvThr = (TextView) findViewById(R.id.tvThr);
         tvFri = (TextView) findViewById(R.id.tvFri);
         tvSat = (TextView) findViewById(R.id.tvSat);
+        if(!repeat.equals("")) {
+            if(repeat.equals("0")){//반복없음
+                repeatGroup.check(repeat_radio0.getId());
+            }else if(repeat.equals("1")){
+                repeatGroup.check(repeat_radio1.getId());
+            }else{
+                String s[];
+                s = repeat.split(":");
+                repeatType = s[0];
+                repeatPeriod = s[1];
+                repeatNumber = s[2];
+                switch (repeatType){
+                    case "2":
+                        repeatGroup.check(repeat_radio2.getId());
+                        llWeek.setVisibility(View.VISIBLE);
+                        llTerm.setVisibility(View.VISIBLE);
+                        etWeek.setText(repeatPeriod);
+                        etTerm.setText(repeatNumber);
+                        etTerm.setFocusable(true);
+                        break;
+                    case "3":
+                        repeatGroup.check(repeat_radio3.getId());
+                        llMonth.setVisibility(View.VISIBLE);
+                        llTerm.setVisibility(View.VISIBLE);
+                        etMonth.setText(repeatPeriod);
+                        etTerm.setFocusable(true);
+                        etTerm.setText(repeatNumber);
+
+                        break;
+                    case "4":
+                        repeatGroup.check(repeat_radio4.getId());
+                        llYear.setVisibility(View.VISIBLE);
+                        llTerm.setVisibility(View.VISIBLE);
+                        etYear.setText(repeatPeriod);
+                        etTerm.setFocusable(true);
+                        etTerm.setText(repeatNumber);
+                        break;
+                }
+                etTerm.requestFocus();
+            }
+        }
         for (int i : dayIndex.keySet()) {
             switch (i) {
                 case 1:
@@ -270,6 +323,10 @@ public class DialRepeat extends Dialog {
         });
     }
 
+    Context context;
+    HashMap<Integer, Integer> dayIndex;
+    String repeat;
+    RadioButton repeat_radio0,repeat_radio1,repeat_radio2,repeat_radio3,repeat_radio4;
     private Button btDialCancel, btDialSetting;
     private RadioGroup repeatGroup;
     private LinearLayout llTerm, llWeek, llMonth, llYear;

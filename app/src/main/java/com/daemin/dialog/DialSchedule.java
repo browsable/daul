@@ -663,8 +663,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }else{ //~주마다, ~개월마다, ~년마다
             s = repeat.split(":");
             repeatPeriod=Convert.onlyNum(s[0]);
-            repeatNum=Convert.onlyNum(s[1])+1;
-            repeat = String.valueOf(repeatType)+":"+repeatPeriod+":"+repeatNum;
+            repeatNum=Convert.onlyNum(s[1]);
+            repeat = repeatType+":"+repeatPeriod+":"+repeatNum;
         }
         long nowMilis = Dates.NOW.getNowMillis();
         for(int i=0; i<repeatNum; i++){
