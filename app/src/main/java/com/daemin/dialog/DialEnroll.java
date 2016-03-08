@@ -6,15 +6,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,7 +21,6 @@ import com.daemin.common.Convert;
 import com.daemin.data.EnrollData;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.TimePos;
-import com.daemin.event.EditCompleteEvent;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.EditMemoEnterKeyEvent;
 import com.daemin.event.FinishDialogEvent;
@@ -138,6 +134,7 @@ public class DialEnroll extends Activity {
         lv = (ListView) findViewById(R.id.lv);
         enrollAdapter = new EnrollAdapter(DialEnroll.this, mtList,weekFlag,xth);
         lv.setAdapter(enrollAdapter);
+        //lv.setItemsCanFocus(true);
     }
     private void enrollMyTime(List<MyTime> mt){
         for(MyTime m : mt){
@@ -190,17 +187,6 @@ public class DialEnroll extends Activity {
             }
             Common.fetchWeekData();
         }
-    }
-    public void onEventMainThread(EditCompleteEvent e) {
-
-    }
-    public void onEventMainThread(EditMemoEnterKeyEvent e) {
-        /*Log.i("test", e.getHeight() + "");
-
-        layoutParams.height = layoutParams.WRAP_CONTENT + e.getHeight();
-        window.setAttributes(layoutParams);
-        window.setGravity(Gravity.CENTER);
-        Log.i("test", layoutParams.height + "");*/
     }
 
 }

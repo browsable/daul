@@ -8,10 +8,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
@@ -45,7 +41,7 @@ public class Common {
 	public static final String ALARM_PUSH = "com.daemin.common.ALARM_PUSH";
 	public static final String MAIN_COLOR = "#73C8BA";
 	public static final String TRANS_COLOR = "#00000000";
-	public static boolean firstEnrollFlag = false;
+	public static boolean firstEnrollFlag = true;
 	public static boolean isOnline() { // network 연결 상태 확인
 		try {
 			ConnectivityManager conMan = (ConnectivityManager) AppController.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -109,7 +105,7 @@ public class Common {
 		}
 	}
 	public static void addWeek(String title,String place,int timeType, int xth, int startHour,int startMin, int endHour, int endMin){
-		firstEnrollFlag=false;
+		firstEnrollFlag=true;
 		if(endMin!=0) ++endHour;
 		else endMin = 60;
 		TimePos[] tp = new TimePos[endHour - startHour];
@@ -129,14 +125,14 @@ public class Common {
 				tp[j].setPosState(PosState.ENROLL);
 			}else if(tp[j].getPosState() == PosState.ENROLL) {
 					if (i == startHour) {
-						if (!firstEnrollFlag||timeType==1) {
+						if (firstEnrollFlag||timeType!=1) {
 							tp[j].setText(title, place);
 							if(timeType ==0) {
 								tp[j].setText(title, place);
 								tp[j].setRealStart(yth,tp[j].realStartMin);
 							}else tp[j].setRealStart(yth, startMin);
 							if (startMin != 0) tp[j].setMin(startMin, 60);
-							firstEnrollFlag = true;
+							firstEnrollFlag = false;
 						}
 					}
 					if (i == endHour - 1) {

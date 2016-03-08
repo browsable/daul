@@ -3,7 +3,6 @@ package com.daemin.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import com.daemin.common.Common;
 import com.daemin.data.EnrollData;
 import com.daemin.dialog.DialColor;
 import com.daemin.dialog.DialRepeat;
-import com.daemin.event.EditCompleteEvent;
 import com.daemin.event.EditMemoEnterKeyEvent;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.event.SetCreditEvent;
@@ -39,7 +37,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
     private Context context;
     private Boolean weekFlag;
     private int dayOfWeek;
-    private int timeType;
+    private String timeType;
     public EnrollAdapter(Context context, List<EnrollData> values, Boolean weekFlag, int xth) {
         super(context, R.layout.listitem_enroll, values);
         mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -95,11 +93,12 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         holder.etPlace.setText(getItem(position).getPlace());
         holder.tvId.setText(String.valueOf(getItem(position).get_id()));
         holder.tvTimeCode.setText(getItem(position).getTimeCode());
-        holder.tvTimeType.setText(getItem(position).getTimeType());
+        timeType = getItem(position).getTimeType();
+        holder.tvTimeType.setText(timeType);
         holder.tvRepeat.setText(getItem(position).getRepeat());
         holder.tvColor.setText(getItem(position).getColor());
-        timeType = Integer.parseInt(holder.tvTimeType.getText().toString());
         holder.etMemo.setText(getItem(position).getMemo());
+        holder.etMemo.setId(position);
         holder.btCommunity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +117,8 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                 String title = holder.etTitle.getText().toString();
                 String place = holder.etPlace.getText().toString();
                 String memo = holder.etMemo.getText().toString();
+                final int position = holder.etMemo.getId();
+                getItem(position).setMemo(memo);
                 if(holder.etTitle.length()==0){
                     Toast.makeText(context, context.getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
                     holder.etTitle.setHintTextColor(Color.RED);
@@ -129,14 +130,15 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                     holder.btShare.setVisibility(View.GONE);
                     holder.btAlarm.setVisibility(View.GONE);
                     holder.btRepeat.setVisibility(View.GONE);
+                    holder.btTime.setVisibility(View.GONE);
                     holder.etTitle.setEnabled(false);
                     holder.etPlace.setEnabled(false);
+                    holder.etMemo.setEnabled(false);
                     holder.etTitle.setTextColor(Color.BLACK);
                     holder.etPlace.setTextColor(Color.BLACK);
+                    holder.etMemo.setTextColor(Color.BLACK);
                     holder.etTitle.setHint("");
                     holder.etPlace.setHint("");
-                    holder.etMemo.setEnabled(false);
-                    holder.etMemo.setTextColor(Color.BLACK);
                     holder.etMemo.setHint("");
 
                     String colorName;
@@ -153,7 +155,6 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                     if(weekFlag)Common.fetchWeekData();
                     else Common.fetchMonthData();
                 }
-                EventBus.getDefault().post(new EditCompleteEvent());
             }
         });
         holder.btEdit.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +177,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                 holder.etMemo.setTextColor(Color.GRAY);
                 holder.etMemo.setHint(context.getResources().getString(R.string.normal_memo));
                 holder.etMemo.requestFocus();
-                if(timeType==0){
+                if(timeType.equals("0")){
                     holder.btRepeat.setVisibility(View.VISIBLE);
                     holder.etTitle.setEnabled(true);
                     holder.etTitle.setTextColor(Color.GRAY);
@@ -212,24 +213,31 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
             @Override
             public void onClick(View v) {
                 MyTimeRepo.deleteWithTimeCode(context, holder.tvTimeCode.getText().toString());
-                if(weekFlag)Common.fetchWeekData();
+                if (weekFlag) Common.fetchWeekData();
                 else Common.fetchMonthData();
                 EventBus.getDefault().post(new RemoveEnrollEvent(holder.tvTimeCode.getText().toString()));
                 EventBus.getDefault().post(new SetCreditEvent());
             }
         });
-        final ViewGroup.LayoutParams oldparams = holder.etMemo.getLayoutParams();
-        holder.etMemo.setOnKeyListener(new View.OnKeyListener() {
+        /*holder.etMemo.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // TODO Auto-generated method stub
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    ViewGroup.LayoutParams params = holder.etMemo.getLayoutParams();
-                    EventBus.getDefault().post(new EditMemoEnterKeyEvent(params.height-oldparams.height));
+                    EventBus.getDefault().post(new EditMemoEnterKeyEvent());
                 }
                 return false;
             }
         });
+        holder.etMemo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    final int position = v.getId();
+                    final EditText Caption = (EditText) v;
+                    getItem(position).setMemo(Caption.getText().toString());
+                }
+            }
+        });*/
         return convertView;
     }
 

@@ -1,21 +1,18 @@
 package com.daemin.data;
 
-import android.view.View;
-
 /**
  * Created by HOME on 2015-09-11.
  */
 public class EnrollData {
-    private String title;
-    private String memo;
-    private String place;
-    private String timeCode;
-    private String timeType;
-    private String startHour, startMin, endHour, endMin;
-    private String repeat;
-
-    private String color;
-    private long _id;
+    String title;
+    String memo;
+    String place;
+    String timeCode;
+    String timeType;
+    String startHour, startMin, endHour, endMin;
+    String repeat;
+    String color;
+    long _id;
 
     public String getTitle() {
         return title;
@@ -62,6 +59,11 @@ public class EnrollData {
     public String getColor() {
         return color;
     }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
     public EnrollData(String startHour,String startMin, String endHour, String endMin,String title,String memo,String timeCode,String timeType,String color, String place,String repeat, long _id) {
         this.startHour = startHour;
         this.startMin = startMin;

@@ -19,7 +19,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -893,7 +892,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                                     credit,
                                                     colorName);
                                             MyTimeRepo.insertOrUpdate(this, myTime);
-                                            gd.setColor(Color.parseColor(Common.MAIN_COLOR));
+                                            gd.setColor(Color.WHITE);
                                             subOverlapFlag = false;
                                             setColorFlag=false;
                                         } else {
