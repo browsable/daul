@@ -19,8 +19,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.daemin.common.Convert;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.timetable.R;
 

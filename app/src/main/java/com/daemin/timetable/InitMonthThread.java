@@ -106,7 +106,11 @@ public class InitMonthThread extends InitThread {
 				if (canvas != null)
 					mholder.unlockCanvasAndPost(canvas);
 			}
-			//System.gc();
+			try {
+				sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	public void getDownXY(int xth, int yth) {

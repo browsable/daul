@@ -102,6 +102,11 @@ public class InitWeekThread extends InitThread {
                 if (canvas != null)
                     mholder.unlockCanvasAndPost(canvas);
             }
+            try {
+                sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
     public void getDownXY(int xth, int yth) {
@@ -241,5 +246,6 @@ public class InitWeekThread extends InitThread {
         hp.setAlpha(40);
         if(Dates.NOW.isToday)canvas.drawRect(width * (2 * dayOfWeek + 1) / 15, ((height * 2) - 10) / 64 + intervalSize, width * (2 * dayOfWeek + 3) / 15, height * 62 / 64 + intervalSize, hp);
         hp.setAlpha(100);
+
     }
 }

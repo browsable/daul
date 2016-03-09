@@ -3,7 +3,6 @@ package com.daemin.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.daemin.common.Common;
 import com.daemin.data.EnrollData;
 import com.daemin.dialog.DialColor;
 import com.daemin.dialog.DialRepeat;
-import com.daemin.event.EditMemoEnterKeyEvent;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.event.SetCreditEvent;
 import com.daemin.repository.MyTimeRepo;
@@ -219,25 +217,6 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                 EventBus.getDefault().post(new SetCreditEvent());
             }
         });
-        /*holder.etMemo.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // TODO Auto-generated method stub
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    EventBus.getDefault().post(new EditMemoEnterKeyEvent());
-                }
-                return false;
-            }
-        });
-        holder.etMemo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    final int position = v.getId();
-                    final EditText Caption = (EditText) v;
-                    getItem(position).setMemo(Caption.getText().toString());
-                }
-            }
-        });*/
         return convertView;
     }
 

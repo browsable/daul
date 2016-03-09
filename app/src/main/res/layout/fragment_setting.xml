@@ -114,7 +114,7 @@
             android:background="@drawable/bt_click"
             android:padding="@dimen/margin_xl"
             android:text="@string/setting_calendar"
-            android:visibility="visible"
+            android:visibility="gone"
             android:textSize="@dimen/textsize_xl" />
 
         <View

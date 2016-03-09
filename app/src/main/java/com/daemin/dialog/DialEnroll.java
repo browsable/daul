@@ -22,7 +22,6 @@ import com.daemin.data.EnrollData;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.TimePos;
 import com.daemin.event.CreateDialEvent;
-import com.daemin.event.EditMemoEnterKeyEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.repository.MyTimeRepo;

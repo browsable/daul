@@ -54,7 +54,7 @@
             android:layout_marginBottom="@dimen/margin_s"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_marginTop="@dimen/margin_s"
-            android:background="@drawable/bg_circle_maincolor" />
+            android:background="@drawable/bg_circle_white" />
 
         <Button
             android:id="@+id/btAddSchedule"
