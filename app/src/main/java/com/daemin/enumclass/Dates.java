@@ -1,5 +1,7 @@
 package com.daemin.enumclass;
 
+import android.util.Log;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -69,6 +71,14 @@ public enum Dates {
         String[] MData = new String[dayNumOfMonth];
         for(int i=0; i<dayNumOfMonth; i++){
             MData[i] =month+"."+mData[i+dayOfWeek+1];
+        }
+        return MData;
+    }
+    public String[] getMonthDay(){
+        int lastDay = LocalDate.now().dayOfMonth().withMaximumValue().getDayOfMonth();
+        String[] MData = new String[lastDay];
+        for(int i=0; i<lastDay; i++){
+            MData[i] =month+"."+String.valueOf(i+1);
         }
         return MData;
     }

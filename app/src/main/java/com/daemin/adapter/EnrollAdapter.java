@@ -14,8 +14,10 @@ import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.data.EnrollData;
+import com.daemin.dialog.DialAddTimePicker;
 import com.daemin.dialog.DialColor;
 import com.daemin.dialog.DialRepeat;
+import com.daemin.enumclass.Dates;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.event.SetCreditEvent;
 import com.daemin.repository.MyTimeRepo;
@@ -189,6 +191,14 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         holder.btTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DialAddTimePicker datp = new DialAddTimePicker(
+                        context, Dates.NOW.getMonthDay(),
+                        holder.tvStartHour.getText().toString(),
+                        holder.tvStartMin.getText().toString(),
+                        holder.tvEndHour.getText().toString(),
+                        holder.tvEndMin.getText().toString()
+                );
+                datp.show();
             }
         });
         holder.btRepeat.setOnClickListener(new View.OnClickListener() {

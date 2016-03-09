@@ -36,6 +36,8 @@ import de.greenrobot.event.EventBus;
 public class DialAddTimePicker extends Dialog {
     Context context;
     String[] MD;
+    int startHour, startMin, endHour, endMin;
+    private boolean editMode;
     private Button btDialCancel;
     private Button btDialSetting;
     private NumberPicker npMD;
@@ -49,7 +51,17 @@ public class DialAddTimePicker extends Dialog {
         this.context = context;
         this.MD = MD;
     }
-
+    public DialAddTimePicker(Context context, String[] MD,String startHour, String startMin, String endHour, String endMin) {
+        // Dialog 배경을 투명 처리 해준다.
+        super(context, android.R.style.Theme_Holo_Light_Dialog);
+        this.context = context;
+        this.MD = MD;
+        this.startHour = Integer.parseInt(startHour);
+        this.startMin = Integer.parseInt(startMin);
+        this.endHour = Integer.parseInt(endHour);
+        this.endMin = Integer.parseInt(endMin);
+        this.editMode = true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +98,7 @@ public class DialAddTimePicker extends Dialog {
                 if (MD.length == 7) {
                     weekSetting(npStartHour.getValue(), npStartMin.getValue(),
                             npEndHour.getValue(), npEndMin.getValue());
-                }else monthSetting(MD[npMD.getValue()]);
+                } else monthSetting(MD[npMD.getValue()]);
             }
         });
     }
@@ -214,6 +226,12 @@ public class DialAddTimePicker extends Dialog {
         npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         npEndHour.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);*/
+        if(editMode){
+            npStartHour.setValue(startHour);
+            npStartMin.setValue(startMin);
+            npEndHour.setValue(endHour);
+            npEndMin.setValue(endMin);
+        }
     }
     private void weekSetting(int startHour, int startMin, int endHour, int endMin){
         if(startHour!=endHour) {
