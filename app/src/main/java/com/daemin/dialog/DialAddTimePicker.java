@@ -16,7 +16,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
@@ -26,6 +25,7 @@ import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
+import com.daemin.event.SetTimeEvent;
 import com.daemin.timetable.R;
 
 import de.greenrobot.event.EventBus;
@@ -36,7 +36,7 @@ import de.greenrobot.event.EventBus;
 public class DialAddTimePicker extends Dialog {
     Context context;
     String[] MD;
-    int startHour, startMin, endHour, endMin;
+    int dayOfMonth, startHour, startMin, endHour, endMin, position;
     private boolean editMode;
     private Button btDialCancel;
     private Button btDialSetting;
@@ -51,11 +51,13 @@ public class DialAddTimePicker extends Dialog {
         this.context = context;
         this.MD = MD;
     }
-    public DialAddTimePicker(Context context, String[] MD,String startHour, String startMin, String endHour, String endMin) {
+    public DialAddTimePicker(Context context, String[] MD,int dayOfMonth,int position, String startHour, String startMin, String endHour, String endMin) {
         // Dialog 배경을 투명 처리 해준다.
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
         this.MD = MD;
+        this.dayOfMonth = dayOfMonth;
+        this.position = position;
         this.startHour = Integer.parseInt(startHour);
         this.startMin = Integer.parseInt(startMin);
         this.endHour = Integer.parseInt(endHour);
@@ -75,7 +77,7 @@ public class DialAddTimePicker extends Dialog {
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         layoutParams.width = dm.widthPixels*5/6;
-        layoutParams.height = dm.heightPixels*4/9;
+        layoutParams.height = dm.heightPixels*5/9;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();
@@ -90,15 +92,21 @@ public class DialAddTimePicker extends Dialog {
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                npMD.clearFocus();
                 npStartHour.clearFocus();
                 npStartMin.clearFocus();
                 npEndHour.clearFocus();
                 npEndMin.clearFocus();
-                //Toast.makeText(context, MD[npMD.getValue()], Toast.LENGTH_SHORT).show();
-                if (MD.length == 7) {
-                    weekSetting(npStartHour.getValue(), npStartMin.getValue(),
-                            npEndHour.getValue(), npEndMin.getValue());
-                } else monthSetting(MD[npMD.getValue()]);
+                if(editMode) {
+                    EventBus.getDefault().post(new SetTimeEvent(MD[npMD.getValue()],position,npStartHour.getValue(), npStartMin.getValue(),
+                            npEndHour.getValue(), npEndMin.getValue()));
+                }else{
+                    if (MD.length == 7) {
+                        weekSetting(npStartHour.getValue(), npStartMin.getValue(),
+                                npEndHour.getValue(), npEndMin.getValue());
+                    } else monthSetting(MD[npMD.getValue()]);
+                }
+                cancel();
             }
         });
     }
@@ -212,6 +220,13 @@ public class DialAddTimePicker extends Dialog {
                 }
             }
         });
+        if(editMode){
+            npMD.setValue(dayOfMonth-1);
+            npStartHour.setValue(startHour);
+            npStartMin.setValue(startMin);
+            npEndHour.setValue(endHour);
+            npEndMin.setValue(endMin);
+        }
     }
     private void setLayout() {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
@@ -226,12 +241,6 @@ public class DialAddTimePicker extends Dialog {
         npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         npEndHour.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);*/
-        if(editMode){
-            npStartHour.setValue(startHour);
-            npStartMin.setValue(startMin);
-            npEndHour.setValue(endHour);
-            npEndMin.setValue(endMin);
-        }
     }
     private void weekSetting(int startHour, int startMin, int endHour, int endMin){
         if(startHour!=endHour) {

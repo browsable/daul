@@ -175,7 +175,6 @@ public class InitWeekThread extends InitThread {
                             i.putExtra("xth", xth);
                             i.putExtra("yth", tmpYth);
                             i.putExtra("startMin", ETP.getStartMin());
-                            i.putExtra("endMin", ETP.getEndMin());
                             i.putExtra("weekFlag", true);
                             context.startActivity(i);
                         }

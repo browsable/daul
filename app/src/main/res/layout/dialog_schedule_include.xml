@@ -92,40 +92,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/lightgray" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="32dp"
-                android:layout_height="34dp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/ic_memo" />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/etMemo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/transparency"
-                android:hint="@string/normal_memo"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_default" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -185,6 +151,41 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/lightgray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="32dp"
+                android:layout_height="34dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_memo" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etMemo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparency"
+                android:hint="@string/normal_memo"
+                android:singleLine="true"
+                android:textSize="@dimen/textsize_default" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
+
+
 
         <LinearLayout
             android:layout_width="match_parent"

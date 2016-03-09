@@ -22,8 +22,8 @@
         android:textStyle="bold" />
     <Button
         android:id="@+id/btDialCancel"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/ic_clear" />

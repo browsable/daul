@@ -54,8 +54,17 @@
             android:layout_marginBottom="@dimen/margin_s"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_marginTop="@dimen/margin_s"
-            android:background="@drawable/bg_circle_white" />
-
+            android:background="@drawable/ic_randomcolor" />
+        <Button
+            android:id="@+id/btColor2"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/margin_s"
+            android:layout_marginRight="@dimen/margin_l"
+            android:layout_marginTop="@dimen/margin_s"
+            android:background="@drawable/bg_circle_maincolor" />
         <Button
             android:id="@+id/btAddSchedule"
             android:layout_width="26dp"

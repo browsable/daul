@@ -12,24 +12,49 @@
         android:layout_margin="@dimen/margin_default"
         android:orientation="vertical">
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:enabled="false"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/textsize_xl"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:background="@color/transparency"
+            android:layout_marginBottom="@dimen/margin_xxxs"
+            />
+        <LinearLayout
+            android:id="@+id/llTime"
+            android:layout_marginTop="@dimen/margin_s"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_xxxs"
             android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tvMD"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:textSize="@dimen/textsize_l"
+                android:background="@color/transparency"/>
             <TextView
                 android:id="@+id/tvStartHour"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:textSize="@dimen/textsize_xl"
+                android:textSize="@dimen/textsize_l"
                 android:background="@color/transparency"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:textSize="@dimen/textsize_xl"
+                android:textSize="@dimen/textsize_l"
                 android:text=":" />
             <TextView
                 android:id="@+id/tvStartMin"
@@ -37,14 +62,14 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:textSize="@dimen/textsize_xl"
+                android:textSize="@dimen/textsize_l"
                 android:background="@color/transparency"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:textSize="@dimen/textsize_xl"
+                android:textSize="@dimen/textsize_l"
                 android:text=" ~ " />
             <TextView
                 android:id="@+id/tvEndHour"
@@ -52,14 +77,14 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:textSize="@dimen/textsize_xl"
+                android:textSize="@dimen/textsize_l"
                 android:background="@color/transparency" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:textSize="@dimen/textsize_xl"
+                android:textSize="@dimen/textsize_l"
                 android:text=":" />
             <TextView
                 android:id="@+id/tvEndMin"
@@ -67,41 +92,28 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:textSize="@dimen/textsize_xl"
+                android:textSize="@dimen/textsize_l"
                 android:background="@color/transparency"/>
-            <EditText
-                android:id="@+id/etTitle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingLeft="@dimen/margin_s"
-                android:ellipsize="end"
-                android:enabled="false"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/textsize_xl"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:background="@color/transparency"
-                />
         </LinearLayout>
         <EditText
             android:id="@+id/etPlace"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_s"
-            android:textSize="@dimen/textsize_default"
+            android:textSize="@dimen/textsize_l"
             android:enabled="false"
             android:singleLine="true"
             android:ellipsize="start"
             android:textColor="@android:color/black"
             android:background="@color/transparency"
+            android:layout_marginBottom="@dimen/margin_xxxs"
             android:maxLines="1" />
         <EditText
             android:id="@+id/etMemo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_xs"
-            android:textSize="@dimen/textsize_default"
+            android:textSize="@dimen/textsize_l"
             android:enabled="false"
             android:ellipsize="start"
             android:textColor="@android:color/black"
@@ -118,8 +130,8 @@
         android:paddingBottom="@dimen/margin_default">
         <Button
             android:id="@+id/btShare"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
@@ -127,35 +139,44 @@
             android:background="@drawable/ic_share" />
         <Button
             android:id="@+id/btAlarm"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_toRightOf="@+id/btShare"
             android:layout_centerVertical="true"
             android:visibility="gone"
             android:background="@drawable/ic_alarm" />
         <Button
-            android:id="@+id/btTime"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:id="@+id/btMemo"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_toRightOf="@+id/btAlarm"
             android:layout_centerVertical="true"
             android:visibility="gone"
-            android:background="@drawable/ic_time2" />
+            android:background="@drawable/ic_memo" />
         <Button
-            android:id="@+id/btRepeat"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:id="@+id/btPlace"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginRight="@dimen/margin_l"
-            android:layout_toRightOf="@+id/btTime"
+            android:layout_toRightOf="@+id/btMemo"
             android:layout_centerVertical="true"
             android:visibility="gone"
-            android:background="@drawable/ic_repeat2" />
+            android:background="@drawable/ic_place" />
+        <Button
+            android:id="@+id/btRepeat"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginRight="@dimen/margin_l"
+            android:layout_toRightOf="@+id/btPlace"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:background="@drawable/ic_repeat" />
         <Button
             android:id="@+id/btColor"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_toRightOf="@+id/btRepeat"
             android:layout_centerVertical="true"
@@ -163,8 +184,8 @@
             android:background="@drawable/bg_circle_maincolor" />
         <Button
             android:id="@+id/btCommunity"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_toLeftOf="@+id/btInvite"
             android:layout_centerVertical="true"
@@ -173,8 +194,8 @@
 
         <Button
             android:id="@+id/btInvite"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_toLeftOf="@+id/btEdit"
             android:layout_centerVertical="true"
@@ -182,16 +203,16 @@
             android:visibility="gone" />
         <Button
             android:id="@+id/btCheck"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:visibility="gone"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/ic_check_on" />
         <Button
             android:id="@+id/btEdit"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_toLeftOf="@+id/btRemove"
             android:layout_marginRight="@dimen/margin_l"
             android:layout_centerVertical="true"
@@ -199,8 +220,8 @@
 
         <Button
             android:id="@+id/btRemove"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/ic_remove" />

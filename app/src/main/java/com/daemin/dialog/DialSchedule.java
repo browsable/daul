@@ -713,11 +713,12 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btNormal:
+                btColor.setVisibility(View.VISIBLE);
+                btColor2.setVisibility(View.GONE);
                 if(viewMode==0) {
                     clearView();
                     User.INFO.overlapFlag = false;
                     DrawMode.CURRENT.setMode(0);
-                    btColor.setVisibility(View.VISIBLE);
                     llNormal.setVisibility(View.VISIBLE);
                     llUniv.setVisibility(View.GONE);
                     btNormal.setTextColor(getResources().getColor(
@@ -727,6 +728,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btUniv:
+                btColor.setVisibility(View.VISIBLE);
+                btColor2.setVisibility(View.GONE);
                 if(User.INFO.dbServerVer==null){
                     User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                 }
@@ -736,7 +739,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 llUniv.setVisibility(View.VISIBLE);
                 btNormal.setTextColor(getResources().getColor(
                         R.color.gray));
-                btColor.setVisibility(View.VISIBLE);
                 btUniv.setTextColor(getResources().getColor(
                         android.R.color.white));
                 if(groupName.equals("")||ttVersion.equals(getResources().getString(R.string.wait1))) { //학교를 한번도 선택한 적 없거나 등록대기중
@@ -829,6 +831,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 DialColor dc = new DialColor(DialSchedule.this, null);
                 dc.show();
                 break;
+            case R.id.btColor2:
+                DialColor dc2 = new DialColor(DialSchedule.this, null);
+                dc2.show();
+                break;
             case R.id.btAddSchedule:
                 if (User.INFO.overlapFlag) {
                     Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_overlap), Toast.LENGTH_SHORT).show();
@@ -892,7 +898,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                                     credit,
                                                     colorName);
                                             MyTimeRepo.insertOrUpdate(this, myTime);
-                                            gd.setColor(Color.WHITE);
+                                            btColor.setVisibility(View.VISIBLE);
+                                            btColor2.setVisibility(View.GONE);
                                             subOverlapFlag = false;
                                             setColorFlag=false;
                                         } else {
@@ -999,6 +1006,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         btCancel = (Button) findViewById(R.id.btCancel);
         btEnter = (Button) findViewById(R.id.btEnter);
         btColor = (Button) findViewById(R.id.btColor);
+        btColor2 = (Button) findViewById(R.id.btColor2);
         btShowUniv = (ToggleButton)findViewById(R.id.btShowUniv);
         btShowDep = (ToggleButton)findViewById(R.id.btShowDep);
         btShowGrade = (ToggleButton)findViewById(R.id.btShowGrade);
@@ -1032,10 +1040,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         actvGrade = (AutoCompleteTextView) findViewById(R.id.actvGrade);
         actvSub = (AutoCompleteTextView) findViewById(R.id.actvSub);
         actvProf = (AutoCompleteTextView) findViewById(R.id.actvProf);
-        gd = (GradientDrawable) btColor.getBackground().mutate();
+        gd = (GradientDrawable) btColor2.getBackground().mutate();
         btNormal.setOnClickListener(this);
         btUniv.setOnClickListener(this);
         btColor.setOnClickListener(this);
+        btColor2.setOnClickListener(this);
         btAddSchedule.setOnClickListener(this);
         btCancel.setOnClickListener(this);
         btShowUniv.setOnClickListener(this);
@@ -1077,7 +1086,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             }
         });
     }
-    private Button btNormal, btUniv, btAddSchedule, btCancel, btEnter, btColor,btClear;
+    private Button btNormal, btUniv, btAddSchedule, btCancel, btEnter, btColor,btColor2,btClear;
     private LinearLayout llNormal, llUniv, llSelectUniv, llDep, btNew, btPlace, btShare, btAlarm, btRepeat;
     private View dragToggle;
     private SeekBar sb;
@@ -1125,6 +1134,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
 
     public void onEventMainThread(SetColorEvent e) {
+        btColor.setVisibility(View.GONE);
+        btColor2.setVisibility(View.VISIBLE);
         colorName = getResources().getString(e.getResColor());
         gd.setColor(getResources().getColor(e.getResColor()));
         gd.invalidateSelf();

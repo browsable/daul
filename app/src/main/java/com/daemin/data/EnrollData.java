@@ -9,10 +9,12 @@ public class EnrollData {
     String place;
     String timeCode;
     String timeType;
+    String md;
     String startHour, startMin, endHour, endMin;
     String repeat;
     String color;
     long _id;
+    boolean memoEmpty, placeEmpty;
 
     public String getTitle() {
         return title;
@@ -60,11 +62,55 @@ public class EnrollData {
         return color;
     }
 
-    public void setMemo(String memo) {
-        this.memo = memo;
+    public String getMd() {
+        return md;
     }
 
-    public EnrollData(String startHour,String startMin, String endHour, String endMin,String title,String memo,String timeCode,String timeType,String color, String place,String repeat, long _id) {
+    public void setMd(String md) {
+        this.md = md;
+    }
+
+    public void setMemo(String memo) {
+        if(memo.equals("")||memo.equals(null))memoEmpty=true;
+        else memoEmpty=false;
+        this.memo = memo;
+    }
+    public void setPlace(String place) {
+        if(place.equals("")||place.equals(null))placeEmpty=true;
+        else placeEmpty=false;
+        this.place = place;
+    }
+
+    public boolean isMemoEmpty() {
+        return memoEmpty;
+    }
+
+    public boolean isPlaceEmpty() {
+        return placeEmpty;
+    }
+
+    public void setStartHour(String startHour) {
+        this.startHour = startHour;
+    }
+
+    public void setStartMin(String startMin) {
+        this.startMin = startMin;
+    }
+
+    public void setEndHour(String endHour) {
+        this.endHour = endHour;
+    }
+
+    public void setEndMin(String endMin) {
+        this.endMin = endMin;
+    }
+
+    public EnrollData(String md,String startHour,String startMin, String endHour, String endMin,String title,String memo,String timeCode,String timeType,String color, String place,String repeat, long _id) {
+        if(memo.equals("")||memo.equals(null))memoEmpty=true;
+        else memoEmpty=false;
+        if(place.equals("")||memo.equals(null))placeEmpty=true;
+        else memoEmpty=false;
+        this.md=md;
         this.startHour = startHour;
         this.startMin = startMin;
         this.endHour = endHour;
