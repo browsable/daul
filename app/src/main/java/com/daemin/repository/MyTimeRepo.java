@@ -52,11 +52,6 @@ public class MyTimeRepo {
         return qb.list();
     }
 
-    public static List<MyTime> getMyTimeWithTimeCode(Context context, String timeCode) {
-        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
-        qb.where(MyTimeDao.Properties.Timecode.eq(timeCode));
-        return qb.list();
-    }
 
     public static List<MyTime> getWeekTimes(Context context, long week_startMillies, long week_endMillies) {
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();

@@ -19,6 +19,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.daemin.event.EditRepeatEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.timetable.R;
 
@@ -38,11 +40,12 @@ public class DialRepeat extends Dialog {
         this.repeat="";
     }
 
-    public DialRepeat(Context context, HashMap<Integer, Integer> dayIndex, String repeat) {
+    public DialRepeat(Context context, HashMap<Integer, Integer> dayIndex, String repeat, int position) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
         this.dayIndex = dayIndex;
         this.repeat = repeat;
+        this.position = position;
     }
 
     @Override
@@ -300,7 +303,10 @@ public class DialRepeat extends Dialog {
                             Toast.makeText(context, context.getResources().getString(R.string.input_measure), Toast.LENGTH_SHORT).show();
                         else {
                             if (Integer.parseInt(repeatNumber) * limitNum <= 365 * 5) {
-                                EventBus.getDefault().post(new SetRepeatEvent(context,repeatType, repeatPeriod, repeatNumber));
+                                if(repeat.equals(""))
+                                    EventBus.getDefault().post(new SetRepeatEvent(context,repeatType, repeatPeriod, repeatNumber));
+                                else
+                                    EventBus.getDefault().post(new EditRepeatEvent(context, repeatType, repeatPeriod, repeatNumber,position));
                                 cancel();
                             } else {
                                 Toast.makeText(context,context.getResources().getString(R.string.repeat_term), Toast.LENGTH_SHORT).show();
@@ -325,6 +331,7 @@ public class DialRepeat extends Dialog {
     HashMap<Integer, Integer> dayIndex;
     String repeat;
     RadioButton repeat_radio0,repeat_radio1,repeat_radio2,repeat_radio3,repeat_radio4;
+    private int position;
     private Button btDialCancel, btDialSetting;
     private RadioGroup repeatGroup;
     private LinearLayout llTerm, llWeek, llMonth, llYear;

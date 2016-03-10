@@ -14,7 +14,15 @@ public class EnrollData {
     String repeat;
     String color;
     long _id;
-    boolean memoEmpty, placeEmpty;
+    boolean timeChanged, repeatChnaged;
+
+    public boolean isTimeChanged() {
+        return timeChanged;
+    }
+
+    public boolean isRepeatChnaged() {
+        return repeatChnaged;
+    }
 
     public String getTitle() {
         return title;
@@ -70,46 +78,28 @@ public class EnrollData {
         this.md = md;
     }
 
-    public void setMemo(String memo) {
-        if(memo.equals("")||memo.equals(null))memoEmpty=true;
-        else memoEmpty=false;
-        this.memo = memo;
+    public void setRepeat(String repeat) {
+        if(!this.repeat.equals(repeat)) repeatChnaged = true;
+        this.repeat = repeat;
     }
-    public void setPlace(String place) {
-        if(place.equals("")||place.equals(null))placeEmpty=true;
-        else placeEmpty=false;
-        this.place = place;
-    }
-
-    public boolean isMemoEmpty() {
-        return memoEmpty;
-    }
-
-    public boolean isPlaceEmpty() {
-        return placeEmpty;
-    }
-
     public void setStartHour(String startHour) {
+        if(!this.startHour.equals(startHour)) timeChanged = true;
         this.startHour = startHour;
     }
-
     public void setStartMin(String startMin) {
+        if(!this.startMin.equals(startMin)) timeChanged = true;
         this.startMin = startMin;
     }
-
     public void setEndHour(String endHour) {
+        if(!this.endHour.equals(endHour)) timeChanged = true;
         this.endHour = endHour;
     }
-
     public void setEndMin(String endMin) {
+        if(!this.endMin.equals(endMin)) timeChanged = true;
         this.endMin = endMin;
     }
 
     public EnrollData(String md,String startHour,String startMin, String endHour, String endMin,String title,String memo,String timeCode,String timeType,String color, String place,String repeat, long _id) {
-        if(memo.equals("")||memo.equals(null))memoEmpty=true;
-        else memoEmpty=false;
-        if(place.equals("")||memo.equals(null))placeEmpty=true;
-        else memoEmpty=false;
         this.md=md;
         this.startHour = startHour;
         this.startMin = startMin;
@@ -123,5 +113,7 @@ public class EnrollData {
         this.color = color;
         this._id = _id;
         this.repeat = repeat;
+        this.timeChanged = false;
+        this.repeatChnaged = false;
     }
 }
