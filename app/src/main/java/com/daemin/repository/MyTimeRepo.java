@@ -35,7 +35,14 @@ public class MyTimeRepo {
         qb.where(MyTimeDao.Properties.Timetype.eq(timetype));
         qb.buildDelete().executeDeleteWithoutDetachingEntities();
     }
-
+    public static boolean singleCheckWithTimeCode(Context context, String timeCode) {
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+        qb.where(MyTimeDao.Properties.Timecode.eq(timeCode));
+        if(qb.list().size()==1)
+            return true;
+        else
+            return false;
+    }
     public static void deleteWithTimeCode(Context context, String timeCode) {
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
         qb.where(MyTimeDao.Properties.Timecode.eq(timeCode));

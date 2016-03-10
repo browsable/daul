@@ -67,6 +67,10 @@
     <string name="btDialCancel">취소</string>
     <string name="btDialSetting">확인</string>
     <string name="overlapEnroll">+ 일정추가</string>
+    <string name="dialenroll_edit">일정수정</string>
+    <string name="dialenroll_delete">일정삭제</string>
+    <string name="dialenroll_radio0">이 일정만</string>
+    <string name="dialenroll_radio1">연관된 일정 모두</string>
     <!--업데이트-->
     <string name="update_title">업데이트 안내</string>
     <string name="update_content">업데이트 내역</string>

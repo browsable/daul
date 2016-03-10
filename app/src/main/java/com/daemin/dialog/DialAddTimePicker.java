@@ -98,7 +98,9 @@ public class DialAddTimePicker extends Dialog {
                 npEndHour.clearFocus();
                 npEndMin.clearFocus();
                 if(editMode) {
-                    EventBus.getDefault().post(new SetTimeEvent(MD[npMD.getValue()],position,npStartHour.getValue(), npStartMin.getValue(),
+                    EventBus.getDefault().post(new SetTimeEvent(position,
+                            Integer.parseInt(MD[npMD.getValue()].split("\\.")[1])
+                            ,npStartHour.getValue(), npStartMin.getValue(),
                             npEndHour.getValue(), npEndMin.getValue()));
                 }else{
                     if (MD.length == 7) {

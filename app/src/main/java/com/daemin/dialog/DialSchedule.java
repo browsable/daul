@@ -496,6 +496,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         hlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setRandomColor();
                 try {
                     String[] temps;
                     subId = ((TextView) view.findViewById(R.id._id)).getText().toString();
@@ -713,6 +714,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btNormal:
+                setRandomColor();
                 if(viewMode==0) {
                     clearView();
                     User.INFO.overlapFlag = false;
@@ -726,6 +728,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 break;
             case R.id.btUniv:
+                setRandomColor();
                 if(User.INFO.dbServerVer==null){
                     User.INFO.dbServerVer=User.INFO.getGroupDBVer();
                 }
@@ -831,16 +834,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (User.INFO.overlapFlag) {
                     Toast.makeText(DialSchedule.this, getResources().getString(R.string.univ_overlap), Toast.LENGTH_SHORT).show();
                 } else {
-                        if(!setColorFlag) {
-                            Random mRand = new Random();
-                            int nResult = mRand.nextInt(18) + 1;
-                            int resId = getResources().getIdentifier("btcolor" + nResult, "color", getPackageName());
-                            try {
-                                colorName = "#" + Integer.toHexString(getResources().getColor(resId));
-                            } catch (Resources.NotFoundException e) {
-                                e.printStackTrace();
-                            }
-                        }
                         switch (DrawMode.CURRENT.getMode()) {
                             case 0:
                                 if (etName.getText().toString().equals("")) {
@@ -963,6 +956,20 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 break;
         }
     }
+    public void setRandomColor(){
+        if(!setColorFlag) {
+            Random mRand = new Random();
+            int nResult = mRand.nextInt(18) + 1;
+            int resId = getResources().getIdentifier("btcolor" + nResult, "color", getPackageName());
+            try {
+                colorName = "#" + Integer.toHexString(getResources().getColor(resId));
+            } catch (Resources.NotFoundException e) {
+                e.printStackTrace();
+            }
+            gd.setColor(Color.parseColor(colorName));
+        }
+
+    }
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (v.getId()) {
@@ -1030,7 +1037,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         actvSub = (AutoCompleteTextView) findViewById(R.id.actvSub);
         actvProf = (AutoCompleteTextView) findViewById(R.id.actvProf);
         gd = (GradientDrawable) btColor.getBackground().mutate();
-        gd.setColor(Color.WHITE);
+        setRandomColor();
         btNormal.setOnClickListener(this);
         btUniv.setOnClickListener(this);
         btColor.setOnClickListener(this);

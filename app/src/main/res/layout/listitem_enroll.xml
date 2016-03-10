@@ -38,59 +38,17 @@
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:visibility="gone"
+                android:textStyle="bold"
                 android:textSize="@dimen/textsize_l"
+                android:layout_marginRight="@dimen/margin_default"
                 android:background="@color/transparency"/>
             <TextView
-                android:id="@+id/tvStartHour"
+                android:id="@+id/tvTime"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:textSize="@dimen/textsize_l"
-                android:background="@color/transparency"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_l"
-                android:text=":" />
-            <TextView
-                android:id="@+id/tvStartMin"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_l"
-                android:background="@color/transparency"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_l"
-                android:text=" ~ " />
-            <TextView
-                android:id="@+id/tvEndHour"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_l"
-                android:background="@color/transparency" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:textSize="@dimen/textsize_l"
-                android:text=":" />
-            <TextView
-                android:id="@+id/tvEndMin"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:singleLine="true"
+                android:textStyle="bold"
                 android:textSize="@dimen/textsize_l"
                 android:background="@color/transparency"/>
         </LinearLayout>
@@ -205,32 +163,9 @@
             android:layout_centerVertical="true"
             android:background="@drawable/ic_remove" />
     </RelativeLayout>
-
     <TextView
-        android:id="@+id/tvId"
+        android:id="@+id/tvSingleSchedule"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/tvTimeCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/tvTimeType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-    <TextView
-        android:id="@+id/tvRepeat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible" />
-    <TextView
-        android:id="@+id/tvColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -4,24 +4,30 @@ package com.daemin.data;
  * Created by HOME on 2015-09-11.
  */
 public class EnrollData {
+    String dayOfMonth;
     String title;
     String memo;
     String place;
     String timeCode;
     String timeType;
-    String md;
     String startHour, startMin, endHour, endMin;
     String repeat;
     String color;
     long _id;
-    boolean timeChanged, repeatChnaged;
-
+    boolean timeChanged, singleEffect;
+    public String getDayOfMonth() {
+        return dayOfMonth;
+    }
     public boolean isTimeChanged() {
         return timeChanged;
     }
 
-    public boolean isRepeatChnaged() {
-        return repeatChnaged;
+    public boolean isSingleEffect() {
+        return singleEffect;
+    }
+
+    public void setSingleEffect(boolean singleEffect) {
+        this.singleEffect = singleEffect;
     }
 
     public String getTitle() {
@@ -69,18 +75,12 @@ public class EnrollData {
     public String getColor() {
         return color;
     }
-
-    public String getMd() {
-        return md;
-    }
-
-    public void setMd(String md) {
-        this.md = md;
-    }
-
     public void setRepeat(String repeat) {
-        if(!this.repeat.equals(repeat)) repeatChnaged = true;
         this.repeat = repeat;
+    }
+    public void setDayOfMonth(String dayOfMonth) {
+        if(!this.dayOfMonth.equals(dayOfMonth)) timeChanged = true;
+        this.dayOfMonth = dayOfMonth;
     }
     public void setStartHour(String startHour) {
         if(!this.startHour.equals(startHour)) timeChanged = true;
@@ -98,9 +98,8 @@ public class EnrollData {
         if(!this.endMin.equals(endMin)) timeChanged = true;
         this.endMin = endMin;
     }
-
-    public EnrollData(String md,String startHour,String startMin, String endHour, String endMin,String title,String memo,String timeCode,String timeType,String color, String place,String repeat, long _id) {
-        this.md=md;
+    public EnrollData(String dayOfMonth,String startHour,String startMin, String endHour, String endMin,String title,String memo,String timeCode,String timeType,String color, String place,String repeat, long _id) {
+        this.dayOfMonth = dayOfMonth;
         this.startHour = startHour;
         this.startMin = startMin;
         this.endHour = endHour;
@@ -114,6 +113,6 @@ public class EnrollData {
         this._id = _id;
         this.repeat = repeat;
         this.timeChanged = false;
-        this.repeatChnaged = false;
+        this.singleEffect = true;
     }
 }

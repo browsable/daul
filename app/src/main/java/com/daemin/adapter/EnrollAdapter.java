@@ -3,12 +3,9 @@ package com.daemin.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,16 +18,14 @@ import com.daemin.common.Convert;
 import com.daemin.data.EnrollData;
 import com.daemin.dialog.DialAddTimePicker;
 import com.daemin.dialog.DialColor;
+import com.daemin.dialog.DialDefault;
 import com.daemin.dialog.DialRepeat;
 import com.daemin.enumclass.Dates;
-import com.daemin.enumclass.User;
 import com.daemin.event.EditCheckEvent;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.event.SetCreditEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
-
-import org.joda.time.DateTime;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +41,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
     private Context context;
     private Boolean weekFlag,editFlag;
     private int dayOfWeek,dayOfMonth;
-    private String timeType;
+    private static int pos;
     public EnrollAdapter(Context context, List<EnrollData> values, Boolean weekFlag, int xth, int dayOfMonth) {
         super(context, R.layout.listitem_enroll, values);
         mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -63,24 +58,18 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         final Holder holder;
+        this.pos = position;
         if (convertView == null) {
             holder = new Holder();
             convertView = mInflater.inflate(R.layout.listitem_enroll, parent, false);
             holder.tvMD = (TextView) convertView.findViewById(R.id.tvMD);
-            holder.tvStartHour = (TextView) convertView.findViewById(R.id.tvStartHour);
-            holder.tvStartMin = (TextView) convertView.findViewById(R.id.tvStartMin);
-            holder.tvEndHour = (TextView) convertView.findViewById(R.id.tvEndHour);
-            holder.tvEndMin = (TextView) convertView.findViewById(R.id.tvEndMin);
+            holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
+            holder.tvSingleSchedule = (TextView) convertView.findViewById(R.id.tvSingleSchedule);
             holder.etTitle = (EditText) convertView.findViewById(R.id.etTitle);
             holder.etMemo = (EditText) convertView.findViewById(R.id.etMemo);
             holder.etPlace = (EditText) convertView.findViewById(R.id.etPlace);
-            holder.tvId = (TextView) convertView.findViewById(R.id.tvId);
-            holder.tvTimeCode = (TextView) convertView.findViewById(R.id.tvTimeCode);
-            holder.tvTimeType = (TextView) convertView.findViewById(R.id.tvTimeType);
-            holder.tvRepeat = (TextView) convertView.findViewById(R.id.tvRepeat);
-            holder.tvColor = (TextView) convertView.findViewById(R.id.tvColor);
             holder.btCommunity  = (Button) convertView.findViewById(R.id.btCommunity);
             holder.btInvite  = (Button) convertView.findViewById(R.id.btInvite);
             holder.btCheck  = (Button) convertView.findViewById(R.id.btCheck);
@@ -97,20 +86,16 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
             holder = (Holder) convertView.getTag();
         }
         // Populate the text
-        holder.tvMD.setText(getItem(position).getMd()+"  ");
-        holder.tvStartHour.setText(getItem(position).getStartHour());
-        holder.tvStartMin.setText(getItem(position).getStartMin());
-        holder.tvEndHour.setText(getItem(position).getEndHour());
-        holder.tvEndMin.setText(getItem(position).getEndMin());
+        String md = Dates.NOW.month+context.getResources().getString(R.string.month)+" "+getItem(position).getDayOfMonth()+context.getResources().getString(R.string.day);
+        holder.tvMD.setText(md);
+        String time = getItem(position).getStartHour()+":"+getItem(position).getStartMin()+"~"
+                +getItem(position).getEndHour()+":"+getItem(position).getEndMin();
+        holder.tvTime.setText(time);
         holder.etTitle.setText(getItem(position).getTitle());
-        holder.tvId.setText(String.valueOf(getItem(position).get_id()));
-        holder.tvTimeCode.setText(getItem(position).getTimeCode());
-        timeType = getItem(position).getTimeType();
-        holder.tvTimeType.setText(timeType);
-        holder.tvRepeat.setText(getItem(position).getRepeat());
-        holder.tvColor.setText(getItem(position).getColor());
         holder.etMemo.setText(getItem(position).getMemo());
         holder.etPlace.setText(getItem(position).getPlace());
+        holder.tvSingleSchedule.setText("" + MyTimeRepo.singleCheckWithTimeCode(context, getItem(position).getTimeCode()));
+
         holder.btCommunity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,80 +115,78 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                 String title = holder.etTitle.getText().toString();
                 String place = holder.etPlace.getText().toString();
                 String memo = holder.etMemo.getText().toString();
-                String tvStartHour = holder.tvStartHour.getText().toString();
-                String tvStartMin = holder.tvStartMin.getText().toString();
-                String tvEndHour = holder.tvEndHour.getText().toString();
-                String tvEndMin = holder.tvEndMin.getText().toString();
-
+                String startHour = getItem(pos).getStartHour();
+                String startMin = getItem(pos).getStartMin();
+                String endHour = getItem(pos).getEndHour();
+                String endMin = getItem(pos).getEndMin();
                 if(holder.etTitle.length()==0){
                     Toast.makeText(context, context.getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
                     holder.etTitle.setHintTextColor(Color.RED);
                 }else {
-                    holder.etTitle.setBackgroundResource(R.color.transparency);
-                    holder.etPlace.setBackgroundResource(R.color.transparency);
-                    holder.etMemo.setBackgroundResource(R.color.transparency);
-                    holder.llTime.setBackgroundResource(R.color.transparency);
-                    holder.btRemove.setVisibility(View.VISIBLE);
-                    holder.btEdit.setVisibility(View.VISIBLE);
-                    holder.tvMD.setVisibility(View.GONE);
-                    holder.btCheck.setVisibility(View.GONE);
-                    holder.btColor.setVisibility(View.GONE);
-                    holder.btShare.setVisibility(View.GONE);
-                    holder.btAlarm.setVisibility(View.GONE);
-                    holder.btRepeat.setVisibility(View.GONE);
-                    holder.etTitle.setEnabled(false);
-                    holder.etPlace.setEnabled(false);
-                    holder.etMemo.setEnabled(false);
-                    holder.etTitle.setTextColor(Color.BLACK);
-                    holder.etPlace.setTextColor(Color.BLACK);
-                    holder.etMemo.setTextColor(Color.BLACK);
-                    holder.etTitle.setHint("");
-                    holder.etPlace.setHint("");
-                    holder.etMemo.setHint("");
-                    String colorName;
-                    if(holder.btColor.getTag()==null) colorName = holder.tvColor.getText().toString();
-                    else colorName = context.getResources().getString((int)holder.btColor.getTag());
-
-                    holder.tvColor.setText(colorName);
-                    if(getItem(position).isRepeatChnaged()){
-                        Log.i("test","repeat");
-                    }else{
-                        MyTime mt = MyTimeRepo.getMyTimeForId(context, Long.parseLong(holder.tvId.getText().toString()));
-                            if(getItem(position).isTimeChanged()) {
-                                Log.i("test", "time");
-                                int startHour = Integer.parseInt(tvStartHour);
-                                int startMin = Integer.parseInt(tvStartMin);
-                                int endHour = Integer.parseInt(tvEndHour);
-                                int endMin = Integer.parseInt(tvEndHour);
-                                mt.setStarthour(startHour);
-                                mt.setStartmin(startMin);
-                                mt.setEndhour(endHour);
-                                mt.setEndmin(endMin);
-                                /*int day = Integer.parseInt(holder.tvMD.getText().toString().split("/")[1]);
-                                long startMillies = Dates.NOW.getDateMillis(Dates.NOW.y, mt.getMonthofyear(), day, startHour, startMin);
-                                long endMillies = Dates.NOW.getDateMillis(mt.getYear(), mt.getMonthofyear(), day, endHour,endMin);
-                                mt.setStartmillis();
-                                mt.setEndmillis();*/
+                    if(Boolean.parseBoolean(holder.tvSingleSchedule.getText().toString())){
+                        if (getItem(pos).isSingleEffect()) { // 하나의 일정 수정
+                            String colorName;
+                            if (holder.btColor.getTag() == null)
+                                colorName = getItem(pos).getColor();
+                            else
+                                colorName = context.getResources().getString((int) holder.btColor.getTag());
+                            MyTime mt = MyTimeRepo.getMyTimeForId(context, getItem(pos).get_id());
+                            if (getItem(pos).isTimeChanged()) {
+                                int year = Dates.NOW.year;
+                                int month = Dates.NOW.month;
+                                int day = Integer.parseInt(getItem(pos).getDayOfMonth());
+                                int dayOfWeek = Dates.NOW.getDayOfWeek(year, month, day);
+                                int sHour = Integer.parseInt(startHour);
+                                int sMin = Integer.parseInt(startMin);
+                                int eHour = Integer.parseInt(endHour);
+                                int eMin = Integer.parseInt(endMin);
+                                int xth = Convert.dayOfWeekTowXth(dayOfWeek);
+                                mt.setDayofweek(xth);
+                                mt.setDayofmonth(day);
+                                mt.setStarthour(sHour);
+                                mt.setStartmin(sMin);
+                                mt.setEndhour(eHour);
+                                mt.setEndmin(eMin);
+                                if (getItem(pos).getTimeType().equals("0")) { // 일반 스케쥴인 경우만
+                                    long startMillies = Dates.NOW.getDateMillis(year, month, day, sHour, sMin);
+                                    long endMillies = Dates.NOW.getDateMillis(year, month, day, eHour, eMin);
+                                    mt.setStartmillis(startMillies);
+                                    mt.setEndmillis(endMillies);
+                                }
+                                mt.setName(title);
+                                mt.setPlace(place);
+                                mt.setMemo(memo);
+                                mt.setColor(colorName);
+                                EventBus.getDefault().post(new EditCheckEvent(true));
+                            } else {
+                                mt.setName(title);
+                                mt.setPlace(place);
+                                mt.setMemo(memo);
+                                mt.setColor(colorName);
+                                EventBus.getDefault().post(new EditCheckEvent(false));
                             }
-                            mt.setName(title);
-                            mt.setPlace(place);
-                            mt.setMemo(memo);
-                            mt.setColor(colorName);
                             MyTimeRepo.insertOrUpdate(context, mt);
+                            if (weekFlag) Common.fetchWeekData();
+                            else Common.fetchMonthData();
+                        }else { //모든일정 수정
+
+                        }
+                    }else{
+                        DialDefault dd = new DialDefault(context,
+                                context.getString(R.string.dialenroll_edit),
+                                pos + "",
+                                6);
+                        dd.show();
                     }
 
-                    if(weekFlag)Common.fetchWeekData();
-                    else Common.fetchMonthData();
                 }
-                EventBus.getDefault().post(new EditCheckEvent());
-
             }
         });
         holder.btEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editFlag = true;
-                holder.gd.setColor(Color.parseColor(holder.tvColor.getText().toString()));
+                holder.gd.setColor(Color.parseColor(getItem(pos).getColor()));
                 holder.gd.invalidateSelf();
                 holder.btRemove.setVisibility(View.GONE);
                 holder.btEdit.setVisibility(View.GONE);
@@ -212,6 +195,10 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                 holder.tvMD.setVisibility(View.VISIBLE);
                 //holder.btShare.setVisibility(View.GONE);
                 //holder.btAlarm.setVisibility(View.GONE);
+                holder.etTitle.setEnabled(true);
+                holder.etTitle.setHint(context.getResources().getString(R.string.normal_name));
+                holder.etTitle.setSelection(holder.etTitle.length());
+                holder.etTitle.setBackgroundResource(R.drawable.bg_black_bottomline);
                 holder.etPlace.setEnabled(true);
                 holder.etPlace.setHint(context.getResources().getString(R.string.normal_place));
                 holder.etPlace.setSelection(holder.etPlace.length());
@@ -221,12 +208,8 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                 holder.etPlace.setBackgroundResource(R.drawable.bg_black_bottomline);
                 holder.etMemo.setBackgroundResource(R.drawable.bg_black_bottomline);
                 holder.llTime.setBackgroundResource(R.drawable.bg_black_bottomline);
-                if(timeType.equals("0")){
+                if(getItem(pos).getTimeType().equals("0")){
                     holder.btRepeat.setVisibility(View.VISIBLE);
-                    holder.etTitle.setEnabled(true);
-                    holder.etTitle.setHint(context.getResources().getString(R.string.normal_name));
-                    holder.etTitle.setSelection(holder.etTitle.length());
-                    holder.etTitle.setBackgroundResource(R.drawable.bg_black_bottomline);
                 }else{
                     holder.btRepeat.setVisibility(View.GONE);
                 }
@@ -239,11 +222,11 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
                     DialAddTimePicker datp = new DialAddTimePicker(
                             context, Dates.NOW.getMonthDay(),
                             dayOfMonth,
-                            position,
-                            holder.tvStartHour.getText().toString(),
-                            holder.tvStartMin.getText().toString(),
-                            holder.tvEndHour.getText().toString(),
-                            holder.tvEndMin.getText().toString());
+                            pos,
+                            getItem(pos).getStartHour(),
+                            getItem(pos).getStartMin(),
+                            getItem(pos).getEndHour(),
+                            getItem(pos).getEndMin());
                     datp.show();
                 }
             }
@@ -254,7 +237,7 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
             public void onClick(View v) {
                 HashMap dayIndex = new HashMap<>();
                 dayIndex.put(dayOfWeek,dayOfWeek);
-                DialRepeat dr = new DialRepeat(context,dayIndex,holder.tvRepeat.getText().toString(),position);
+                DialRepeat dr = new DialRepeat(context,dayIndex,getItem(pos).getRepeat(),pos);
                 dr.show();
             }
         });
@@ -268,18 +251,26 @@ public class EnrollAdapter  extends ArrayAdapter<EnrollData> {
         holder.btRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyTimeRepo.deleteWithTimeCode(context, holder.tvTimeCode.getText().toString());
-                if (weekFlag) Common.fetchWeekData();
-                else Common.fetchMonthData();
-                EventBus.getDefault().post(new RemoveEnrollEvent(holder.tvTimeCode.getText().toString()));
-                EventBus.getDefault().post(new SetCreditEvent());
+                if(Boolean.parseBoolean(holder.tvSingleSchedule.getText().toString())){
+                    MyTimeRepo.deleteWithTimeCode(context, getItem(pos).getTimeCode());
+                    if (weekFlag) Common.fetchWeekData();
+                    else Common.fetchMonthData();
+                    EventBus.getDefault().post(new RemoveEnrollEvent(pos));
+                    EventBus.getDefault().post(new SetCreditEvent());
+                }else{
+                    DialDefault dd = new DialDefault(context,
+                            context.getString(R.string.dialenroll_delete),
+                            pos + "",
+                            6);
+                    dd.show();
+                }
             }
         });
         return convertView;
     }
 
     private static class Holder {
-        public TextView tvId, tvTimeCode, tvTimeType,tvRepeat,tvColor,tvMD,tvStartHour,tvStartMin,tvEndHour,tvEndMin;
+        public TextView tvTime,tvMD, tvSingleSchedule;
         public EditText etTitle, etPlace,etMemo;
         public Button btCommunity,btCheck,btEdit,btInvite, btRemove,btColor,btShare,btAlarm,btRepeat;
         public GradientDrawable gd;

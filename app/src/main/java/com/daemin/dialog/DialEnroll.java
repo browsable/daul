@@ -20,13 +20,13 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.data.EnrollData;
 import com.daemin.enumclass.Dates;
-import com.daemin.enumclass.TimePos;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.EditCheckEvent;
+import com.daemin.event.EditChoiceEvent;
 import com.daemin.event.EditRepeatEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RemoveEnrollEvent;
-import com.daemin.event.SetRepeatEvent;
+import com.daemin.event.SetCreditEvent;
 import com.daemin.event.SetTimeEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
@@ -149,7 +149,7 @@ public class DialEnroll extends Activity {
             if(timeType==0){
                 String timeCode = m.getTimecode();
                 EnrollData ed = new EnrollData(
-                        Dates.NOW.month+"/"+dayOfMonth,
+                        ""+m.getDayofmonth(),
                         Convert.IntToString(m.getStarthour()),
                         Convert.IntToString(m.getStartmin()),
                         Convert.IntToString(m.getEndhour()),
@@ -161,7 +161,7 @@ public class DialEnroll extends Activity {
             }else{
                 String timeCode = m.getTimecode();
                 EnrollData ed =new EnrollData(
-                        Dates.NOW.month+"/"+dayOfMonth,
+                        ""+dayOfMonth,
                         Convert.IntToString(m.getStarthour()),
                         Convert.IntToString(m.getStartmin()),
                         Convert.IntToString(m.getEndhour()),
@@ -184,23 +184,34 @@ public class DialEnroll extends Activity {
     private LinearLayout llNewEnroll;
     private EnrollAdapter enrollAdapter;
     public void onEventMainThread(RemoveEnrollEvent e) {
-        mtList.remove(enrollList.get(e.getTimeCode()));
-        if(mtList.size()==0){
-            finish();
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        }else {
-            enrollAdapter.notifyDataSetChanged();
-            for (TimePos ETP : TimePos.values()) {
-                ETP.setInitText();
-            }
-            Common.fetchWeekData();
+        Refresh(e.getPosition());
+    }
+    public void onEventMainThread(EditChoiceEvent e) {
+        int position = e.getPosition();
+        if(e.isSingleEffect()) {
+            MyTimeRepo.deleteWithId(this, enrollAdapter.getItem(position).get_id());
+        }else{
+            MyTimeRepo.deleteWithTimeCode(this, enrollAdapter.getItem(position).getTimeCode());
         }
+        Refresh(position);
+    }
+    public void Refresh(int position){
+        mtList.remove(enrollList.get(enrollAdapter.getItem(position).getTimeCode()));
+        if(mtList.size()==0) finish();
+        else
+            enrollAdapter.notifyDataSetChanged();
+        if (weekFlag) Common.fetchWeekData();
+        else Common.fetchMonthData();
+        EventBus.getDefault().post(new SetCreditEvent());
+
+    }
+    public void onEventMainThread(EditRepeatEvent e) {
+        enrollAdapter.getItem(e.getPosition()).setRepeat(e.toString());
+        enrollAdapter.notifyDataSetChanged();
     }
     public void onEventMainThread(SetTimeEvent e) {
         int position = e.getPosition();
-        String[] tmp = e.getMd().split("\\.");
-        String title= tmp[0]+"/"+tmp[1];
-        enrollAdapter.getItem(position).setMd(title);
+        enrollAdapter.getItem(position).setDayOfMonth(e.getDay()+"");
         enrollAdapter.getItem(position).setStartHour(Convert.IntToString(e.getStartHour()));
         enrollAdapter.getItem(position).setStartMin(Convert.IntToString(e.getStartMin()));
         enrollAdapter.getItem(position).setEndHour(Convert.IntToString(e.getEndHour()));
@@ -208,18 +219,17 @@ public class DialEnroll extends Activity {
         enrollAdapter.notifyDataSetChanged();
     }
     public void onEventMainThread(EditCheckEvent e) {
-        Intent i = new Intent(this, DialEnroll.class);
-        i.putExtra("xth", xth);
-        i.putExtra("yth", yth);
-        i.putExtra("startMin", startMin);
-        i.putExtra("weekFlag", weekFlag);
-        startActivity(i);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        if(!e.isTimeChanged()) {
+            Intent i = new Intent(this, DialEnroll.class);
+            i.putExtra("xth", xth);
+            i.putExtra("yth", yth);
+            i.putExtra("startMin", startMin);
+            i.putExtra("weekFlag", weekFlag);
+            startActivity(i);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
         finish();
     }
-    public void onEventMainThread(EditRepeatEvent e) {
-        enrollAdapter.getItem(e.getPosition()).setRepeat(e.toString());
-        enrollAdapter.notifyDataSetChanged();
-    }
+
 
 }
