@@ -19,7 +19,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -501,6 +500,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     setRandomColor();
+                    User.INFO.credit = User.INFO.getCredit();
                     try {
                         String[] temps;
                         subId = ((TextView) view.findViewById(R.id._id)).getText().toString();
@@ -522,9 +522,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                 break;
                             }
                         }
-
                         String credit = ((TextView) view.findViewById(R.id.credit)).getText().toString();
-                        User.INFO.credit += Float.parseFloat(credit);
+                        User.INFO.credit += Float.parseFloat(credit);;
                         tvCreditSum.setText(User.INFO.credit+"");
                     } catch (Exception e) {
                         Toast.makeText(DialSchedule.this, getResources().getString(R.string.time_error), Toast.LENGTH_SHORT).show();
@@ -1131,11 +1130,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         tvShare.setText(e.getShare());
     }
     public void onEventMainThread(SetCreditEvent e) {
-        Log.i("test schedule", e.getSubtitle());
         Float credit = Float.parseFloat(db.getCredit(e.getSubtitle()));
-        Log.i("test schedule", credit+"");
         User.INFO.credit-=credit;
         tvCreditSum.setText(User.INFO.credit+"");
+        User.INFO.getEditor().putFloat("credit",User.INFO.credit).commit();
     }
     public void onEventMainThread(SetRepeatEvent e) {
         repeatType = e.getRepeatType();
