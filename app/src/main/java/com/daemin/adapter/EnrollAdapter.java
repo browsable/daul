@@ -133,14 +133,9 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                         colorName = mt.getColor();
                     else
                         colorName = context.getResources().getString((int) holder.btColor.getTag());
-                    if (Boolean.parseBoolean(holder.tvSingleSchedule.getText().toString()) || mt.isRepeatChanged()) {
+                    if (Boolean.parseBoolean(holder.tvSingleSchedule.getText().toString())||changed) {
                         AddSchedule(mt, title, place, memo, colorName);
-                        if(changed) {
-                            EventBus.getDefault().post(new EditCheckEvent(false));
-                        }
-                        else {
-                            EventBus.getDefault().post(new EditCheckEvent(true));
-                        }
+                        EventBus.getDefault().post(new EditCheckEvent(false));
                     } else {
                         final View dialogView = mInflater.inflate(R.layout.dialog_effect, null);
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -160,7 +155,6 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                                         AddSchedule(mt, title, place, memo, colorName);
                                     } else {
                                         for (MyTime m : MyTimeRepo.getMyTimeForTimeCode(context, mt.getTimecode())) {
-                                            Log.i("test",m.getTimecode());
                                             AddSchedule(m, title, place, memo, colorName);
                                         }
                                     }
@@ -328,9 +322,6 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
         int endHour = mt.getEndhour();
         int endMin = mt.getEndmin();
         int repeatType, repeatNum, repeatPeriod; //반복횟수와 기간;
-        Log.i("test",startHour+"");
-        Log.i("test",startMin+"");
-        Log.i("test",endHour+"");
         repeatNum = 1;
         repeatPeriod = 0;
         try {
@@ -379,9 +370,6 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                         mt.getAlarm(),
                         repeat,
                         colorName);
-                Log.i("test",startDt.getYear()+"");
-                Log.i("test",startDt.getMonthOfYear()+"");
-                Log.i("test",startDt.getDayOfMonth()+"");
 
             } else {
                 myTime = new MyTime(null,

@@ -170,17 +170,11 @@ public class DialEnroll extends Activity {
 
     public void onEventMainThread(SetTimeEvent e) {
         int position = e.getPosition();
-        for(MyTime m : MyTimeRepo.getMyTimeForTimeCode(this, enrollAdapter.getItem(position).getTimecode())){
-            MyTime mt = (MyTime) enrollList.get(m.getId());
-            mtList.remove(mt);
-            mt.setDayofmonth(e.getDay());
-            mt.setStarthour(e.getStartHour());
-            mt.setStartmin(e.getStartMin());
-            mt.setEndhour(e.getEndHour());
-            mt.setEndmin(e.getEndMin());
-            mtList.add(mt);
-            MyTimeRepo.insertOrUpdate(this,mt);
-        }
+        enrollAdapter.getItem(position).setDayofmonth(e.getDay());
+        enrollAdapter.getItem(position).setStarthour(e.getStartHour());
+        enrollAdapter.getItem(position).setStartmin(e.getStartMin());
+        enrollAdapter.getItem(position).setEndhour(e.getEndHour());
+        enrollAdapter.getItem(position).setEndmin(e.getEndMin());
         enrollAdapter.notifyDataSetChanged();
     }
     public void onEventMainThread(EditCheckEvent e) {
