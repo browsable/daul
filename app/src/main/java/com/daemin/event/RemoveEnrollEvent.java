@@ -4,13 +4,14 @@ package com.daemin.event;
  * Created by hernia on 2015-10-16.
  */
 public class RemoveEnrollEvent {
-    int position;
+    Long id;
 
-    public RemoveEnrollEvent(int position) {
-        this.position = position;
+    public Long getId() {
+        return id;
     }
 
-    public int getPosition() {
-        return position;
+    public RemoveEnrollEvent(Long id) {
+
+        this.id = id;
     }
 }

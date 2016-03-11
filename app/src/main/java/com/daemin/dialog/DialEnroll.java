@@ -18,20 +18,16 @@ import android.widget.TextView;
 import com.daemin.adapter.EnrollAdapter;
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
-import com.daemin.data.EnrollData;
 import com.daemin.enumclass.Dates;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.EditCheckEvent;
-import com.daemin.event.EditChoiceEvent;
 import com.daemin.event.EditRepeatEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RemoveEnrollEvent;
-import com.daemin.event.SetCreditEvent;
 import com.daemin.event.SetTimeEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,19 +66,19 @@ public class DialEnroll extends Activity {
         window.setGravity(Gravity.CENTER);
         setLayout();
     }
+
     private void setLayout() {
-        if(getIntent()!=null) {
+        if (getIntent() != null) {
             this.xth = getIntent().getIntExtra("xth", 1);
             this.yth = getIntent().getIntExtra("yth", 1);
             this.weekFlag = getIntent().getBooleanExtra("weekFlag", true);
             this.startMin = getIntent().getIntExtra("startMin", 1);
         }
-        mtList = new ArrayList<>();
         enrollList = new HashMap<>();
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
         llNewEnroll = (LinearLayout) findViewById(R.id.llNewEnroll);
         tvMonthDay = (TextView) findViewById(R.id.tvMonthDay);
-        if(weekFlag) {
+        if (weekFlag) {
             startHour = Integer.parseInt(Convert.YthToHourOfDay(yth));
             String wMonthDay = Dates.NOW.getwMonthDay(xth);
             String[] tmp = wMonthDay.split("\\.");
@@ -92,39 +88,41 @@ public class DialEnroll extends Activity {
             if (monthOfYear != titleMonth && titleMonth == 1) year = Dates.NOW.year - 1;
             else year = Dates.NOW.year;
             dayOfMonth = Integer.parseInt(tmp[1]);
-            enrollMyTime(MyTimeRepo.getHourTimes(DialEnroll.this,
+            mtList = MyTimeRepo.getHourTimes(DialEnroll.this,
                     Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, 0),//startmillis
                     Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour + 1, 0) - 1,//endmillis
-                    xth, startHour,1, 59));
-            if(xth==1){
+                    xth, startHour, 1, 59);
+            if (xth == 1) {
                 tvMonthDay.setTextColor(getResources().getColor(R.color.red));
-            }else if(xth==13){
+            } else if (xth == 13) {
                 tvMonthDay.setTextColor(getResources().getColor(R.color.blue));
             }
-            String title= tmp[0]+getResources().getString(R.string.month)+" "+
-                    tmp[1]+getResources().getString(R.string.day)+" "+ Convert.XthToDayOfWeek(xth);
+            String title = tmp[0] + getResources().getString(R.string.month) + " " +
+                    tmp[1] + getResources().getString(R.string.day) + " " + Convert.XthToDayOfWeek(xth);
             tvMonthDay.setText(title);
-        }else{
+        } else {
             dayOfMonth = Integer.parseInt(Dates.NOW.getmMonthDay(xth - 1, 7 * (yth - 1)));
-                    enrollMyTime(MyTimeRepo.getOneDayTimes(DialEnroll.this,
-                            Dates.NOW.year, Dates.NOW.month, dayOfMonth));
-            if(xth==1){
+            mtList = MyTimeRepo.getOneDayTimes(DialEnroll.this,
+                    Dates.NOW.year, Dates.NOW.month, dayOfMonth);
+            if (xth == 1) {
                 tvMonthDay.setTextColor(getResources().getColor(R.color.red));
-            }else if(xth==7){
+            } else if (xth == 7) {
                 tvMonthDay.setTextColor(getResources().getColor(R.color.blue));
             }
-            String title = Dates.NOW.month+getResources().getString(R.string.month)
-                    +" "+dayOfMonth+getResources().getString(R.string.day)+" "+Convert.XthToDayOfWeekInMonth(xth);
+            String title = Dates.NOW.month + getResources().getString(R.string.month)
+                    + " " + dayOfMonth + getResources().getString(R.string.day) + " " + Convert.XthToDayOfWeekInMonth(xth);
             tvMonthDay.setText(title);
         }
-
+        for (MyTime m : mtList) {
+            enrollList.put(m.getId(), m);
+        }
         llNewEnroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new FinishDialogEvent());
                 Intent i = new Intent(DialEnroll.this, DialSchedule.class);
                 i.putExtra("overlapEnrollFlag", true);
-                if(weekFlag) i.putExtra("weekFlag", true);
+                if (weekFlag) i.putExtra("weekFlag", true);
                 else i.putExtra("weekFlag", false);
                 i.putExtra("xth", xth);
                 i.putExtra("yth", yth);
@@ -135,91 +133,58 @@ public class DialEnroll extends Activity {
         btDialCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (weekFlag) Common.fetchWeekData();
+                else Common.fetchMonthData();
                 finish();
             }
         });
         lv = (ListView) findViewById(R.id.lv);
-        enrollAdapter = new EnrollAdapter(DialEnroll.this, mtList,weekFlag,xth,dayOfMonth);
+        enrollAdapter = new EnrollAdapter(DialEnroll.this, mtList);
         lv.setAdapter(enrollAdapter);
-        //lv.setItemsCanFocus(true);
     }
-    private void enrollMyTime(List<MyTime> mt){
-        for(MyTime m : mt){
-            int timeType = m.getTimetype();
-            if(timeType==0){
-                String timeCode = m.getTimecode();
-                EnrollData ed = new EnrollData(
-                        ""+m.getDayofmonth(),
-                        Convert.IntToString(m.getStarthour()),
-                        Convert.IntToString(m.getStartmin()),
-                        Convert.IntToString(m.getEndhour()),
-                        Convert.IntToString(m.getEndmin()),
-                        m.getName(),m.getMemo(),timeCode,
-                        String.valueOf(timeType),m.getColor(),m.getPlace(),m.getRepeat(),m.getId());
-                mtList.add(ed);
-                enrollList.put(timeCode,ed);
-            }else{
-                String timeCode = m.getTimecode();
-                EnrollData ed =new EnrollData(
-                        ""+dayOfMonth,
-                        Convert.IntToString(m.getStarthour()),
-                        Convert.IntToString(m.getStartmin()),
-                        Convert.IntToString(m.getEndhour()),
-                        Convert.IntToString(m.getEndmin()),
-                        m.getName(), m.getMemo(), timeCode,
-                        String.valueOf(timeType),m.getColor(), m.getPlace(),m.getRepeat(), m.getId());
-                mtList.add(ed);
-                enrollList.put(timeCode, ed);
-            }
-        }
-        mt.clear();
-    }
-    private int xth,yth,startHour,startMin,dayOfMonth;
+
+    private int xth, yth, startHour, startMin, dayOfMonth;
     private Boolean weekFlag;
     private TextView tvMonthDay;
     private Button btDialCancel;
     private ListView lv;
-    private List<EnrollData> mtList;
+    private List<MyTime> mtList;
     private HashMap enrollList;
     private LinearLayout llNewEnroll;
     private EnrollAdapter enrollAdapter;
+
+
     public void onEventMainThread(RemoveEnrollEvent e) {
-        Refresh(e.getPosition());
-    }
-    public void onEventMainThread(EditChoiceEvent e) {
-        int position = e.getPosition();
-        if(e.isSingleEffect()) {
-            MyTimeRepo.deleteWithId(this, enrollAdapter.getItem(position).get_id());
-        }else{
-            MyTimeRepo.deleteWithTimeCode(this, enrollAdapter.getItem(position).getTimeCode());
-        }
-        Refresh(position);
-    }
-    public void Refresh(int position){
-        mtList.remove(enrollList.get(enrollAdapter.getItem(position).getTimeCode()));
+        MyTime mt = (MyTime) enrollList.get(e.getId());
+        mtList.remove(mt);
         if(mtList.size()==0) finish();
         else
             enrollAdapter.notifyDataSetChanged();
         if (weekFlag) Common.fetchWeekData();
         else Common.fetchMonthData();
-        EventBus.getDefault().post(new SetCreditEvent());
-
     }
     public void onEventMainThread(EditRepeatEvent e) {
         enrollAdapter.getItem(e.getPosition()).setRepeat(e.toString());
         enrollAdapter.notifyDataSetChanged();
     }
+
     public void onEventMainThread(SetTimeEvent e) {
         int position = e.getPosition();
-        enrollAdapter.getItem(position).setDayOfMonth(e.getDay()+"");
-        enrollAdapter.getItem(position).setStartHour(Convert.IntToString(e.getStartHour()));
-        enrollAdapter.getItem(position).setStartMin(Convert.IntToString(e.getStartMin()));
-        enrollAdapter.getItem(position).setEndHour(Convert.IntToString(e.getEndHour()));
-        enrollAdapter.getItem(position).setEndMin(Convert.IntToString(e.getEndMin()));
+        for(MyTime m : MyTimeRepo.getMyTimeForTimeCode(this, enrollAdapter.getItem(position).getTimecode())){
+            MyTime mt = (MyTime) enrollList.get(m.getId());
+            mtList.remove(mt);
+            mt.setDayofmonth(e.getDay());
+            mt.setStarthour(e.getStartHour());
+            mt.setStartmin(e.getStartMin());
+            mt.setEndhour(e.getEndHour());
+            mt.setEndmin(e.getEndMin());
+            mtList.add(mt);
+            MyTimeRepo.insertOrUpdate(this,mt);
+        }
         enrollAdapter.notifyDataSetChanged();
     }
     public void onEventMainThread(EditCheckEvent e) {
-        if(!e.isTimeChanged()) {
+        if(e.isReStart()) {
             Intent i = new Intent(this, DialEnroll.class);
             i.putExtra("xth", xth);
             i.putExtra("yth", yth);
@@ -229,6 +194,7 @@ public class DialEnroll extends Activity {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
         finish();
+
     }
 
 

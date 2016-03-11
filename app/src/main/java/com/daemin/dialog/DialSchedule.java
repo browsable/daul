@@ -880,7 +880,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                                     User.INFO.latitude, User.INFO.longitude,
                                                     null,
                                                     null,
-                                                    credit,
+                                                    "0",
                                                     colorName);
                                             MyTimeRepo.insertOrUpdate(this, myTime);
                                             subOverlapFlag = false;

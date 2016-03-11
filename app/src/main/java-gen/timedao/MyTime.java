@@ -32,8 +32,8 @@ public class MyTime {
     private Long alarm;
     private String repeat;
     private String color;
-
     // KEEP FIELDS - put your custom fields here
+    private boolean timeChanged,repeatChanged;
     // KEEP FIELDS END
 
     public MyTime() {
@@ -66,6 +66,8 @@ public class MyTime {
         this.alarm = alarm;
         this.repeat = repeat;
         this.color = color;
+        this.timeChanged = false;
+        this.repeatChanged = false;
     }
 
     public Long getId() {
@@ -123,6 +125,7 @@ public class MyTime {
     }
 
     public void setDayofmonth(Integer dayofmonth) {
+        if(this.dayofmonth!=dayofmonth)timeChanged=true;
         this.dayofmonth = dayofmonth;
     }
 
@@ -139,6 +142,7 @@ public class MyTime {
     }
 
     public void setStarthour(int starthour) {
+        if(this.starthour!=starthour)timeChanged=true;
         this.starthour = starthour;
     }
 
@@ -147,6 +151,7 @@ public class MyTime {
     }
 
     public void setStartmin(int startmin) {
+        if(this.startmin!=startmin)timeChanged=true;
         this.startmin = startmin;
     }
 
@@ -155,6 +160,7 @@ public class MyTime {
     }
 
     public void setEndhour(int endhour) {
+        if(this.endhour!=endhour)timeChanged=true;
         this.endhour = endhour;
     }
 
@@ -163,9 +169,18 @@ public class MyTime {
     }
 
     public void setEndmin(int endmin) {
+        if(this.endmin!=endmin)timeChanged=true;
         this.endmin = endmin;
     }
 
+    public String getRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(String repeat) {
+        if(!this.repeat.equals(repeat))repeatChanged=true;
+        this.repeat = repeat;
+    }
     public Long getStartmillis() {
         return startmillis;
     }
@@ -229,15 +244,6 @@ public class MyTime {
     public void setAlarm(Long alarm) {
         this.alarm = alarm;
     }
-
-    public String getRepeat() {
-        return repeat;
-    }
-
-    public void setRepeat(String repeat) {
-        this.repeat = repeat;
-    }
-
     public String getColor() {
         return color;
     }
@@ -247,6 +253,13 @@ public class MyTime {
     }
 
     // KEEP METHODS - put your custom methods here
+
+    public boolean isTimeChanged() {
+        return timeChanged;
+    }
+    public boolean isRepeatChanged() {
+        return repeatChanged;
+    }
     // KEEP METHODS END
 
 }

@@ -109,10 +109,6 @@ public enum Dates {
         return getLastDayOfWeek().getYear();
     }
     public int getDayOfMonth(){ return LocalDate.now().getDayOfMonth();}
-    public int getDayOfWeek(int year, int monthOfYear, int dayOfMonth){
-        LocalDate ld = new LocalDate(year, monthOfYear, dayOfMonth);
-        return ld.getDayOfWeek();
-    }
     public void setToday(){
         if(todayIndex==0) isToday = true;
         else isToday = false;

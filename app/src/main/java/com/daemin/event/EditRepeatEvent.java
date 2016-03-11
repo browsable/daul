@@ -42,6 +42,6 @@ public class EditRepeatEvent {
     }
     @Override
     public String toString() {
-        return position+":"+getRepeatType()+":"+repeatPeriod+":"+repeatNumber;
+        return getRepeatType()+":"+repeatPeriod+":"+repeatNumber;
     }
 }

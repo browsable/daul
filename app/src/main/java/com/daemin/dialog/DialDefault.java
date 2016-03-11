@@ -73,16 +73,10 @@ public class DialDefault extends Dialog {
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvContent = (TextView) findViewById(R.id.tvContent);
-        rgGroup = (RadioGroup)findViewById(R.id.rgGroup);
         tvUpdateList = (TextView) findViewById(R.id.tvUpdateList);
         sv = (ScrollView) findViewById(R.id.sv);
         if(callFuncIndex==0) getUpdateList();
         if(callFuncIndex==3||callFuncIndex==4||callFuncIndex==5) btDialCancel.setVisibility(View.GONE);
-        if(callFuncIndex==6){
-            rgGroup.setVisibility(View.VISIBLE);
-            tvContent.setVisibility(View.GONE);
-            position = Integer.parseInt(content);
-        }
         tvTitle.setText(title);
         tvContent.setText(content);
         btDialSetting.setOnClickListener(new View.OnClickListener() {
@@ -111,21 +105,6 @@ public class DialDefault extends Dialog {
                             handler.sendEmptyMessageDelayed(0, 1000);
                             cancel();
                             break;
-                        case 6: //일정 수정 혹은 삭제시
-                            if(rgGroup.getCheckedRadioButtonId()!=-1){
-                                int id= rgGroup.getCheckedRadioButtonId();
-                                View radioButton = rgGroup.findViewById(id);
-                                int radioId = rgGroup.indexOfChild(radioButton);
-                                /*RadioButton btn = (RadioButton) rgGroup.getChildAt(radioId);
-                                String selection = (String) btn.getText();*/
-                                if(radioId==0){
-                                    EventBus.getDefault().post(new EditChoiceEvent(position,true));
-                                }else{
-                                    EventBus.getDefault().post(new EditChoiceEvent(position,false));
-                                }
-                                cancel();
-                            }
-                            break;
                         default:
                             cancel();
                             break;
@@ -140,7 +119,6 @@ public class DialDefault extends Dialog {
             }
         });
     }
-    private RadioGroup rgGroup;
     private Button btDialCancel;
     private Button btDialSetting;
     private TextView tvTitle;
@@ -148,7 +126,7 @@ public class DialDefault extends Dialog {
     private TextView tvUpdateList;
     private ScrollView sv;
     private String title, content;
-    private int callFuncIndex,position;
+    private int callFuncIndex;
     private Context context;
     private WindowManager.LayoutParams layoutParams;
     private DisplayMetrics dm;

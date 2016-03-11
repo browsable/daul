@@ -164,8 +164,14 @@
             android:background="@drawable/ic_remove" />
     </RelativeLayout>
     <TextView
+        android:id="@+id/tvPosition"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        />
+    <TextView
         android:id="@+id/tvSingleSchedule"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="gone"/>
 </LinearLayout>

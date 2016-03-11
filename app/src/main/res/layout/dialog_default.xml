@@ -22,32 +22,6 @@
         android:gravity="center_vertical"
         android:textSize="@dimen/textsize_l"
         android:textStyle="bold" />
-    <RadioGroup
-        android:id="@+id/rgGroup"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:visibility="gone"
-        android:layout_margin="@dimen/margin_xxl"
-        >
-
-    <RadioButton
-        android:id="@+id/radio0"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:checked="true"
-        android:text="@string/dialenroll_radio0"
-        android:textSize="@dimen/textsize_l"/>
-
-    <RadioButton
-        android:id="@+id/radio1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="@string/dialenroll_radio1"
-        android:textSize="@dimen/textsize_l"/>
-    </RadioGroup>
     <ScrollView
         android:id="@+id/sv"
         android:layout_width="match_parent"

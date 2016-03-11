@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dialog_bar"
+        android:paddingLeft="@dimen/margin_xl"
+        android:background="@color/middlegray"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/textsize_xxl"
+        android:textStyle="bold" />
+    <RadioGroup
+        android:id="@+id/rgGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_xxl"
+        >
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/dialenroll_single"
+            android:textSize="@dimen/textsize_l"/>
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/dialenroll_all"
+            android:textSize="@dimen/textsize_l"/>
+    </RadioGroup>
+</LinearLayout>
