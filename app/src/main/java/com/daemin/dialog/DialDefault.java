@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -24,15 +23,12 @@ import com.android.volley.VolleyError;
 import com.daemin.common.CustomJSONObjectRequest;
 import com.daemin.common.MyVolley;
 import com.daemin.enumclass.User;
-import com.daemin.event.EditChoiceEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-09-08.
@@ -90,7 +86,7 @@ public class DialDefault extends Dialog {
                             MyTimeRepo.clearMyTime(context);
                             break;
                         case 2: //과목시간표 초기화
-                            User.INFO.getEditor().putString("creditSum", "0").commit();
+                            User.INFO.getEditor().putFloat("credit", 0.0f).commit();
                             MyTimeRepo.deleteWithTimetype(context, 1);
                             break;
                         case 3: //폰상태권한시
