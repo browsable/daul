@@ -28,6 +28,7 @@ public enum User {
         monthData=new ArrayList<>();
         groupListData=new ArrayList<>();
         overlapFlag = false;
+        credit= getCredit();
         textSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_xs);
         dateSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_s);
         intervalSize = context.getResources().getDimensionPixelSize(R.dimen.margin_xxs);
@@ -42,6 +43,7 @@ public enum User {
     public String appServerVer;//서버상의 버전;
     public String dbServerVer;//서버상의 디비 버전;
     public String ttServerVer;//서버상의 학기 버전;
+    public Float credit;
     public List<MyTime> weekData;
     public List<MyTime> monthData;
     public List<GroupListData.Data> groupListData;
@@ -67,6 +69,9 @@ public enum User {
     public String getUserPK(){
         String userPK = pref.getString("userPK", "0");
         return userPK.substring(0, userPK.length() / 2);
+    }
+    public Float getCredit(){
+        return pref.getFloat("credit", 0.0f);
     }
     public String getGroupName(){
         return pref.getString("groupName", "");

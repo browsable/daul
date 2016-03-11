@@ -22,6 +22,7 @@ import de.greenrobot.event.EventBus;
  * Created by hernia on 2015-09-08.
  */
 public class DialColor extends Dialog {
+
     public DialColor(Context context, Button btColor) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;

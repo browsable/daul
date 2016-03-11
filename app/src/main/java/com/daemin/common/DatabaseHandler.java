@@ -92,6 +92,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		return subjectData;
 	}
+	public String getCredit(String subtitle) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String selectQuery = "SELECT credit FROM " + TABLE_SCHEDULE + " WHERE subtitle='"+subtitle+"'";
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		String credit="0";
+		if (cursor.moveToFirst()) {
+			do {
+				credit = cursor.getString(0);
+			} while (cursor.moveToNext());
+		}
+		return credit;
+	}
 	public List<SubjectData> getAllWithDepAndGrade(String depName,String depgrade) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		subjectDataList.clear();

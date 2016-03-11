@@ -25,6 +25,7 @@ import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.User;
 import com.daemin.event.EditCheckEvent;
 import com.daemin.event.RemoveEnrollEvent;
+import com.daemin.event.SetCreditEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
@@ -133,16 +134,11 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                     else
                         colorName = context.getResources().getString((int) holder.btColor.getTag());
                     if (Boolean.parseBoolean(holder.tvSingleSchedule.getText().toString())||changed) {
-                        Log.i("test single", holder.tvSingleSchedule.getText().toString());
-                        mt.setRepeat("0");
-                        mt.setRepeatChanged(false);
-                        mt.setTimeChanged(false);
                         AddSchedule(mt, title, place, memo, colorName);
                         MyTimeRepo.deleteWithId(context, mt.getId());
                         EventBus.getDefault().post(new RemoveEnrollEvent(mt.getId()));
                         EventBus.getDefault().post(new EditCheckEvent(false));
                     } else {
-                        Log.i("test single", holder.tvSingleSchedule.getText().toString());
                         final View dialogView = mInflater.inflate(R.layout.dialog_effect, null);
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setView(dialogView);
@@ -204,10 +200,6 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 holder.tvMD.setVisibility(View.VISIBLE);
                 //holder.btShare.setVisibility(View.GONE);
                 //holder.btAlarm.setVisibility(View.GONE);
-                holder.etTitle.setEnabled(true);
-                holder.etTitle.setHint(context.getResources().getString(R.string.normal_name));
-                holder.etTitle.setSelection(holder.etTitle.length());
-                holder.etTitle.setBackgroundResource(R.drawable.bg_black_bottomline);
                 holder.etPlace.setEnabled(true);
                 holder.etPlace.setHint(context.getResources().getString(R.string.normal_place));
                 holder.etPlace.setSelection(holder.etPlace.length());
@@ -218,6 +210,10 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 holder.etMemo.setBackgroundResource(R.drawable.bg_black_bottomline);
                 holder.llTime.setBackgroundResource(R.drawable.bg_black_bottomline);
                 if (getItem(position).getTimetype() == 0) {
+                    holder.etTitle.setEnabled(true);
+                    holder.etTitle.setHint(context.getResources().getString(R.string.normal_name));
+                    holder.etTitle.setSelection(holder.etTitle.length());
+                    holder.etTitle.setBackgroundResource(R.drawable.bg_black_bottomline);
                     holder.btRepeat.setVisibility(View.VISIBLE);
                 } else {
                     holder.btRepeat.setVisibility(View.GONE);
@@ -258,7 +254,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 int dayOfWeek = getItem(position).getDayofweek();
                 HashMap dayIndex = new HashMap<>();
                 dayIndex.put(dayOfWeek, dayOfWeek);
-                DialRepeat dr = new DialRepeat(context, dayIndex, position);
+                DialRepeat dr = new DialRepeat(context, dayIndex, getItem(position).getRepeat(),position);
                 dr.show();
             }
         });
@@ -275,6 +271,8 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 final int position = Integer.parseInt(holder.tvPosition.getText().toString());
                 final MyTime mt = getItem(position);
                 if (Boolean.parseBoolean(holder.tvSingleSchedule.getText().toString())) {
+                    if(mt.getTimetype()==1)
+                        EventBus.getDefault().post(new SetCreditEvent(mt.getName()));
                     MyTimeRepo.deleteWithId(context, mt.getId());
                     EventBus.getDefault().post(new RemoveEnrollEvent(mt.getId()));
                 } else {
@@ -296,6 +294,8 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                                     MyTimeRepo.deleteWithId(context, mt.getId());
                                     EventBus.getDefault().post(new RemoveEnrollEvent(mt.getId()));
                                 } else {
+                                    if(mt.getTimetype()==1)
+                                        EventBus.getDefault().post(new SetCreditEvent(mt.getName()));
                                     MyTimeRepo.deleteWithTimeCode(context, mt.getTimecode());
                                     EventBus.getDefault().post(new RemoveEnrollEvent(mt.getId()));
                                 }
@@ -351,7 +351,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
             repeatType = 0;
             repeat = "0";
         }
-        if (mt.isTimeChanged() && !mt.isRepeatChanged()) {
+        if (mt.isTimeChanged() || !mt.isRepeatChanged()) {
             repeatType = 0;
             repeat = "0";
             repeatNum = 1;

@@ -19,7 +19,6 @@ import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.ExcuteMethodEvent;
-import com.daemin.event.SetCreditEvent;
 
 import de.greenrobot.event.EventBus;
 import timedao.MyTime;
@@ -163,9 +162,6 @@ public class InitWeekThread extends InitThread {
                     //대학선택시에 그리는 것은 막고 선택한 과목은 함께 지워져야함
                     if (Common.isTableEmpty()){
                         Toast.makeText(context, context.getResources().getString(R.string.univ_select), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Common.stateFilter(0);
-                        EventBus.getDefault().post(new SetCreditEvent());
                     }
                     if (ETP.getPosState() == PosState.ENROLL) {
                         //등록된 다음주 시간표를 누를 때 위젯 업데이트로 날짜가 변동되는 현상을 막기위해 dialflag를 false로 해줌

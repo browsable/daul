@@ -18,7 +18,6 @@ import com.daemin.enumclass.User;
 import com.daemin.repository.MyTimeRepo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import timedao.MyTime;
 
@@ -58,25 +57,6 @@ public class Common {
 			return false;
 		}
 		return false;
-	}
-	public static String calCredit(){
-		float sum=0;
-		String timecode="";
-		try {
-			List<MyTime> mtList = MyTimeRepo.getCreditSum(AppController.getInstance());
-			if (mtList!= null) {
-				for (MyTime m : mtList) {
-					if (!timecode.equals(m.getTimecode())) {
-						sum += Float.parseFloat(m.getRepeat()); // 과목에서는 dayOfMonth에 학점을 저장중임
-						timecode = m.getTimecode();
-					}
-				}
-			}
-		}catch (NullPointerException e){
-			e.printStackTrace();
-			sum=0;
-		}
-		return String.valueOf(sum);
 	}
 	public static void fetchWeekData(){
 		for (TimePos ETP : TimePos.values()) {
