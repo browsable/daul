@@ -36,7 +36,7 @@ import de.greenrobot.event.EventBus;
 public class DialAddTimePicker extends Dialog {
     Context context;
     String[] MD;
-    int dayOfMonth, startHour, startMin, endHour, endMin, position;
+    int dayOfMonth, startHour, startMin, endHour, endMin, position, timeType;
     private boolean editMode;
     private Button btDialCancel;
     private Button btDialSetting;
@@ -51,7 +51,7 @@ public class DialAddTimePicker extends Dialog {
         this.context = context;
         this.MD = MD;
     }
-    public DialAddTimePicker(Context context, String[] MD,int dayOfMonth,int position, String startHour, String startMin, String endHour, String endMin) {
+    public DialAddTimePicker(Context context, int timeType, String[] MD,int dayOfMonth,int position, String startHour, String startMin, String endHour, String endMin) {
         // Dialog 배경을 투명 처리 해준다.
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
@@ -63,6 +63,7 @@ public class DialAddTimePicker extends Dialog {
         this.endHour = Integer.parseInt(endHour);
         this.endMin = Integer.parseInt(endMin);
         this.editMode = true;
+        this.timeType = timeType;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +99,14 @@ public class DialAddTimePicker extends Dialog {
                 npEndHour.clearFocus();
                 npEndMin.clearFocus();
                 if(editMode) {
-                    EventBus.getDefault().post(new SetTimeEvent(position,
-                            Integer.parseInt(MD[npMD.getValue()].split("\\.")[1])
-                            ,npStartHour.getValue(), npStartMin.getValue(),
+                    int day;
+                    if(timeType==0) {
+                       day =  Integer.parseInt(MD[npMD.getValue()].split("\\.")[1]);
+                    }else{
+                        day = 2*npMD.getValue()+1;//xth임
+                    }
+                    EventBus.getDefault().post(new SetTimeEvent(position, timeType,
+                            day, npStartHour.getValue(), npStartMin.getValue(),
                             npEndHour.getValue(), npEndMin.getValue()));
                 }else{
                     if (MD.length == 7) {
@@ -223,7 +229,10 @@ public class DialAddTimePicker extends Dialog {
             }
         });
         if(editMode){
-            npMD.setValue(dayOfMonth-1);
+            if(timeType==0)
+                npMD.setValue(dayOfMonth-1);
+            else
+                npMD.setValue(dayOfMonth/2);
             npStartHour.setValue(startHour);
             npStartMin.setValue(startMin);
             npEndHour.setValue(endHour);
@@ -238,7 +247,6 @@ public class DialAddTimePicker extends Dialog {
         npStartMin = (NumberPicker) findViewById(R.id.npStartMin);
         npEndHour = (NumberPicker) findViewById(R.id.npEndHour);
         npEndMin = (NumberPicker) findViewById(R.id.npEndMin);
-        npMD.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         /*npStartHour.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         npEndHour.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);

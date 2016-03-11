@@ -4,7 +4,7 @@ package com.daemin.event;
  * Created by hernia on 2015-10-16.
  */
 public class SetTimeEvent {
-    int position,day,startHour,startMin, endHour, endMin;
+    int position,timeType, day,startHour,startMin, endHour, endMin;
     public int getStartHour() {
         return startHour;
     }
@@ -23,8 +23,12 @@ public class SetTimeEvent {
     public int getDay() {
         return day;
     }
+    public int getTimeType() {
+        return timeType;
+    }
 
-    public SetTimeEvent(int position,int day, int startHour, int startMin, int endHour, int endMin) {
+    public SetTimeEvent(int position, int timeType, int day, int startHour, int startMin, int endHour, int endMin) {
+        this.timeType = timeType;
         this.day = day;
         this.position = position;
         this.startHour = startHour;

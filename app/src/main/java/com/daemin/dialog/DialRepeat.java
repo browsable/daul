@@ -37,14 +37,13 @@ public class DialRepeat extends Dialog {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
         this.dayIndex = dayIndex;
-        this.repeat="";
+        this.position=-1;
     }
 
-    public DialRepeat(Context context, HashMap<Integer, Integer> dayIndex, String repeat, int position) {
+    public DialRepeat(Context context, HashMap<Integer, Integer> dayIndex,int position) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
         this.dayIndex = dayIndex;
-        this.repeat = repeat;
         this.position = position;
     }
 
@@ -91,47 +90,7 @@ public class DialRepeat extends Dialog {
         tvThr = (TextView) findViewById(R.id.tvThr);
         tvFri = (TextView) findViewById(R.id.tvFri);
         tvSat = (TextView) findViewById(R.id.tvSat);
-        if(!repeat.equals("")) {
-            if(repeat.equals("0")){//반복없음
-                repeatGroup.check(repeat_radio0.getId());
-            }else if(repeat.equals("1")){
-                repeatGroup.check(repeat_radio1.getId());
-            }else{
-                String s[];
-                s = repeat.split(":");
-                repeatType = s[0];
-                repeatPeriod = s[1];
-                repeatNumber = s[2];
-                switch (repeatType){
-                    case "2":
-                        repeatGroup.check(repeat_radio2.getId());
-                        llWeek.setVisibility(View.VISIBLE);
-                        llTerm.setVisibility(View.VISIBLE);
-                        etWeek.setText(repeatPeriod);
-                        etTerm.setText(repeatNumber);
-                        etTerm.setFocusable(true);
-                        break;
-                    case "3":
-                        repeatGroup.check(repeat_radio3.getId());
-                        llMonth.setVisibility(View.VISIBLE);
-                        llTerm.setVisibility(View.VISIBLE);
-                        etMonth.setText(repeatPeriod);
-                        etTerm.setFocusable(true);
-                        etTerm.setText(repeatNumber);
 
-                        break;
-                    case "4":
-                        repeatGroup.check(repeat_radio4.getId());
-                        llYear.setVisibility(View.VISIBLE);
-                        llTerm.setVisibility(View.VISIBLE);
-                        etYear.setText(repeatPeriod);
-                        etTerm.setFocusable(true);
-                        etTerm.setText(repeatNumber);
-                        break;
-                }
-                etTerm.requestFocus();
-            }
-        }
         for (int i : dayIndex.keySet()) {
             switch (i) {
                 case 1:
@@ -303,7 +262,7 @@ public class DialRepeat extends Dialog {
                             Toast.makeText(context, context.getResources().getString(R.string.input_measure), Toast.LENGTH_SHORT).show();
                         else {
                             if (Integer.parseInt(repeatNumber) * limitNum <= 365 * 5) {
-                                if(repeat.equals(""))
+                                if(position==-1)
                                     EventBus.getDefault().post(new SetRepeatEvent(context,repeatType, repeatPeriod, repeatNumber));
                                 else
                                     EventBus.getDefault().post(new EditRepeatEvent(context, repeatType, repeatPeriod, repeatNumber,position));
@@ -313,7 +272,10 @@ public class DialRepeat extends Dialog {
                             }
                         }
                     }else{
-                        EventBus.getDefault().post(new SetRepeatEvent(context, repeatType, repeatPeriod, repeatNumber));
+                        if(position==-1)
+                            EventBus.getDefault().post(new SetRepeatEvent(context,repeatType, repeatPeriod, repeatNumber));
+                        else
+                            EventBus.getDefault().post(new EditRepeatEvent(context, repeatType, repeatPeriod, repeatNumber,position));
                         cancel();
                     }
                 }
@@ -329,7 +291,6 @@ public class DialRepeat extends Dialog {
 
     Context context;
     HashMap<Integer, Integer> dayIndex;
-    String repeat;
     RadioButton repeat_radio0,repeat_radio1,repeat_radio2,repeat_radio3,repeat_radio4;
     private int position;
     private Button btDialCancel, btDialSetting;

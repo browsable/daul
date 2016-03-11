@@ -134,6 +134,7 @@ public class MyTime {
     }
 
     public void setDayofweek(int dayofweek) {
+        if(this.dayofweek!=dayofweek)timeChanged=true;
         this.dayofweek = dayofweek;
     }
 
@@ -259,6 +260,14 @@ public class MyTime {
     }
     public boolean isRepeatChanged() {
         return repeatChanged;
+    }
+
+    public void setTimeChanged(boolean timeChanged) {
+        this.timeChanged = timeChanged;
+    }
+
+    public void setRepeatChanged(boolean repeatChanged) {
+        this.repeatChanged = repeatChanged;
     }
     // KEEP METHODS END
 

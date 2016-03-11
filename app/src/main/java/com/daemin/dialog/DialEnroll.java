@@ -152,8 +152,6 @@ public class DialEnroll extends Activity {
     private HashMap enrollList;
     private LinearLayout llNewEnroll;
     private EnrollAdapter enrollAdapter;
-
-
     public void onEventMainThread(RemoveEnrollEvent e) {
         MyTime mt = (MyTime) enrollList.get(e.getId());
         mtList.remove(mt);
@@ -170,7 +168,10 @@ public class DialEnroll extends Activity {
 
     public void onEventMainThread(SetTimeEvent e) {
         int position = e.getPosition();
-        enrollAdapter.getItem(position).setDayofmonth(e.getDay());
+        if(e.getTimeType()==0)
+            enrollAdapter.getItem(position).setDayofmonth(e.getDay());
+        else
+            enrollAdapter.getItem(position).setDayofweek(e.getDay());
         enrollAdapter.getItem(position).setStarthour(e.getStartHour());
         enrollAdapter.getItem(position).setStartmin(e.getStartMin());
         enrollAdapter.getItem(position).setEndhour(e.getEndHour());
