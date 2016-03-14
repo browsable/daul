@@ -151,6 +151,8 @@
     <string name="setting_init_table_content">모든 저장된 일정이 사라지며 복구가 불가능합니다.</string>
     <string name="setting_init_sub_title">과목 초기화</string>
     <string name="setting_init_sub_content">모든 저장된 과목 일정이 사라지며 학점이 초기화됩니다.</string>
+    <string name="setting_init_credit_title">학점 초기화</string>
+    <string name="setting_init_credit_content">학점이 초기화됩니다.</string>
     <string name="setting_init_q">초기화하시겠습니까?</string>
     <!--달력 연동-->
     <string name="setting_cal_holiday_ko">대한민국 공휴일</string>

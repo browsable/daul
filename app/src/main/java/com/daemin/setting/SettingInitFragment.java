@@ -30,6 +30,7 @@ public class SettingInitFragment extends BasicFragment {
         ibBack = MainActivity.getInstance().getIbBack();
         btInitTable = (Button)root.findViewById(R.id.btInitTable);
         btInitSub = (Button)root.findViewById(R.id.btInitSub);
+        btInitCredit = (Button)root.findViewById(R.id.btInitCredit);
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,9 +59,19 @@ public class SettingInitFragment extends BasicFragment {
                 dd.show();
             }
         });
+        btInitCredit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialDefault dd = new DialDefault(getActivity(),
+                        getActivity().getResources().getString(R.string.setting_init_credit_title),
+                        getActivity().getResources().getString(R.string.setting_init_q),
+                        3);
+                dd.show();
+            }
+        });
         return root;
     }
     ImageButton ibBack;
-    Button btInitTable,btInitSub;
+    Button btInitTable,btInitSub,btInitCredit;
 
 }

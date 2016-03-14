@@ -72,7 +72,7 @@ public class DialDefault extends Dialog {
         tvUpdateList = (TextView) findViewById(R.id.tvUpdateList);
         sv = (ScrollView) findViewById(R.id.sv);
         if(callFuncIndex==0) getUpdateList();
-        if(callFuncIndex==3||callFuncIndex==4||callFuncIndex==5) btDialCancel.setVisibility(View.GONE);
+        if(callFuncIndex==9||callFuncIndex==4||callFuncIndex==5) btDialCancel.setVisibility(View.GONE);
         tvTitle.setText(title);
         tvContent.setText(content);
         btDialSetting.setOnClickListener(new View.OnClickListener() {
@@ -86,10 +86,15 @@ public class DialDefault extends Dialog {
                             MyTimeRepo.clearMyTime(context);
                             break;
                         case 2: //과목시간표 초기화
+                            User.INFO.credit=0.0f;
                             User.INFO.getEditor().putFloat("credit", 0.0f).commit();
                             MyTimeRepo.deleteWithTimetype(context, 1);
                             break;
-                        case 3: //폰상태권한시
+                        case 3: //학점 초기화
+                            User.INFO.credit=0.0f;
+                            User.INFO.getEditor().putFloat("credit", 0.0f).commit();
+                            break;
+                        case 9: //폰상태권한시
                             Handler handler = new Handler() {
                                 public void handleMessage(Message msg) {
                                     Intent i = new Intent(context, MainActivity.class);

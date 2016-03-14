@@ -168,7 +168,7 @@ public class SplashActivity extends Activity{
 							getString(R.string.permission_request),
 							getString(R.string.permission_phonestate)+
 							getString(R.string.permission_deny),
-							3);
+							9);
 					dd.show();
 				}
 				break;
