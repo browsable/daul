@@ -1132,6 +1132,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void onEventMainThread(SetCreditEvent e) {
         Float credit = Float.parseFloat(db.getCredit(e.getSubtitle()));
         User.INFO.credit-=credit;
+        if(User.INFO.credit<0f) User.INFO.credit=0f;
         tvCreditSum.setText(User.INFO.credit+"");
         User.INFO.getEditor().putFloat("credit",User.INFO.credit).commit();
     }
