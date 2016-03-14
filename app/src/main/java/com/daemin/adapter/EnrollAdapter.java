@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,7 +122,6 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 final String title = holder.etTitle.getText().toString();
                 final String place = holder.etPlace.getText().toString();
                 final String memo = holder.etMemo.getText().toString();
-                final boolean changed = mt.isTimeChanged()||mt.isRepeatChanged();
                 if (holder.etTitle.length() == 0) {
                     Toast.makeText(context, context.getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
                     holder.etTitle.setHintTextColor(Color.RED);
@@ -134,15 +132,10 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                     else
                         colorName = context.getResources().getString((int) holder.btColor.getTag());
                     Boolean single = Boolean.parseBoolean(holder.tvSingleSchedule.getText().toString());
-                    if (single||changed) {
+                    if (single) {
                         AddSchedule(mt, title, place, memo, colorName);
                         EventBus.getDefault().post(new RemoveEnrollEvent(mt.getId()));
-                        if(single){
-                            EventBus.getDefault().post(new EditCheckEvent(true));
-                        }
-                        else{
-                            EventBus.getDefault().post(new EditCheckEvent(false));
-                        }
+                        EventBus.getDefault().post(new EditCheckEvent(true));
                     } else {
                         final View dialogView = mInflater.inflate(R.layout.dialog_effect, null);
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -160,7 +153,6 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                                     int radioId = rgGroup.indexOfChild(radioButton);
                                     if (radioId == 0) {
                                         AddSchedule(mt, title, place, memo, colorName);
-                                        //MyTimeRepo.deleteWithId(context, mt.getId());
                                         EventBus.getDefault().post(new RemoveEnrollEvent(mt.getId()));
                                     } else {
                                         for (MyTime m : MyTimeRepo.getMyTimeForTimeCode(context, mt.getTimecode())) {
@@ -169,10 +161,6 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                                         }
                                     }
                                 }
-                                if(changed)
-                                    EventBus.getDefault().post(new EditCheckEvent(false));
-                                else
-                                    EventBus.getDefault().post(new EditCheckEvent(true));
                                 dialog.cancel();
                             }
                         });
@@ -232,15 +220,15 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                     MyTime mt = getItem(position);
                     int dayOfMonth;
                     String MD[];
-                    if(mt.getTimetype()==0){
+                    if (mt.getTimetype() == 0) {
                         dayOfMonth = mt.getDayofmonth();
-                        MD= Dates.NOW.getMonthDay();
-                    }else{
+                        MD = Dates.NOW.getMonthDay();
+                    } else {
                         dayOfMonth = mt.getDayofweek();
-                        MD=context.getResources().getStringArray(R.array.dayArray);
+                        MD = context.getResources().getStringArray(R.array.dayArray);
                     }
                     DialAddTimePicker datp = new DialAddTimePicker(
-                            context,mt.getTimetype(), MD,
+                            context, mt.getTimetype(), MD,
                             dayOfMonth,
                             position,
                             mt.getStarthour() + "",
@@ -258,7 +246,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 int dayOfWeek = getItem(position).getDayofweek();
                 HashMap dayIndex = new HashMap<>();
                 dayIndex.put(dayOfWeek, dayOfWeek);
-                DialRepeat dr = new DialRepeat(context, dayIndex, getItem(position).getRepeat(),position);
+                DialRepeat dr = new DialRepeat(context, dayIndex, getItem(position).getRepeat(), position);
                 dr.show();
             }
         });
@@ -275,7 +263,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 final int position = Integer.parseInt(holder.tvPosition.getText().toString());
                 final MyTime mt = getItem(position);
                 if (Boolean.parseBoolean(holder.tvSingleSchedule.getText().toString())) {
-                    if(mt.getTimetype()==1)
+                    if (mt.getTimetype() == 1)
                         EventBus.getDefault().post(new SetCreditEvent(mt.getName()));
                     MyTimeRepo.deleteWithId(context, mt.getId());
                     EventBus.getDefault().post(new RemoveEnrollEvent(mt.getId()));
@@ -298,7 +286,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                                     MyTimeRepo.deleteWithId(context, mt.getId());
                                     EventBus.getDefault().post(new RemoveEnrollEvent(mt.getId()));
                                 } else {
-                                    if(mt.getTimetype()==1)
+                                    if (mt.getTimetype() == 1)
                                         EventBus.getDefault().post(new SetCreditEvent(mt.getName()));
                                     MyTimeRepo.deleteWithTimeCode(context, mt.getTimecode());
                                     EventBus.getDefault().post(new RemoveEnrollEvent(mt.getId()));
@@ -332,11 +320,6 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
     }
 
     public void AddSchedule(MyTime mt, String title, String place, String memo, String colorName) {
-        if(mt.isRepeatChanged()){
-            MyTimeRepo.deleteWithTimeCode(context, mt.getTimecode());
-        }else{
-            MyTimeRepo.deleteWithId(context, mt.getId());
-        }
         String repeat = mt.getRepeat();
         int timeType = mt.getTimetype();
         int startHour = mt.getStarthour();
@@ -410,6 +393,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                         colorName);
             }
             MyTimeRepo.insertOrUpdate(context, myTime);
+            MyTimeRepo.deleteWithId(context, mt.getId());
         }
     }
 }
