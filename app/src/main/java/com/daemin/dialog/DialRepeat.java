@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -317,7 +318,7 @@ public class DialRepeat extends Dialog {
                             EventBus.getDefault().post(new SetRepeatEvent(context,repeatType, repeatPeriod, repeatNumber));
                         else
                             EventBus.getDefault().post(new EditRepeatEvent(context, repeatType, repeatPeriod, repeatNumber,position));
-                        EventBus.getDefault().post(new SetRepeatEvent(context, repeatType, repeatPeriod, repeatNumber));
+                        ///EventBus.getDefault().post(new SetRepeatEvent(context, repeatType, repeatPeriod, repeatNumber));
                         cancel();
                     }
                 }

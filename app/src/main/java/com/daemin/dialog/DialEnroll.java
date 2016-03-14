@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -163,7 +164,6 @@ public class DialEnroll extends Activity {
     }
     public void onEventMainThread(EditRepeatEvent e) {
         enrollAdapter.getItem(e.getPosition()).setRepeat(e.toString());
-        enrollAdapter.notifyDataSetChanged();
     }
 
     public void onEventMainThread(SetTimeEvent e) {

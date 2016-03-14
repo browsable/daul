@@ -366,7 +366,8 @@ public class WidgetUpdateService extends Service {
         for (int appWidgetId : manager.getAppWidgetIds(new ComponentName(this, Widget4_4.class))) {
             manager.updateAppWidget(appWidgetId, views);
         }
-        bitmap.recycle();
+        if(bitmap!=null)
+            bitmap.recycle();
     }
     public void widget4_4Week(RemoteViews views, AppWidgetManager manager) {
         pref.edit().putInt("viewMode", 0).apply();
