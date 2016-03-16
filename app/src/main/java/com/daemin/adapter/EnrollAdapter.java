@@ -123,7 +123,6 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 final String title = holder.etTitle.getText().toString();
                 final String place = holder.etPlace.getText().toString();
                 final String memo = holder.etMemo.getText().toString();
-                final boolean changed = mt.isTimeChanged()||mt.isRepeatChanged();
                 if (holder.etTitle.length() == 0) {
                     Toast.makeText(context, context.getResources().getString(R.string.normal_empty), Toast.LENGTH_SHORT).show();
                     holder.etTitle.setHintTextColor(Color.RED);
@@ -134,16 +133,12 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                     else
                         colorName = context.getResources().getString((int) holder.btColor.getTag());
                     Boolean single = Boolean.parseBoolean(holder.tvSingleSchedule.getText().toString());
-                    if (single||changed) {
+                    if (single) {
                         AddSchedule(mt, title, place, memo, colorName);
+                        MyTimeRepo.deleteWithId(context, mt.getId());
                         EventBus.getDefault().post(new RemoveEnrollEvent(mt.getId()));
-                        if(single){
-                            EventBus.getDefault().post(new EditCheckEvent(true));
-                        }
-                        else{
-                            EventBus.getDefault().post(new EditCheckEvent(false));
-                        }
-                    } else {
+                        EventBus.getDefault().post(new EditCheckEvent(true));
+                    } else{
                         final View dialogView = mInflater.inflate(R.layout.dialog_effect, null);
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setView(dialogView);
@@ -160,19 +155,20 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                                     int radioId = rgGroup.indexOfChild(radioButton);
                                     if (radioId == 0) {
                                         AddSchedule(mt, title, place, memo, colorName);
-                                        //MyTimeRepo.deleteWithId(context, mt.getId());
+                                        MyTimeRepo.deleteWithId(context, mt.getId());
                                         EventBus.getDefault().post(new RemoveEnrollEvent(mt.getId()));
                                     } else {
+                                        MyTime myTime = null;
                                         for (MyTime m : MyTimeRepo.getMyTimeForTimeCode(context, mt.getTimecode())) {
-                                            AddSchedule(m, title, place, memo, colorName);
+                                            AddSchedule(myTime, title, place, memo, colorName);
+                                            Log.i("test", m.getId() + "");
+                                            MyTimeRepo.deleteWithId(context, m.getId());
                                             EventBus.getDefault().post(new RemoveEnrollEvent(m.getId()));
                                         }
                                     }
                                 }
-                                if(changed)
-                                    EventBus.getDefault().post(new EditCheckEvent(false));
-                                else
-                                    EventBus.getDefault().post(new EditCheckEvent(true));
+
+                                EventBus.getDefault().post(new EditCheckEvent(false));
                                 dialog.cancel();
                             }
                         });
@@ -332,11 +328,6 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
     }
 
     public void AddSchedule(MyTime mt, String title, String place, String memo, String colorName) {
-        if(mt.isRepeatChanged()){
-            MyTimeRepo.deleteWithTimeCode(context, mt.getTimecode());
-        }else{
-            MyTimeRepo.deleteWithId(context, mt.getId());
-        }
         String repeat = mt.getRepeat();
         int timeType = mt.getTimetype();
         int startHour = mt.getStarthour();
