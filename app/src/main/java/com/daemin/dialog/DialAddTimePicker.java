@@ -16,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
@@ -36,6 +37,7 @@ import de.greenrobot.event.EventBus;
 public class DialAddTimePicker extends Dialog {
     Context context;
     String[] MD;
+    TextView tvMD,tvTime;
     int dayOfMonth, startHour, startMin, endHour, endMin, position, timeType;
     private boolean editMode;
     private Button btDialCancel;
@@ -51,13 +53,14 @@ public class DialAddTimePicker extends Dialog {
         this.context = context;
         this.MD = MD;
     }
-    public DialAddTimePicker(Context context, int timeType, String[] MD,int dayOfMonth,int position, String startHour, String startMin, String endHour, String endMin) {
+    public DialAddTimePicker(Context context, int timeType, String[] MD,int dayOfMonth,TextView tvMD,TextView tvTime, String startHour, String startMin, String endHour, String endMin) {
         // Dialog 배경을 투명 처리 해준다.
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
         this.MD = MD;
         this.dayOfMonth = dayOfMonth;
-        this.position = position;
+        this.tvMD = tvMD;
+        this.tvTime = tvTime;
         this.startHour = Integer.parseInt(startHour);
         this.startMin = Integer.parseInt(startMin);
         this.endHour = Integer.parseInt(endHour);
@@ -105,7 +108,7 @@ public class DialAddTimePicker extends Dialog {
                     }else{
                         day = 2*npMD.getValue()+1;//xth임
                     }
-                    EventBus.getDefault().post(new SetTimeEvent(position, timeType,
+                    EventBus.getDefault().post(new SetTimeEvent(tvMD,tvTime,position, timeType,
                             day, npStartHour.getValue(), npStartMin.getValue(),
                             npEndHour.getValue(), npEndMin.getValue()));
                 }else{

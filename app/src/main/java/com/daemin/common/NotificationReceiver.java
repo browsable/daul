@@ -11,8 +11,8 @@ public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // TODO Auto-generated method stub
-        /*if(intent.getAction().equals(Common.ALARM_PUSH)){
-            Toast.makeText(context, "test", Toast.LENGTH_SHORT).show();
-        }*/
+        if(intent.getAction().equals(Common.ALARM_PUSH)){
+
+        }
     }
 }

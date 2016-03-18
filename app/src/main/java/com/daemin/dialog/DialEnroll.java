@@ -168,15 +168,24 @@ public class DialEnroll extends Activity {
 
     public void onEventMainThread(SetTimeEvent e) {
         int position = e.getPosition();
-        if(e.getTimeType()==0)
+        if(e.getTimeType()==0){
             enrollAdapter.getItem(position).setDayofmonth(e.getDay());
-        else
+            e.getTvMD().setText(Dates.NOW.month + getResources().getString(R.string.month) + " " + e.getDay() + getResources().getString(R.string.day));
+        }
+        else {
             enrollAdapter.getItem(position).setDayofweek(e.getDay());
+            e.getTvMD().setText(Convert.XthToDayOfWeek(e.getDay()));
+        }
         enrollAdapter.getItem(position).setStarthour(e.getStartHour());
         enrollAdapter.getItem(position).setStartmin(e.getStartMin());
         enrollAdapter.getItem(position).setEndhour(e.getEndHour());
         enrollAdapter.getItem(position).setEndmin(e.getEndMin());
-        enrollAdapter.notifyDataSetChanged();
+
+        String time = Convert.IntToString(e.getStartHour()) + ":"
+                + Convert.IntToString(e.getStartMin()) + "~"
+                + Convert.IntToString(e.getEndHour()) + ":"
+                + Convert.IntToString(e.getEndMin());
+        e.getTvTime().setText(time);
     }
     public void onEventMainThread(EditCheckEvent e) {
         if(e.isReStart()) {

@@ -33,6 +33,7 @@ import android.widget.ViewSwitcher;
 import com.daemin.area.AreaFragment;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.Common;
+import com.daemin.common.DatabaseHandler;
 import com.daemin.common.MyRequest;
 import com.daemin.common.RoundedCornerNetworkImageView;
 import com.daemin.community.CommunityFragment2;
@@ -48,6 +49,7 @@ import com.daemin.event.CreateDialEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
+import com.daemin.event.SetCreditEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.setting.SettingFragment;
 import com.daemin.timetable.InitSurfaceView;
@@ -449,7 +451,13 @@ public class MainActivity extends FragmentActivity {
     public void onEventMainThread(ChangeFragEvent e) {
         changeFragment(e.getCl(), e.getTitleName());
     }
-
+    public void onEventMainThread(SetCreditEvent e) {
+        DatabaseHandler db = new DatabaseHandler(this);
+        Float credit = Float.parseFloat(db.getCredit(e.getSubtitle()));
+        User.INFO.credit-=credit;
+        if(User.INFO.credit<0f) User.INFO.credit=0f;
+        User.INFO.getEditor().putFloat("credit",User.INFO.credit).commit();
+    }
     /*public void GPSSetting(){
         GPSInfo gps = new GPSInfo(this);
         // GPS 사용유무 가져오기
