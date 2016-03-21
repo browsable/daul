@@ -176,7 +176,6 @@
                 android:layout_height="match_parent"
                 android:background="@color/transparency"
                 android:hint="@string/normal_memo"
-                android:singleLine="true"
                 android:textSize="@dimen/textsize_default" />
         </LinearLayout>
 
@@ -242,7 +241,7 @@
                 android:background="@drawable/bt_click"
                 android:gravity="center"
                 android:onClick="mOnClick"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:orientation="horizontal">
 
                 <LinearLayout

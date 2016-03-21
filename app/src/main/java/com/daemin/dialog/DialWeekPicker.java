@@ -68,7 +68,7 @@ public class DialWeekPicker extends Dialog {
         tvDialEndTime.setText(endHour);
         npEndMin.setMaxValue(60);
         npEndMin.setMinValue(1);
-        npEndMin.setWrapSelectorWheel(false);
+        //npEndMin.setWrapSelectorWheel(false);
         if(endMin.equals("00")) npEndMin.setValue(60);
         else npEndMin.setValue(Integer.parseInt(endMin));
         npEndMin.setFormatter(new NumberPicker.Formatter() {
@@ -221,8 +221,8 @@ public class DialWeekPicker extends Dialog {
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
         npStartMin = (NumberPicker) findViewById(R.id.npStartMin);
         npEndMin = (NumberPicker) findViewById(R.id.npEndMin);
-        npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        /*npStartMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);*/
     }
 
 }

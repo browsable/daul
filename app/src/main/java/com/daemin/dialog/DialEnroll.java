@@ -21,6 +21,7 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.enumclass.Dates;
 import com.daemin.event.CreateDialEvent;
+import com.daemin.event.EditAlarmEvent;
 import com.daemin.event.EditCheckEvent;
 import com.daemin.event.EditRepeatEvent;
 import com.daemin.event.FinishDialogEvent;
@@ -164,6 +165,11 @@ public class DialEnroll extends Activity {
     }
     public void onEventMainThread(EditRepeatEvent e) {
         enrollAdapter.getItem(e.getPosition()).setRepeat(e.toString());
+    }
+    public void onEventMainThread(EditAlarmEvent e) {
+        MyTime m = enrollAdapter.getItem(e.getPosition());
+        m.setAlarm(Convert.Alarm(m.getStartmillis(), e.getTime()));
+        Log.i("test", Convert.Alarm(m.getStartmillis(), e.getTime()) + "");
     }
 
     public void onEventMainThread(SetTimeEvent e) {

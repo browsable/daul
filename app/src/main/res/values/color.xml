@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="transparency">#00000000</color>
+    <color name="alarmcolor">#9e9e9e</color>
     <color name="maincolor">#73C8BA</color>
     <color name="transmaincolor">#7073C8BA</color>
     <color name="drawercolor">#3AA4B0</color>

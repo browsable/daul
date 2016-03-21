@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.daemin.event.EditAlarmEvent;
 import com.daemin.event.SetAlarmEvent;
 import com.daemin.timetable.R;
 
@@ -24,6 +25,12 @@ import de.greenrobot.event.EventBus;
 public class DialAlarm extends Dialog {
     public DialAlarm(Context context) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
+    }
+    public DialAlarm(Context context, int alarmType, int position) {
+        super(context, android.R.style.Theme_Holo_Light_Dialog);
+        this.alarmType = alarmType;
+        this.editAlarm = true;
+        this.position = position;
     }
 
     @Override
@@ -38,8 +45,8 @@ public class DialAlarm extends Dialog {
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-        layoutParams.width = dm.widthPixels * 2 / 3;
-        layoutParams.height = dm.heightPixels * 3 / 5;
+        layoutParams.width = dm.widthPixels * 7/ 9;
+        layoutParams.height = dm.heightPixels * 2 / 3;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();
@@ -49,6 +56,38 @@ public class DialAlarm extends Dialog {
         btDialCancel = (Button) findViewById(R.id.btDialCancel);
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
         alarmGroup = (RadioGroup)findViewById(R.id.alarmGroup);
+        radio0 = (RadioButton)findViewById(R.id.radio0);
+        radio1 = (RadioButton)findViewById(R.id.radio1);
+        radio2 = (RadioButton)findViewById(R.id.radio2);
+        radio3 = (RadioButton)findViewById(R.id.radio3);
+        radio4 = (RadioButton)findViewById(R.id.radio4);
+        radio5 = (RadioButton)findViewById(R.id.radio5);
+        radio6 = (RadioButton)findViewById(R.id.radio6);
+        if(editAlarm){
+            switch (alarmType){
+                case 0:
+                    alarmGroup.check(radio0.getId());
+                    break;
+                case 1:
+                    alarmGroup.check(radio1.getId());
+                    break;
+                case 2:
+                    alarmGroup.check(radio2.getId());
+                    break;
+                case 3:
+                    alarmGroup.check(radio3.getId());
+                    break;
+                case 4:
+                    alarmGroup.check(radio4.getId());
+                    break;
+                case 5:
+                    alarmGroup.check(radio5.getId());
+                    break;
+                case 6:
+                    alarmGroup.check(radio6.getId());
+                    break;
+            }
+        }
         btDialSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +97,10 @@ public class DialAlarm extends Dialog {
                     int radioId = alarmGroup.indexOfChild(radioButton);
                     RadioButton btn = (RadioButton) alarmGroup.getChildAt(radioId);
                     String selection = (String) btn.getText();
-                    EventBus.getDefault().post(new SetAlarmEvent(selection));
+                    if(editAlarm)
+                        EventBus.getDefault().post(new EditAlarmEvent(selection, position));
+                    else
+                        EventBus.getDefault().post(new SetAlarmEvent(selection));
                     cancel();
                 }
             }
@@ -73,4 +115,7 @@ public class DialAlarm extends Dialog {
     private Button btDialCancel;
     private Button btDialSetting;
     private RadioGroup alarmGroup;
+    private boolean editAlarm;
+    private int alarmType, position;
+    RadioButton radio0,radio1,radio2,radio3,radio4,radio5,radio6;
 }

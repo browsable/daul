@@ -189,27 +189,34 @@ public class Common {
 		Common.getTempTimePos().clear();
 		return;
 	}
-	public static void registerAlarm(Context context, int requestCode, Long triggerTime)
+	public static void registerAlarm(Context context, long requestCode, Long triggerTime, String title,String place, String memo, int timeType)
 	{
-		Log.i("alarm", " register");
 		Intent intent = new Intent(context, NotificationReceiver.class);
 		intent.setAction(ALARM_PUSH);
+		intent.putExtra("title", title);
+		intent.putExtra("place", place);
+		intent.putExtra("memo",memo);
 		PendingIntent sender
-				= PendingIntent.getBroadcast(context, requestCode, intent, 0);
+				= PendingIntent.getBroadcast(context, (int) requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		AlarmManager manager
 				= (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-		manager.set(AlarmManager.RTC_WAKEUP, triggerTime, sender);
+		if(timeType==0)
+			manager.set(AlarmManager.RTC_WAKEUP, triggerTime, sender);
+		else
+			manager.setRepeating(AlarmManager.RTC_WAKEUP, triggerTime, AlarmManager.INTERVAL_DAY*7, sender);
 	}
-	public static void unregisterAlarm(Context context,int requestCode)
+	public static void unregisterAlarm(Context context,long requestCode)
 	{
-		Log.i("alarm", "unregister");
-		Intent intent = new Intent();
-		PendingIntent sender
-				= PendingIntent.getBroadcast(context, requestCode, intent, 0);
-		AlarmManager manager =
-				(AlarmManager)context
-						.getSystemService(Context.ALARM_SERVICE);
-		manager.cancel(sender);
+		try {
+			Intent intent = new Intent();
+			PendingIntent sender
+					= PendingIntent.getBroadcast(context, (int) requestCode, intent, 0);
+			AlarmManager manager =
+					(AlarmManager) context
+							.getSystemService(Context.ALARM_SERVICE);
+			manager.cancel(sender);
+		}
+		catch (Exception e){}
 	}
 
 }

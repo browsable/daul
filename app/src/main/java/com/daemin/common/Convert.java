@@ -311,6 +311,31 @@ public class Convert {
 		}
 		return alarmMillis;
 	}
+	public static int Alarm(long startmillis,long alarmMillis) {
+		int alarmType =0;
+		if(alarmMillis==0) {
+			alarmType=0;
+		}
+		else if(alarmMillis==startmillis){
+			alarmType=1;
+		}
+		else if(alarmMillis==startmillis-10*60*1000){
+			alarmType=2;
+		}
+		else if(alarmMillis==startmillis-20*60*1000){
+			alarmType=3;
+		}
+		else if(alarmMillis==startmillis-30*60*1000){
+			alarmType=4;
+		}
+		else if(alarmMillis==startmillis-60*60*1000){
+			alarmType=5;
+		}
+		else if(alarmMillis==startmillis-24*60*60*1000){
+			alarmType=6;
+		}
+		return alarmType;
+	}
 	public static int onlyNum(String str) {
 		if ( str == null ) return 0;
 

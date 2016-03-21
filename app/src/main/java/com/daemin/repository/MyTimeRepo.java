@@ -17,6 +17,9 @@ public class MyTimeRepo {
     public static void insertOrUpdate(Context context, MyTime myTime) {
         getMyTimeDao(context).insertOrReplace(myTime);
     }
+    public static void delete(Context context, MyTime myTime) {
+        getMyTimeDao(context).delete(myTime);
+    }
 
     public static void clearMyTime(Context context) {
         getMyTimeDao(context).deleteAll();
@@ -152,6 +155,8 @@ public class MyTimeRepo {
     private static MyTimeDao getMyTimeDao(Context c) {
         return ((AppController) c.getApplicationContext()).getDaoSession().getMyTimeDao();
     }
+
+
     /*public static String getEngByKor(Context context, String key) {
         return getNormalDao(context)
                 .queryBuilder()

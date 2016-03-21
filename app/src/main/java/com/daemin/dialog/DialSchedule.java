@@ -691,20 +691,26 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 DateTime endDt = Dates.NOW.getDateMillisWithRepeat(year, monthOfYear, dayOfMonth, endHour, endMin, repeatType, repeatPeriod * i);
                 long startMillis = startDt.getMillis();
                 xth = Convert.dayOfWeekTowXth(startDt.getDayOfWeek()); //getDayOfWeek index - mon:1,tue:2 ... sun:7
+                Long alarmTime = Convert.Alarm(startMillis, tvAlarm.getText().toString());
+                String title = etName.getText().toString();
+                String memo = etMemo.getText().toString();
+                String place = etPlace.getText().toString();
                 MyTime myTime = new MyTime(null,
                         String.valueOf(nowMilis), 0,
-                        etName.getText().toString(),
+                        title,
                         startDt.getYear(), startDt.getMonthOfYear(), startDt.getDayOfMonth(),
                         xth, startHour, startMin, endHour, endMin,
                         startMillis, endDt.getMillis() - 1,
-                        etMemo.getText().toString(),
-                        etPlace.getText().toString(),
+                        memo,place,
                         User.INFO.latitude, User.INFO.longitude,
                         Convert.Share(tvShare.getText().toString()),
-                        Convert.Alarm(startMillis, tvAlarm.getText().toString()),
+                        alarmTime,
                         repeat,
                         colorName);
+                if(alarmTime!=0&&alarmTime>=System.currentTimeMillis())
+                    Common.registerAlarm(this,alarmTime,alarmTime,title,place,memo,0);
                 MyTimeRepo.insertOrUpdate(this, myTime);
+
             }
         }
         normalList.clear();
