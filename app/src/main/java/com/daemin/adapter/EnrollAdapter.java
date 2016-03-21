@@ -419,7 +419,6 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                         colorName);
                 if(mt.getAlarm()!=null&&mt.getAlarm()>=System.currentTimeMillis())
                     Common.registerAlarm(context,mt.getAlarm(),mt.getAlarm(),title,place,memo,0);
-                Log.i("test", mt.getAlarm() + "");
 
             } else {
                 myTime = new MyTime(null,
