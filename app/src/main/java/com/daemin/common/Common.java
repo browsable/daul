@@ -191,6 +191,7 @@ public class Common {
 	}
 	public static void registerAlarm(Context context, long requestCode, Long triggerTime, String title,String place, String memo, int timeType)
 	{
+		Log.i("test registerAlarm", requestCode + "");
 		Intent intent = new Intent(context, NotificationReceiver.class);
 		intent.setAction(ALARM_PUSH);
 		intent.putExtra("title", title);
@@ -208,6 +209,7 @@ public class Common {
 	public static void unregisterAlarm(Context context,long requestCode)
 	{
 		try {
+			Log.i("test unregisterAlarm", requestCode + "");
 			Intent intent = new Intent();
 			PendingIntent sender
 					= PendingIntent.getBroadcast(context, (int) requestCode, intent, 0);
@@ -216,7 +218,9 @@ public class Common {
 							.getSystemService(Context.ALARM_SERVICE);
 			manager.cancel(sender);
 		}
-		catch (Exception e){}
+		catch (Exception e){
+			Log.i("test unregisterAlarm","exception");
+		}
 	}
 
 }

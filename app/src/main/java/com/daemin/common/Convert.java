@@ -284,7 +284,7 @@ public class Convert {
 		}
 		return share;
 	}
-	public static long Alarm(long startmillis , String grade) {
+	public static long getAlarmMillis(long startmillis , String grade) {
 		long alarmMillis=0;
 		switch (grade) {
 			case "알람 없음":
@@ -311,28 +311,28 @@ public class Convert {
 		}
 		return alarmMillis;
 	}
-	public static int Alarm(long startmillis,long alarmMillis) {
-		int alarmType =0;
+	public static String getAlarmType(long startmillis,long alarmMillis) {
+		String alarmType ="알람 없음";
 		if(alarmMillis==0) {
-			alarmType=0;
+			alarmType="알람 없음";
 		}
 		else if(alarmMillis==startmillis){
-			alarmType=1;
+			alarmType="정각";
 		}
 		else if(alarmMillis==startmillis-10*60*1000){
-			alarmType=2;
+			alarmType="10분 전";
 		}
 		else if(alarmMillis==startmillis-20*60*1000){
-			alarmType=3;
+			alarmType="20분 전";
 		}
 		else if(alarmMillis==startmillis-30*60*1000){
-			alarmType=4;
+			alarmType="30분 전";
 		}
 		else if(alarmMillis==startmillis-60*60*1000){
-			alarmType=5;
+			alarmType="1시간 전";
 		}
 		else if(alarmMillis==startmillis-24*60*60*1000){
-			alarmType=6;
+			alarmType="1일 전";
 		}
 		return alarmType;
 	}

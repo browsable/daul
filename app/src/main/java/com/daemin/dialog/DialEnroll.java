@@ -30,6 +30,8 @@ import com.daemin.event.SetTimeEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
+import org.joda.time.DateTime;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -84,9 +86,8 @@ public class DialEnroll extends Activity {
             startHour = Integer.parseInt(Convert.YthToHourOfDay(yth));
             String wMonthDay = Dates.NOW.getwMonthDay(xth);
             String[] tmp = wMonthDay.split("\\.");
-            int year;
             int titleMonth = Dates.NOW.month;
-            int monthOfYear = Integer.parseInt(tmp[0]);
+            monthOfYear = Integer.parseInt(tmp[0]);
             if (monthOfYear != titleMonth && titleMonth == 1) year = Dates.NOW.year - 1;
             else year = Dates.NOW.year;
             dayOfMonth = Integer.parseInt(tmp[1]);
@@ -145,7 +146,7 @@ public class DialEnroll extends Activity {
         lv.setAdapter(enrollAdapter);
     }
 
-    private int xth, yth, startHour, startMin, dayOfMonth;
+    private int xth, yth, startHour, startMin, dayOfMonth,monthOfYear,year;
     private Boolean weekFlag;
     private TextView tvMonthDay;
     private Button btDialCancel;
@@ -166,32 +167,41 @@ public class DialEnroll extends Activity {
     public void onEventMainThread(EditRepeatEvent e) {
         enrollAdapter.getItem(e.getPosition()).setRepeat(e.toString());
     }
-    public void onEventMainThread(EditAlarmEvent e) {
+   /* public void onEventMainThread(EditAlarmEvent e) {
+        e.getTvAlarmType().setText(e.);
         MyTime m = enrollAdapter.getItem(e.getPosition());
         m.setAlarm(Convert.Alarm(m.getStartmillis(), e.getTime()));
-        Log.i("test", Convert.Alarm(m.getStartmillis(), e.getTime()) + "");
+        Log.i("test Edit start", m.getStartmillis() + "");
+        Log.i("test Edit type", e.getTime() + "");
+        Log.i("test Edit alarm", Convert.Alarm(m.getStartmillis(), e.getTime()) + "");
     }
 
+*/
     public void onEventMainThread(SetTimeEvent e) {
-        int position = e.getPosition();
-        if(e.getTimeType()==0){
-            enrollAdapter.getItem(position).setDayofmonth(e.getDay());
-            e.getTvMD().setText(Dates.NOW.month + getResources().getString(R.string.month) + " " + e.getDay() + getResources().getString(R.string.day));
+        MyTime m = enrollAdapter.getItem(e.getPosition());
+        int startHour = e.getStartHour();
+        int startMin = e.getStartMin();
+        int endHour = e.getEndHour();
+        int endMin = e.getEndMin();
+        int day = e.getDayIndex();
+        if(e.getTimeType()!=0) {
+                day = Integer.parseInt(Dates.NOW.getwMonthDay(day).split("\\.")[1]);
         }
-        else {
-            enrollAdapter.getItem(position).setDayofweek(e.getDay());
-            e.getTvMD().setText(Convert.XthToDayOfWeek(e.getDay()));
-        }
-        enrollAdapter.getItem(position).setStarthour(e.getStartHour());
-        enrollAdapter.getItem(position).setStartmin(e.getStartMin());
-        enrollAdapter.getItem(position).setEndhour(e.getEndHour());
-        enrollAdapter.getItem(position).setEndmin(e.getEndMin());
-
-        String time = Convert.IntToString(e.getStartHour()) + ":"
-                + Convert.IntToString(e.getStartMin()) + "~"
-                + Convert.IntToString(e.getEndHour()) + ":"
-                + Convert.IntToString(e.getEndMin());
-        e.getTvTime().setText(time);
+        DateTime startDt = Dates.NOW.getDateTimeMillis(year, monthOfYear, day, startHour, startMin);
+        DateTime endDt = Dates.NOW.getDateTimeMillis(year, monthOfYear, day, endHour, endMin);
+        long startMillis = startDt.getMillis();
+        long endMillis = endDt.getMillis();
+        int xth = Convert.dayOfWeekTowXth(startDt.getDayOfWeek());
+        m.setYear(year);
+        m.setMonthofyear(monthOfYear);
+        m.setDayofmonth(day);
+        m.setDayofweek(xth);
+        m.setStartmillis(startMillis);
+        m.setEndmillis(endMillis);
+        m.setStarthour(startHour);
+        m.setStartmin(startMin);
+        m.setEndhour(endHour);
+        m.setEndmin(endMin);
     }
     public void onEventMainThread(EditCheckEvent e) {
         if(e.isReStart()) {

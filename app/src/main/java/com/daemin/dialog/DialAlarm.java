@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.daemin.event.EditAlarmEvent;
 import com.daemin.event.SetAlarmEvent;
@@ -26,9 +27,9 @@ public class DialAlarm extends Dialog {
     public DialAlarm(Context context) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
     }
-    public DialAlarm(Context context, int alarmType, int position) {
+    public DialAlarm(Context context, TextView tvAlarmType, int position) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
-        this.alarmType = alarmType;
+        this.tvAlarmType = tvAlarmType;
         this.editAlarm = true;
         this.position = position;
     }
@@ -64,26 +65,26 @@ public class DialAlarm extends Dialog {
         radio5 = (RadioButton)findViewById(R.id.radio5);
         radio6 = (RadioButton)findViewById(R.id.radio6);
         if(editAlarm){
-            switch (alarmType){
-                case 0:
+            switch (tvAlarmType.getText().toString()){
+                case "알람 없음":
                     alarmGroup.check(radio0.getId());
                     break;
-                case 1:
+                case "정각":
                     alarmGroup.check(radio1.getId());
                     break;
-                case 2:
+                case "10분 전":
                     alarmGroup.check(radio2.getId());
                     break;
-                case 3:
+                case "20분 전":
                     alarmGroup.check(radio3.getId());
                     break;
-                case 4:
+                case "30분 전":
                     alarmGroup.check(radio4.getId());
                     break;
-                case 5:
+                case "1시간 전":
                     alarmGroup.check(radio5.getId());
                     break;
-                case 6:
+                case "1일 전":
                     alarmGroup.check(radio6.getId());
                     break;
             }
@@ -98,7 +99,7 @@ public class DialAlarm extends Dialog {
                     RadioButton btn = (RadioButton) alarmGroup.getChildAt(radioId);
                     String selection = (String) btn.getText();
                     if(editAlarm)
-                        EventBus.getDefault().post(new EditAlarmEvent(selection, position));
+                        tvAlarmType.setText(selection);
                     else
                         EventBus.getDefault().post(new SetAlarmEvent(selection));
                     cancel();
@@ -116,6 +117,7 @@ public class DialAlarm extends Dialog {
     private Button btDialSetting;
     private RadioGroup alarmGroup;
     private boolean editAlarm;
-    private int alarmType, position;
+    private TextView tvAlarmType;
+    private int position;
     RadioButton radio0,radio1,radio2,radio3,radio4,radio5,radio6;
 }

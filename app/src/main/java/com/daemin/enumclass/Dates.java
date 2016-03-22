@@ -120,6 +120,10 @@ public enum Dates {
         DateTime dt = new DateTime(year,monthOfYear,dayOfMonth,hourOfDay,minuteOfHour);
         return dt.getMillis();
     }
+    public DateTime getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour) {
+        DateTime dt = new DateTime(year,monthOfYear,dayOfMonth,hourOfDay,minuteOfHour);
+        return dt;
+    }
     public DateTime getDateMillisWithRepeat(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int repeatType, int repeatPeriod) {
         LocalDate ld = new LocalDate(year, monthOfYear, dayOfMonth);
         switch (repeatType){

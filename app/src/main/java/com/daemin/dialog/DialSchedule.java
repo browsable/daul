@@ -691,7 +691,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 DateTime endDt = Dates.NOW.getDateMillisWithRepeat(year, monthOfYear, dayOfMonth, endHour, endMin, repeatType, repeatPeriod * i);
                 long startMillis = startDt.getMillis();
                 xth = Convert.dayOfWeekTowXth(startDt.getDayOfWeek()); //getDayOfWeek index - mon:1,tue:2 ... sun:7
-                Long alarmTime = Convert.Alarm(startMillis, tvAlarm.getText().toString());
+                Long alarmTime = Convert.getAlarmMillis(startMillis, tvAlarm.getText().toString());
                 String title = etName.getText().toString();
                 String memo = etMemo.getText().toString();
                 String place = etPlace.getText().toString();

@@ -38,7 +38,7 @@ public class DialAddTimePicker extends Dialog {
     Context context;
     String[] MD;
     TextView tvMD,tvTime;
-    int dayOfMonth, startHour, startMin, endHour, endMin, position, timeType;
+    int dayIndex, startHour, startMin, endHour, endMin, position, timeType;
     private boolean editMode;
     private Button btDialCancel;
     private Button btDialSetting;
@@ -53,12 +53,12 @@ public class DialAddTimePicker extends Dialog {
         this.context = context;
         this.MD = MD;
     }
-    public DialAddTimePicker(Context context, int timeType, String[] MD,int dayOfMonth,TextView tvMD,TextView tvTime, String startHour, String startMin, String endHour, String endMin) {
+    public DialAddTimePicker(Context context, int timeType, String[] MD,int dayIndex,TextView tvMD,TextView tvTime, String startHour, String startMin, String endHour, String endMin) {
         // Dialog 배경을 투명 처리 해준다.
         super(context, android.R.style.Theme_Holo_Light_Dialog);
         this.context = context;
         this.MD = MD;
-        this.dayOfMonth = dayOfMonth;
+        this.dayIndex = dayIndex;
         this.tvMD = tvMD;
         this.tvTime = tvTime;
         this.startHour = Integer.parseInt(startHour);
@@ -102,15 +102,26 @@ public class DialAddTimePicker extends Dialog {
                 npEndHour.clearFocus();
                 npEndMin.clearFocus();
                 if(editMode) {
-                    int day;
+                    int startHour = npStartHour.getValue();
+                    int startMin = npStartMin.getValue();
+                    int endHour = npEndHour.getValue();
+                    int endMin = npEndMin.getValue();
+                    int dayIndex;
                     if(timeType==0) {
-                       day =  Integer.parseInt(MD[npMD.getValue()].split("\\.")[1]);
+                        dayIndex = Integer.parseInt(MD[npMD.getValue()].split("\\.")[1]);
+                        tvMD.setText(Dates.NOW.month + context.getResources().getString(R.string.month)
+                                + dayIndex
+                                + context.getResources().getString(R.string.day));
                     }else{
-                        day = 2*npMD.getValue()+1;//xth임
+                        dayIndex = 2 * npMD.getValue() + 1;
+                        tvMD.setText(Convert.XthToDayOfWeek(dayIndex));
                     }
-                    EventBus.getDefault().post(new SetTimeEvent(tvMD,tvTime,position, timeType,
-                            day, npStartHour.getValue(), npStartMin.getValue(),
-                            npEndHour.getValue(), npEndMin.getValue()));
+                    String time = Convert.IntToString(startHour) + ":"
+                            + Convert.IntToString(startMin) + "~"
+                            + Convert.IntToString(endHour) + ":"
+                            + Convert.IntToString(endMin);
+                    tvTime.setText(time);
+                    EventBus.getDefault().post(new SetTimeEvent(timeType, position, dayIndex, startHour, startMin, endHour, endMin));
                 }else{
                     if (MD.length == 7) {
                         weekSetting(npStartHour.getValue(), npStartMin.getValue(),
@@ -233,9 +244,9 @@ public class DialAddTimePicker extends Dialog {
         });
         if(editMode){
             if(timeType==0)
-                npMD.setValue(dayOfMonth-1);
+                npMD.setValue(dayIndex-1);
             else
-                npMD.setValue(dayOfMonth/2);
+                npMD.setValue(dayIndex/2);
             npStartHour.setValue(startHour);
             npStartMin.setValue(startMin);
             npEndHour.setValue(endHour);

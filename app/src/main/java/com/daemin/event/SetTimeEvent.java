@@ -6,10 +6,15 @@ import android.widget.TextView;
  * Created by hernia on 2015-10-16.
  */
 public class SetTimeEvent {
-    TextView tvTime,tvMD;
-    int position, timeType, day,startHour,startMin, endHour, endMin;
+    int timeType, dayIndex, position, startHour,startMin, endHour, endMin;
+    public int getTimeType() {
+        return timeType;
+    }
     public int getPosition() {
         return position;
+    }
+    public int getDayIndex() {
+        return dayIndex;
     }
     public int getStartHour() {
         return startHour;
@@ -23,24 +28,10 @@ public class SetTimeEvent {
     public int getEndMin() {
         return endMin;
     }
-    public int getDay() {
-        return day;
-    }
-    public int getTimeType() {
-        return timeType;
-    }
-    public TextView getTvTime() {
-        return tvTime;
-    }
-    public TextView getTvMD() {
-        return tvMD;
-    }
-    public SetTimeEvent(TextView tvMD,TextView tvTime, int position, int timeType, int day, int startHour, int startMin, int endHour, int endMin) {
-        this.position = position;
+    public SetTimeEvent(int timeType, int position,int dayIndex, int startHour, int startMin, int endHour, int endMin) {
         this.timeType = timeType;
-        this.day = day;
-        this.tvTime = tvTime;
-        this.tvMD = tvMD;
+        this.dayIndex = dayIndex;
+        this.position = position;
         this.startHour = startHour;
         this.startMin = startMin;
         this.endHour = endHour;

@@ -164,7 +164,7 @@
             android:background="@drawable/ic_remove" />
     </RelativeLayout>
     <TextView
-        android:id="@+id/tvAlarm"
+        android:id="@+id/tvAlarmType"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
