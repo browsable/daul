@@ -5,6 +5,7 @@
     android:orientation="vertical"
     >
    <ImageView
+   android:id="@+id/ivCancel"
    android:layout_width="match_parent"
    android:layout_height="match_parent"
    android:scaleType="fitXY"
@@ -17,5 +18,6 @@
         android:layout_margin="@dimen/margin_default"
         android:background="@drawable/ic_cancel2"
         android:layout_alignParentRight="true"
+        android:visibility="gone"
         />
 </RelativeLayout>

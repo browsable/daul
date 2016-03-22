@@ -333,12 +333,19 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                                         int i = 0;
                                         MyTime first = null;
                                         nowMilis = Dates.NOW.getNowMillis();
-                                        for (MyTime m : MyTimeRepo.getMyTimeForTimeCode(context, mt.getTimecode())) {
-                                            if (i == 0) {
-                                                first = m;
+                                        if (mt.isTimeChanged()) {
+                                            for (MyTime m : MyTimeRepo.getMyTimeForTimeCode(context, mt.getTimecode())) {
+                                                if (i == 0) {
+                                                    first = m;
+                                                }
+                                                AddSchedule(m, title, place, memo, colorName, mt.getRepeat(), alarmType, first.getStarthour(), first.getStartmin(), first.getEndhour(), first.getEndmin());
+                                                ++i;
                                             }
-                                            AddSchedule(m, title, place, memo, colorName, mt.getRepeat(), alarmType, first.getStarthour(), first.getStartmin(), first.getEndhour(), first.getEndmin());
-                                            ++i;
+                                        }else {
+                                            for (MyTime m : MyTimeRepo.getMyTimeForTimeCode(context, mt.getTimecode())) {
+                                                AddSchedule(m, title, place, memo, colorName, mt.getRepeat(), alarmType, m.getStarthour(), m.getStartmin(), m.getEndhour(), m.getEndmin());
+                                                ++i;
+                                            }
                                         }
                                     }
                                 }
@@ -405,7 +412,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 DateTime endDt = Dates.NOW.getDateMillisWithRepeat(year, month, day, endHour, endMin, repeatType, repeatPeriod * i);
                 int xth = Convert.dayOfWeekTowXth(startDt.getDayOfWeek());
                 long startMillis = startDt.getMillis();
-                long alarmMillies = Convert.getAlarmMillis(startMillis,alarmType);
+                long alarmMillies = Convert.getAlarmMillis(startMillis, alarmType);
                 myTime = new MyTime(null,
                         String.valueOf(nowMilis), 0,
                         title,

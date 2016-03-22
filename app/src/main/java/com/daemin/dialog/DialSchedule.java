@@ -751,6 +751,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         R.color.gray));
                 btUniv.setTextColor(getResources().getColor(
                         android.R.color.white));
+                tvCreditSum.setText(User.INFO.getCredit()+"");
                 if (groupName.equals("") || ttVersion.equals(getResources().getString(R.string.wait1))) { //학교를 한번도 선택한 적 없거나 등록대기중
                     univList = new ArrayList<>();
                     for (GroupListData.Data d : User.INFO.groupListData) {
@@ -1036,8 +1037,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         tvHyperText = (TextView) findViewById(R.id.tvHyperText);
         tvHyperText.setMovementMethod(LinkMovementMethod.getInstance());
         tvCreditSum = (TextView) findViewById(R.id.tvCreditSum);
-        creditSum = User.INFO.credit+"";
-        tvCreditSum.setText(creditSum);
         etName = (EditText) findViewById(R.id.etName);
         etPlace = (EditText) findViewById(R.id.etPlace);
         etMemo = (EditText) findViewById(R.id.etMemo);
@@ -1108,7 +1107,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private HorizontalListAdapter hoAdapter;
     private Window window;
     private GradientDrawable gd;
-    private String colorName, subId, creditSum, groupName, ttVersion, beforeYMD; //ttVersion: 학기버전
+    private String colorName, subId, groupName, ttVersion, beforeYMD; //ttVersion: 학기버전
     private WindowManager.LayoutParams lp;
     private ArrayList<BottomNormalData> normalList;
     private ArrayAdapter<String> univAdapter;
@@ -1137,10 +1136,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
     public void onEventMainThread(SetCreditEvent e) {
         Float credit = Float.parseFloat(db.getCredit(e.getSubtitle()));
-        User.INFO.credit-=credit;
+        User.INFO.credit= User.INFO.getCredit() - credit;
         if(User.INFO.credit<0f) User.INFO.credit=0f;
         tvCreditSum.setText(User.INFO.credit+"");
-        User.INFO.getEditor().putFloat("credit",User.INFO.credit).commit();
+        User.INFO.getEditor().putFloat("credit", User.INFO.credit).commit();
     }
     public void onEventMainThread(SetRepeatEvent e) {
         repeatType = e.getRepeatType();
