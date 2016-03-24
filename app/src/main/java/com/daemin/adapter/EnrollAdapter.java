@@ -28,6 +28,7 @@ import com.daemin.enumclass.User;
 import com.daemin.event.EditCheckEvent;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.event.SetCreditEvent;
+import com.daemin.event.SetTimeForCheckEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
@@ -289,6 +290,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
             public void onClick(View v) {
                 editFlag = false;
                 nowMilis = Dates.NOW.getNowMillis();
+                EventBus.getDefault().post(new SetTimeForCheckEvent());
                 final int position = Integer.parseInt(holder.tvPosition.getText().toString());
                 final MyTime mt = getItem(position);
                 final String title = holder.etTitle.getText().toString();

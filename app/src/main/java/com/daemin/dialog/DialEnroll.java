@@ -27,6 +27,7 @@ import com.daemin.event.EditRepeatEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.event.SetTimeEvent;
+import com.daemin.event.SetTimeForCheckEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
@@ -48,7 +49,6 @@ public class DialEnroll extends Activity {
         EventBus.getDefault().unregister(this);
         mtList.clear();
         enrollList.clear();
-
     }
 
     @Override
@@ -147,6 +147,8 @@ public class DialEnroll extends Activity {
     }
 
     private int xth, yth, startHour, startMin, dayOfMonth,monthOfYear,year;
+    private int editStartHour, editStartMin, editEndHour, editEndMin,editDay, editXth;
+    private long editStartMillis,editEndMillis;
     private Boolean weekFlag;
     private TextView tvMonthDay;
     private Button btDialCancel;
@@ -155,6 +157,7 @@ public class DialEnroll extends Activity {
     private HashMap enrollList;
     private LinearLayout llNewEnroll;
     private EnrollAdapter enrollAdapter;
+    private MyTime m;
     public void onEventMainThread(RemoveEnrollEvent e) {
         MyTime mt = (MyTime) enrollList.get(e.getId());
         mtList.remove(mt);
@@ -178,30 +181,32 @@ public class DialEnroll extends Activity {
 
 */
     public void onEventMainThread(SetTimeEvent e) {
-        MyTime m = enrollAdapter.getItem(e.getPosition());
-        int startHour = e.getStartHour();
-        int startMin = e.getStartMin();
-        int endHour = e.getEndHour();
-        int endMin = e.getEndMin();
-        int day = e.getDayIndex();
+        m = enrollAdapter.getItem(e.getPosition());
+        editStartHour = e.getStartHour();
+        editStartMin = e.getStartMin();
+        editEndHour = e.getEndHour();
+        editEndMin = e.getEndMin();
+        editDay = e.getDayIndex();
         if(e.getTimeType()!=0) {
-                day = Integer.parseInt(Dates.NOW.getwMonthDay(day).split("\\.")[1]);
+            editDay = Integer.parseInt(Dates.NOW.getwMonthDay(editDay).split("\\.")[1]);
         }
-        DateTime startDt = Dates.NOW.getDateTimeMillis(year, monthOfYear, day, startHour, startMin);
-        DateTime endDt = Dates.NOW.getDateTimeMillis(year, monthOfYear, day, endHour, endMin);
-        long startMillis = startDt.getMillis();
-        long endMillis = endDt.getMillis();
-        int xth = Convert.dayOfWeekTowXth(startDt.getDayOfWeek());
+        DateTime startDt = Dates.NOW.getDateTimeMillis(year, monthOfYear, editDay, editStartHour, editStartMin);
+        DateTime endDt = Dates.NOW.getDateTimeMillis(year, monthOfYear, editDay, editEndHour, editEndMin);
+        editStartMillis = startDt.getMillis();
+        editEndMillis = endDt.getMillis();
+        editXth = Convert.dayOfWeekTowXth(startDt.getDayOfWeek());
+    }
+    public void onEventMainThread(SetTimeForCheckEvent e) {
         m.setYear(year);
         m.setMonthofyear(monthOfYear);
-        m.setDayofmonth(day);
-        m.setDayofweek(xth);
-        m.setStartmillis(startMillis);
-        m.setEndmillis(endMillis);
-        m.setStarthour(startHour);
-        m.setStartmin(startMin);
-        m.setEndhour(endHour);
-        m.setEndmin(endMin);
+        m.setDayofmonth(editDay);
+        m.setDayofweek(editXth);
+        m.setStartmillis(editStartMillis);
+        m.setEndmillis(editEndMillis);
+        m.setStarthour(editStartHour);
+        m.setStartmin(editStartMin);
+        m.setEndhour(editEndHour);
+        m.setEndmin(editEndMin);
     }
     public void onEventMainThread(EditCheckEvent e) {
         if(e.isReStart()) {
@@ -214,7 +219,6 @@ public class DialEnroll extends Activity {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
         finish();
-
     }
 
 

@@ -209,7 +209,6 @@ public class Common {
 	public static void unregisterAlarm(Context context,long requestCode)
 	{
 		try {
-			Log.i("test unregisterAlarm", requestCode + "");
 			Intent intent = new Intent();
 			PendingIntent sender
 					= PendingIntent.getBroadcast(context, (int) requestCode, intent, 0);
@@ -219,7 +218,6 @@ public class Common {
 			manager.cancel(sender);
 		}
 		catch (Exception e){
-			Log.i("test unregisterAlarm","exception");
 		}
 	}
 
