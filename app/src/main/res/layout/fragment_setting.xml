@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="50dp"
+            android:layout_margin="40dp"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -40,12 +40,25 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/lightgray" />
+        <TextView
+            android:id="@+id/btSettingQA"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bt_click"
+            android:padding="@dimen/margin_ml"
+            android:text="@string/QandA2"
+            android:textSize="@dimen/textsize_xl" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
         <RelativeLayout
             android:id="@+id/btSettingVer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:padding="@dimen/margin_xl"
+            android:padding="@dimen/margin_ml"
             android:background="@drawable/bt_click">
             <TextView
                 android:layout_width="match_parent"
@@ -71,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:padding="@dimen/margin_xl"
+            android:padding="@dimen/margin_ml"
             android:background="@drawable/bt_click">
             <TextView
                 android:layout_width="match_parent"
@@ -94,11 +107,25 @@
             android:layout_height="1dp"
             android:background="@color/lightgray" />
         <TextView
+            android:id="@+id/btSettingTime"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bt_click"
+            android:padding="@dimen/margin_ml"
+            android:text="@string/setting_time"
+            android:textSize="@dimen/textsize_xl" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
+
+        <TextView
             android:id="@+id/btSettingInit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bt_click"
-            android:padding="@dimen/margin_xl"
+            android:padding="@dimen/margin_ml"
             android:text="@string/setting_init"
             android:textSize="@dimen/textsize_xl" />
 
@@ -106,6 +133,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/lightgray" />
+
+
 
         <TextView
             android:id="@+id/btSettingCalendar"
@@ -123,19 +152,7 @@
             android:visibility="gone"
             android:background="@color/lightgray" />
 
-        <TextView
-            android:id="@+id/btSettingQA"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bt_click"
-            android:padding="@dimen/margin_xl"
-            android:text="@string/QandA2"
-            android:textSize="@dimen/textsize_xl" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray" />
     </LinearLayout>
 
 </ScrollView>

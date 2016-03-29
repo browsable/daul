@@ -56,6 +56,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.daemin.working.MainActivity2"
+            android:configChanges="orientation|screenSize|screenLayout"
+            android:label="@string/app_menu"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.daemin.main.ExplainActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!--<activity android:name="com.daemin.map.MapActivity" />-->
        <activity android:name="com.daemin.community.github.GithubActivity" />

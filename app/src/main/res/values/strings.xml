@@ -16,6 +16,7 @@
     <string name="month">월</string>
     <string name="week">주</string>
     <string name="day">일</string>
+    <string name="hour">시</string>
     <string name="am">오전</string>
     <string name="pm">오후</string>
     <string name="prof">교수</string>
@@ -91,13 +92,13 @@
     <string name="alram_radio5">1시간 전</string>
     <string name="alram_radio6">1일 전</string>
     <!--반복-->
-    <string name="sun">일</string>
-    <string name="mon">월</string>
-    <string name="tue">화</string>
-    <string name="wed">수</string>
-    <string name="thr">목</string>
-    <string name="fri">금</string>
-    <string name="sat">토</string>
+    <string name="day0">일</string>
+    <string name="day1">월</string>
+    <string name="day2">화</string>
+    <string name="day3">수</string>
+    <string name="day4">목</string>
+    <string name="day5">금</string>
+    <string name="day6">토</string>
     <string name="repeat_radio0">반복 없음</string>
     <string name="repeat_radio1">매주 반복</string>
     <string name="repeat_number">반복 횟수</string>
@@ -134,13 +135,20 @@
     <string name="community_search">커뮤니티 검색</string>
     <!--설정-->
     <string name="setting_ver">버전정보</string>
-    <string name="setting_group">그룹설정</string>
+    <string name="setting_time">시간표 설정</string>
+    <string name="setting_group">그룹 설정</string>
     <string name="setting_init">초기화</string>
-    <string name="setting_calendar">달력 연동</string>
+    <string name="setting_calendar">달력연동</string>
     <!--그룹설정-->
     <string name="setting_group_in">소속그룹</string>
     <string name="setting_group_nothing">그룹이 없습니다</string>
     <string name="setting_group_modify">그룹이 설정되었습니다</string>
+    <!--시간설정-->
+    <string name="setting_time_start">시작</string>
+    <string name="setting_time_end">종료</string>
+    <string name="setting_time_next">다음</string>
+    <string name="setting_time_week">요일범위</string>
+    <string name="setting_time_time">시간범위</string>
     <!--버전정보-->
     <string name="setting_ver_local">현재 버전</string>
     <string name="setting_ver_server">최신 버전</string>

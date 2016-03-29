@@ -31,19 +31,8 @@ public class BackPressCloseHandler {
                         toast.cancel();
                     }
                 break;
-            case "SettingVerFragment":
-                EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
-                EventBus.getDefault().post(new BackKeyEvent("", new String[]{"ibMenu"}, new String[]{"ibBack"}));
-                break;
-            case "SettingGroupFragment":
-                EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
-                EventBus.getDefault().post(new BackKeyEvent("", new String[]{"ibMenu"}, new String[]{"ibBack"}));
-                break;
-            case "SettingInitFragment":
-                EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
-                EventBus.getDefault().post(new BackKeyEvent("", new String[]{"ibMenu"}, new String[]{"ibBack"}));
-                break;
-            case "SettingCalendarFragment":
+            case "SettingVerFragment":case "SettingGroupFragment":case "SettingInitFragment":
+            case "SettingCalendarFragment": case "SettingTimeFragment":
                 EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
                 EventBus.getDefault().post(new BackKeyEvent("", new String[]{"ibMenu"}, new String[]{"ibBack"}));
                 break;

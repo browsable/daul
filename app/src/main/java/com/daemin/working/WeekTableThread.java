@@ -1,4 +1,4 @@
-package com.daemin.timetable;
+package com.daemin.working;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,12 +19,14 @@ import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.ExcuteMethodEvent;
+import com.daemin.timetable.InitThread;
+import com.daemin.timetable.R;
 
 import de.greenrobot.event.EventBus;
 import timedao.MyTime;
 
 @SuppressLint("DefaultLocale")
-public class InitWeekThread extends InitThread {
+public class WeekTableThread extends InitThread {
     SurfaceHolder mholder;
     private boolean isLoop = true, downFlag=false;
     private int width, height,dayOfWeek,intervalSize,hourIntervalSize; //화면의 전체 너비, 높이
@@ -36,7 +38,7 @@ public class InitWeekThread extends InitThread {
     static int tempxth, tempyth;
     Canvas canvas;
     public String sun,mon,tue,wed,thr,fri,sat;
-    public InitWeekThread(SurfaceHolder holder, Context context) {
+    public WeekTableThread(SurfaceHolder holder, Context context) {
         this.mholder = holder;
         this.context = context;
         this.dayOfWeek = Dates.NOW.getDayOfWeek();

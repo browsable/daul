@@ -95,6 +95,18 @@ public enum User {
         return pref.getBoolean("widget4_4", false);
     }
     public boolean getExplain1(){
-        return pref.getBoolean("explain1",true);
+        return pref.getBoolean("explain1", true);
+    }
+    public int getStartDay(){
+        return pref.getInt("startDay", 0); //일
+    }
+    public int getEndDay(){
+        return pref.getInt("endDay", 6); // 토
+    }
+    public int getStartTime(){
+        return pref.getInt("startTime", 8);
+    }
+    public int getEndTime(){
+        return pref.getInt("endTime", 23);
     }
 }

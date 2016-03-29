@@ -257,6 +257,9 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
                         Uri.parse("http://plus.kakao.com/home/@timedao"));
                 getActivity().startActivity(i);
                 break;
+            case R.id.btSettingTime:
+                EventBus.getDefault().post(new ChangeFragEvent(SettingTimeFragment.class, getActivity().getResources().getString(R.string.setting_time)));
+                break;
         }
     }
     public void setLayout(View root){
@@ -267,6 +270,7 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
         btSettingGroup = (RelativeLayout)root.findViewById(R.id.btSettingGroup);
         btSettingCalendar = (TextView)root.findViewById(R.id.btSettingCalendar);
         btSettingQA = (TextView)root.findViewById(R.id.btSettingQA);
+        btSettingTime = (TextView)root.findViewById(R.id.btSettingTime);
         tvVer = (TextView)root.findViewById(R.id.tvVer);
         tvUnivName = (TextView)root.findViewById(R.id.tvUnivName);
         tvVer.setText("v"+ User.INFO.appVer);
@@ -283,9 +287,10 @@ public class SettingFragment extends BasicFragment implements View.OnClickListen
         btSettingInit.setOnClickListener(this);
         btSettingCalendar.setOnClickListener(this);
         btSettingQA.setOnClickListener(this);
+        btSettingTime.setOnClickListener(this);
     }
     private ImageView ivProfile;
-    private TextView btSettingInit,btSettingCalendar,btSettingQA, tvVer, tvUnivName;
+    private TextView btSettingInit,btSettingCalendar,btSettingQA,btSettingTime, tvVer, tvUnivName;
     private RelativeLayout btSettingVer,btSettingGroup;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_ALBUM = 2;

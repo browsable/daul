@@ -24,6 +24,7 @@ import com.daemin.dialog.DialDefault;
 import com.daemin.encryption.MyHash;
 import com.daemin.enumclass.User;
 import com.daemin.timetable.R;
+import com.daemin.working.MainActivity2;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -123,7 +124,7 @@ public class SplashActivity extends Activity{
 			@Override
 			public void run() {
 				finish();
-				Intent i = new Intent(SplashActivity.this, MainActivity.class);
+				Intent i = new Intent(SplashActivity.this, MainActivity2.class);
 				startActivity(i);
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 			}

@@ -1,4 +1,4 @@
-<resources>
-    <style name="AppBaseTheme" parent="android:Theme.Light">
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="AppBaseTheme" parent="android:Theme.Material" tools:targetApi="lollipop">
     </style>
 </resources>
