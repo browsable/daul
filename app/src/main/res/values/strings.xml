@@ -139,6 +139,7 @@
     <string name="setting_group">그룹 설정</string>
     <string name="setting_init">초기화</string>
     <string name="setting_calendar">달력연동</string>
+    <string name="setting_opensrc">오픈소스 정보</string>
     <!--그룹설정-->
     <string name="setting_group_in">소속그룹</string>
     <string name="setting_group_nothing">그룹이 없습니다</string>
@@ -168,6 +169,24 @@
     <string name="setting_cal_24">24절기</string>
     <string name="setting_cal_sub">과목</string>
     <string name="setting_cal_repeat">매주 반복 일정</string>
+    <!--오픈소스정보-->
+    <string name="setting_opensrc_info">
+        오픈소스 라이센스 정보\n\n
+\n- greenDAO
+\n (https://github.com/greenrobot/greenDAO)
+\n- Freemarker
+\n (http://freemarker.incubator.apache.org/index.html)
+\n- EventBus
+\n (https://github.com/greenrobot/EventBus)
+\n- OkHttp
+\n (https://github.com/square/okhttp)
+\n- android-volley
+\n (https://github.com/mcxiaoke/android-volley)\n\n
+
+\n- Android Support Library
+\n com.android.support:appcompat-v7:23.1.1
+\n com.android.support:support-v4:23.1.1
+    </string>
 
     <string name="jackson1_text">-&#45;&#45; Jackson 1.x -&#45;&#45;</string>
     <string name="jackson2_text">-&#45;&#45; Jackson 2.x -&#45;&#45;</string>
