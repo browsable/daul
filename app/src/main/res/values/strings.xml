@@ -148,8 +148,10 @@
     <string name="setting_time_start">시작</string>
     <string name="setting_time_end">종료</string>
     <string name="setting_time_next">다음</string>
-    <string name="setting_time_week">요일범위</string>
-    <string name="setting_time_time">시간범위</string>
+    <string name="setting_time_week">요일 범위</string>
+    <string name="setting_time_time">시간 범위</string>
+    <string name="setting_time_textsize">글자 크기</string>
+    <string name="setting_time_error">시작시간보다 종료시간이 커야합니다</string>
     <!--버전정보-->
     <string name="setting_ver_local">현재 버전</string>
     <string name="setting_ver_server">최신 버전</string>

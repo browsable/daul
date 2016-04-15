@@ -149,7 +149,9 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/lightgray" />
+            android:background="@color/lightgray"
+            android:visibility="gone"
+            />
         <RelativeLayout
             android:id="@+id/btSettingOpenSrc"
             android:layout_width="match_parent"
@@ -176,7 +178,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:background="@color/lightgray" />
 
 

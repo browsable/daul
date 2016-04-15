@@ -226,7 +226,7 @@ public enum Dates {
     }
     public void setMonthData(int index) {
         todayIndex = index;
-        year = getLastDayOfWeek().plusMonths(index).getYear();
+        year = LocalDate.now().plusMonths(index).getYear();
         month = LocalDate.now().plusMonths(index).getMonthOfYear();
         LocalDate firstDay = LocalDate.now().plusMonths(index).minusMonths(1).dayOfMonth().withMaximumValue().withDayOfWeek(1).minusDays(1);
         for(int i =0; i<42; i++){

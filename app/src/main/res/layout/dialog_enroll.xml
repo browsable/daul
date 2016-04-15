@@ -3,13 +3,13 @@
     android:id="@+id/llDialEnroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_black_border"
+    android:background="@drawable/bg_lightgray_border"
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dialog_bar"
         android:padding="@dimen/margin_default"
-        android:background="@color/middlegray"
+        android:background="@color/maincolor"
         >
     <TextView
         android:id="@+id/tvMonthDay"
@@ -27,7 +27,7 @@
         android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/ic_clear" />
+        android:background="@drawable/ic_cancel" />
     </RelativeLayout>
     <ListView
         android:id="@+id/lv"
@@ -42,7 +42,7 @@
         />
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="@color/lightgray" />
     <LinearLayout
         android:id="@+id/llNewEnroll"

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
@@ -35,14 +36,17 @@ public class WeekTableThread extends InitThread {
     private Paint hpvp; // 30분 간격 수평선, 수직선
     private Paint tp, tpred, tpblue; // 시간 텍스트
     private Paint rp;
-    static int tempxth, tempyth;
+    static int tempxth, tempyth, tableLength;
+    private static WeekTableThread singleton;
     Canvas canvas;
     public String sun,mon,tue,wed,thr,fri,sat;
     public WeekTableThread(SurfaceHolder holder, Context context) {
+        singleton = this;
         this.mholder = holder;
         this.context = context;
         this.dayOfWeek = Dates.NOW.getDayOfWeek();
-        Common.fetchWeekData();
+        tableLength = (User.INFO.getStartTime() - User.INFO.getEndTime()+1)*4;
+        //Common.fetchWeekData();
         sun=context.getResources().getString(R.string.day0);
         mon=context.getResources().getString(R.string.day1);
         tue=context.getResources().getString(R.string.day2);
@@ -76,12 +80,20 @@ public class WeekTableThread extends InitThread {
         this.isLoop = isLoop;
     }
 
+    public static void setTime(int startTime, int endTime) {
+        tableLength = (endTime - startTime+1)*4;
+    }
+
     public int getWidth() {
         return width;
     }
 
     public int getHeight() {
         return height;
+    }
+
+    public static WeekTableThread getInstance() {
+        return singleton;
     }
 
     public void run() {
@@ -193,7 +205,39 @@ public class WeekTableThread extends InitThread {
         }
     }
     public void initScreen() {
-        float[] hp_hour = {
+       float[] hp_hour = new float[tableLength];
+        hp_hour[0] = width / 20;
+        hp_hour[1] = height / 32 + intervalSize;
+        hp_hour[2] = width;
+        hp_hour[3] = height / 32 + intervalSize;
+
+        hp_hour[tableLength-4] = width / 20;
+        hp_hour[tableLength-3] = height * 31 / 32 + intervalSize;
+        hp_hour[tableLength-2] = width;
+        hp_hour[tableLength-1] = height * 31 / 32 + intervalSize;
+
+        if(tableLength!=8) {
+            for (int i = 4; i < tableLength-4; i++) {
+                switch (i % 4) {
+                    case 0:
+                        hp_hour[i] = width / 20;
+                        break;
+                    case 1:
+                        hp_hour[i] = height * (30*(i/4))/ 32*(tableLength/4-1) + intervalSize;
+                        break;
+                    case 2:
+                        hp_hour[i] = width;
+                        break;
+                    case 3:
+                        hp_hour[i] = height * (30*(i/4))/ 32*(tableLength/4-1) + intervalSize;
+                        break;
+                }
+            }
+        }
+        canvas.drawColor(Color.WHITE);
+        canvas.drawLines(hp_hour, hp);
+
+       /* float[] hp_hour = {
                 // 가로선 : 1시간 간격
                 width / 20, height / 32 + intervalSize, width, height / 32 + intervalSize, width / 20, height * 3 / 32 + intervalSize, width,
                 height * 3 / 32 + intervalSize, width / 20, height * 5 / 32 + intervalSize, width, height * 5 / 32 + intervalSize, width / 20,
@@ -242,7 +286,7 @@ public class WeekTableThread extends InitThread {
         canvas.drawText(sat, width * 14 / 15, (height / 32 + intervalSize) * 15 / 16-1, tpblue);
         hp.setAlpha(40);
         if(Dates.NOW.isToday)canvas.drawRect(width * (2 * dayOfWeek + 1) / 15, ((height * 2) - 10) / 64 + intervalSize, width * (2 * dayOfWeek + 3) / 15, height * 62 / 64 + intervalSize, hp);
-        hp.setAlpha(100);
+        hp.setAlpha(100);*/
 
     }
 }

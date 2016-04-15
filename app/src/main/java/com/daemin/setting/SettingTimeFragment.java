@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 import com.daemin.working.MainActivity2;
+import com.daemin.working.WeekTableThread;
 
 import java.util.Calendar;
 
@@ -53,7 +55,7 @@ public class SettingTimeFragment extends BasicFragment {
         btSettingTime = (RelativeLayout)root.findViewById(R.id.btSettingTime);
         tvWeek = (TextView)root.findViewById(R.id.tvWeek);
         tvTime = (TextView)root.findViewById(R.id.tvTime);
-        int startDay = getResources().getIdentifier("day" + User.INFO.getStartDay(), "string", getActivity().getPackageName());
+        final int startDay = getResources().getIdentifier("day" + User.INFO.getStartDay(), "string", getActivity().getPackageName());
         final int endDay = getResources().getIdentifier("day"+User.INFO.getEndDay(),"string",getActivity().getPackageName());
         String week = getString(startDay)+" ~ " +getString(endDay);
         tvWeek.setText(week);
@@ -70,48 +72,64 @@ public class SettingTimeFragment extends BasicFragment {
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             @Override
             public void onClick(View v) {
-                TimePickerDialog startTpd = new TimePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, startTimePikcerListener, 8, 0, false);
-                startTpd.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.setting_time_next), new DialogInterface.OnClickListener() {
+                TimePickerDialog startTpd = new TimePickerDialog(getActivity(), R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        TimePickerDialog endTpd = new TimePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, endTimePikcerListener, 23, 0, false);
-                        TextView tv = new TextView(getActivity());
-                        tv.setText(getString(R.string.setting_time_end));
-                        tv.setTextColor(getResources().getColor(android.R.color.white));
-                        tv.setTypeface(null, Typeface.BOLD);
-                        //tv.setTextSize(R.dimen.textsize_l);
-                        tv.setGravity(Gravity.CENTER);
-                        tv.setBackgroundColor(getResources().getColor(R.color.timepicker_title));
-                        endTpd.setCustomTitle(tv);
-                        endTpd.show();
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                        startTime = hourOfDay;
                     }
-                });
+                }, 8, 0, false);
                 TextView tv = new TextView(getActivity());
                 tv.setText(getString(R.string.setting_time_start));
                 tv.setTextColor(getResources().getColor(android.R.color.white));
                 tv.setTypeface(null, Typeface.BOLD);
-                //tv.setTextSize(R.dimen.textsize_l);
                 tv.setGravity(Gravity.CENTER);
-                tv.setBackgroundColor(getResources().getColor(R.color.timepicker_title));
+                tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
                 startTpd.setCustomTitle(tv);
                 startTpd.show();
+
+                startTpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        final TimePickerDialog endTpd = new TimePickerDialog(getActivity(), R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                endTime = hourOfDay;
+                            }
+                        }, 23, 0, false);
+                        TextView tv = new TextView(getActivity());
+                        tv.setText(getString(R.string.setting_time_end));
+                        tv.setTextColor(getResources().getColor(android.R.color.white));
+                        tv.setTypeface(null, Typeface.BOLD);
+                        tv.setGravity(Gravity.CENTER);
+                        tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
+                        endTpd.setCustomTitle(tv);
+                        endTpd.show();
+                        endTpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                if(startTime<endTime){
+                                    User.INFO.getEditor().putInt("startTime", startTime).commit();
+                                    User.INFO.getEditor().putInt("endTime", endTime).commit();
+                                    WeekTableThread.getInstance().setTime(startTime, endTime);
+                                    tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
+                                }else{
+                                    Toast.makeText(getActivity(), getString(R.string.setting_time_error), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                    }
+                });
             }
         });
 
         return root;
     }
-    protected TimePickerDialog.OnTimeSetListener startTimePikcerListener = new TimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        }
-    };
-    protected TimePickerDialog.OnTimeSetListener endTimePikcerListener = new TimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        }
-    };
     ImageButton ibBack;
     RelativeLayout btSettingWeek,btSettingTime;
     TextView tvWeek, tvTime;
+    int startTime;
+    int endTime;
 
 }

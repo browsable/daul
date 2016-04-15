@@ -47,7 +47,6 @@ public class DialSettingWeekPicker extends Dialog {
         this.tvWeek = tvWeek;
         this.startDay = startDay;
         this.endDay = endDay;
-        Log.i("test",startDay+""+endDay);
 
     }
 
