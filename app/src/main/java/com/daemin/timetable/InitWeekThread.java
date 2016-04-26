@@ -91,7 +91,7 @@ public class InitWeekThread extends InitThread {
                 width = canvas.getWidth();
                 height = canvas.getHeight();
                 synchronized (mholder) {
-                    initScreen();
+                    drawScreen();
                     fetchWeekData();
                     for (TimePos ETP : TimePos.values()) {
                         ETP.drawTimePos(canvas, width, height);
@@ -191,7 +191,7 @@ public class InitWeekThread extends InitThread {
                     width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);
         }
     }
-    public void initScreen() {
+    public void drawScreen() {
         if(initFlag) {
             hp_hour = new float[]{
                     // 가로선 : 1시간 간격

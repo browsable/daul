@@ -30,25 +30,29 @@ import timedao.MyTime;
 public class WeekTableThread extends InitThread {
     SurfaceHolder mholder;
     private boolean isLoop = true, downFlag = false, initFlag = true;
-    private int width, height, dayOfWeek, intervalSize, hourIntervalSize; //화면의 전체 너비, 높이
+    private int width, height, dayOfWeek, intervalSize, startTime, endTime; //화면의 전체 너비, 높이
     Context context;
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
     private Paint tp, tpred, tpblue; // 시간 텍스트
     private Paint rp;
-    static int tempxth, tempyth, timeInterval, tableLength;
+    static int tempxth, tempyth, timeInterval, timeLength, dayInterval, dayLength;
     private static WeekTableThread singleton;
     Canvas canvas;
     public String sun, mon, tue, wed, thr, fri, sat;
-    float[] hp_hour;
+    float[] hp_hour, vp;
 
     public WeekTableThread(SurfaceHolder holder, Context context) {
         singleton = this;
         this.mholder = holder;
         this.context = context;
         this.dayOfWeek = Dates.NOW.getDayOfWeek();
-        timeInterval = User.INFO.getEndTime() - User.INFO.getStartTime();
-        tableLength = (User.INFO.getEndTime() - User.INFO.getStartTime() + 1) * 4;
+        startTime = User.INFO.getStartTime();
+        endTime = User.INFO.getEndTime();
+        timeInterval = endTime - startTime;
+        timeLength = (timeInterval + 1) * 4;
+        dayInterval = User.INFO.getEndDay()-User.INFO.getStartDay()+1;
+        dayLength = (dayInterval+1)*4;
         //Common.fetchWeekData();
         sun = context.getResources().getString(R.string.day0);
         mon = context.getResources().getString(R.string.day1);
@@ -60,7 +64,6 @@ public class WeekTableThread extends InitThread {
         tempxth = 0;
         tempyth = 0;
         intervalSize = User.INFO.intervalSize;
-        hourIntervalSize = context.getResources().getDimensionPixelSize(R.dimen.margin_m);
         hp = new Paint(Paint.ANTI_ALIAS_FLAG);
         hp.setColor(context.getResources().getColor(R.color.maincolor));
         hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -84,10 +87,6 @@ public class WeekTableThread extends InitThread {
         this.isLoop = isLoop;
     }
 
-    public static void setTime(int startTime, int endTime) {
-        tableLength = (endTime - startTime + 1) * 4;
-    }
-
     public int getWidth() {
         return width;
     }
@@ -108,7 +107,7 @@ public class WeekTableThread extends InitThread {
                 width = canvas.getWidth();
                 height = canvas.getHeight();
                 synchronized (mholder) {
-                    initScreen();
+                    drawScreen();
                     fetchWeekData();
                     for (TimePos ETP : TimePos.values()) {
                         ETP.drawTimePos(canvas, width, height);
@@ -211,21 +210,21 @@ public class WeekTableThread extends InitThread {
         }
     }
 
-    public void initScreen() {
+    public void drawScreen() {
         //Log.i("test",tableLength+"");
         if (initFlag) {
-            hp_hour = new float[tableLength];
+            hp_hour = new float[timeLength];
             hp_hour[0] = width / 20;
             hp_hour[1] = height / 32 + intervalSize;
             hp_hour[2] = width;
             hp_hour[3] = height / 32 + intervalSize;
-            hp_hour[tableLength - 4] = width / 20;
-            hp_hour[tableLength - 3] = height * 31 / 32 + intervalSize;
-            hp_hour[tableLength - 2] = width;
-            hp_hour[tableLength - 1] = height * 31 / 32 + intervalSize;
+            hp_hour[timeLength - 4] = width / 20;
+            hp_hour[timeLength - 3] = height * 31 / 32 + intervalSize;
+            hp_hour[timeLength - 2] = width;
+            hp_hour[timeLength - 1] = height * 31 / 32 + intervalSize;
 
-            if (tableLength != 8) {
-                for (int i = 4; i < tableLength - 4; i++) {
+            if (timeInterval != 1) {
+                for (int i = 4; i < timeLength - 4; i++) {
                     switch (i % 4) {
                         case 0:
                             hp_hour[i] = width / 20;
@@ -242,38 +241,39 @@ public class WeekTableThread extends InitThread {
                     }
                 }
             }
+            vp = new float[dayLength];
+            vp[0] =  width / 15;
+            vp[1] = height / 32 + intervalSize;
+            vp[2] = width / 15;
+            vp[3] = height * 31 / 32 + intervalSize;
+            if (dayInterval != 1) {
+                for (int i = 4; i < dayLength - 4; i++) {
+                    switch (i % 4) {
+                        case 0:
+                            vp[i] = (width*14 / 15)/dayInterval * (i / 4)+ width / 15;
+                            break;
+                        case 1:
+                            vp[i] = height / 32 + intervalSize;
+                            break;
+                        case 2:
+                            vp[i] = (width*14 / 15)/dayInterval * (i / 4)+ width / 15;
+                            break;
+                        case 3:
+                            vp[i] = height * 31 / 32 + intervalSize;
+                            break;
+                    }
+                }
+            }
+
             initFlag = false;
         }
         canvas.drawColor(Color.WHITE);
         canvas.drawLines(hp_hour, hp);
-
-       /*float[] hp_hour = {
-                // 가로선 : 1시간 간격
-                width / 20, height / 32 + intervalSize, width, height / 32 + intervalSize, width / 20, height * 3 / 32 + intervalSize, width,
-                height * 3 / 32 + intervalSize, width / 20, height * 5 / 32 + intervalSize, width, height * 5 / 32 + intervalSize, width / 20,
-                height * 7 / 32 + intervalSize, width, height * 7 / 32 + intervalSize, width / 20, height * 9 / 32 + intervalSize, width,
-                height * 9 / 32 + intervalSize, width / 20, height * 11 / 32 + intervalSize, width, height * 11 / 32 + intervalSize, width / 20,
-                height * 13 / 32 + intervalSize, width, height * 13 / 32 + intervalSize, width / 20, height * 15 / 32 + intervalSize, width,
-                height * 15 / 32 + intervalSize, width / 20, height * 17 / 32 + intervalSize, width, height * 17 / 32 + intervalSize, width / 20,
-                height * 19 / 32 + intervalSize, width, height * 19 / 32 + intervalSize, width / 20, height * 21 / 32 + intervalSize, width,
-                height * 21 / 32 + intervalSize, width / 20, height * 23 / 32 + intervalSize, width, height * 23 / 32 + intervalSize, width / 20,
-                height * 25 / 32 + intervalSize, width, height * 25 / 32 + intervalSize, width / 20, height * 27 / 32 + intervalSize, width,
-                height * 27 / 32 + intervalSize, width / 20, height * 29 / 32 + intervalSize, width, height * 29 / 32 + intervalSize, width / 20,
-                height * 31 / 32 + intervalSize, width, height * 31 / 32 + intervalSize};
-        float[] vp = {
-                // 세로 선
-                width / 15, height / 32 + intervalSize, width / 15, height * 31 / 32 + intervalSize, width * 3 / 15,
-                height / 32 + intervalSize, width * 3 / 15, height * 31 / 32 + intervalSize, width * 5 / 15,
-                height / 32 + intervalSize, width * 5 / 15, height * 31 / 32 + intervalSize, width * 7 / 15,
-                height / 32 + intervalSize, width * 7 / 15, height * 31 / 32 + intervalSize, width * 9 / 15,
-                height / 32 + intervalSize, width * 9 / 15, height * 31 / 32 + intervalSize, width * 11 / 15,
-                height / 32 + intervalSize, width * 11 / 15, height * 31 / 32 + intervalSize, width * 13 / 15,
-                height / 32 + intervalSize, width * 13 / 15, height * 31 / 32 + intervalSize,width-2,
-                height / 32 + intervalSize, width-2, height * 31 / 32 + intervalSize};
-
-        canvas.drawColor(Color.WHITE);
-        canvas.drawLines(hp_hour, hp);
         canvas.drawLines(vp, hpvp);
+        for(int i = 0; i<timeInterval+1; i++){
+            canvas.drawText(startTime+i+"", width / 40, hp_hour[4*i+1] + intervalSize, tp);
+        }
+       /*
         canvas.drawText("8", (width / 20) * 5 / 8, height * 1 / 32 + hourIntervalSize, tp);
         canvas.drawText("9", (width / 20) * 5 / 8, height * 3 / 32 + hourIntervalSize, tp);
         for (int i = 2; i < 16; i++) {

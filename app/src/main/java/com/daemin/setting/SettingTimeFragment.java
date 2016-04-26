@@ -38,6 +38,7 @@ public class SettingTimeFragment extends BasicFragment {
         super(R.layout.fragment_setting_time, "SettingTimeFragment");
     }
 
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -109,13 +110,21 @@ public class SettingTimeFragment extends BasicFragment {
                         endTpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
-                                if(startTime<endTime){
-                                    User.INFO.getEditor().putInt("startTime", startTime).commit();
-                                    User.INFO.getEditor().putInt("endTime", endTime).commit();
-                                    WeekTableThread.getInstance().setTime(startTime, endTime);
-                                    tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
+                                if(startTime<endTime) {
+                                    if (endTime-startTime>15){
+                                        int endTime = startTime+15;
+                                        User.INFO.getEditor().putInt("startTime", startTime).commit();
+                                        User.INFO.getEditor().putInt("endTime", endTime).commit();
+                                        Toast.makeText(getActivity(), getString(R.string.setting_time_interval), Toast.LENGTH_SHORT).show();
+                                        tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
+                                    }
+                                    else{
+                                        User.INFO.getEditor().putInt("startTime", startTime).commit();
+                                        User.INFO.getEditor().putInt("endTime", endTime).commit();
+                                        tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
+                                    }
                                 }else{
-                                    Toast.makeText(getActivity(), getString(R.string.setting_time_error), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

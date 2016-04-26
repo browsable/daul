@@ -96,7 +96,7 @@ public class InitMonthThread extends InitThread {
 				width = canvas.getWidth();
 				height = canvas.getHeight();
 				synchronized (mholder) {
-					initScreen();
+					drawScreen();
 					for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
 						DOMP.drawTimePos(canvas, width, height);
 					}
@@ -164,7 +164,7 @@ public class InitMonthThread extends InitThread {
 		}
 		return;
 	}
-	public void initScreen() {
+	public void drawScreen() {
 		if(initFlag) {
 			hp_hour = new float[]{
 					// 가로선

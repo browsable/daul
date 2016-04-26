@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daemin.common.Convert;
 import com.daemin.enumclass.User;
@@ -90,11 +91,11 @@ public class DialSettingWeekPicker extends Dialog {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 startDay = position;
-                endList.clear();
+                /*endList.clear();
                 for (int i = position; i < 7; ++i) {
                     endList.add(startList.get(i));
                 }
-                endAdapter.notifyDataSetChanged();
+                endAdapter.notifyDataSetChanged();*/
             }
 
             @Override
@@ -126,13 +127,17 @@ public class DialSettingWeekPicker extends Dialog {
             public void onClick(View v) {
                 startDay = sStartDay.getSelectedItemPosition();
                 endDay = Convert.DayOfWeekToInt(sEndDay.getSelectedItem().toString());
-                int start = context.getResources().getIdentifier("day" + startDay, "string", context.getPackageName());
-                int end = context.getResources().getIdentifier("day" + endDay, "string", context.getPackageName());
-                String week = context.getString(start) + " ~ " + context.getString(end);
-                tvWeek.setText(week);
-                User.INFO.getEditor().putInt("startDay", startDay).commit();
-                User.INFO.getEditor().putInt("endDay", endDay).commit();
-                cancel();
+                if(startDay>endDay){
+                    Toast.makeText(context, context.getString(R.string.setting_time_day_error), Toast.LENGTH_SHORT).show();
+                }else {
+                    int start = context.getResources().getIdentifier("day" + startDay, "string", context.getPackageName());
+                    int end = context.getResources().getIdentifier("day" + endDay, "string", context.getPackageName());
+                    String week = context.getString(start) + " ~ " + context.getString(end);
+                    tvWeek.setText(week);
+                    User.INFO.getEditor().putInt("startDay", startDay).commit();
+                    User.INFO.getEditor().putInt("endDay", endDay).commit();
+                    cancel();
+                }
             }
         });
     }
