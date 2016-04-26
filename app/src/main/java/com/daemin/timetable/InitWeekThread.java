@@ -26,7 +26,7 @@ import timedao.MyTime;
 @SuppressLint("DefaultLocale")
 public class InitWeekThread extends InitThread {
     SurfaceHolder mholder;
-    private boolean isLoop = true, downFlag=false;
+    private boolean isLoop = true, downFlag=false, initFlag = true;
     private int width, height,dayOfWeek,intervalSize,hourIntervalSize; //화면의 전체 너비, 높이
     Context context;
     private Paint hp; // 1시간 간격 수평선
@@ -36,6 +36,7 @@ public class InitWeekThread extends InitThread {
     static int tempxth, tempyth;
     Canvas canvas;
     public String sun,mon,tue,wed,thr,fri,sat;
+    float[] hp_hour,vp;
     public InitWeekThread(SurfaceHolder holder, Context context) {
         this.mholder = holder;
         this.context = context;
@@ -191,30 +192,32 @@ public class InitWeekThread extends InitThread {
         }
     }
     public void initScreen() {
-        float[] hp_hour = {
-                // 가로선 : 1시간 간격
-                width / 20, height / 32 + intervalSize, width, height / 32 + intervalSize, width / 20, height * 3 / 32 + intervalSize, width,
-                height * 3 / 32 + intervalSize, width / 20, height * 5 / 32 + intervalSize, width, height * 5 / 32 + intervalSize, width / 20,
-                height * 7 / 32 + intervalSize, width, height * 7 / 32 + intervalSize, width / 20, height * 9 / 32 + intervalSize, width,
-                height * 9 / 32 + intervalSize, width / 20, height * 11 / 32 + intervalSize, width, height * 11 / 32 + intervalSize, width / 20,
-                height * 13 / 32 + intervalSize, width, height * 13 / 32 + intervalSize, width / 20, height * 15 / 32 + intervalSize, width,
-                height * 15 / 32 + intervalSize, width / 20, height * 17 / 32 + intervalSize, width, height * 17 / 32 + intervalSize, width / 20,
-                height * 19 / 32 + intervalSize, width, height * 19 / 32 + intervalSize, width / 20, height * 21 / 32 + intervalSize, width,
-                height * 21 / 32 + intervalSize, width / 20, height * 23 / 32 + intervalSize, width, height * 23 / 32 + intervalSize, width / 20,
-                height * 25 / 32 + intervalSize, width, height * 25 / 32 + intervalSize, width / 20, height * 27 / 32 + intervalSize, width,
-                height * 27 / 32 + intervalSize, width / 20, height * 29 / 32 + intervalSize, width, height * 29 / 32 + intervalSize, width / 20,
-                height * 31 / 32 + intervalSize, width, height * 31 / 32 + intervalSize};
-        float[] vp = {
-                // 세로 선
-                width / 15, height / 32 + intervalSize, width / 15, height * 31 / 32 + intervalSize, width * 3 / 15,
-                height / 32 + intervalSize, width * 3 / 15, height * 31 / 32 + intervalSize, width * 5 / 15,
-                height / 32 + intervalSize, width * 5 / 15, height * 31 / 32 + intervalSize, width * 7 / 15,
-                height / 32 + intervalSize, width * 7 / 15, height * 31 / 32 + intervalSize, width * 9 / 15,
-                height / 32 + intervalSize, width * 9 / 15, height * 31 / 32 + intervalSize, width * 11 / 15,
-                height / 32 + intervalSize, width * 11 / 15, height * 31 / 32 + intervalSize, width * 13 / 15,
-                height / 32 + intervalSize, width * 13 / 15, height * 31 / 32 + intervalSize,width-2,
-                height / 32 + intervalSize, width-2, height * 31 / 32 + intervalSize};
-
+        if(initFlag) {
+            hp_hour = new float[]{
+                    // 가로선 : 1시간 간격
+                    width / 20, height / 32 + intervalSize, width, height / 32 + intervalSize, width / 20, height * 3 / 32 + intervalSize, width,
+                    height * 3 / 32 + intervalSize, width / 20, height * 5 / 32 + intervalSize, width, height * 5 / 32 + intervalSize, width / 20,
+                    height * 7 / 32 + intervalSize, width, height * 7 / 32 + intervalSize, width / 20, height * 9 / 32 + intervalSize, width,
+                    height * 9 / 32 + intervalSize, width / 20, height * 11 / 32 + intervalSize, width, height * 11 / 32 + intervalSize, width / 20,
+                    height * 13 / 32 + intervalSize, width, height * 13 / 32 + intervalSize, width / 20, height * 15 / 32 + intervalSize, width,
+                    height * 15 / 32 + intervalSize, width / 20, height * 17 / 32 + intervalSize, width, height * 17 / 32 + intervalSize, width / 20,
+                    height * 19 / 32 + intervalSize, width, height * 19 / 32 + intervalSize, width / 20, height * 21 / 32 + intervalSize, width,
+                    height * 21 / 32 + intervalSize, width / 20, height * 23 / 32 + intervalSize, width, height * 23 / 32 + intervalSize, width / 20,
+                    height * 25 / 32 + intervalSize, width, height * 25 / 32 + intervalSize, width / 20, height * 27 / 32 + intervalSize, width,
+                    height * 27 / 32 + intervalSize, width / 20, height * 29 / 32 + intervalSize, width, height * 29 / 32 + intervalSize, width / 20,
+                    height * 31 / 32 + intervalSize, width, height * 31 / 32 + intervalSize};
+            vp = new float[]{
+                    // 세로 선
+                    width / 15, height / 32 + intervalSize, width / 15, height * 31 / 32 + intervalSize, width * 3 / 15,
+                    height / 32 + intervalSize, width * 3 / 15, height * 31 / 32 + intervalSize, width * 5 / 15,
+                    height / 32 + intervalSize, width * 5 / 15, height * 31 / 32 + intervalSize, width * 7 / 15,
+                    height / 32 + intervalSize, width * 7 / 15, height * 31 / 32 + intervalSize, width * 9 / 15,
+                    height / 32 + intervalSize, width * 9 / 15, height * 31 / 32 + intervalSize, width * 11 / 15,
+                    height / 32 + intervalSize, width * 11 / 15, height * 31 / 32 + intervalSize, width * 13 / 15,
+                    height / 32 + intervalSize, width * 13 / 15, height * 31 / 32 + intervalSize, width - 2,
+                    height / 32 + intervalSize, width - 2, height * 31 / 32 + intervalSize};
+            initFlag=false;
+        }
         canvas.drawColor(Color.WHITE);
         canvas.drawLines(hp_hour, hp);
         canvas.drawLines(vp, hpvp);

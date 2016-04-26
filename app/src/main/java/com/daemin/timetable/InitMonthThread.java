@@ -23,7 +23,7 @@ import de.greenrobot.event.EventBus;
 @SuppressLint("DefaultLocale")
 public class InitMonthThread extends InitThread {
 	SurfaceHolder mholder;
-	private boolean isLoop = true,downFlag=false;
+	private boolean isLoop = true,downFlag=false, initFlag = true;
 	private int width;
 	private int height;
 	private int ty;
@@ -37,6 +37,7 @@ public class InitMonthThread extends InitThread {
 	static int tempyth;
 	Canvas canvas;
 	public String sun,mon,tue,wed,thr,fri,sat;
+	float[] hp_hour, vp;
 	public InitMonthThread(SurfaceHolder holder, Context context) {
 		this.mholder = holder;
 		this.context = context;
@@ -164,25 +165,27 @@ public class InitMonthThread extends InitThread {
 		return;
 	}
 	public void initScreen() {
-		float[] hp_hour = {
-				// 가로선
-				0, height / 32 + intervalSize, width, height / 32 + intervalSize , 0, height * 12 / 64 + intervalSize, width,
-				height * 12 / 64 + intervalSize, 0, height * 22 / 64 + intervalSize, width, height * 22 / 64 + intervalSize, 0,
-				height * 32 / 64 + intervalSize, width, height * 32 / 64 + intervalSize, 0, height * 42 / 64 + intervalSize, width,
-				height * 42 / 64 + intervalSize, 0, height * 52 / 64 + intervalSize, width, height * 52 / 64 + intervalSize, 0,
-				height * 62 / 64 + intervalSize, width, height * 62 / 64 + intervalSize};
+		if(initFlag) {
+			hp_hour = new float[]{
+					// 가로선
+					0, height / 32 + intervalSize, width, height / 32 + intervalSize, 0, height * 12 / 64 + intervalSize, width,
+					height * 12 / 64 + intervalSize, 0, height * 22 / 64 + intervalSize, width, height * 22 / 64 + intervalSize, 0,
+					height * 32 / 64 + intervalSize, width, height * 32 / 64 + intervalSize, 0, height * 42 / 64 + intervalSize, width,
+					height * 42 / 64 + intervalSize, 0, height * 52 / 64 + intervalSize, width, height * 52 / 64 + intervalSize, 0,
+					height * 62 / 64 + intervalSize, width, height * 62 / 64 + intervalSize};
 
-		float[] vp = {
-				// 세로 선
-				2, height / 32 + intervalSize, 2, height * 62 / 64+ intervalSize, width / 7,
-				height / 32 + intervalSize, width / 7, height * 62 / 64+ intervalSize, width * 2 / 7,
-				height / 32 + intervalSize, width * 2 / 7, height * 62 / 64+ intervalSize, width * 3 / 7,
-				height / 32 + intervalSize, width * 3 / 7, height * 62 / 64+ intervalSize, width * 4 / 7,
-				height / 32 + intervalSize, width * 4 / 7, height * 62 / 64+ intervalSize, width * 5 / 7,
-				height / 32 + intervalSize, width * 5 / 7, height * 62 / 64+ intervalSize, width * 6 / 7,
-				height / 32 + intervalSize, width * 6 / 7, height * 62 / 64+ intervalSize, width-2,
-				height / 32 + intervalSize, width-2, height * 62 / 64+ intervalSize};
-
+			vp = new float[]{
+					// 세로 선
+					2, height / 32 + intervalSize, 2, height * 62 / 64 + intervalSize, width / 7,
+					height / 32 + intervalSize, width / 7, height * 62 / 64 + intervalSize, width * 2 / 7,
+					height / 32 + intervalSize, width * 2 / 7, height * 62 / 64 + intervalSize, width * 3 / 7,
+					height / 32 + intervalSize, width * 3 / 7, height * 62 / 64 + intervalSize, width * 4 / 7,
+					height / 32 + intervalSize, width * 4 / 7, height * 62 / 64 + intervalSize, width * 5 / 7,
+					height / 32 + intervalSize, width * 5 / 7, height * 62 / 64 + intervalSize, width * 6 / 7,
+					height / 32 + intervalSize, width * 6 / 7, height * 62 / 64 + intervalSize, width - 2,
+					height / 32 + intervalSize, width - 2, height * 62 / 64 + intervalSize};
+			initFlag = false;
+		}
 		canvas.drawColor(Color.WHITE);
 		canvas.drawLines(hp_hour, hp);
 		canvas.drawLines(vp, hpvp);
