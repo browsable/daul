@@ -40,6 +40,7 @@ import com.daemin.event.ChangeFragEvent;
 import com.daemin.event.PostGroupListEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
+import com.daemin.working.MainActivity2;
 import com.navercorp.volleyextensions.request.Jackson2Request;
 
 import java.io.BufferedInputStream;
@@ -63,7 +64,8 @@ public class SettingGroupFragment extends BasicFragment {
                              Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         EventBus.getDefault().post(new BackKeyEvent("SettingGroupFragment", new String[]{"ibBack"}, new String[]{"ibMenu"}));
-        ibBack = MainActivity.getInstance().getIbBack();
+        //ibBack = MainActivity.getInstance().getIbBack();
+        ibBack = MainActivity2.getInstance().getIbBack();
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

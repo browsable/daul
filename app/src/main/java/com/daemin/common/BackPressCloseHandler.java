@@ -32,7 +32,7 @@ public class BackPressCloseHandler {
                     }
                 break;
             case "SettingVerFragment":case "SettingGroupFragment":case "SettingInitFragment":
-            case "SettingCalendarFragment": case "SettingTimeFragment":
+            case "SettingCalendarFragment": case "SettingTimeFragment":case "SettingOpenSrcFragment":
                 EventBus.getDefault().post(new ChangeFragEvent(SettingFragment.class, "설정"));
                 EventBus.getDefault().post(new BackKeyEvent("", new String[]{"ibMenu"}, new String[]{"ibBack"}));
                 break;

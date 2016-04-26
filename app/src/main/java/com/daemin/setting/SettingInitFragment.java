@@ -13,6 +13,7 @@ import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
+import com.daemin.working.MainActivity2;
 
 import de.greenrobot.event.EventBus;
 
@@ -27,7 +28,8 @@ public class SettingInitFragment extends BasicFragment {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
         EventBus.getDefault().post(new BackKeyEvent("SettingInitFragment",new String[]{"ibBack"},new String[]{"ibMenu"}));
-        ibBack = MainActivity.getInstance().getIbBack();
+        //ibBack = MainActivity.getInstance().getIbBack();
+        ibBack = MainActivity2.getInstance().getIbBack();
         btInitTable = (Button)root.findViewById(R.id.btInitTable);
         btInitSub = (Button)root.findViewById(R.id.btInitSub);
         btInitCredit = (Button)root.findViewById(R.id.btInitCredit);

@@ -22,6 +22,7 @@ import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
+import com.daemin.working.MainActivity2;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +40,8 @@ public class SettingVerFragment extends BasicFragment {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
         EventBus.getDefault().post(new BackKeyEvent("SettingVerFragment", new String[]{"ibBack"}, new String[]{"ibMenu"}));
-        ibBack = MainActivity.getInstance().getIbBack();
+        //ibBack = MainActivity.getInstance().getIbBack();
+        ibBack = MainActivity2.getInstance().getIbBack();
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -41,6 +41,7 @@ public class SettingOpenSrcFragment extends BasicFragment {
 
         EventBus.getDefault().post(new BackKeyEvent("SettingOpenSrcFragment", new String[]{"ibBack"}, new String[]{"ibMenu"}));
 
+        //ibBack = MainActivity.getInstance().getIbBack();
         ibBack = MainActivity2.getInstance().getIbBack();
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override

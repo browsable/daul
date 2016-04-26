@@ -43,6 +43,7 @@ public class SettingTimeFragment extends BasicFragment {
                              Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         EventBus.getDefault().post(new BackKeyEvent("SettingTimeFragment", new String[]{"ibBack"}, new String[]{"ibMenu"}));
+        //ibBack = MainActivity.getInstance().getIbBack();
         ibBack = MainActivity2.getInstance().getIbBack();
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
