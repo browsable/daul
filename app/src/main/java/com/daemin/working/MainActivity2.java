@@ -422,7 +422,9 @@ public class MainActivity2 extends FragmentActivity {
     public static MainActivity2 getInstance() {
         return singleton;
     }
-
+    public InitSurfaceView2 getInitSurfaceView() {
+        return initSurfaceView;
+    }
     public void onEventMainThread(SetBtPlusEvent e) {
         if (e.isSetVisable())
             btPlus.setVisibility(View.VISIBLE);

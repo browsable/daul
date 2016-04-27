@@ -123,6 +123,7 @@ public class SettingTimeFragment extends BasicFragment {
                                         User.INFO.getEditor().putInt("endTime", endTime).commit();
                                         tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
                                     }
+                                    MainActivity2.getInstance().getInitSurfaceView().setTime();
                                 }else{
                                     Toast.makeText(getActivity(), getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
                                 }

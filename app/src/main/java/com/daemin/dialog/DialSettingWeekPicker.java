@@ -22,6 +22,7 @@ import com.daemin.common.Convert;
 import com.daemin.enumclass.User;
 import com.daemin.event.PostGroupListEvent;
 import com.daemin.timetable.R;
+import com.daemin.working.MainActivity2;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -136,6 +137,7 @@ public class DialSettingWeekPicker extends Dialog {
                     tvWeek.setText(week);
                     User.INFO.getEditor().putInt("startDay", startDay).commit();
                     User.INFO.getEditor().putInt("endDay", endDay).commit();
+                    MainActivity2.getInstance().getInitSurfaceView().setDay();
                     cancel();
                 }
             }

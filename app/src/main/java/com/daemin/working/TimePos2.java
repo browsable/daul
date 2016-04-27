@@ -2,8 +2,6 @@ package com.daemin.working;
 
 import android.graphics.Canvas;
 
-import com.daemin.enumclass.PosState2;
-
 /**
  * Created by hernia on 2015-06-27.
  */
@@ -17,12 +15,12 @@ public enum TimePos2 {
     P1301(13, 1),P1303(13, 3),P1305(13, 5),P1307(13, 7),P1309(13, 9),P1311(13, 11),P1313(13, 13),P1315(13, 15),P1317(13, 17),P1319(13, 19),P1321(13, 21),P1323(13, 23),P1325(13, 25),P1327(13, 27),P1329(13, 29);
 
     private PosState2 posState;
-    private int xth;
-    public int yth,realStartYth;
+    public int xth,yth;
+    //public int realStartYth;
     public int startMin,realStartMin;
     public int endMin;
-    private int posIndex;
-    private String title,second,place;
+    //private int posIndex;
+    //private String title,second,place;
     TimePos2() {
     }
     TimePos2(int xth, int yth) {
@@ -31,10 +29,10 @@ public enum TimePos2 {
         this.posState = PosState2.NO_PAINT;
         startMin =0;
         endMin = 60;
-        title ="";
+        /*title ="";
         second="";
         place="";
-        posIndex=0;
+        posIndex=0;*/
     }
     public int getXth() {
         return xth;
@@ -54,6 +52,7 @@ public enum TimePos2 {
         this.startMin = startMin;
         this.endMin = endMin;
     }
+    /*
     public void setInitText(){
         this.title="";
         this.second="";
@@ -83,7 +82,7 @@ public enum TimePos2 {
             if(place.length()>5) this.place = place.substring(0,6);
             else this.place = place;
         }
-    }
+    }*/
     public void setPosState(PosState2 posState) {
         this.posState = posState;
     }
@@ -91,6 +90,6 @@ public enum TimePos2 {
         return posState;
     }
     public void drawTimePos(Canvas canvas, int width, int height) {
-        posState.drawTimePos(canvas, width, height,title, second, place,realStartYth, realStartMin, posIndex, xth, yth, startMin,endMin);
+        posState.drawTimePos(canvas, width, height, xth, yth, startMin,endMin);
     }
 }
