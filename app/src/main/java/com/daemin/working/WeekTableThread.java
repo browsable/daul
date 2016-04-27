@@ -30,7 +30,7 @@ import timedao.MyTime;
 public class WeekTableThread extends InitThread {
     SurfaceHolder mholder;
     private boolean isLoop = true, downFlag = false, initFlag = true;
-    private int width, height, dayOfWeek, intervalSize, startTime, endTime; //화면의 전체 너비, 높이
+    private int width, height, dayOfWeek, intervalSize, startTime, endTime,startDay; //화면의 전체 너비, 높이
     Context context;
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
@@ -39,7 +39,7 @@ public class WeekTableThread extends InitThread {
     static int tempxth, tempyth, timeInterval, timeLength, dayInterval, dayLength;
     private static WeekTableThread singleton;
     Canvas canvas;
-    public String sun, mon, tue, wed, thr, fri, sat;
+    public String[] day;
     float[] hp_hour, vp;
 
     public WeekTableThread(SurfaceHolder holder, Context context) {
@@ -51,16 +51,18 @@ public class WeekTableThread extends InitThread {
         endTime = User.INFO.getEndTime();
         timeInterval = endTime - startTime;
         timeLength = (timeInterval + 1) * 4;
-        dayInterval = User.INFO.getEndDay()-User.INFO.getStartDay()+1;
+        startDay = User.INFO.getStartDay();
+        int endDay = User.INFO.getEndDay();
+        dayInterval = endDay-startDay+1;
         dayLength = (dayInterval+1)*4;
         //Common.fetchWeekData();
-        sun = context.getResources().getString(R.string.day0);
-        mon = context.getResources().getString(R.string.day1);
-        tue = context.getResources().getString(R.string.day2);
-        wed = context.getResources().getString(R.string.day3);
-        thr = context.getResources().getString(R.string.day4);
-        fri = context.getResources().getString(R.string.day5);
-        sat = context.getResources().getString(R.string.day6);
+        day = new String[dayInterval];
+        int j=0;
+        for(int i = startDay; i<endDay+1; i++){
+            int resId = context.getResources().getIdentifier("day"+i, "string", context.getPackageName());
+            day[j] = context.getString(resId);
+            ++j;
+        }
         tempxth = 0;
         tempyth = 0;
         intervalSize = User.INFO.intervalSize;
@@ -247,7 +249,7 @@ public class WeekTableThread extends InitThread {
             vp[2] = width / 15;
             vp[3] = height * 31 / 32 + intervalSize;
             if (dayInterval != 1) {
-                for (int i = 4; i < dayLength - 4; i++) {
+                for (int i = 4; i < dayLength; i++) {
                     switch (i % 4) {
                         case 0:
                             vp[i] = (width*14 / 15)/dayInterval * (i / 4)+ width / 15;
@@ -273,13 +275,11 @@ public class WeekTableThread extends InitThread {
         for(int i = 0; i<timeInterval+1; i++){
             canvas.drawText(startTime+i+"", width / 40, hp_hour[4*i+1] + intervalSize, tp);
         }
-       /*
-        canvas.drawText("8", (width / 20) * 5 / 8, height * 1 / 32 + hourIntervalSize, tp);
-        canvas.drawText("9", (width / 20) * 5 / 8, height * 3 / 32 + hourIntervalSize, tp);
-        for (int i = 2; i < 16; i++) {
-            canvas.drawText(String.valueOf(i + 8), width / 40,
-                    ((2 * i + 1) * height / 32) + hourIntervalSize, tp);
+        for(int i = 0; i<dayInterval+1; i++){
+            canvas.drawText(Dates.NOW.getwMonthDay(startDay*2+1+2*i), (vp[4*i]+vp[4*(i+1)])/2, (height / 32 + intervalSize) * 7 / 16, tp);
+            canvas.drawText(day[i], (vp[4*i]+vp[4*(i+1)])/2, (height / 32 + intervalSize) * 15 / 16-1, tp);
         }
+       /*
         canvas.drawText(Dates.NOW.mdOfSun, width * 2 / 15, (height / 32 + intervalSize) * 7 / 16, tpred);
         canvas.drawText(Dates.NOW.mdOfMon, width * 4 / 15, (height / 32 + intervalSize) * 7 / 16, tp);
         canvas.drawText(Dates.NOW.mdOfTue, width * 6 / 15, (height / 32 + intervalSize) * 7 / 16, tp);
@@ -297,6 +297,7 @@ public class WeekTableThread extends InitThread {
         hp.setAlpha(40);
         if(Dates.NOW.isToday)canvas.drawRect(width * (2 * dayOfWeek + 1) / 15, ((height * 2) - 10) / 64 + intervalSize, width * (2 * dayOfWeek + 3) / 15, height * 62 / 64 + intervalSize, hp);
         hp.setAlpha(100);*/
+
 
     }
 }
