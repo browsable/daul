@@ -110,7 +110,7 @@ public class InitSurfaceView2 extends SurfaceView implements
 				switch (event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
 						calXthYth(event);
-						if (xth > 0 && yth > 0 && yth < 30) {
+						if (xth > 0 && yth > 0 && yth < timeInterval+1) {
 							initThread.getDownXY(xth, yth);
 							outOfTouchArea = false;
 						} else {
@@ -120,7 +120,7 @@ public class InitSurfaceView2 extends SurfaceView implements
 					case MotionEvent.ACTION_MOVE:
 						if (!outOfTouchArea) {
 							calXthYth(event);
-							if (xth > 0 && yth > 0 && yth < 30) {
+							if (xth > 0 && yth > 0 && yth < timeInterval+1) {
 								initThread.getMoveXY(xth, yth);
 							}else{
 								EventBus.getDefault().post(new ExcuteMethodEvent("clearView"));
@@ -130,7 +130,7 @@ public class InitSurfaceView2 extends SurfaceView implements
 					case MotionEvent.ACTION_UP:
 						if (!outOfTouchArea) {
 							calXthYth(event);
-							if (xth > 0 && yth > 0 && yth < 30) {
+							if (xth > 0 && yth > 0 && yth < timeInterval+1) {
 								initThread.getActionUp();
 							}else{
 								EventBus.getDefault().post(new ExcuteMethodEvent("clearView"));
@@ -181,22 +181,9 @@ public class InitSurfaceView2 extends SurfaceView implements
 				try{
 					int width = initThread.getWidth();
 					int height = initThread.getHeight();
-
 					xth = (Integer.parseInt(String.format("%.0f", event.getX()-width/15)) * dayInterval /(width*14/15)) +1;
 					yth = (Integer.parseInt(String.format("%.0f", event.getY()-height/32))* timeInterval /(height*31/32))+1;
 
-					Log.i("test xth", xth+"");
-					Log.i("test yth", yth+"");
-					/*xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * (dayInterval*2+1) / initThread.getWidth();
-					if (xth % 2 == 0) {
-						xth -= 1;
-					}
-					//화면에 y축으로 32등분 중 몇번째에 위치하는지
-					yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * (timeInterval*2+4) / initThread.getHeight();
-					if (yth % 2 == 0) {
-						//if (DrawMode.CURRENT.getMode() == 0 || DrawMode.CURRENT.getMode() == 3)
-						yth -= 1;
-					}*/
 				}catch(Exception e){
 					e.printStackTrace();
 				}
