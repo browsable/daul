@@ -13,8 +13,6 @@ import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.timetable.InitMonthThread;
-import com.daemin.timetable.InitThread;
-import com.daemin.timetable.InitWeekThread;
 
 import de.greenrobot.event.EventBus;
 
@@ -23,7 +21,7 @@ public class InitSurfaceView2 extends SurfaceView implements
 		SurfaceHolder.Callback {
 
 	private SurfaceHolder holder;
-	private InitThread initThread;
+	private InitThread2 initThread;
 	Context context;
 	private int xth, yth;
 	private boolean outOfTouchArea,destroyFlag;
@@ -57,6 +55,9 @@ public class InitSurfaceView2 extends SurfaceView implements
 		endTime = User.INFO.getEndTime();
 		timeInterval = endTime - startTime;
 	}
+	public InitThread2 getInitThread() {
+		return initThread;
+	}
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		switch (mode){
@@ -64,7 +65,7 @@ public class InitSurfaceView2 extends SurfaceView implements
 				initThread = new WeekTableThread(holder, context);
 				break;
 			case 1:
-				initThread = new InitMonthThread(holder, context);
+				initThread = new InitMonthThread2(holder, context);
 				break;
 		}
 		initThread.setRunning(true);
@@ -178,9 +179,24 @@ public class InitSurfaceView2 extends SurfaceView implements
 		switch (mode) {
 			case 0:
 				try{
-					xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * dayInterval / initThread.getWidth();
-					xth = 2*(xth+startDay)+1;
-					yth = ((Integer.parseInt(String.format("%.0f", event.getY()))) * timeInterval / initThread.getHeight())+1;
+					int width = initThread.getWidth();
+					int height = initThread.getHeight();
+
+					xth = (Integer.parseInt(String.format("%.0f", event.getX()-width/15)) * dayInterval /(width*14/15)) +1;
+					yth = (Integer.parseInt(String.format("%.0f", event.getY()-height/32))* timeInterval /(height*31/32))+1;
+
+					Log.i("test xth", xth+"");
+					Log.i("test yth", yth+"");
+					/*xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * (dayInterval*2+1) / initThread.getWidth();
+					if (xth % 2 == 0) {
+						xth -= 1;
+					}
+					//화면에 y축으로 32등분 중 몇번째에 위치하는지
+					yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * (timeInterval*2+4) / initThread.getHeight();
+					if (yth % 2 == 0) {
+						//if (DrawMode.CURRENT.getMode() == 0 || DrawMode.CURRENT.getMode() == 3)
+						yth -= 1;
+					}*/
 				}catch(Exception e){
 					e.printStackTrace();
 				}

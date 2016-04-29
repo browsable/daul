@@ -239,6 +239,7 @@ public class MainActivity2 extends FragmentActivity {
                 tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
                 switcher.setText(setMonthWeek());
                 Common.fetchWeekData();
+                initSurfaceView.getInitThread().setDate();
                 break;
             case 1:
                 Dates.NOW.setMonthData(--dayIndex);
@@ -255,6 +256,7 @@ public class MainActivity2 extends FragmentActivity {
                 tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
                 switcher.setText(setMonthWeek());
                 Common.fetchWeekData();
+                initSurfaceView.getInitThread().setDate();
                 break;
             case 1:
                 Dates.NOW.setMonthData(++dayIndex);

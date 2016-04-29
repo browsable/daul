@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
@@ -17,14 +18,13 @@ import com.daemin.enumclass.DrawMode;
 import com.daemin.enumclass.User;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.ExcuteMethodEvent;
-import com.daemin.timetable.InitThread;
 import com.daemin.timetable.R;
 
 import de.greenrobot.event.EventBus;
 import timedao.MyTime;
 
 @SuppressLint("DefaultLocale")
-public class WeekTableThread extends InitThread {
+public class WeekTableThread extends InitThread2 {
     SurfaceHolder mholder;
     private boolean isLoop = true, downFlag = false, initFlag = true;
     private int width, height, dayOfWeek, intervalSize, startTime, startDay; //화면의 전체 너비, 높이
@@ -36,7 +36,7 @@ public class WeekTableThread extends InitThread {
     static int tempxth, tempyth, timeInterval, timeLength, dayInterval, dayLength;
     private static WeekTableThread singleton;
     Canvas canvas;
-    public String[] day;
+    public String[] day, wData;
     float[] hp_hour, vp;
 
     public WeekTableThread(SurfaceHolder holder, Context context) {
@@ -54,6 +54,7 @@ public class WeekTableThread extends InitThread {
         dayLength = (dayInterval+1)*4;
         //Common.fetchWeekData();
         day = new String[dayInterval];
+        wData = Dates.NOW.getWData();
         int j=0;
         for(int i = startDay; i<endDay+1; i++){
             int resId = context.getResources().getIdentifier("day"+i, "string", context.getPackageName());
@@ -85,7 +86,9 @@ public class WeekTableThread extends InitThread {
     public void setRunning(boolean isLoop) {
         this.isLoop = isLoop;
     }
-
+    public void setDate(){
+        wData = Dates.NOW.getWData();
+    }
     public int getWidth() {
         return width;
     }
@@ -109,7 +112,7 @@ public class WeekTableThread extends InitThread {
                     drawScreen();
                     //fetchWeekData();
                     for (TimePos2 ETP : TimePos2.values()) {
-                        ETP.drawTimePos(canvas, width, height);
+                        ETP.drawTimePos(canvas, width, height,dayInterval,timeInterval);
                     }
                 }
             } catch (Exception e) {
@@ -147,11 +150,12 @@ public class WeekTableThread extends InitThread {
     }
 
     public void makeTimePos2(int xth, int yth) {
-        int tmpYth, ryth = yth % 2;
-        if (ryth == 0) tmpYth = yth - 1;
-        else tmpYth = yth;
         try {
-            TimePos2 ETP = TimePos2.valueOf(Convert.getxyMerge(xth, tmpYth));
+            int tmpX=2*(xth+startDay-1)+1;
+            int tmpY=2*yth-1;
+            TimePos2 ETP = TimePos2.valueOf(Convert.getxyMerge(tmpX,tmpY));
+            Log.i("test etp", ETP.name());
+            ETP.setXY(xth,yth);
             switch (DrawMode.CURRENT.getMode()) {
                 case 0://일반
                     if (ETP.getPosState() == PosState2.NO_PAINT) {
@@ -167,8 +171,8 @@ public class WeekTableThread extends InitThread {
                             //등록된 다음주 시간표를 누를 때 위젯 업데이트로 날짜가 변동되는 현상을 막기위해 dialflag를 false로 해줌
                             EventBus.getDefault().post(new CreateDialEvent(false));
                             Intent i = new Intent(context, DialEnroll.class);
-                            i.putExtra("xth", xth);
-                            i.putExtra("yth", tmpYth);
+                            i.putExtra("xth", tmpX);
+                            i.putExtra("yth", tmpY);
                             i.putExtra("startMin", ETP.getStartMin());
                             context.startActivity(i);
                         }
@@ -185,8 +189,8 @@ public class WeekTableThread extends InitThread {
                         if (downFlag) {
                             EventBus.getDefault().post(new CreateDialEvent(false));
                             Intent i = new Intent(context, DialEnroll.class);
-                            i.putExtra("xth", xth);
-                            i.putExtra("yth", tmpYth);
+                            i.putExtra("xth", tmpX);
+                            i.putExtra("yth", tmpY);
                             i.putExtra("startMin", ETP.getStartMin());
                             i.putExtra("weekFlag", true);
                             context.startActivity(i);
@@ -268,7 +272,6 @@ public class WeekTableThread extends InitThread {
                 vp[6] = width;
                 vp[7] = height * 31 / 32 + intervalSize;
             }
-
             initFlag = false;
         }
         canvas.drawColor(Color.WHITE);
@@ -278,8 +281,9 @@ public class WeekTableThread extends InitThread {
             canvas.drawText(startTime+i+"", width / 40, hp_hour[4*i+1] + intervalSize, tp);
         }
         for(int i = 0; i<dayInterval+1; i++){
-            canvas.drawText(Dates.NOW.getwMonthDay(startDay*2+1+2*i), (vp[4*i]+vp[4*(i+1)])/2, (height / 32 + intervalSize) * 7 / 16, tp);
+            canvas.drawText(wData[startDay+i], (vp[4*i]+vp[4*(i+1)])/2, (height / 32 + intervalSize) * 7 / 16, tp);
             canvas.drawText(day[i], (vp[4*i]+vp[4*(i+1)])/2, (height / 32 + intervalSize) * 15 / 16-1, tp);
+            if(i==dayInterval-1)break;
         }
        /*
         hp.setAlpha(40);

@@ -6,13 +6,13 @@ import android.graphics.Canvas;
  * Created by hernia on 2015-06-27.
  */
 public enum TimePos2 {
-    P0101(1, 1),P0103(1, 3),P0105(1, 5),P0107(1, 7),P0109(1, 9),P0111(1, 11),P0113(1, 13),P0115(1, 15),P0117(1, 17),P0119(1, 19),P0121(1, 21),P0123(1, 23),P0125(1, 25),P0127(1, 27),P0129(1, 29),
-    P0301(3, 1),P0303(3, 3),P0305(3, 5),P0307(3, 7),P0309(3, 9),P0311(3, 11),P0313(3, 13),P0315(3, 15),P0317(3, 17),P0319(3, 19),P0321(3, 21),P0323(3, 23),P0325(3, 25),P0327(3, 27),P0329(3, 29),
-    P0501(5, 1),P0503(5, 3),P0505(5, 5),P0507(5, 7),P0509(5, 9),P0511(5, 11),P0513(5, 13),P0515(5, 15),P0517(5, 17),P0519(5, 19),P0521(5, 21),P0523(5, 23),P0525(5, 25),P0527(5, 27),P0529(5, 29),
-    P0701(7, 1),P0703(7, 3),P0705(7, 5),P0707(7, 7),P0709(7, 9),P0711(7, 11),P0713(7, 13),P0715(7, 15),P0717(7, 17),P0719(7, 19),P0721(7, 21),P0723(7, 23),P0725(7, 25),P0727(7, 27),P0729(7, 29),
-    P0901(9, 1),P0903(9, 3),P0905(9, 5),P0907(9, 7),P0909(9, 9),P0911(9, 11),P0913(9, 13),P0915(9, 15),P0917(9, 17),P0919(9, 19),P0921(9, 21),P0923(9, 23),P0925(9, 25),P0927(9, 27),P0929(9, 29),
-    P1101(11, 1),P1103(11, 3),P1105(11, 5),P1107(11, 7),P1109(11, 9),P1111(11, 11),P1113(11, 13),P1115(11, 15),P1117(11, 17),P1119(11, 19),P1121(11, 21),P1123(11, 23),P1125(11, 25),P1127(11, 27),P1129(11, 29),
-    P1301(13, 1),P1303(13, 3),P1305(13, 5),P1307(13, 7),P1309(13, 9),P1311(13, 11),P1313(13, 13),P1315(13, 15),P1317(13, 17),P1319(13, 19),P1321(13, 21),P1323(13, 23),P1325(13, 25),P1327(13, 27),P1329(13, 29);
+    P0101(),P0103(),P0105(),P0107(),P0109(),P0111(),P0113(),P0115(),P0117(),P0119(),P0121(),P0123(),P0125(),P0127(),P0129(),
+    P0301(),P0303(),P0305(),P0307(),P0309(),P0311(),P0313(),P0315(),P0317(),P0319(),P0321(),P0323(),P0325(),P0327(),P0329(),
+    P0501(),P0503(),P0505(),P0507(),P0509(),P0511(),P0513(),P0515(),P0517(),P0519(),P0521(),P0523(),P0525(),P0527(),P0529(),
+    P0701(),P0703(),P0705(),P0707(),P0709(),P0711(),P0713(),P0715(),P0717(),P0719(),P0721(),P0723(),P0725(),P0727(),P0729(),
+    P0901(),P0903(),P0905(),P0907(),P0909(),P0911(),P0913(),P0915(),P0917(),P0919(),P0921(),P0923(),P0925(),P0927(),P0929(),
+    P1101(),P1103(),P1105(),P1107(),P1109(),P1111(),P1113(),P1115(),P1117(),P1119(),P1121(),P1123(),P1125(),P1127(),P1129(),
+    P1301(),P1303(),P1305(),P1307(),P1309(),P1311(),P1313(),P1315(),P1317(),P1319(),P1321(),P1323(),P1325(),P1327(),P1329();
 
     private PosState2 posState;
     public int xth,yth;
@@ -22,10 +22,6 @@ public enum TimePos2 {
     //private int posIndex;
     //private String title,second,place;
     TimePos2() {
-    }
-    TimePos2(int xth, int yth) {
-        this.xth = xth;
-        this.yth = yth;
         this.posState = PosState2.NO_PAINT;
         startMin =0;
         endMin = 60;
@@ -34,12 +30,7 @@ public enum TimePos2 {
         place="";
         posIndex=0;*/
     }
-    public int getXth() {
-        return xth;
-    }
-    public int getYth() {
-        return yth;
-    }
+
     public int getStartMin() {
         return startMin;
     }
@@ -47,7 +38,10 @@ public enum TimePos2 {
         if(endMin==60) return 0;
         else return endMin;
     }
-
+    public void setXY(int xth,int yth) {
+        this.xth = xth;
+        this.yth = yth;
+    }
     public void setMin(int startMin,int endMin) {
         this.startMin = startMin;
         this.endMin = endMin;
@@ -57,7 +51,7 @@ public enum TimePos2 {
         this.title="";
         this.second="";
         this.place="";
-        this.posIndex=0;
+        this.posIndex=0;A
     }
     public void setRealStart(int realStartYth, int realStartMin){
         this.realStartYth = realStartYth;
@@ -89,7 +83,7 @@ public enum TimePos2 {
     public PosState2 getPosState() {
         return posState;
     }
-    public void drawTimePos(Canvas canvas, int width, int height) {
-        posState.drawTimePos(canvas, width, height, xth, yth, startMin,endMin);
+    public void drawTimePos(Canvas canvas, int width, int height, int dayInterval, int timeInterval) {
+        posState.drawTimePos(canvas, width, height,dayInterval,timeInterval,xth, yth, startMin,endMin);
     }
 }
