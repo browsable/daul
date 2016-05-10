@@ -29,14 +29,14 @@ import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import de.greenrobot.event.EventBus;
 
 public class SettingFragment extends BasicFragment implements View.OnClickListener{
     public SettingFragment() {

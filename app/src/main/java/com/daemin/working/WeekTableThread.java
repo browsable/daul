@@ -20,7 +20,8 @@ import com.daemin.event.CreateDialEvent;
 import com.daemin.event.ExcuteMethodEvent;
 import com.daemin.timetable.R;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 import timedao.MyTime;
 
 @SuppressLint("DefaultLocale")
@@ -151,11 +152,14 @@ public class WeekTableThread extends InitThread2 {
 
     public void makeTimePos2(int xth, int yth) {
         try {
-            int tmpX=2*(xth+startDay-1)+1;
-            int tmpY=2*yth-1;
-            TimePos2 ETP = TimePos2.valueOf(Convert.getxyMerge(tmpX,tmpY));
-            Log.i("test etp", ETP.name());
-            ETP.setXY(xth,yth);
+            int xIndex=2*(xth+startDay-1)+1;
+            int yIndex=2*yth-1;
+            Log.i("test xIndex", xIndex+"");
+            Log.i("test yIndex", yIndex+"");
+            Log.i("test xth", xth+"");
+            Log.i("test yth", yth+"");
+            TimePos2 ETP = TimePos2.valueOf(Convert.getxyMerge(xIndex,yIndex));
+            ETP.setPos(xth,yth);
             switch (DrawMode.CURRENT.getMode()) {
                 case 0://일반
                     if (ETP.getPosState() == PosState2.NO_PAINT) {
@@ -171,8 +175,8 @@ public class WeekTableThread extends InitThread2 {
                             //등록된 다음주 시간표를 누를 때 위젯 업데이트로 날짜가 변동되는 현상을 막기위해 dialflag를 false로 해줌
                             EventBus.getDefault().post(new CreateDialEvent(false));
                             Intent i = new Intent(context, DialEnroll.class);
-                            i.putExtra("xth", tmpX);
-                            i.putExtra("yth", tmpY);
+                            i.putExtra("xIndex", xIndex);
+                            i.putExtra("yIndex", yIndex);
                             i.putExtra("startMin", ETP.getStartMin());
                             context.startActivity(i);
                         }
@@ -189,8 +193,8 @@ public class WeekTableThread extends InitThread2 {
                         if (downFlag) {
                             EventBus.getDefault().post(new CreateDialEvent(false));
                             Intent i = new Intent(context, DialEnroll.class);
-                            i.putExtra("xth", tmpX);
-                            i.putExtra("yth", tmpY);
+                            i.putExtra("xIndex", xIndex);
+                            i.putExtra("yIndex", yIndex);
                             i.putExtra("startMin", ETP.getStartMin());
                             i.putExtra("weekFlag", true);
                             context.startActivity(i);
@@ -214,7 +218,7 @@ public class WeekTableThread extends InitThread2 {
     }
 
     public void drawScreen() {
-        //Log.i("test",tableLength+"");
+
         if (initFlag) {
             hp_hour = new float[timeLength];
             hp_hour[0] = width / 20;

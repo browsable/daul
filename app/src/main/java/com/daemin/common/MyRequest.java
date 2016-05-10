@@ -2,10 +2,8 @@ package com.daemin.common;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,13 +14,10 @@ import com.daemin.enumclass.User;
 import com.daemin.event.PostGroupListEvent;
 import com.daemin.timetable.R;
 import com.navercorp.volleyextensions.request.Jackson2Request;
+
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-07-02.

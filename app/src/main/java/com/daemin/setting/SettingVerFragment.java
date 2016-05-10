@@ -24,10 +24,10 @@ import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
 import com.daemin.working.MainActivity2;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.greenrobot.event.EventBus;
 
 public class SettingVerFragment extends BasicFragment {
     public SettingVerFragment() {

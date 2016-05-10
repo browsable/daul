@@ -6,27 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.daemin.common.BasicFragment;
-import com.daemin.common.CustomJSONObjectRequest;
-import com.daemin.common.MyVolley;
-import com.daemin.dialog.DialDefault;
-import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
-import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
 import com.daemin.working.MainActivity2;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 public class SettingOpenSrcFragment extends BasicFragment {
     public SettingOpenSrcFragment() {

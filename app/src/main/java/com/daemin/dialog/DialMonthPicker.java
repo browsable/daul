@@ -15,18 +15,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
-import android.widget.Toast;
-
-import com.daemin.common.Common;
 import com.daemin.common.Convert;
-import com.daemin.data.BottomNormalData;
-import com.daemin.enumclass.DayOfMonthPos;
-import com.daemin.enumclass.DayOfMonthPosState;
-import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.UpdateNormalEvent;
 import com.daemin.timetable.R;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * Created by hernia on 2015-09-08.

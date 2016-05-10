@@ -17,10 +17,10 @@ import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.User;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.ExcuteMethodEvent;
-import com.daemin.timetable.InitThread;
 import com.daemin.timetable.R;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 @SuppressLint("DefaultLocale")
 public class InitMonthThread2 extends InitThread2 {

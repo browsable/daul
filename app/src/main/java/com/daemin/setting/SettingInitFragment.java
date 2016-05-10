@@ -15,7 +15,7 @@ import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
 import com.daemin.working.MainActivity2;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 public class SettingInitFragment extends BasicFragment {
     public SettingInitFragment() {

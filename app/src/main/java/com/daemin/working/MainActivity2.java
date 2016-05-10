@@ -53,17 +53,19 @@ import com.daemin.event.SetCreditEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.main.ExplainActivity;
 import com.daemin.setting.SettingFragment;
-import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 import com.daemin.widget.WidgetUpdateService;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.File;
 
-import de.greenrobot.event.EventBus;
 
 public class MainActivity2 extends FragmentActivity {
-    
+    @Override
+
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
             mDrawerLayout.closeDrawer(mLeftDrawer);
@@ -427,6 +429,7 @@ public class MainActivity2 extends FragmentActivity {
     public InitSurfaceView2 getInitSurfaceView() {
         return initSurfaceView;
     }
+    @Subscribe
     public void onEventMainThread(SetBtPlusEvent e) {
         if (e.isSetVisable())
             btPlus.setVisibility(View.VISIBLE);
@@ -434,10 +437,12 @@ public class MainActivity2 extends FragmentActivity {
             btPlus.setVisibility(View.GONE);
         dialogFlag = true;
     }
+    @Subscribe
     public void onEventMainThread(CreateDialEvent e) {
         if(e.isDialFlag()) dialogFlag=true;
         else dialogFlag = false;
     }
+    @Subscribe
     public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();
         if(e.getVisibleBt()!=null) {
@@ -453,9 +458,11 @@ public class MainActivity2 extends FragmentActivity {
             }
         }
     }
+    @Subscribe
     public void onEventMainThread(ChangeFragEvent e) {
         changeFragment(e.getCl(), e.getTitleName());
     }
+    @Subscribe
     public void onEventMainThread(SetCreditEvent e) {
         DatabaseHandler db = new DatabaseHandler(this);
         Float credit = Float.parseFloat(db.getCredit(e.getSubtitle()));

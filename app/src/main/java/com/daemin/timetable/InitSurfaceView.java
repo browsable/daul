@@ -10,7 +10,7 @@ import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.event.ExcuteMethodEvent;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 
 public class InitSurfaceView extends SurfaceView implements

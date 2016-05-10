@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -21,7 +20,6 @@ import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.enumclass.Dates;
 import com.daemin.event.CreateDialEvent;
-import com.daemin.event.EditAlarmEvent;
 import com.daemin.event.EditCheckEvent;
 import com.daemin.event.EditRepeatEvent;
 import com.daemin.event.FinishDialogEvent;
@@ -31,12 +29,13 @@ import com.daemin.event.SetTimeForCheckEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
 import java.util.HashMap;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import timedao.MyTime;
 
 /**
@@ -73,8 +72,8 @@ public class DialEnroll extends Activity {
 
     private void setLayout() {
         if (getIntent() != null) {
-            this.xth = getIntent().getIntExtra("xth", 1);
-            this.yth = getIntent().getIntExtra("yth", 1);
+            this.xIndex = getIntent().getIntExtra("xIndex", 1);
+            this.yIndex = getIntent().getIntExtra("yIndex", 1);
             this.weekFlag = getIntent().getBooleanExtra("weekFlag", true);
             this.startMin = getIntent().getIntExtra("startMin", 1);
         }
@@ -83,8 +82,8 @@ public class DialEnroll extends Activity {
         llNewEnroll = (LinearLayout) findViewById(R.id.llNewEnroll);
         tvMonthDay = (TextView) findViewById(R.id.tvMonthDay);
         if (weekFlag) {
-            startHour = Integer.parseInt(Convert.YthToHourOfDay(yth));
-            String wMonthDay = Dates.NOW.getwMonthDay(xth);
+            startHour = Integer.parseInt(Convert.YthToHourOfDay(yIndex));
+            String wMonthDay = Dates.NOW.getwMonthDay(xIndex);
             String[] tmp = wMonthDay.split("\\.");
             int titleMonth = Dates.NOW.month;
             monthOfYear = Integer.parseInt(tmp[0]);
@@ -94,26 +93,26 @@ public class DialEnroll extends Activity {
             mtList = MyTimeRepo.getHourTimes(DialEnroll.this,
                     Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour, 0),//startmillis
                     Dates.NOW.getDateMillis(year, monthOfYear, dayOfMonth, startHour + 1, 0) - 1,//endmillis
-                    xth, startHour, 1, 59);
-            if (xth == 1) {
+                    xIndex, startHour, 1, 59);
+            if (xIndex == 1) {
                 tvMonthDay.setTextColor(getResources().getColor(R.color.red));
-            } else if (xth == 13) {
+            } else if (xIndex == 13) {
                 tvMonthDay.setTextColor(getResources().getColor(R.color.blue));
             }
             String title = tmp[0] + getResources().getString(R.string.month) + " " +
-                    tmp[1] + getResources().getString(R.string.day) + " " + Convert.XthToDayOfWeek(xth);
+                    tmp[1] + getResources().getString(R.string.day) + " " + Convert.XthToDayOfWeek(xIndex);
             tvMonthDay.setText(title);
         } else {
-            dayOfMonth = Integer.parseInt(Dates.NOW.getmMonthDay(xth - 1, 7 * (yth - 1)));
+            dayOfMonth = Integer.parseInt(Dates.NOW.getmMonthDay(xIndex - 1, 7 * (yIndex - 1)));
             mtList = MyTimeRepo.getOneDayTimes(DialEnroll.this,
                     Dates.NOW.year, Dates.NOW.month, dayOfMonth);
-            if (xth == 1) {
+            if (xIndex == 1) {
                 tvMonthDay.setTextColor(getResources().getColor(R.color.red));
-            } else if (xth == 7) {
+            } else if (xIndex == 7) {
                 tvMonthDay.setTextColor(getResources().getColor(R.color.blue));
             }
             String title = Dates.NOW.month + getResources().getString(R.string.month)
-                    + " " + dayOfMonth + getResources().getString(R.string.day) + " " + Convert.XthToDayOfWeekInMonth(xth);
+                    + " " + dayOfMonth + getResources().getString(R.string.day) + " " + Convert.XthToDayOfWeekInMonth(xIndex);
             tvMonthDay.setText(title);
         }
         for (MyTime m : mtList) {
@@ -127,8 +126,8 @@ public class DialEnroll extends Activity {
                 i.putExtra("overlapEnrollFlag", true);
                 if (weekFlag) i.putExtra("weekFlag", true);
                 else i.putExtra("weekFlag", false);
-                i.putExtra("xth", xth);
-                i.putExtra("yth", yth);
+                i.putExtra("xIndex", xIndex);
+                i.putExtra("yIndex", yIndex);
                 startActivity(i);
                 finish();
             }
@@ -146,7 +145,7 @@ public class DialEnroll extends Activity {
         lv.setAdapter(enrollAdapter);
     }
 
-    private int xth, yth, startHour, startMin, dayOfMonth,monthOfYear,year;
+    private int xIndex, yIndex, startHour, startMin, dayOfMonth,monthOfYear,year;
     private int editStartHour, editStartMin, editEndHour, editEndMin,editDay, editXth;
     private long editStartMillis,editEndMillis;
     private Boolean weekFlag;
@@ -158,6 +157,7 @@ public class DialEnroll extends Activity {
     private LinearLayout llNewEnroll;
     private EnrollAdapter enrollAdapter;
     private MyTime m;
+    @Subscribe
     public void onEventMainThread(RemoveEnrollEvent e) {
         MyTime mt = (MyTime) enrollList.get(e.getId());
         mtList.remove(mt);
@@ -167,6 +167,7 @@ public class DialEnroll extends Activity {
         if (weekFlag) Common.fetchWeekData();
         else Common.fetchMonthData();
     }
+    @Subscribe
     public void onEventMainThread(EditRepeatEvent e) {
         enrollAdapter.getItem(e.getPosition()).setRepeat(e.toString());
     }
@@ -180,7 +181,8 @@ public class DialEnroll extends Activity {
     }
 
 */
-    public void onEventMainThread(SetTimeEvent e) {
+   @Subscribe
+   public void onEventMainThread(SetTimeEvent e) {
         m = enrollAdapter.getItem(e.getPosition());
         editStartHour = e.getStartHour();
         editStartMin = e.getStartMin();
@@ -196,6 +198,7 @@ public class DialEnroll extends Activity {
         editEndMillis = endDt.getMillis();
         editXth = Convert.dayOfWeekTowXth(startDt.getDayOfWeek());
     }
+    @Subscribe
     public void onEventMainThread(SetTimeForCheckEvent e) {
         m.setYear(year);
         m.setMonthofyear(monthOfYear);
@@ -208,11 +211,12 @@ public class DialEnroll extends Activity {
         m.setEndhour(editEndHour);
         m.setEndmin(editEndMin);
     }
+    @Subscribe
     public void onEventMainThread(EditCheckEvent e) {
         if(e.isReStart()) {
             Intent i = new Intent(this, DialEnroll.class);
-            i.putExtra("xth", xth);
-            i.putExtra("yth", yth);
+            i.putExtra("xIndex", xIndex);
+            i.putExtra("yIndex", yIndex);
             i.putExtra("startMin", startMin);
             i.putExtra("weekFlag", weekFlag);
             startActivity(i);

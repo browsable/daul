@@ -18,7 +18,7 @@ import com.daemin.enumclass.User;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.ExcuteMethodEvent;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 @SuppressLint("DefaultLocale")
 public class InitMonthThread extends InitThread {

@@ -39,7 +39,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'de.greenrobot:greendao:1.3.7'
     //compile 'org.freemarker:freemarker:2.3.23'
-    compile 'de.greenrobot:eventbus:2.4.0'
+    //compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.squareup.okhttp:okhttp:1.2.1'
     compile 'com.mcxiaoke.volley:library:1.0.19'
@@ -50,15 +51,6 @@ dependencies {
     compile 'com.navercorp.volleyextensions:volley-views:2.0.1'
     compile 'com.navercorp.volleyextensions:volleyer:2.0.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.8.5'
-    /*compile 'com.mcxiaoke.volley:library:1.0.+'
-                            compile 'com.fasterxml.jackson.core:jackson-databind:2.2.+'
-                            compile 'com.navercorp.volleyextensions:volley-caches:2.0.+'
-                            compile 'com.navercorp.volleyextensions:volley-requests:2.0.+'
-                            compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.+'
-                            compile 'com.navercorp.volleyextensions:volley-views:2.0.+'
-                            compile 'com.navercorp.volleyextensions:volleyer:2.0.+'
-                            compile 'com.nostra13.universalimageloader:universal-image-loader:1.8.+'
-                            */
     compile 'com.sothree.slidinguppanel:library:3.2.0'
     compile('org.simpleframework:simple-xml:2.7.1') {
         exclude module: 'stax'

@@ -16,7 +16,7 @@ import android.widget.RadioGroup;
 import com.daemin.event.SetShareEvent;
 import com.daemin.timetable.R;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hernia on 2015-09-08.

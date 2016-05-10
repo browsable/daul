@@ -2,20 +2,16 @@ package com.daemin.working;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.ExcuteMethodEvent;
-import com.daemin.timetable.InitMonthThread;
 
-import de.greenrobot.event.EventBus;
-
+import org.greenrobot.eventbus.EventBus;
 
 public class InitSurfaceView2 extends SurfaceView implements
 		SurfaceHolder.Callback {
@@ -181,8 +177,10 @@ public class InitSurfaceView2 extends SurfaceView implements
 				try{
 					int width = initThread.getWidth();
 					int height = initThread.getHeight();
-					xth = (Integer.parseInt(String.format("%.0f", event.getX()-width/15)) * dayInterval /(width*14/15)) +1;
+					xth = (Integer.parseInt(String.format("%.0f", event.getX()-width/15)) * dayInterval /(width*14/15))+1;
+					//if (xth % 2 == 0) ++xth;
 					yth = (Integer.parseInt(String.format("%.0f", event.getY()-height/32))* timeInterval /(height*31/32))+1;
+					//if (yth % 2 == 0) ++yth;
 
 				}catch(Exception e){
 					e.printStackTrace();

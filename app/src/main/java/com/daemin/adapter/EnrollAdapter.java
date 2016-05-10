@@ -32,12 +32,12 @@ import com.daemin.event.SetTimeForCheckEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
+import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 
 import java.util.HashMap;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import timedao.MyTime;
 
 /**

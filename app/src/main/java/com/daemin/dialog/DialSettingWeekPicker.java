@@ -27,8 +27,6 @@ import com.daemin.working.MainActivity2;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import de.greenrobot.event.EventBus;
-
 /**
  * Created by hernia on 2015-09-08.
  */

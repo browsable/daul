@@ -27,11 +27,8 @@ import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 import com.daemin.working.MainActivity2;
-import com.daemin.working.WeekTableThread;
 
-import java.util.Calendar;
-
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 public class SettingTimeFragment extends BasicFragment {
     public SettingTimeFragment() {

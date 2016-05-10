@@ -25,9 +25,10 @@ import com.daemin.event.EditRepeatEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.timetable.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by hernia on 2015-09-08.

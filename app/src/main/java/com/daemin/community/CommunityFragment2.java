@@ -15,11 +15,12 @@ import com.daemin.data.PostData;
 import com.daemin.event.SetExpandableEvent;
 import com.daemin.timetable.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 
 public class CommunityFragment2 extends BasicFragment{
     CommunityListAdapter2 listAdapter;

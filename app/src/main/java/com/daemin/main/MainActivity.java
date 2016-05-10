@@ -57,9 +57,11 @@ import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 import com.daemin.widget.WidgetUpdateService;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.File;
 
-import de.greenrobot.event.EventBus;
 
 public class MainActivity extends FragmentActivity {
     
@@ -421,7 +423,7 @@ public class MainActivity extends FragmentActivity {
     public static MainActivity getInstance() {
         return singleton;
     }
-
+    @Subscribe
     public void onEventMainThread(SetBtPlusEvent e) {
         if (e.isSetVisable())
             btPlus.setVisibility(View.VISIBLE);
@@ -429,10 +431,12 @@ public class MainActivity extends FragmentActivity {
             btPlus.setVisibility(View.GONE);
         dialogFlag = true;
     }
+    @Subscribe
     public void onEventMainThread(CreateDialEvent e) {
         if(e.isDialFlag()) dialogFlag=true;
         else dialogFlag = false;
     }
+    @Subscribe
     public void onEventMainThread(BackKeyEvent e) {
         backKeyName = e.getFragName();
         if(e.getVisibleBt()!=null) {
@@ -448,9 +452,11 @@ public class MainActivity extends FragmentActivity {
             }
         }
     }
+    @Subscribe
     public void onEventMainThread(ChangeFragEvent e) {
         changeFragment(e.getCl(), e.getTitleName());
     }
+    @Subscribe
     public void onEventMainThread(SetCreditEvent e) {
         DatabaseHandler db = new DatabaseHandler(this);
         Float credit = Float.parseFloat(db.getCredit(e.getSubtitle()));

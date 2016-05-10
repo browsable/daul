@@ -19,6 +19,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -70,7 +71,11 @@ import com.daemin.event.UpdateNormalEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 import com.daemin.widget.WidgetUpdateService;
+import com.daemin.working.PosState2;
+import com.daemin.working.TimePos2;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
 import java.io.BufferedInputStream;
@@ -87,7 +92,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import de.greenrobot.event.EventBus;
 import timedao.MyTime;
 
 public class DialSchedule extends Activity implements View.OnClickListener, View.OnTouchListener {
@@ -293,10 +297,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         int startYth = 0, startMin = 0, endYth = 0, endMin = 0, tmpXth = 0;
         int tmpStartYth = 0, tmpStartMin = 0, tmpEndYth = 0, tmpEndMin = 0;
         String YMD = "";
-        for (TimePos ETP : TimePos.values()) {
-            if (ETP.getPosState() == PosState.PAINT) {
+        for (TimePos2 ETP : TimePos2.values()) {
+            if (ETP.getPosState() == PosState2.PAINT) {
                 if (tmpXth != ETP.getXth()) {
-                    tmpXth = ETP.getXth();
+                    tmpXth =2*(ETP.getXth()+User.INFO.getStartDay()-1)+1;
                     YMD = Dates.NOW.getwMonthDay(tmpXth);
                     tmpStartYth = tmpStartMin = tmpEndYth = tmpEndMin = 0;
                 }
@@ -1122,18 +1126,20 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     // Progress Dialog
     private ProgressDialog pDialog;
 
+    @Subscribe
     public void onEventMainThread(FinishDialogEvent e) {
         finish();
         EventBus.getDefault().post(new SetBtPlusEvent(true));
     }
-
+    @Subscribe
     public void onEventMainThread(SetAlarmEvent e) {
         tvAlarm.setText(e.getTime());
     }
-
+    @Subscribe
     public void onEventMainThread(SetShareEvent e) {
         tvShare.setText(e.getShare());
     }
+    @Subscribe
     public void onEventMainThread(SetCreditEvent e) {
         Float credit = Float.parseFloat(db.getCredit(e.getSubtitle()));
         User.INFO.credit= User.INFO.getCredit() - credit;
@@ -1141,30 +1147,32 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         tvCreditSum.setText(User.INFO.credit+"");
         User.INFO.getEditor().putFloat("credit", User.INFO.credit).commit();
     }
+    @Subscribe
     public void onEventMainThread(SetRepeatEvent e) {
         repeatType = e.getRepeatType();
         tvRepeat.setText(e.toString());
     }
+    @Subscribe
     public void onEventMainThread(SetPlaceEvent e) {
         etPlace.setText(e.getPlace());
     }
-
+    @Subscribe
     public void onEventMainThread(SetColorEvent e) {
         colorName = getResources().getString(e.getResColor());
         gd.setColor(getResources().getColor(e.getResColor()));
         gd.invalidateSelf();
     }
-
+    @Subscribe
     public void onEventMainThread(BottomNormalData e) {
         normalList.add(e);
         normalAdapter.notifyDataSetChanged();
     }
-
+    @Subscribe
     public void onEventMainThread(ClearNormalEvent e) {
         normalList.clear();
         normalAdapter.notifyDataSetChanged();
     }
-
+    @Subscribe
     public void onEventMainThread(UpdateNormalEvent e) {
         normalList.remove(e.getPosition());
         if (viewMode == 0) {
@@ -1178,6 +1186,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
         normalAdapter.notifyDataSetChanged();
     }
+    @Subscribe
     public void onEventMainThread(ExcuteMethodEvent e) {
         try {
             Method m = DialSchedule.this.getClass().getDeclaredMethod(e.getMethodName());
@@ -1186,7 +1195,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             ex.printStackTrace();
         }
     }
-
+    @Subscribe
     public void onEventMainThread(PostGroupListEvent e) {
         univList.clear();
         for (GroupListData.Data d : User.INFO.groupListData) {

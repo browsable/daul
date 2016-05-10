@@ -11,7 +11,6 @@ import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 
-import de.greenrobot.event.EventBus;
 
 public class AreaFragment_Write extends BasicFragment {
     private static AreaFragment_Write singleton;

@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import com.daemin.event.SetColorEvent;
 import com.daemin.timetable.R;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hernia on 2015-09-08.

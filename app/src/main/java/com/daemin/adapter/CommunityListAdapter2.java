@@ -18,10 +18,11 @@ import com.daemin.data.PostData;
 import com.daemin.event.SetExpandableEvent;
 import com.daemin.timetable.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 
 public class CommunityListAdapter2 extends BaseExpandableListAdapter{
 

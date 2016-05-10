@@ -20,7 +20,8 @@ import com.daemin.enumclass.User;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.ExcuteMethodEvent;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 import timedao.MyTime;
 
 @SuppressLint("DefaultLocale")

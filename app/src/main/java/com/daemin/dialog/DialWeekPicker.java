@@ -24,7 +24,8 @@ import com.daemin.event.UpdateNormalEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * Created by hernia on 2015-09-08.

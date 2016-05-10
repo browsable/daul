@@ -8,7 +8,7 @@ import com.daemin.event.ChangeFragEvent;
 import com.daemin.setting.SettingFragment;
 import com.daemin.timetable.R;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 public class BackPressCloseHandler {
     private long backKeyPressedTime = 0;

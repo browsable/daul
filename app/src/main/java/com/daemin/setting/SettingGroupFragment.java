@@ -43,6 +43,8 @@ import com.daemin.timetable.R;
 import com.daemin.working.MainActivity2;
 import com.navercorp.volleyextensions.request.Jackson2Request;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,9 +54,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-
-import de.greenrobot.event.EventBus;
-
 public class SettingGroupFragment extends BasicFragment {
     public SettingGroupFragment() {
         super(R.layout.fragment_setting_group, "SettingGroupFragment");
