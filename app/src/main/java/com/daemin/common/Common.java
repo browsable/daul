@@ -16,6 +16,8 @@ import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.repository.MyTimeRepo;
+import com.daemin.working.PosState2;
+import com.daemin.working.TimePos2;
 
 import java.util.ArrayList;
 
@@ -170,12 +172,12 @@ public class Common {
 			switch(viewMode){
 				case 0:
 					for(String t : tempTimePos){
-						TimePos tp= TimePos.valueOf(t);
+						TimePos2 tp= TimePos2.valueOf(t);
 						tp.setMin(0, 60);
-						if(tp.getPosState()==PosState.PAINT) {
-							tp.setPosState(PosState.NO_PAINT);
-						}else if(tp.getPosState()==PosState.OVERLAP){
-							tp.setPosState(PosState.ENROLL);
+						if(tp.getPosState()==PosState2.PAINT) {
+							tp.setPosState(PosState2.NO_PAINT);
+						}else if(tp.getPosState()== PosState2.OVERLAP){
+							tp.setPosState(PosState2.ENROLL);
 						}
 					}
 					break;

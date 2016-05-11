@@ -2,6 +2,8 @@ package com.daemin.working;
 
 import android.graphics.Canvas;
 
+import com.daemin.enumclass.User;
+
 /**
  * Created by hernia on 2015-06-27.
  */
@@ -25,12 +27,25 @@ public enum TimePos2 {
         this.xIndex = xIndex;
         this.yIndex = yIndex;
         this.posState = PosState2.NO_PAINT;
+        xth =  (xIndex-1)/2 +1 - User.INFO.getStartDay();
+        //yth = (yIndex-1)/2;
+
+        /*
+        xth =  (xindex-1)/2 +1 - startDay
+        this.xth =xIndex;   월요일 3  10시 5  xindex 3 y index 5  x = 1  y = 1
+        this.yth =yIndex;
         startMin =0;
         endMin = 60;
         /*title ="";
         second="";
         place="";
         posIndex=0;*/
+    }
+    public int getXIndex() {
+        return xIndex;
+    }
+    public int getYIndex() {
+        return yIndex;
     }
     public int getXth() {
         return xth;

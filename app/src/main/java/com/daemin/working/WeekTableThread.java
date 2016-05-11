@@ -153,11 +153,11 @@ public class WeekTableThread extends InitThread2 {
     public void makeTimePos2(int xth, int yth) {
         try {
             int xIndex=2*(xth+startDay-1)+1;
-            int yIndex=2*yth-1;
-            Log.i("test xIndex", xIndex+"");
+            int yIndex=2*yth-1;/*
+           Log.i("test xIndex", xIndex+"");
             Log.i("test yIndex", yIndex+"");
             Log.i("test xth", xth+"");
-            Log.i("test yth", yth+"");
+            Log.i("test yth", yth+"");*/
             TimePos2 ETP = TimePos2.valueOf(Convert.getxyMerge(xIndex,yIndex));
             ETP.setPos(xth,yth);
             switch (DrawMode.CURRENT.getMode()) {

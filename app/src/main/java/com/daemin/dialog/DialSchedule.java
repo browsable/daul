@@ -190,11 +190,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         screenHeight = dm.heightPixels - lp.height;
         if (overlapEnrollFlag) {
             if (weekFlag) {
-                TimePos tp = TimePos.valueOf(
+                TimePos2 tp = TimePos2.valueOf(
                         Convert.getxyMerge(
                                 getIntent().getIntExtra("xth", 1),
                                 getIntent().getIntExtra("yth", 1)));
-                tp.setPosState(PosState.PAINT);
+                tp.setPosState(PosState2.PAINT);
                 tp.setMin(tp.getEndMin(), 60);
                 //tp.setT
             } else {
@@ -267,20 +267,20 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void removeWeek(int xth, int startHour, int endHour, int endMin) {
         if (startHour != endHour) {
             if (endMin != 0) ++endHour;
-            TimePos[] tp = new TimePos[endHour - startHour];
+            TimePos2[] tp = new TimePos2[endHour - startHour];
             int j = 0;
             for (int i = startHour; i < endHour; i++) {
-                tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
-                if (tp[j].getPosState() != PosState.NO_PAINT) {
+                tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+                if (tp[j].getPosState() != PosState2.NO_PAINT) {
                     tp[j].setMin(0, 60);
-                    tp[j].setPosState(PosState.NO_PAINT);
+                    tp[j].setPosState(PosState2.NO_PAINT);
                 }
                 ++j;
             }
         } else {
-            TimePos tp = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
+            TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
             tp.setMin(0, 60);
-            tp.setPosState(PosState.NO_PAINT);
+            tp.setPosState(PosState2.NO_PAINT);
         }
     }
 
@@ -297,15 +297,21 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         int startYth = 0, startMin = 0, endYth = 0, endMin = 0, tmpXth = 0;
         int tmpStartYth = 0, tmpStartMin = 0, tmpEndYth = 0, tmpEndMin = 0;
         String YMD = "";
+
         for (TimePos2 ETP : TimePos2.values()) {
             if (ETP.getPosState() == PosState2.PAINT) {
-                if (tmpXth != ETP.getXth()) {
-                    tmpXth =2*(ETP.getXth()+User.INFO.getStartDay()-1)+1;
+                if (tmpXth != ETP.getXIndex()) {
+
+                    tmpXth =ETP.getXIndex();
                     YMD = Dates.NOW.getwMonthDay(tmpXth);
+                    Log.i("test ETP.getXth", ETP.getXIndex()+"");
+                    Log.i("test getStartDay", User.INFO.getStartDay()+"");
+                    Log.i("test tmpXth", tmpXth+"");
+                    Log.i("test YMD", YMD);
                     tmpStartYth = tmpStartMin = tmpEndYth = tmpEndMin = 0;
                 }
-                if (tmpEndYth != ETP.getYth()) {
-                    tmpStartYth = startYth = ETP.getYth();
+                if (tmpEndYth != ETP.getYIndex()) {
+                    tmpStartYth = startYth = ETP.getYIndex();
                     tmpStartMin = startMin = ETP.getStartMin();
                     tmpEndMin = endMin = ETP.getEndMin();
                     if (endMin != 0) tmpEndYth = endYth = startYth;
@@ -317,13 +323,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                             Convert.IntToString(endMin),
                             tmpXth
                     ));
-                } else if (tmpEndYth == ETP.getYth() && tmpEndMin == ETP.getStartMin()) { //
+                } else if (tmpEndYth == ETP.getYIndex() && tmpEndMin == ETP.getStartMin()) { //
                     normalList.remove(normalList.size() - 1);
                     startYth = tmpStartYth;
                     startMin = tmpStartMin;
                     tmpEndMin = endMin = ETP.getEndMin();
-                    if (endMin != 0) tmpEndYth = endYth = ETP.getYth();
-                    else tmpEndYth = endYth = ETP.getYth() + 2;
+                    if (endMin != 0) tmpEndYth = endYth = ETP.getYIndex();
+                    else tmpEndYth = endYth = ETP.getYIndex() + 2;
                     normalList.add(new BottomNormalData(YMD,
                             Convert.YthToHourOfDay(startYth),
                             Convert.IntToString(startMin),
@@ -444,23 +450,23 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin) {
         if (endMin != 0) ++endHour;
         else endMin = 60;
-        TimePos[] tp = new TimePos[endHour - startHour];
+        TimePos2[] tp = new TimePos2[endHour - startHour];
         int j = 0;
         for (int i = startHour; i < endHour; i++) {
-            tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+            tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
             if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
             if (i == endHour - 1) tp[j].setMin(0, endMin);
-            if (tp[j].getPosState() == PosState.NO_PAINT) {
-                tp[j].setPosState(PosState.PAINT);
-            } else if (tp[j].getPosState() == PosState.ENROLL) {
+            if (tp[j].getPosState() == PosState2.NO_PAINT) {
+                tp[j].setPosState(PosState2.PAINT);
+            } else if (tp[j].getPosState() == PosState2.ENROLL) {
                 List<MyTime> mtList = MyTimeRepo.overLapCheck(this, xth, startHour, startMin, endHour, endMin);
                 if (mtList.size() == 0) {
-                    tp[j].setPosState(PosState.PAINT);
+                    tp[j].setPosState(PosState2.PAINT);
                 } else {
                     if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
                     if (i == endHour - 1) tp[j].setMin(0, endMin);
                     else if (i != startHour) tp[j].setMin(startMin, endMin);
-                    tp[j].setPosState(PosState.OVERLAP);
+                    tp[j].setPosState(PosState2.OVERLAP);
                     User.INFO.overlapFlag = true;
                 }
             }
@@ -527,7 +533,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                             }
                         }
                         String credit = ((TextView) view.findViewById(R.id.credit)).getText().toString();
-                        User.INFO.credit += Float.parseFloat(credit);;
+                        User.INFO.credit += Float.parseFloat(credit);
                         tvCreditSum.setText(User.INFO.credit+"");
                     } catch (Exception e) {
                         Toast.makeText(DialSchedule.this, getResources().getString(R.string.time_error), Toast.LENGTH_SHORT).show();

@@ -1,5 +1,7 @@
 package com.daemin.common;
 
+import com.daemin.enumclass.User;
+
 public class Convert {
 	public static String getxyMerge(int Xth, int Yth) {
 		String x, y;
@@ -37,39 +39,40 @@ public class Convert {
 		return String.valueOf(i);
 	}
 	public static String YthToHourOfDay(int Yth){
+		int startTime = User.INFO.getStartTime();
 		switch (Yth) {
 		case 1:
-			return "8";
+			return startTime+"";
 		case 3:
-			return "9";
+			return (startTime+1)+"";
 		case 5:
-			return "10";
+			return (startTime+2)+"";
 		case 7:
-			return "11";
+			return (startTime+3)+"";
 		case 9:
-			return "12";
+			return (startTime+4)+"";
 		case 11:
-			return "13";
+			return (startTime+5)+"";
 		case 13:
-			return "14";
+			return (startTime+6)+"";
 		case 15:
-			return "15";
+			return (startTime+7)+"";
 		case 17:
-			return "16";
+			return (startTime+8)+"";
 		case 19:
-			return "17";
+			return (startTime+9)+"";
 		case 21:
-			return "18";
+			return (startTime+10)+"";
 		case 23:
-			return "19";
+			return (startTime+11)+"";
 		case 25:
-			return "20";
+			return (startTime+12)+"";
 		case 27:
-			return "21";
+			return (startTime+13)+"";
 		case 29:
-			return "22";
+			return (startTime+14)+"";
 		case 31:
-			return "23";
+			return (startTime+15)+"";
 		default:
 			return "";
 		}
