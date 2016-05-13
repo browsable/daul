@@ -35,7 +35,6 @@ public class SettingTimeFragment extends BasicFragment {
         super(R.layout.fragment_setting_time, "SettingTimeFragment");
     }
 
-
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

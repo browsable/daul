@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
+import com.daemin.common.NotInException;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.event.UpdateNormalEvent;
@@ -170,6 +171,7 @@ public class DialWeekPicker extends Dialog {
     }
 
     private void weekSetting(int xth, int startHour, int startMin, int endHour, int endMin) {
+            try{
             if(startHour!=endHour) {
                 if(endMin==0 || endMin==60) endMin=60;
                 else ++endHour;
@@ -206,6 +208,9 @@ public class DialWeekPicker extends Dialog {
                 Convert.IntToString(endMin),
                 xth,position));
             cancel();
+            } catch (NotInException e) {
+                e.printStackTrace();
+            }
     }
 
     private void setLayout() {

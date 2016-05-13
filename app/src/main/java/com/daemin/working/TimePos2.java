@@ -27,9 +27,8 @@ public enum TimePos2 {
         this.xIndex = xIndex;
         this.yIndex = yIndex;
         this.posState = PosState2.NO_PAINT;
-        xth =  (xIndex-1)/2 +1 - User.INFO.getStartDay();
-        //yth = (yIndex-1)/2;
-
+        /*xth =  (xIndex-1)/2 +1 - User.INFO.getStartDay();
+        yth = (yIndex+1)/2;*/
         /*
         xth =  (xindex-1)/2 +1 - startDay
         this.xth =xIndex;   월요일 3  10시 5  xindex 3 y index 5  x = 1  y = 1
@@ -60,9 +59,9 @@ public enum TimePos2 {
         if(endMin==60) return 0;
         else return endMin;
     }
-    public void setPos(int xPos,int yPos) {
-        this.xth = xPos;
-        this.yth = yPos;
+    public void setPos(int xth,int yth) {
+        this.xth = xth;
+        this.yth = yth;
     }
     public void setMin(int startMin,int endMin) {
         this.startMin = startMin;

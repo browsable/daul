@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
+import com.daemin.common.NotInException;
 import com.daemin.dialog.DialEnroll;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
@@ -188,8 +189,12 @@ public class InitWeekThread extends InitThread {
         for(MyTime mt :  User.INFO.weekData){
             rp.setColor(Color.parseColor(mt.getColor()));
             rp.setAlpha(130);
-            canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + intervalSize) + (2 * height / 32) * mt.getStartmin() / 60,
-                    width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);
+            try {
+                canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + intervalSize) + (2 * height / 32) * mt.getStartmin() / 60,
+                        width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);
+            } catch (NotInException e) {
+                e.printStackTrace();
+            }
         }
     }
     public void drawScreen() {

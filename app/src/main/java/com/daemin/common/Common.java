@@ -93,7 +93,12 @@ public class Common {
 		TimePos[] tp = new TimePos[endHour - startHour];
 		int j = 0;
 		for (int i = startHour; i < endHour; i++) {
-			int yth = Convert.HourOfDayToYth(i);
+			int yth = 0;
+			try {
+				yth = Convert.HourOfDayToYth(i);
+			} catch (NotInException e) {
+				e.printStackTrace();
+			}
 			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth,yth));
 			if (tp[j].getPosState() == PosState.NO_PAINT) {
 				if (i == startHour) {

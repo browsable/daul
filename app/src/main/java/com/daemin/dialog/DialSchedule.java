@@ -45,6 +45,7 @@ import com.daemin.common.Convert;
 import com.daemin.common.DatabaseHandler;
 import com.daemin.common.HorizontalListView;
 import com.daemin.common.MyRequest;
+import com.daemin.common.NotInException;
 import com.daemin.data.BottomNormalData;
 import com.daemin.data.GroupListData;
 import com.daemin.data.SubjectData;
@@ -265,22 +266,26 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
 
     public void removeWeek(int xth, int startHour, int endHour, int endMin) {
-        if (startHour != endHour) {
-            if (endMin != 0) ++endHour;
-            TimePos2[] tp = new TimePos2[endHour - startHour];
-            int j = 0;
-            for (int i = startHour; i < endHour; i++) {
-                tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
-                if (tp[j].getPosState() != PosState2.NO_PAINT) {
-                    tp[j].setMin(0, 60);
-                    tp[j].setPosState(PosState2.NO_PAINT);
+        try {
+            if (startHour != endHour) {
+                if (endMin != 0) ++endHour;
+                TimePos2[] tp = new TimePos2[endHour - startHour];
+                int j = 0;
+                for (int i = startHour; i < endHour; i++) {
+                    tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+                    if (tp[j].getPosState() != PosState2.NO_PAINT) {
+                        tp[j].setMin(0, 60);
+                        tp[j].setPosState(PosState2.NO_PAINT);
+                    }
+                    ++j;
                 }
-                ++j;
+            } else {
+                TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
+                tp.setMin(0, 60);
+                tp.setPosState(PosState2.NO_PAINT);
             }
-        } else {
-            TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
-            tp.setMin(0, 60);
-            tp.setPosState(PosState2.NO_PAINT);
+        }catch (NotInException e){
+
         }
     }
 
@@ -304,10 +309,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
 
                     tmpXth =ETP.getXIndex();
                     YMD = Dates.NOW.getwMonthDay(tmpXth);
-                    Log.i("test ETP.getXth", ETP.getXIndex()+"");
-                    Log.i("test getStartDay", User.INFO.getStartDay()+"");
-                    Log.i("test tmpXth", tmpXth+"");
-                    Log.i("test YMD", YMD);
                     tmpStartYth = tmpStartMin = tmpEndYth = tmpEndMin = 0;
                 }
                 if (tmpEndYth != ETP.getYIndex()) {
@@ -353,7 +354,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 tmpXth = DOMP.getXth();
                 tmpYth = DOMP.getYth();
                 YMD = Dates.NOW.month + "." + Dates.NOW.getmMonthDay(tmpXth - 1, 7 * (tmpYth - 1));
-                normalList.add(new BottomNormalData(YMD, "8", "00", "9", "00", tmpXth));
+                normalList.add(new BottomNormalData(YMD, User.INFO.getStartTime()+"", "00", (User.INFO.getStartTime()+1)+"", "00", tmpXth));
             }
         }
         normalAdapter.notifyDataSetChanged();
@@ -453,7 +454,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         TimePos2[] tp = new TimePos2[endHour - startHour];
         int j = 0;
         for (int i = startHour; i < endHour; i++) {
-            tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+            try {
+                tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+            } catch (NotInException e) {
+                Toast.makeText(this, "시간을 벗어났습니다", Toast.LENGTH_SHORT).show();
+            }
             if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
             if (i == endHour - 1) tp[j].setMin(0, endMin);
             if (tp[j].getPosState() == PosState2.NO_PAINT) {

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
+import com.daemin.common.NotInException;
 import com.daemin.dialog.DialEnroll;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
@@ -41,6 +42,7 @@ public class WeekTableThread extends InitThread2 {
     float[] hp_hour, vp;
 
     public WeekTableThread(SurfaceHolder holder, Context context) {
+        Log.i("test" ,"weektable start");
         singleton = this;
         this.mholder = holder;
         this.context = context;
@@ -61,6 +63,23 @@ public class WeekTableThread extends InitThread2 {
             int resId = context.getResources().getIdentifier("day"+i, "string", context.getPackageName());
             day[j] = context.getString(resId);
             ++j;
+        }
+        try {
+            int y=1,z=1;
+            for(int i = startDay; i<endDay+1; i++){
+                for(int k = startTime; k<endTime; k++){
+                    TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(2*i+1, Convert.HourOfDayToYth(k)));
+                    Log.i("test" , tp.name());
+                    tp.setPos(y,z);
+                    Log.i("test xth" , tp.getXth()+"");
+                    Log.i("test yth" , tp.getYth()+"");
+                    z++;
+                }
+                y++;
+                z=1;
+            }
+        } catch (NotInException e) {
+            e.printStackTrace();
         }
         tempxth = 0;
         tempyth = 0;
@@ -153,13 +172,13 @@ public class WeekTableThread extends InitThread2 {
     public void makeTimePos2(int xth, int yth) {
         try {
             int xIndex=2*(xth+startDay-1)+1;
-            int yIndex=2*yth-1;/*
-           Log.i("test xIndex", xIndex+"");
+            int yIndex=2*yth-1;
+            /*Log.i("test xIndex", xIndex+"");
             Log.i("test yIndex", yIndex+"");
             Log.i("test xth", xth+"");
             Log.i("test yth", yth+"");*/
             TimePos2 ETP = TimePos2.valueOf(Convert.getxyMerge(xIndex,yIndex));
-            ETP.setPos(xth,yth);
+            //ETP.setPos(xth,yth);
             switch (DrawMode.CURRENT.getMode()) {
                 case 0://일반
                     if (ETP.getPosState() == PosState2.NO_PAINT) {
@@ -209,11 +228,15 @@ public class WeekTableThread extends InitThread2 {
     }
 
     public void fetchWeekData() {
-        for (MyTime mt : User.INFO.weekData) {
-            rp.setColor(Color.parseColor(mt.getColor()));
-            rp.setAlpha(130);
-            canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + intervalSize) + (2 * height / 32) * mt.getStartmin() / 60,
-                    width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);
+        try {
+            for (MyTime mt : User.INFO.weekData) {
+                rp.setColor(Color.parseColor(mt.getColor()));
+                rp.setAlpha(130);
+                canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + intervalSize) + (2 * height / 32) * mt.getStartmin() / 60,
+                        width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);
+            }
+        }catch (NotInException e){
+
         }
     }
 

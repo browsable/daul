@@ -77,42 +77,12 @@ public class Convert {
 			return "";
 		}
 	}
-	public static int HourOfDayToYth(int HourOfDay){
-		switch (HourOfDay) {
-			case 8:
-				return 1;
-			case 9:
-				return 3;
-			case 10:
-				return 5;
-			case 11:
-				return 7;
-			case 12:
-				return 9;
-			case 13:
-				return 11;
-			case 14:
-				return 13;
-			case 15:
-				return 15;
-			case 16:
-				return 17;
-			case 17:
-				return 19;
-			case 18:
-				return 21;
-			case 19:
-				return 23;
-			case 20:
-				return 25;
-			case 21:
-				return 27;
-			case 22:
-				return 29;
-			case 23:
-				return 31;
-			default:
-				return 0;
+	public static int HourOfDayToYth(int HourOfDay) throws NotInException{
+		int startTime = User.INFO.getStartTime();
+		if (HourOfDay < startTime) {
+			throw new NotInException();
+		}else{
+			return 2*(HourOfDay-startTime)+1;
 		}
 	}
 	public static String indexOfGrade(String grade) {

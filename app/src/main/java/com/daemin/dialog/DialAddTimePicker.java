@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
+import com.daemin.common.NotInException;
 import com.daemin.data.BottomNormalData;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
@@ -267,13 +268,15 @@ public class DialAddTimePicker extends Dialog {
         npEndMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);*/
     }
     private void weekSetting(int startHour, int startMin, int endHour, int endMin){
+        try {
         if(startHour!=endHour) {
             if(endMin==0) endMin=60;
             else ++endHour;
             TimePos[] tp = new TimePos[endHour - startHour];
             int j = 0;
             for (int i = startHour; i < endHour; i++) {
-                tp[j] = TimePos.valueOf(Convert.getxyMerge(2 * npMD.getValue() + 1, Convert.HourOfDayToYth(i)));
+
+                    tp[j] = TimePos.valueOf(Convert.getxyMerge(2 * npMD.getValue() + 1, Convert.HourOfDayToYth(i)));
                 ++j;
             }
             int tpSize = tp.length;
@@ -291,7 +294,9 @@ public class DialAddTimePicker extends Dialog {
                     Common.getTempTimePos().add(tp[i].name());
             }
         }else{
-            TimePos tp = TimePos.valueOf(Convert.getxyMerge(2 * npMD.getValue() + 1, Convert.HourOfDayToYth(startHour)));
+            TimePos tp = null;
+                tp = TimePos.valueOf(Convert.getxyMerge(2 * npMD.getValue() + 1, Convert.HourOfDayToYth(startHour)));
+
             tp.setMin(startMin, endMin);
             tp.setPosState(PosState.PAINT);
         }
@@ -302,6 +307,9 @@ public class DialAddTimePicker extends Dialog {
                 Convert.IntToString(npEndMin.getValue()),
                 2 * npMD.getValue() + 1));
         cancel();
+        } catch (NotInException e) {
+            e.printStackTrace();
+        }
     }
     private void monthSetting(String day) {
         String[] tmp = day.split("\\.");
