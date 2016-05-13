@@ -61,15 +61,13 @@ public class Common {
 		return false;
 	}
 	public static void fetchWeekData(){
-		for (TimePos ETP : TimePos.values()) {
-			ETP.setPosState(PosState.NO_PAINT);
+		for (TimePos2 ETP : TimePos2.values()) {
+			ETP.setPosState(PosState2.NO_PAINT);
 			ETP.setMin(0, 60);
-			ETP.setInitText();
+			//ETP.setInitText();
 		}
 		int week_startMonth = Dates.NOW.monthOfSun;
-		int week_startDay = Dates.NOW.dayOfSun;
 		int week_endMonth = Dates.NOW.monthOfSat;
-		int week_endDay = Dates.NOW.dayOfSat;
 		int week_startYear;
 		int week_endYear;
 		if(week_startMonth==12&&week_endMonth==1){
@@ -77,8 +75,13 @@ public class Common {
 			week_startYear=week_endYear-1;
 		}else
 			week_endYear=week_startYear=Dates.NOW.year;
-		long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, 8, 0);
-		long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, 23, 0);
+
+		/*int week_startDay = Dates.NOW.dayOfSun;
+		int week_endDay = Dates.NOW.dayOfSat;*/
+		int week_startDay = Dates.NOW.getDayWithDayIndex(User.INFO.getStartDay());
+		int week_endDay = Dates.NOW.getDayWithDayIndex(User.INFO.getEndDay());
+		long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, User.INFO.getStartTime(), 0);
+		long week_endMillies = Dates.NOW.getDateMillis(week_endYear, week_endMonth, week_endDay, User.INFO.getEndTime(), 0);
 		User.INFO.monthData.clear();
 		User.INFO.weekData.clear();
 		User.INFO.weekData.addAll(MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies));
@@ -90,7 +93,7 @@ public class Common {
 		firstEnrollFlag=true;
 		if(endMin!=0) ++endHour;
 		else endMin = 60;
-		TimePos[] tp = new TimePos[endHour - startHour];
+		TimePos2[] tp = new TimePos2[endHour - startHour];
 		int j = 0;
 		for (int i = startHour; i < endHour; i++) {
 			int yth = 0;
@@ -99,25 +102,25 @@ public class Common {
 			} catch (NotInException e) {
 				e.printStackTrace();
 			}
-			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth,yth));
-			if (tp[j].getPosState() == PosState.NO_PAINT) {
+			tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth,yth));
+			if (tp[j].getPosState() == PosState2.NO_PAINT) {
 				if (i == startHour) {
-					tp[j].setText(title, place);
-					tp[j].setRealStart(yth, startMin);
+					/*tp[j].setText(title, place);
+					tp[j].setRealStart(yth, startMin);*/
 					if (startMin != 0) tp[j].setMin(startMin, 60);
 				}
 				if (i == endHour - 1) {
 					tp[j].setMin(0, endMin);
 				}
-				tp[j].setPosState(PosState.ENROLL);
-			}else if(tp[j].getPosState() == PosState.ENROLL) {
+				tp[j].setPosState(PosState2.ENROLL);
+			}else if(tp[j].getPosState() == PosState2.ENROLL) {
 					if (i == startHour) {
 						if (firstEnrollFlag||timeType!=1) {
-							tp[j].setText(title, place);
+							/*tp[j].setText(title, place);
 							if(timeType ==0) {
 								tp[j].setText(title, place);
 								tp[j].setRealStart(yth,tp[j].realStartMin);
-							}else tp[j].setRealStart(yth, startMin);
+							}else tp[j].setRealStart(yth, startMin);*/
 							if (startMin != 0) tp[j].setMin(startMin, 60);
 							firstEnrollFlag = false;
 						}

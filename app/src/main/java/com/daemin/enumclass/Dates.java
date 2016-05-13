@@ -54,6 +54,26 @@ public enum Dates {
         mdOfFri = String.valueOf(mFri)+"."+String.valueOf(wFri);
         mdOfSat = String.valueOf(mSat)+"."+String.valueOf(wSat);
     }
+    public int getDayWithDayIndex(int dayIndex){
+        switch (dayIndex) {
+            case 0:
+                return dayOfSun;
+            case 1:
+                return dayOfMon;
+            case 2:
+                return dayOfTue;
+            case 3:
+                return dayOfWed;
+            case 4:
+                return dayOfThr;
+            case 5:
+                return dayOfFri;
+            case 6:
+                return dayOfSat;
+            default:
+                return 0;
+        }
+    }
     public String[] getWData(){
         String[] wData = new String[7];
         wData[0] = mdOfSun;

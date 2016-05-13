@@ -34,7 +34,8 @@ public enum PosState2 {
             /*canvas.drawText(title, width * (xth+1) / 15, (height * (realStartYth+1) / 32)+(2*height/32)*realStartMin/60-intervalSize, tp);
             if(posIndex==2)canvas.drawText(second, width * (xth+1) / 15, (height * (realStartYth+1) / 32) +(2*height/32)*realStartMin/60-intervalSize+(posIndex-1)*dateSize*9/10, tp);
             canvas.drawText(place, width * (xth + 1) / 15,(height * (realStartYth+1) / 32) +(2*height/32)*realStartMin/60-intervalSize+posIndex*dateSize*9/10,tp);*/
-
+            canvas.drawRect((width*14 / 15)/dayInterval * (xth-1)+ width / 15, (height * 15 / 16) / timeInterval * (yth-1) + height / 32 + intervalSize,
+                    (width*14 / 15)/dayInterval * xth+ width / 15, (height * 15 / 16) / timeInterval *yth + height / 32 + intervalSize,rp);
         }
     };
     public Paint rp; // 사각형
