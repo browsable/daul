@@ -2,10 +2,14 @@ package com.daemin.working;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.daemin.common.Common;
+import com.daemin.common.Convert;
+import com.daemin.common.NotInException;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
@@ -50,6 +54,20 @@ public class InitSurfaceView2 extends SurfaceView implements
 		startTime = User.INFO.getStartTime();
 		endTime = User.INFO.getEndTime();
 		timeInterval = endTime - startTime;
+		try {
+			int y=1,z=1;
+			for(int i = startDay; i<endDay+1; i++){
+				for(int k = startTime; k<endTime; k++){
+					TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(2*i+1, Convert.HourOfDayToYth(k)));
+					tp.setPos(y,z);
+					z++;
+				}
+				y++;
+				z=1;
+			}
+		} catch (NotInException e) {
+			e.printStackTrace();
+		}
 	}
 	public InitThread2 getInitThread() {
 		return initThread;

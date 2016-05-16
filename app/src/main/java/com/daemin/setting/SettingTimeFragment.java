@@ -21,12 +21,15 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.daemin.common.BasicFragment;
+import com.daemin.common.Convert;
+import com.daemin.common.NotInException;
 import com.daemin.dialog.DialSettingWeekPicker;
 import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
 import com.daemin.working.MainActivity2;
+import com.daemin.working.TimePos2;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -53,11 +56,13 @@ public class SettingTimeFragment extends BasicFragment {
         btSettingTime = (RelativeLayout)root.findViewById(R.id.btSettingTime);
         tvWeek = (TextView)root.findViewById(R.id.tvWeek);
         tvTime = (TextView)root.findViewById(R.id.tvTime);
+        startTime = User.INFO.getStartTime();
+        endTime = User.INFO.getEndTime();
         final int startDay = getResources().getIdentifier("day" + User.INFO.getStartDay(), "string", getActivity().getPackageName());
         final int endDay = getResources().getIdentifier("day"+User.INFO.getEndDay(),"string",getActivity().getPackageName());
         String week = getString(startDay)+" ~ " +getString(endDay);
         tvWeek.setText(week);
-        String time = User.INFO.getStartTime()+getString(R.string.hour)+" ~ " + User.INFO.getEndTime()+getString(R.string.hour);
+        String time = startTime+getString(R.string.hour)+" ~ " + endTime+getString(R.string.hour);
         tvTime.setText(time);
         btSettingWeek.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,10 +78,9 @@ public class SettingTimeFragment extends BasicFragment {
                 TimePickerDialog startTpd = new TimePickerDialog(getActivity(), R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
                         startTime = hourOfDay;
                     }
-                }, 8, 0, false);
+                }, startTime, 0, false);
                 TextView tv = new TextView(getActivity());
                 tv.setText(getString(R.string.setting_time_start));
                 tv.setTextColor(getResources().getColor(android.R.color.white));
@@ -94,7 +98,7 @@ public class SettingTimeFragment extends BasicFragment {
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 endTime = hourOfDay;
                             }
-                        }, 23, 0, false);
+                        }, endTime, 0, false);
                         TextView tv = new TextView(getActivity());
                         tv.setText(getString(R.string.setting_time_end));
                         tv.setTextColor(getResources().getColor(android.R.color.white));
@@ -121,7 +125,8 @@ public class SettingTimeFragment extends BasicFragment {
                                     }
                                     MainActivity2.getInstance().getInitSurfaceView().setTime();
                                 }else{
-                                    Toast.makeText(getActivity(), getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
+                                    if(startTime!=0&&endTime!=0)
+                                        Toast.makeText(getActivity(), getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

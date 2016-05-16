@@ -99,9 +99,7 @@ public class Common {
 			int yth = 0;
 			try {
 				yth = Convert.HourOfDayToYth(i);
-			} catch (NotInException e) {
-				e.printStackTrace();
-			}
+
 			tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth,yth));
 			if (tp[j].getPosState() == PosState2.NO_PAINT) {
 				if (i == startHour) {
@@ -132,7 +130,11 @@ public class Common {
 					}
 			}
 			++j;
+			} catch (NotInException e) {
+				e.printStackTrace();
+			}
 		}
+
 	}
 	public static void fetchMonthData(){
 		for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
@@ -166,8 +168,8 @@ public class Common {
 	}
 	public static boolean isTableEmpty(){
 		boolean empty = true;
-		for (TimePos ETP : TimePos.values()) {
-			if(ETP.getPosState()!=PosState.NO_PAINT) empty =false;
+		for (TimePos2 ETP : TimePos2.values()) {
+			if(ETP.getPosState()!=PosState2.NO_PAINT) empty =false;
 		}
 		return empty;
 	}

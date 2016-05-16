@@ -55,7 +55,7 @@ public class WeekTableThread extends InitThread2 {
         dayInterval = endDay-startDay+1;
         timeLength = (timeInterval+1)*4;
         dayLength = (dayInterval+1)*4;
-        //Common.fetchWeekData();
+        Common.fetchWeekData();
         day = new String[dayInterval];
         wData = Dates.NOW.getWData();
         int j=0;

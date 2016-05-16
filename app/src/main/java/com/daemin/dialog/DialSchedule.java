@@ -457,7 +457,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             try {
                 tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
             } catch (NotInException e) {
-                Toast.makeText(this, "시간을 벗어났습니다", Toast.LENGTH_SHORT).show();
             }
             if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
             if (i == endHour - 1) tp[j].setMin(0, endMin);
