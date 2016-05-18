@@ -64,7 +64,7 @@ public class Common {
 		for (TimePos2 ETP : TimePos2.values()) {
 			ETP.setPosState(PosState2.NO_PAINT);
 			ETP.setMin(0, 60);
-			//ETP.setInitText();
+			ETP.setInitText();
 		}
 		int week_startMonth = Dates.NOW.monthOfSun;
 		int week_endMonth = Dates.NOW.monthOfSat;
@@ -76,8 +76,6 @@ public class Common {
 		}else
 			week_endYear=week_startYear=Dates.NOW.year;
 
-		/*int week_startDay = Dates.NOW.dayOfSun;
-		int week_endDay = Dates.NOW.dayOfSat;*/
 		int week_startDay = Dates.NOW.getDayWithDayIndex(User.INFO.getStartDay());
 		int week_endDay = Dates.NOW.getDayWithDayIndex(User.INFO.getEndDay());
 		long week_startMillies = Dates.NOW.getDateMillis(week_startYear, week_startMonth, week_startDay, User.INFO.getStartTime(), 0);
@@ -103,7 +101,8 @@ public class Common {
 			tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth,yth));
 			if (tp[j].getPosState() == PosState2.NO_PAINT) {
 				if (i == startHour) {
-					/*tp[j].setText(title, place);
+					tp[j].setText(title, place);
+					/*
 					tp[j].setRealStart(yth, startMin);*/
 					if (startMin != 0) tp[j].setMin(startMin, 60);
 				}
@@ -114,6 +113,7 @@ public class Common {
 			}else if(tp[j].getPosState() == PosState2.ENROLL) {
 					if (i == startHour) {
 						if (firstEnrollFlag||timeType!=1) {
+							tp[j].setText(title, place);
 							/*tp[j].setText(title, place);
 							if(timeType ==0) {
 								tp[j].setText(title, place);

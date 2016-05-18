@@ -130,7 +130,7 @@ public class WeekTableThread extends InitThread2 {
                 height = canvas.getHeight();
                 synchronized (mholder) {
                     drawScreen();
-                    //fetchWeekData();
+                    fetchWeekData();
                     for (TimePos2 ETP : TimePos2.values()) {
                         ETP.drawTimePos(canvas, width, height,dayInterval,timeInterval);
                     }
@@ -173,12 +173,7 @@ public class WeekTableThread extends InitThread2 {
         try {
             int xIndex=2*(xth+startDay-1)+1;
             int yIndex=2*yth-1;
-            /*Log.i("test xIndex", xIndex+"");
-            Log.i("test yIndex", yIndex+"");
-            Log.i("test xth", xth+"");
-            Log.i("test yth", yth+"");*/
             TimePos2 ETP = TimePos2.valueOf(Convert.getxyMerge(xIndex,yIndex));
-            //ETP.setPos(xth,yth);
             switch (DrawMode.CURRENT.getMode()) {
                 case 0://일반
                     if (ETP.getPosState() == PosState2.NO_PAINT) {
@@ -232,8 +227,13 @@ public class WeekTableThread extends InitThread2 {
             for (MyTime mt : User.INFO.weekData) {
                 rp.setColor(Color.parseColor(mt.getColor()));
                 rp.setAlpha(130);
-                canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + intervalSize) + (2 * height / 32) * mt.getStartmin() / 60,
-                        width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);
+                canvas.drawRect((width * 14 / 15) / dayInterval * (mt.getDayofweek()/2) + width / 15,
+                        (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(mt.getStarthour())/2+1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60,
+                        (width * 14 / 15) / dayInterval * (mt.getDayofweek()/2+1) + width / 15,
+                        (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(mt.getEndhour())/2+1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getEndmin() / 60, rp);
+
+                /*canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + intervalSize) + (2 * height / 32) * mt.getStartmin() / 60,
+                        width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);*/
             }
         }catch (NotInException e){
 

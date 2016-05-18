@@ -17,28 +17,22 @@ public enum TimePos2 {
     P1301(13, 1),P1303(13, 3),P1305(13, 5),P1307(13, 7),P1309(13, 9),P1311(13, 11),P1313(13, 13),P1315(13, 15),P1317(13, 17),P1319(13, 19),P1321(13, 21),P1323(13, 23),P1325(13, 25),P1327(13, 27),P1329(13, 29);
 
     private PosState2 posState;
-    public int xIndex,yIndex,xth,yth; //index: 셋팅된 날짜, 시간에 맞는 인덱스 ,th: 좌표상 포지션
+    private int xIndex,yIndex,xth,yth; //index: 셋팅된 날짜, 시간에 맞는 인덱스 ,th: 좌표상 포지션
     //public int realStartYth;
-    public int startMin,realStartMin;
-    public int endMin;
-    //private int posIndex;
-    //private String title,second,place;
+    private int startMin,realStartMin;
+    private int endMin;
+    private int posIndex;
+    private String title,second,place;
     TimePos2(int xIndex, int yIndex) {
         this.xIndex = xIndex;
         this.yIndex = yIndex;
         this.posState = PosState2.NO_PAINT;
-        /*xth =  (xIndex-1)/2 +1 - User.INFO.getStartDay();
-        yth = (yIndex+1)/2;*/
-        /*
-        xth =  (xindex-1)/2 +1 - startDay
-        this.xth =xIndex;   월요일 3  10시 5  xindex 3 y index 5  x = 1  y = 1
-        this.yth =yIndex;
-        startMin =0;
-        endMin = 60;
-        /*title ="";
-        second="";
-        place="";
-        posIndex=0;*/
+        this.startMin =0;
+        this.endMin = 60;
+        this.title ="";
+        this.second="";
+        this.place="";
+        this.posIndex=0;
     }
     public int getXIndex() {
         return xIndex;
@@ -67,16 +61,11 @@ public enum TimePos2 {
         this.startMin = startMin;
         this.endMin = endMin;
     }
-    /*
     public void setInitText(){
         this.title="";
         this.second="";
         this.place="";
-        this.posIndex=0;A
-    }
-    public void setRealStart(int realStartYth, int realStartMin){
-        this.realStartYth = realStartYth;
-        this.realStartMin = realStartMin;
+        this.posIndex=0;
     }
     public void setText(String title, String place) {
         if(this.title.equals("")){
@@ -97,7 +86,13 @@ public enum TimePos2 {
             if(place.length()>5) this.place = place.substring(0,6);
             else this.place = place;
         }
-    }*/
+    }
+    /*
+    public void setRealStart(int realStartYth, int realStartMin){
+        this.realStartYth = realStartYth;
+        this.realStartMin = realStartMin;
+    }
+    */
     public void setPosState(PosState2 posState) {
         this.posState = posState;
     }

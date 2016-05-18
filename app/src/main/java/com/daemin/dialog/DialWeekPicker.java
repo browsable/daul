@@ -24,6 +24,8 @@ import com.daemin.enumclass.TimePos;
 import com.daemin.event.UpdateNormalEvent;
 import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
+import com.daemin.working.PosState2;
+import com.daemin.working.TimePos2;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -175,30 +177,30 @@ public class DialWeekPicker extends Dialog {
             if(startHour!=endHour) {
                 if(endMin==0 || endMin==60) endMin=60;
                 else ++endHour;
-                TimePos[] tp = new TimePos[endHour - startHour];
+                TimePos2[] tp = new TimePos2[endHour - startHour];
                 int j = 0;
                 for (int i = startHour; i < endHour; i++) {
-                    tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+                    tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
                     ++j;
                 }
                 int tpSize = tp.length;
                 for (int i = 0; i < tpSize; i++) {
                     if (i == 0) {
                         tp[i].setMin(startMin, 60);
-                        tp[i].setPosState(PosState.PAINT);
+                        tp[i].setPosState(PosState2.PAINT);
                     } else if (i == tpSize - 1) {
                         tp[i].setMin(0, endMin);
-                        tp[i].setPosState(PosState.PAINT);
+                        tp[i].setPosState(PosState2.PAINT);
                     } else {
-                        tp[i].setPosState(PosState.PAINT);
+                        tp[i].setPosState(PosState2.PAINT);
                     }
                     if(!Common.getTempTimePos().contains(tp[i].name()))
                         Common.getTempTimePos().add(tp[i].name());
                 }
             }else{
-                TimePos tp = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
+                TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
                 tp.setMin(startMin, endMin);
-                tp.setPosState(PosState.PAINT);
+                tp.setPosState(PosState2.PAINT);
             }
             if(endMin==60)endMin=0;
             EventBus.getDefault().post(new UpdateNormalEvent(

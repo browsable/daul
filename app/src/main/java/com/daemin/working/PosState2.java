@@ -34,8 +34,7 @@ public enum PosState2 {
             /*canvas.drawText(title, width * (xth+1) / 15, (height * (realStartYth+1) / 32)+(2*height/32)*realStartMin/60-intervalSize, tp);
             if(posIndex==2)canvas.drawText(second, width * (xth+1) / 15, (height * (realStartYth+1) / 32) +(2*height/32)*realStartMin/60-intervalSize+(posIndex-1)*dateSize*9/10, tp);
             canvas.drawText(place, width * (xth + 1) / 15,(height * (realStartYth+1) / 32) +(2*height/32)*realStartMin/60-intervalSize+posIndex*dateSize*9/10,tp);*/
-            canvas.drawRect((width*14 / 15)/dayInterval * (xth-1)+ width / 15, (height * 15 / 16) / timeInterval * (yth-1) + height / 32 + intervalSize,
-                    (width*14 / 15)/dayInterval * xth+ width / 15, (height * 15 / 16) / timeInterval *yth + height / 32 + intervalSize,rp);
+
         }
     };
     public Paint rp; // 사각형
@@ -54,11 +53,9 @@ public enum PosState2 {
         tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
     }
     public void drawTimePos(Canvas canvas, int width, int height, int dayInterval, int timeInterval, int xth, int yth, int startMin, int endMin) {
-        canvas.drawRect((width*14 / 15)/dayInterval * (xth-1)+ width / 15, (height * 15 / 16) / timeInterval * (yth-1) + height / 32 + intervalSize,
-                (width*14 / 15)/dayInterval * xth+ width / 15, (height * 15 / 16) / timeInterval *yth + height / 32 + intervalSize,rp);
-        /*canvas.drawRect(width * xth / 15, (height * yth / 32 + intervalSize)+(2*height/32)*startMin/60,
-                width * (xth + 2) / 15, (height * yth / 32 + intervalSize)+(2*height/32)*endMin/60, rp);*/
-        /*canvas.drawRect((width*14 / 15)/dayInterval+ width / 15, (height * 15 / 16) / timeInterval+ height / 32 + intervalSize,
-                2*(width*14 / 15)/dayInterval+ width / 15, 2*(height * 15 / 16) / timeInterval+ height / 32 + intervalSize, rp);*/
+        canvas.drawRect((width * 14 / 15) / dayInterval * (xth - 1) + width / 15,
+                (height * 15 / 16) / timeInterval * (yth - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * startMin / 60,
+                (width * 14 / 15) / dayInterval * xth + width / 15,
+                (height * 15 / 16) / timeInterval * (yth - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * endMin / 60, rp);
     }
 }
