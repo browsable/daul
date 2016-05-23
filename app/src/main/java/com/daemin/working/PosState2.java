@@ -18,9 +18,11 @@ public enum PosState2 {
     OVERLAP(){
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, int dayInterval, int timeInterval, int xth, int yth, int startMin, int endMin) {
-            /*rp.setColor(Color.parseColor("#FF4A4A"));
-            canvas.drawRect(width * xth / 15, (height * yth / 32 + intervalSize)+(2*height/32)*startMin/60,
-                    width * (xth + 2) / 15, (height * yth / 32 + intervalSize)+(2*height/32)*endMin/60, rp);*/
+            rp.setColor(Color.parseColor("#FF4A4A"));
+            canvas.drawRect((width * 14 / 15) / dayInterval * (xth - 1) + width / 15,
+                    (height * 15 / 16) / timeInterval * (yth - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * startMin / 60,
+                    (width * 14 / 15) / dayInterval * xth + width / 15,
+                    (height * 15 / 16) / timeInterval * (yth - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * endMin / 60, rp);
         }
     },
     NO_PAINT() {

@@ -33,7 +33,7 @@ public class WeekTableThread extends InitThread2 {
     Context context;
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
-    private Paint tp, tpred, tpblue; // 시간 텍스트
+    private Paint tp; // 시간 텍스트
     private Paint rp;
     static int tempxth, tempyth, timeInterval, timeLength, dayInterval, dayLength;
     private static WeekTableThread singleton;
@@ -42,7 +42,6 @@ public class WeekTableThread extends InitThread2 {
     float[] hp_hour, vp;
 
     public WeekTableThread(SurfaceHolder holder, Context context) {
-        Log.i("test" ,"weektable start");
         singleton = this;
         this.mholder = holder;
         this.context = context;
@@ -69,10 +68,7 @@ public class WeekTableThread extends InitThread2 {
             for(int i = startDay; i<endDay+1; i++){
                 for(int k = startTime; k<endTime; k++){
                     TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(2*i+1, Convert.HourOfDayToYth(k)));
-                    Log.i("test" , tp.name());
                     tp.setPos(y,z);
-                    Log.i("test xth" , tp.getXth()+"");
-                    Log.i("test yth" , tp.getYth()+"");
                     z++;
                 }
                 y++;
@@ -91,14 +87,6 @@ public class WeekTableThread extends InitThread2 {
         tp = new Paint(Paint.ANTI_ALIAS_FLAG);
         tp.setTextSize(User.INFO.dateSize);
         tp.setTextAlign(Paint.Align.CENTER);
-        tpred = new Paint(Paint.ANTI_ALIAS_FLAG);
-        tpred.setTextSize(User.INFO.dateSize);
-        tpred.setTextAlign(Paint.Align.CENTER);
-        tpred.setColor(context.getResources().getColor(R.color.red));
-        tpblue = new Paint(Paint.ANTI_ALIAS_FLAG);
-        tpblue.setTextSize(User.INFO.dateSize);
-        tpblue.setTextAlign(Paint.Align.CENTER);
-        tpblue.setColor(context.getResources().getColor(R.color.blue));
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     }
@@ -223,21 +211,24 @@ public class WeekTableThread extends InitThread2 {
     }
 
     public void fetchWeekData() {
-        try {
             for (MyTime mt : User.INFO.weekData) {
                 rp.setColor(Color.parseColor(mt.getColor()));
                 rp.setAlpha(130);
-                canvas.drawRect((width * 14 / 15) / dayInterval * (mt.getDayofweek()/2) + width / 15,
-                        (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(mt.getStarthour())/2+1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60,
-                        (width * 14 / 15) / dayInterval * (mt.getDayofweek()/2+1) + width / 15,
-                        (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(mt.getEndhour())/2+1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getEndmin() / 60, rp);
-
-                /*canvas.drawRect(width * mt.getDayofweek() / 15, (height * Convert.HourOfDayToYth(mt.getStarthour()) / 32 + intervalSize) + (2 * height / 32) * mt.getStartmin() / 60,
-                        width * (mt.getDayofweek() + 2) / 15, (height * Convert.HourOfDayToYth(mt.getEndhour()) / 32 + intervalSize) + (2 * height / 32) * mt.getEndmin() / 60, rp);*/
+                int startTime = mt.getStarthour();
+                int endTime = mt.getEndhour();
+                int dayOfWeek = mt.getDayofweek()/2;
+                if(User.INFO.getStartTime()>startTime) startTime = User.INFO.getStartTime();
+                if(User.INFO.getEndTime()<endTime) endTime = User.INFO.getEndTime();
+                if(dayInterval==1) dayOfWeek=0;
+                try {
+                    canvas.drawRect((width * 14 / 15) / dayInterval * (dayOfWeek) + width / 15,
+                        (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(startTime)/2+1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60,
+                        (width * 14 / 15) / dayInterval * (dayOfWeek+1) + width / 15,
+                        (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(endTime)/2+1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getEndmin() / 60, rp);
+                }catch (NotInException e){
+                }
             }
-        }catch (NotInException e){
 
-        }
     }
 
     public void drawScreen() {
@@ -304,17 +295,25 @@ public class WeekTableThread extends InitThread2 {
         canvas.drawColor(Color.WHITE);
         canvas.drawLines(hp_hour, hp);
         canvas.drawLines(vp, hpvp);
+        tp.setColor(context.getResources().getColor(android.R.color.black));
         for(int i = 0; i<timeInterval+1; i++){
             canvas.drawText(startTime+i+"", width / 40, hp_hour[4*i+1] + intervalSize, tp);
         }
         for(int i = 0; i<dayInterval+1; i++){
+            if(day[i]==context.getString(R.string.day0)){
+                tp.setColor(context.getResources().getColor(R.color.red));
+            }else if(day[i]==context.getString(R.string.day6)){
+                tp.setColor(context.getResources().getColor(R.color.blue));
+            }else {
+                tp.setColor(context.getResources().getColor(android.R.color.black));
+            }
             canvas.drawText(wData[startDay+i], (vp[4*i]+vp[4*(i+1)])/2, (height / 32 + intervalSize) * 7 / 16, tp);
             canvas.drawText(day[i], (vp[4*i]+vp[4*(i+1)])/2, (height / 32 + intervalSize) * 15 / 16-1, tp);
             if(i==dayInterval-1)break;
         }
-       /*
-        hp.setAlpha(40);
-        if(Dates.NOW.isToday)canvas.drawRect(width * (2 * dayOfWeek + 1) / 15, ((height * 2) - 10) / 64 + intervalSize, width * (2 * dayOfWeek + 3) / 15, height * 62 / 64 + intervalSize, hp);
+        /*hp.setAlpha(40);
+        if(Dates.NOW.isToday)canvas.drawRect((width * 14 / 15) / dayInterval * (dayOfWeek-1) + width / 15, ((height * 2) - 10) / 64 + intervalSize,
+                (width * 14 / 15) / dayInterval * (dayOfWeek) + width / 15, height * 62 / 64 + intervalSize, hp);
         hp.setAlpha(100);*/
     }
 }

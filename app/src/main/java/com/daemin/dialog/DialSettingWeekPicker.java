@@ -34,15 +34,14 @@ public class DialSettingWeekPicker extends Dialog {
     private Button btDialCancel;
     private Button btDialSetting;
     private int startDay, endDay;
-    private ArrayList<String> startList, endList;
+    private ArrayList<String> dayList, endList;
     private TextView tvWeek;
     ArrayAdapter<String> endAdapter;
     private Context context;
     public DialSettingWeekPicker(Context context, TextView tvWeek, int startDay, int endDay) {
         super(context, android.R.style.Theme_Holo_Light_Dialog);
-        startList = new ArrayList<>();
-        endList = new ArrayList<>();
-        Collections.addAll(startList, context.getResources().getStringArray(R.array.dayArray));
+        dayList = new ArrayList<>();
+        Collections.addAll(dayList, context.getResources().getStringArray(R.array.dayArray));
         this.context = context;
         this.tvWeek = tvWeek;
         this.startDay = startDay;
@@ -70,19 +69,16 @@ public class DialSettingWeekPicker extends Dialog {
         btDialSetting = (Button) findViewById(R.id.btDialSetting);
         final Spinner sStartDay = (Spinner)findViewById(R.id.sStartDay);
         ArrayAdapter<String> startAdapter = new ArrayAdapter<>(context,
-                R.layout.spinner, startList);
+                R.layout.spinner, dayList);
         startAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         sStartDay.setAdapter(startAdapter);
         sStartDay.setSelection(startDay);
-        for(int i= startDay; i<7; ++i){
-            endList.add(startList.get(i));
-        }
         final Spinner sEndDay = (Spinner)findViewById(R.id.sEndDay);
         endAdapter = new ArrayAdapter<>(context,
-                R.layout.spinner, endList);
+                R.layout.spinner, dayList);
         endAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         sEndDay.setAdapter(endAdapter);
-        sEndDay.setSelection(endDay-startDay);
+        sEndDay.setSelection(endDay);
 
 
         sStartDay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -90,11 +86,6 @@ public class DialSettingWeekPicker extends Dialog {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 startDay = position;
-                /*endList.clear();
-                for (int i = position; i < 7; ++i) {
-                    endList.add(startList.get(i));
-                }
-                endAdapter.notifyDataSetChanged();*/
             }
 
             @Override

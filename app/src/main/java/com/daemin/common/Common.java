@@ -131,7 +131,6 @@ public class Common {
 			}
 			++j;
 			} catch (NotInException e) {
-				e.printStackTrace();
 			}
 		}
 
