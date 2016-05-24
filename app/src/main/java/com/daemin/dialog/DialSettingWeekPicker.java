@@ -126,7 +126,7 @@ public class DialSettingWeekPicker extends Dialog {
                     tvWeek.setText(week);
                     User.INFO.getEditor().putInt("startDay", startDay).commit();
                     User.INFO.getEditor().putInt("endDay", endDay).commit();
-                    MainActivity2.getInstance().getInitSurfaceView().setDay();
+                    MainActivity2.getInstance().getInitSurfaceView().setDay(startDay,endDay);
                     cancel();
                 }
             }

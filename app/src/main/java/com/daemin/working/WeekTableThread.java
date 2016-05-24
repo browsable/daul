@@ -220,11 +220,12 @@ public class WeekTableThread extends InitThread2 {
                 if(User.INFO.getStartTime()>startTime) startTime = User.INFO.getStartTime();
                 if(User.INFO.getEndTime()<endTime) endTime = User.INFO.getEndTime();
                 try {
-                    Log.i("test dayofweek", dayOfWeek+"");
-                    canvas.drawRect((width * 14 / 15) / dayInterval * (dayOfWeek-1) + width / 15,
-                        (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(startTime)/2+1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60,
-                        (width * 14 / 15) / dayInterval * (dayOfWeek) + width / 15,
-                        (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(endTime)/2+1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getEndmin() / 60, rp);
+                        if(dayOfWeek>=startDay) {
+                            canvas.drawRect((width * 14 / 15) / dayInterval * (dayOfWeek - startDay) + width / 15,
+                                    (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(startTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60,
+                                    (width * 14 / 15) / dayInterval * (dayOfWeek + 1 - startDay) + width / 15,
+                                    (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(endTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getEndmin() / 60, rp);
+                        }
                 }catch (NotInException e){
                 }
             }
