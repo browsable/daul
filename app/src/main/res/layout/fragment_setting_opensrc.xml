@@ -9,18 +9,157 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:orientation="vertical">
-
-
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_opensrc_title"
+            android:padding="@dimen/margin_l"
+            android:textSize="@dimen/textsize_l"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:ellipsize="marquee"
+            android:background="@color/maincolor"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_opensrc_intro"
+            android:padding="@dimen/margin_l"
+            android:textColor="@color/dimgray"
+            android:textSize="@dimen/textsize_default"
+            android:ellipsize="marquee"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/margin_l"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/setting_opensrc_info"
-            android:padding="@dimen/margin_s"
+            android:text="@string/setting_opensrc_greendao_title"
             android:textSize="@dimen/textsize_l"
+            android:textStyle="bold"
             android:ellipsize="marquee"
-            android:background="@drawable/bg_maincolor_round_border"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_opensrc_greendao_content"
+            android:textSize="@dimen/textsize_default"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/setting_opensrc_eventbus_title"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_opensrc_eventbus_content"
+            android:textSize="@dimen/textsize_default"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/setting_opensrc_okhttp_title"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_opensrc_okhttp_content"
+            android:textSize="@dimen/textsize_default"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/setting_opensrc_joda_title"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_opensrc_joda_content"
+            android:textSize="@dimen/textsize_default"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/setting_opensrc_volley_title"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_opensrc_volley_content"
+            android:textSize="@dimen/textsize_default"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/setting_opensrc_asl_title"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_opensrc_asl_content"
+            android:textSize="@dimen/textsize_default"
+            android:ellipsize="marquee"
+            android:layout_marginBottom="@dimen/margin_default"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/setting_opensrc_apache_title"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold"
+            android:ellipsize="marquee"
+            android:layout_marginBottom="@dimen/margin_default"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_opensrc_apache_content"
+            android:textSize="@dimen/textsize_default"
+            android:ellipsize="marquee"
+            />
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </ScrollView>

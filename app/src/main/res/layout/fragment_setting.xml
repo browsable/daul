@@ -40,19 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/lightgray" />
-        <TextView
-            android:id="@+id/btSettingQA"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bt_click"
-            android:padding="@dimen/margin_ml"
-            android:text="@string/QandA2"
-            android:textSize="@dimen/textsize_xl" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray" />
         <RelativeLayout
             android:id="@+id/btSettingVer"
             android:layout_width="match_parent"
@@ -182,6 +169,19 @@
             android:background="@color/lightgray" />
 
 
+        <TextView
+            android:id="@+id/btSettingQA"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bt_click"
+            android:padding="@dimen/margin_ml"
+            android:text="@string/QandA2"
+            android:textSize="@dimen/textsize_xl" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
     </LinearLayout>
 
 </ScrollView>
