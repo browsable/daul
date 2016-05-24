@@ -66,8 +66,8 @@ public class Common {
 			ETP.setMin(0, 60);
 			ETP.setInitText();
 		}
-		int week_startMonth = Dates.NOW.monthOfSun;
-		int week_endMonth = Dates.NOW.monthOfSat;
+		int week_startMonth = Dates.NOW.getMonthWithDayIndex(User.INFO.getStartDay());
+		int week_endMonth = Dates.NOW.getMonthWithDayIndex(User.INFO.getEndDay());
 		int week_startYear;
 		int week_endYear;
 		if(week_startMonth==12&&week_endMonth==1){
