@@ -56,27 +56,26 @@ public class WeekTableThread extends InitThread2 {
         dayLength = (dayInterval+1)*4;
         day = new String[dayInterval];
         wData = Dates.NOW.getWData();
+        Common.fetchWeekData();
         int j=0;
-        for(int i = startDay; i<endDay+1; i++){
-            int resId = context.getResources().getIdentifier("day"+i, "string", context.getPackageName());
-            day[j] = context.getString(resId);
-            ++j;
-        }
         try {
             int y=1,z=1;
             for(int i = startDay; i<endDay+1; i++){
+                int resId = context.getResources().getIdentifier("day"+i, "string", context.getPackageName());
+                day[j] = context.getString(resId);
                 for(int k = startTime; k<endTime; k++){
                     TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(2*i+1, Convert.HourOfDayToYth(k)));
                     tp.setPos(y,z);
                     z++;
                 }
-                y++;
+                ++j;
+                ++y;
                 z=1;
             }
         } catch (NotInException e) {
             e.printStackTrace();
         }
-        Common.fetchWeekData();
+
         tempxth = 0;
         tempyth = 0;
         intervalSize = User.INFO.intervalSize;
