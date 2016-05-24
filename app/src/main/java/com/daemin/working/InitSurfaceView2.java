@@ -49,40 +49,11 @@ public class InitSurfaceView2 extends SurfaceView implements
 		this.startDay = startDay;
 		this.endDay = endDay;
 		dayInterval = endDay-startDay+1;
-		try {
-			int y=1,z=1;
-			for(int i = startDay; i<endDay+1; i++){
-				for(int k = startTime; k<endTime; k++){
-					TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(2*i+1, Convert.HourOfDayToYth(k)));
-					tp.setPos(y,z);
-					z++;
-				}
-				y++;
-				z=1;
-			}
-		} catch (NotInException e) {
-			e.printStackTrace();
-		}
-
 	}
 	public void setTime(int startTime, int endTime) {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		timeInterval = endTime - startTime;
-		try {
-			int y=1,z=1;
-			for(int i = startDay; i<endDay+1; i++){
-				for(int k = startTime; k<endTime; k++){
-					TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(2*i+1, Convert.HourOfDayToYth(k)));
-					tp.setPos(y,z);
-					z++;
-				}
-				y++;
-				z=1;
-			}
-		} catch (NotInException e) {
-			e.printStackTrace();
-		}
 	}
 	public InitThread2 getInitThread() {
 		return initThread;

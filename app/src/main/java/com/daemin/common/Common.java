@@ -101,7 +101,7 @@ public class Common {
 			tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth,yth));
 			if (tp[j].getPosState() == PosState2.NO_PAINT) {
 				if (i == startHour) {
-					tp[j].setText(title, place);
+						tp[j].setText(title, place);
 					/*
 					tp[j].setRealStart(yth, startMin);*/
 					if (startMin != 0) tp[j].setMin(startMin, 60);

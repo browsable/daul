@@ -29,7 +29,7 @@ import timedao.MyTime;
 public class WeekTableThread extends InitThread2 {
     SurfaceHolder mholder;
     private boolean isLoop = true, downFlag = false, initFlag = true;
-    private int width, height, dayOfWeek, intervalSize, startTime, startDay, endDay; //화면의 전체 너비, 높이
+    private int width, height, dayOfWeek, intervalSize, startTime, startDay, endTime, endDay; //화면의 전체 너비, 높이
     Context context;
     private Paint hp; // 1시간 간격 수평선
     private Paint hpvp; // 30분 간격 수평선, 수직선
@@ -47,14 +47,13 @@ public class WeekTableThread extends InitThread2 {
         this.context = context;
         this.dayOfWeek = Dates.NOW.getDayOfWeek();
         startTime = User.INFO.getStartTime();
-        int endTime = User.INFO.getEndTime();
+        endTime = User.INFO.getEndTime();
         startDay = User.INFO.getStartDay();
         endDay = User.INFO.getEndDay();
         timeInterval = endTime-startTime;
         dayInterval = endDay-startDay+1;
         timeLength = (timeInterval+1)*4;
         dayLength = (dayInterval+1)*4;
-        Common.fetchWeekData();
         day = new String[dayInterval];
         wData = Dates.NOW.getWData();
         int j=0;
@@ -77,6 +76,7 @@ public class WeekTableThread extends InitThread2 {
         } catch (NotInException e) {
             e.printStackTrace();
         }
+        Common.fetchWeekData();
         tempxth = 0;
         tempyth = 0;
         intervalSize = User.INFO.intervalSize;
@@ -214,18 +214,18 @@ public class WeekTableThread extends InitThread2 {
             for (MyTime mt : User.INFO.weekData) {
                 rp.setColor(Color.parseColor(mt.getColor()));
                 rp.setAlpha(130);
-                int startTime = mt.getStarthour();
-                int endTime = mt.getEndhour();
+                int sTime = mt.getStarthour();
+                int eTime = mt.getEndhour();
                 int dayOfWeek = mt.getDayofweek()/2;
-                if(User.INFO.getStartTime()>startTime) startTime = User.INFO.getStartTime();
-                if(User.INFO.getEndTime()<endTime) endTime = User.INFO.getEndTime();
+                if(User.INFO.getStartTime()>sTime) sTime = startTime;
+                if(User.INFO.getEndTime()<eTime) eTime = endTime;
                 try {
-                        if(dayOfWeek>=startDay) {
-                            canvas.drawRect((width * 14 / 15) / dayInterval * (dayOfWeek - startDay) + width / 15,
-                                    (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(startTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60,
-                                    (width * 14 / 15) / dayInterval * (dayOfWeek + 1 - startDay) + width / 15,
-                                    (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(endTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getEndmin() / 60, rp);
-                        }
+                    if(dayOfWeek>=startDay) {
+                        canvas.drawRect((width * 14 / 15) / dayInterval * (dayOfWeek - startDay) + width / 15,
+                                (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(sTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60,
+                                (width * 14 / 15) / dayInterval * (dayOfWeek + 1 - startDay) + width / 15,
+                                (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(eTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getEndmin() / 60, rp);
+                    }
                 }catch (NotInException e){
                 }
             }
