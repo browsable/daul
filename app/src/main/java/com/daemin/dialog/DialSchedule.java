@@ -193,16 +193,15 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             if (weekFlag) {
                 TimePos2 tp = TimePos2.valueOf(
                         Convert.getxyMerge(
-                                getIntent().getIntExtra("xth", 1),
-                                getIntent().getIntExtra("yth", 1)));
+                                getIntent().getIntExtra("xIndex", 1),
+                                getIntent().getIntExtra("yIndex", 1)));
                 tp.setPosState(PosState2.PAINT);
                 tp.setMin(tp.getEndMin(), 60);
-                //tp.setT
             } else {
                 DayOfMonthPos DOMP = DayOfMonthPos.valueOf(
                         Convert.getxyMergeForMonth(
-                                getIntent().getIntExtra("xth", 1),
-                                getIntent().getIntExtra("yth", 1)));
+                                getIntent().getIntExtra("xIndex", 1),
+                                getIntent().getIntExtra("yIndex", 1)));
                 DOMP.setPosState(DayOfMonthPosState.PAINT);
             }
         }
@@ -449,34 +448,35 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
 
     public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin) {
-        if (endMin != 0) ++endHour;
-        else endMin = 60;
-        TimePos2[] tp = new TimePos2[endHour - startHour];
-        int j = 0;
-        for (int i = startHour; i < endHour; i++) {
-            try {
-                tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
-
-            if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
-            if (i == endHour - 1) tp[j].setMin(0, endMin);
-            if (tp[j].getPosState() == PosState2.NO_PAINT) {
-                tp[j].setPosState(PosState2.PAINT);
-            } else if (tp[j].getPosState() == PosState2.ENROLL) {
-                List<MyTime> mtList = MyTimeRepo.overLapCheck(this, xth, startHour, startMin, endHour, endMin);
-                if (mtList.size() == 0) {
-                    tp[j].setPosState(PosState2.PAINT);
-                } else {
+            if (endMin != 0) ++endHour;
+            else endMin = 60;
+            TimePos2[] tp = new TimePos2[endHour - startHour];
+            int j = 0;
+            for (int i = startHour; i < endHour; i++) {
+                try {
+                    tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+                    Log.i("test", tp[j].name());
                     if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
                     if (i == endHour - 1) tp[j].setMin(0, endMin);
-                    else if (i != startHour) tp[j].setMin(startMin, endMin);
-                    tp[j].setPosState(PosState2.OVERLAP);
-                    User.INFO.overlapFlag = true;
+                    if (tp[j].getPosState() == PosState2.NO_PAINT) {
+                        tp[j].setPosState(PosState2.PAINT);
+                    } else if (tp[j].getPosState() == PosState2.ENROLL) {
+                        List<MyTime> mtList = MyTimeRepo.overLapCheck(this, xth, startHour, startMin, endHour, endMin);
+                        if (mtList.size() == 0) {
+                            tp[j].setPosState(PosState2.PAINT);
+                        } else {
+                            if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
+                            if (i == endHour - 1) tp[j].setMin(0, endMin);
+                            else if (i != startHour) tp[j].setMin(startMin, endMin);
+                            tp[j].setPosState(PosState2.OVERLAP);
+                            User.INFO.overlapFlag = true;
+                        }
+                    }
+                    Common.getTempTimePos().add(tp[j].name());
+                    ++j;
+                } catch (NotInException e) {
+
                 }
-            }
-            Common.getTempTimePos().add(tp[j].name());
-            ++j;
-            } catch (NotInException e) {
-            }
         }
     }
 

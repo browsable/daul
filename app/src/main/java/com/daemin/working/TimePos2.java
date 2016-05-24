@@ -100,6 +100,6 @@ public enum TimePos2 {
         return posState;
     }
     public void drawTimePos(Canvas canvas, int width, int height, int dayInterval, int timeInterval) {
-        posState.drawTimePos(canvas, width, height,dayInterval,timeInterval,xth, yth, startMin,endMin);
+        posState.drawTimePos(canvas, width, height,dayInterval,timeInterval,xth, yth, startMin,endMin,posIndex,title,second,place);
     }
 }

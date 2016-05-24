@@ -34,7 +34,7 @@ public class DialSettingWeekPicker extends Dialog {
     private Button btDialCancel;
     private Button btDialSetting;
     private int startDay, endDay;
-    private ArrayList<String> dayList, endList;
+    private ArrayList<String> dayList;
     private TextView tvWeek;
     ArrayAdapter<String> endAdapter;
     private Context context;
@@ -87,12 +87,10 @@ public class DialSettingWeekPicker extends Dialog {
                                        int position, long id) {
                 startDay = position;
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
 
         sEndDay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -100,7 +98,6 @@ public class DialSettingWeekPicker extends Dialog {
                                        int position, long id) {
                 endDay= position;
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }

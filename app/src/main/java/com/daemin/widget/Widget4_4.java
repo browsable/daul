@@ -12,6 +12,7 @@ import com.daemin.common.Common;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.User;
 import com.daemin.main.MainActivity;
+import com.daemin.working.MainActivity2;
 
 public class Widget4_4 extends AppWidgetProvider {
 	@Override
@@ -66,7 +67,7 @@ public class Widget4_4 extends AppWidgetProvider {
 				context.startService(forward);
 				break;
 			case Common.ACTION_HOME4_4:
-				Intent main5 = new Intent(context, MainActivity.class);
+				Intent main5 = new Intent(context, MainActivity2.class);
 				main5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				main5.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(main5);
