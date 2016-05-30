@@ -1,6 +1,5 @@
 package com.daemin.setting;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,7 @@ import com.daemin.common.BasicFragment;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
-import com.daemin.working.MainActivity2;
+import com.daemin.main.MainActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -28,7 +27,7 @@ public class SettingOpenSrcFragment extends BasicFragment {
         EventBus.getDefault().post(new BackKeyEvent("SettingOpenSrcFragment", new String[]{"ibBack"}, new String[]{"ibMenu"}));
 
         //ibBack = MainActivity.getInstance().getIbBack();
-        ibBack = MainActivity2.getInstance().getIbBack();
+        ibBack = MainActivity.getInstance().getIbBack();
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

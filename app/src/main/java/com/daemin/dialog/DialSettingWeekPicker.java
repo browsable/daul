@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -13,16 +12,14 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daemin.common.Convert;
 import com.daemin.enumclass.User;
-import com.daemin.event.PostGroupListEvent;
 import com.daemin.timetable.R;
-import com.daemin.working.MainActivity2;
+import com.daemin.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -123,7 +120,7 @@ public class DialSettingWeekPicker extends Dialog {
                     tvWeek.setText(week);
                     User.INFO.getEditor().putInt("startDay", startDay).commit();
                     User.INFO.getEditor().putInt("endDay", endDay).commit();
-                    MainActivity2.getInstance().getInitSurfaceView().setDay(startDay,endDay);
+                    MainActivity.getInstance().getInitSurfaceView().setDay(startDay,endDay);
                     cancel();
                 }
             }

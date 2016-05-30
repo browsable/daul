@@ -1,19 +1,15 @@
 package com.daemin.setting;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,15 +17,13 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.daemin.common.BasicFragment;
-import com.daemin.common.Convert;
-import com.daemin.common.NotInException;
 import com.daemin.dialog.DialSettingWeekPicker;
+import com.daemin.dialog.DialTextSizePicker;
 import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
 import com.daemin.timetable.R;
-import com.daemin.working.MainActivity2;
-import com.daemin.working.TimePos2;
+import com.daemin.main.MainActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -44,7 +38,7 @@ public class SettingTimeFragment extends BasicFragment {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         EventBus.getDefault().post(new BackKeyEvent("SettingTimeFragment", new String[]{"ibBack"}, new String[]{"ibMenu"}));
         //ibBack = MainActivity.getInstance().getIbBack();
-        ibBack = MainActivity2.getInstance().getIbBack();
+        ibBack = MainActivity.getInstance().getIbBack();
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,8 +48,10 @@ public class SettingTimeFragment extends BasicFragment {
         });
         btSettingWeek = (RelativeLayout)root.findViewById(R.id.btSettingWeek);
         btSettingTime = (RelativeLayout)root.findViewById(R.id.btSettingTime);
+        btSettingTextSize = (RelativeLayout)root.findViewById(R.id.btSettingTextSize);
         tvWeek = (TextView)root.findViewById(R.id.tvWeek);
         tvTime = (TextView)root.findViewById(R.id.tvTime);
+        tvTextSize = (TextView)root.findViewById(R.id.tvTextSize);
         startTime = User.INFO.getStartTime();
         endTime = User.INFO.getEndTime();
         final int startDay = getResources().getIdentifier("day" + User.INFO.getStartDay(), "string", getActivity().getPackageName());
@@ -64,6 +60,7 @@ public class SettingTimeFragment extends BasicFragment {
         tvWeek.setText(week);
         String time = startTime+getString(R.string.hour)+" ~ " + endTime+getString(R.string.hour);
         tvTime.setText(time);
+        tvTextSize.setText(User.INFO.getTextSize()+"");
         btSettingWeek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +120,7 @@ public class SettingTimeFragment extends BasicFragment {
                                         User.INFO.getEditor().putInt("endTime", endTime).commit();
                                         tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
                                     }
-                                    MainActivity2.getInstance().getInitSurfaceView().setTime(startTime,endTime);
+                                    MainActivity.getInstance().getInitSurfaceView().setTime(startTime,endTime);
                                 }else{
                                     if(startTime!=0&&endTime!=0)
                                         Toast.makeText(getActivity(), getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
@@ -136,11 +133,18 @@ public class SettingTimeFragment extends BasicFragment {
             }
         });
 
+        btSettingTextSize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialTextSizePicker dtsp = new DialTextSizePicker(getActivity(),tvTextSize, User.INFO.getTextSize());
+                dtsp.show();
+            }
+        });
         return root;
     }
     ImageButton ibBack;
-    RelativeLayout btSettingWeek,btSettingTime;
-    TextView tvWeek, tvTime;
+    RelativeLayout btSettingWeek,btSettingTime,btSettingTextSize;
+    TextView tvWeek, tvTime, tvTextSize;
     int startTime;
     int endTime;
 

@@ -1,4 +1,4 @@
-package com.daemin.working;
+package com.daemin.timetable;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
@@ -16,17 +17,18 @@ import com.daemin.common.NotInException;
 import com.daemin.dialog.DialEnroll;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DrawMode;
+import com.daemin.enumclass.PosState;
+import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.ExcuteMethodEvent;
-import com.daemin.timetable.R;
 
 import org.greenrobot.eventbus.EventBus;
 
 import timedao.MyTime;
 
 @SuppressLint("DefaultLocale")
-public class WeekTableThread extends InitThread2 {
+public class WeekTableThread extends InitThread {
     SurfaceHolder mholder;
     private boolean isLoop = true, downFlag = false, initFlag = true;
     private int width, height, dayOfWeek, intervalSize, startTime, startDay, endTime, endDay; //화면의 전체 너비, 높이
@@ -35,7 +37,7 @@ public class WeekTableThread extends InitThread2 {
     private Paint hpvp; // 30분 간격 수평선, 수직선
     private Paint tp; // 시간 텍스트
     private Paint rp;
-    static int tempxth, tempyth, timeInterval, timeLength, dayInterval, dayLength;
+    static int tempxth, tempyth, timeInterval, timeLength, dayInterval, dayLength,textSize;
     private static WeekTableThread singleton;
     Canvas canvas;
     public String[] day, wData;
@@ -50,6 +52,7 @@ public class WeekTableThread extends InitThread2 {
         endTime = User.INFO.getEndTime();
         startDay = User.INFO.getStartDay();
         endDay = User.INFO.getEndDay();
+        textSize = User.INFO.getTextSize()*12/5;
         timeInterval = endTime-startTime;
         dayInterval = endDay-startDay+1;
         timeLength = (timeInterval+1)*4;
@@ -64,7 +67,7 @@ public class WeekTableThread extends InitThread2 {
                 int resId = context.getResources().getIdentifier("day"+i, "string", context.getPackageName());
                 day[j] = context.getString(resId);
                 for(int k = startTime; k<endTime; k++){
-                    TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(2*i+1, Convert.HourOfDayToYth(k)));
+                    TimePos tp = TimePos.valueOf(Convert.getxyMerge(2*i+1, Convert.HourOfDayToYth(k)));
                     tp.setPos(y,z);
                     z++;
                 }
@@ -84,10 +87,8 @@ public class WeekTableThread extends InitThread2 {
         hpvp = new Paint(Paint.ANTI_ALIAS_FLAG);
         hpvp.setAlpha(70);
         tp = new Paint(Paint.ANTI_ALIAS_FLAG);
-        tp.setTextSize(User.INFO.dateSize);
         tp.setTextAlign(Paint.Align.CENTER);
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
-
     }
 
     public void setRunning(boolean isLoop) {
@@ -118,7 +119,8 @@ public class WeekTableThread extends InitThread2 {
                 synchronized (mholder) {
                     drawScreen();
                     fetchWeekData();
-                    for (TimePos2 ETP : TimePos2.values()) {
+
+                    for (TimePos ETP : TimePos.values()) {
                         ETP.drawTimePos(canvas, width, height,dayInterval,timeInterval);
                     }
                 }
@@ -160,16 +162,16 @@ public class WeekTableThread extends InitThread2 {
         try {
             int xIndex=2*(xth+startDay-1)+1;
             int yIndex=2*yth-1;
-            TimePos2 ETP = TimePos2.valueOf(Convert.getxyMerge(xIndex,yIndex));
+            TimePos ETP = TimePos.valueOf(Convert.getxyMerge(xIndex,yIndex));
             switch (DrawMode.CURRENT.getMode()) {
                 case 0://일반
-                    if (ETP.getPosState() == PosState2.NO_PAINT) {
-                        ETP.setPosState(PosState2.PAINT);
+                    if (ETP.getPosState() == PosState.NO_PAINT) {
+                        ETP.setPosState(PosState.PAINT);
                         if (!Common.getTempTimePos().contains(ETP.name()))
                             Common.getTempTimePos().add(ETP.name());
-                    } else if (ETP.getPosState() == PosState2.PAINT) {
+                    } else if (ETP.getPosState() == PosState.PAINT) {
                         ETP.setMin(0, 60);
-                        ETP.setPosState(PosState2.NO_PAINT);
+                        ETP.setPosState(PosState.NO_PAINT);
                         Common.getTempTimePos().remove(ETP.name());
                     } else {
                         if (downFlag) {
@@ -189,7 +191,7 @@ public class WeekTableThread extends InitThread2 {
                     if (Common.isTableEmpty()) {
                         Toast.makeText(context, context.getResources().getString(R.string.univ_select), Toast.LENGTH_SHORT).show();
                     }
-                    if (ETP.getPosState() == PosState2.ENROLL) {
+                    if (ETP.getPosState() == PosState.ENROLL) {
                         //등록된 다음주 시간표를 누를 때 위젯 업데이트로 날짜가 변동되는 현상을 막기위해 dialflag를 false로 해줌
                         if (downFlag) {
                             EventBus.getDefault().post(new CreateDialEvent(false));
@@ -210,25 +212,54 @@ public class WeekTableThread extends InitThread2 {
     }
 
     public void fetchWeekData() {
-            for (MyTime mt : User.INFO.weekData) {
-                rp.setColor(Color.parseColor(mt.getColor()));
-                rp.setAlpha(130);
-                int sTime = mt.getStarthour();
-                int eTime = mt.getEndhour();
-                int dayOfWeek = mt.getDayofweek()/2;
-                if(User.INFO.getStartTime()>sTime) sTime = startTime;
-                if(User.INFO.getEndTime()<eTime) eTime = endTime;
-                try {
-                    if(dayOfWeek>=startDay) {
-                        canvas.drawRect((width * 14 / 15) / dayInterval * (dayOfWeek - startDay) + width / 15,
-                                (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(sTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60,
-                                (width * 14 / 15) / dayInterval * (dayOfWeek + 1 - startDay) + width / 15,
-                                (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(eTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getEndmin() / 60, rp);
-                    }
-                }catch (NotInException e){
+        tp.setTextSize(textSize);
+        tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        for (MyTime mt : User.INFO.weekData) {
+            rp.setColor(Color.parseColor(mt.getColor()));
+            rp.setAlpha(130);
+            int sTime = mt.getStarthour();
+            int eTime = mt.getEndhour();
+            int dayOfWeek = mt.getDayofweek()/2;
+            if(User.INFO.getStartTime()>sTime) sTime = startTime;
+            if(User.INFO.getEndTime()<eTime) eTime = endTime;
+            String title = mt.getName();
+            String first,second;
+            int posIndex=0;
+            String place=mt.getPlace();
+            if(title.length()>5){
+                first = title.substring(0,5);
+                second = title.substring(5);
+                if(second.length()>5){
+                    second = second.substring(0,5)+"..";
                 }
+                ++posIndex;
+            }else{
+                first = title;
+                second="";
             }
-
+            if(!place.equals("")){
+                ++posIndex;
+                if(place.length()>5) place = place.substring(0,6);
+            }
+            try {
+                if(dayOfWeek>=startDay) {
+                    dayOfWeek = dayOfWeek-startDay;
+                    int startHeight = (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(sTime) / 2 + 1) - 1) + height / 32 + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60+intervalSize;
+                    canvas.drawRect((width * 14 / 15) / dayInterval * dayOfWeek + width / 15,
+                            startHeight,
+                            (width * 14 / 15) / dayInterval * (dayOfWeek + 1) + width / 15,
+                            (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(eTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getEndmin() / 60, rp);
+                    dayOfWeek = 2*dayOfWeek+1;
+                    canvas.drawText(first, (width * 7 / 15) /dayInterval * dayOfWeek+ width / 15,
+                            startHeight+textSize, tp);
+                    if(posIndex==2)canvas.drawText(second, (width * 7 / 15) /dayInterval * dayOfWeek+ width / 15,
+                            startHeight+textSize+(posIndex-1)*2*(textSize-intervalSize), tp);
+                    canvas.drawText(place, (width * 7 / 15) /dayInterval * dayOfWeek+ width / 15,
+                            startHeight+textSize+posIndex*2*(textSize-intervalSize),tp);
+                }
+            }catch (NotInException e){
+            }
+        }
     }
 
     public void drawScreen() {
@@ -295,6 +326,8 @@ public class WeekTableThread extends InitThread2 {
         canvas.drawColor(Color.WHITE);
         canvas.drawLines(hp_hour, hp);
         canvas.drawLines(vp, hpvp);
+        tp.setTextSize(User.INFO.dateSize);
+        tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         for(int i = 0; i<timeInterval+1; i++){
             canvas.drawText(startTime+i+"", width / 40, hp_hour[4*i+1] + intervalSize, tp);
         }

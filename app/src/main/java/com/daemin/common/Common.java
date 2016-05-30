@@ -12,12 +12,10 @@ import android.util.Log;
 import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
-import com.daemin.enumclass.PosState;
-import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.repository.MyTimeRepo;
-import com.daemin.working.PosState2;
-import com.daemin.working.TimePos2;
+import com.daemin.enumclass.PosState;
+import com.daemin.enumclass.TimePos;
 
 import java.util.ArrayList;
 
@@ -61,10 +59,9 @@ public class Common {
 		return false;
 	}
 	public static void fetchWeekData(){
-		for (TimePos2 ETP : TimePos2.values()) {
-			ETP.setPosState(PosState2.NO_PAINT);
+		for (TimePos ETP : TimePos.values()) {
+			ETP.setPosState(PosState.NO_PAINT);
 			ETP.setMin(0, 60);
-			ETP.setInitText();
 		}
 		int week_startMonth = Dates.NOW.getMonthWithDayIndex(User.INFO.getStartDay());
 		int week_endMonth = Dates.NOW.getMonthWithDayIndex(User.INFO.getEndDay());
@@ -91,35 +88,25 @@ public class Common {
 		firstEnrollFlag=true;
 		if(endMin!=0) ++endHour;
 		else endMin = 60;
-		TimePos2[] tp = new TimePos2[endHour - startHour];
+		TimePos[] tp = new TimePos[endHour - startHour];
 		int j = 0;
 		for (int i = startHour; i < endHour; i++) {
 			int yth = 0;
 			try {
 				yth = Convert.HourOfDayToYth(i);
 
-			tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth,yth));
-			if (tp[j].getPosState() == PosState2.NO_PAINT) {
+			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth,yth));
+			if (tp[j].getPosState() == PosState.NO_PAINT) {
 				if (i == startHour) {
-						if(xth>=2*User.INFO.getStartDay()+1&&xth<=2*User.INFO.getEndDay()+1)
-							tp[j].setText(title, place);
-					/*
-					tp[j].setRealStart(yth, startMin);*/
 					if (startMin != 0) tp[j].setMin(startMin, 60);
 				}
 				if (i == endHour - 1) {
 					tp[j].setMin(0, endMin);
 				}
-				tp[j].setPosState(PosState2.ENROLL);
-			}else if(tp[j].getPosState() == PosState2.ENROLL) {
+				tp[j].setPosState(PosState.ENROLL);
+			}else if(tp[j].getPosState() == PosState.ENROLL) {
 					if (i == startHour) {
 						if (firstEnrollFlag||timeType!=1) {
-							tp[j].setText(title, place);
-							/*tp[j].setText(title, place);
-							if(timeType ==0) {
-								tp[j].setText(title, place);
-								tp[j].setRealStart(yth,tp[j].realStartMin);
-							}else tp[j].setRealStart(yth, startMin);*/
 							if (startMin != 0) tp[j].setMin(startMin, 60);
 							firstEnrollFlag = false;
 						}
@@ -168,8 +155,8 @@ public class Common {
 	}
 	public static boolean isTableEmpty(){
 		boolean empty = true;
-		for (TimePos2 ETP : TimePos2.values()) {
-			if(ETP.getPosState()!=PosState2.NO_PAINT) empty =false;
+		for (TimePos ETP : TimePos.values()) {
+			if(ETP.getPosState()!= PosState.NO_PAINT) empty =false;
 		}
 		return empty;
 	}
@@ -182,12 +169,12 @@ public class Common {
 			switch(viewMode){
 				case 0:
 					for(String t : tempTimePos){
-						TimePos2 tp= TimePos2.valueOf(t);
+						TimePos tp= TimePos.valueOf(t);
 						tp.setMin(0, 60);
-						if(tp.getPosState()==PosState2.PAINT) {
-							tp.setPosState(PosState2.NO_PAINT);
-						}else if(tp.getPosState()== PosState2.OVERLAP){
-							tp.setPosState(PosState2.ENROLL);
+						if(tp.getPosState()== PosState.PAINT) {
+							tp.setPosState(PosState.NO_PAINT);
+						}else if(tp.getPosState()== PosState.OVERLAP){
+							tp.setPosState(PosState.ENROLL);
 						}
 					}
 					break;

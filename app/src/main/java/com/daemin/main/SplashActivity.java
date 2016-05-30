@@ -2,7 +2,6 @@ package com.daemin.main;
 
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,18 +12,15 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
 
-import com.daemin.common.MyRequest;
 import com.daemin.dialog.DialDefault;
 import com.daemin.encryption.MyHash;
 import com.daemin.enumclass.User;
 import com.daemin.timetable.R;
-import com.daemin.working.MainActivity2;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -124,7 +120,7 @@ public class SplashActivity extends Activity{
 			@Override
 			public void run() {
 				finish();
-				Intent i = new Intent(SplashActivity.this, MainActivity2.class);
+				Intent i = new Intent(SplashActivity.this, MainActivity.class);
 				startActivity(i);
 				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 			}

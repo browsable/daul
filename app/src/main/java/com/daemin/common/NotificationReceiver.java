@@ -7,10 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
-import com.daemin.main.MainActivity;
-import com.daemin.main.SplashActivity;
 import com.daemin.timetable.R;
 
 

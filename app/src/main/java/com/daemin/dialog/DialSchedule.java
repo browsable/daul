@@ -19,7 +19,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -53,8 +52,6 @@ import com.daemin.enumclass.Dates;
 import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.DrawMode;
-import com.daemin.enumclass.PosState;
-import com.daemin.enumclass.TimePos;
 import com.daemin.enumclass.User;
 import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.ExcuteMethodEvent;
@@ -72,8 +69,8 @@ import com.daemin.event.UpdateNormalEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 import com.daemin.widget.WidgetUpdateService;
-import com.daemin.working.PosState2;
-import com.daemin.working.TimePos2;
+import com.daemin.enumclass.PosState;
+import com.daemin.enumclass.TimePos;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -191,11 +188,11 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         screenHeight = dm.heightPixels - lp.height;
         if (overlapEnrollFlag) {
             if (weekFlag) {
-                TimePos2 tp = TimePos2.valueOf(
+                TimePos tp = TimePos.valueOf(
                         Convert.getxyMerge(
                                 getIntent().getIntExtra("xIndex", 1),
                                 getIntent().getIntExtra("yIndex", 1)));
-                tp.setPosState(PosState2.PAINT);
+                tp.setPosState(PosState.PAINT);
                 tp.setMin(tp.getEndMin(), 60);
             } else {
                 DayOfMonthPos DOMP = DayOfMonthPos.valueOf(
@@ -268,20 +265,20 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         try {
             if (startHour != endHour) {
                 if (endMin != 0) ++endHour;
-                TimePos2[] tp = new TimePos2[endHour - startHour];
+                TimePos[] tp = new TimePos[endHour - startHour];
                 int j = 0;
                 for (int i = startHour; i < endHour; i++) {
-                    tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
-                    if (tp[j].getPosState() != PosState2.NO_PAINT) {
+                    tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+                    if (tp[j].getPosState() != PosState.NO_PAINT) {
                         tp[j].setMin(0, 60);
-                        tp[j].setPosState(PosState2.NO_PAINT);
+                        tp[j].setPosState(PosState.NO_PAINT);
                     }
                     ++j;
                 }
             } else {
-                TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
+                TimePos tp = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
                 tp.setMin(0, 60);
-                tp.setPosState(PosState2.NO_PAINT);
+                tp.setPosState(PosState.NO_PAINT);
             }
         }catch (NotInException e){
 
@@ -302,8 +299,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         int tmpStartYth = 0, tmpStartMin = 0, tmpEndYth = 0, tmpEndMin = 0;
         String YMD = "";
 
-        for (TimePos2 ETP : TimePos2.values()) {
-            if (ETP.getPosState() == PosState2.PAINT) {
+        for (TimePos ETP : TimePos.values()) {
+            if (ETP.getPosState() == PosState.PAINT) {
                 if (tmpXth != ETP.getXIndex()) {
 
                     tmpXth =ETP.getXIndex();
@@ -450,24 +447,24 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin) {
             if (endMin != 0) ++endHour;
             else endMin = 60;
-            TimePos2[] tp = new TimePos2[endHour - startHour];
+            TimePos[] tp = new TimePos[endHour - startHour];
             int j = 0;
             for (int i = startHour; i < endHour; i++) {
                 try {
-                    tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+                    tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
                     if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
                     if (i == endHour - 1) tp[j].setMin(0, endMin);
-                    if (tp[j].getPosState() == PosState2.NO_PAINT) {
-                        tp[j].setPosState(PosState2.PAINT);
-                    } else if (tp[j].getPosState() == PosState2.ENROLL) {
+                    if (tp[j].getPosState() == PosState.NO_PAINT) {
+                        tp[j].setPosState(PosState.PAINT);
+                    } else if (tp[j].getPosState() == PosState.ENROLL) {
                         List<MyTime> mtList = MyTimeRepo.overLapCheck(this, xth, startHour, startMin, endHour, endMin);
                         if (mtList.size() == 0) {
-                            tp[j].setPosState(PosState2.PAINT);
+                            tp[j].setPosState(PosState.PAINT);
                         } else {
                             if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
                             if (i == endHour - 1) tp[j].setMin(0, endMin);
                             else if (i != startHour) tp[j].setMin(startMin, endMin);
-                            tp[j].setPosState(PosState2.OVERLAP);
+                            tp[j].setPosState(PosState.OVERLAP);
                             User.INFO.overlapFlag = true;
                         }
                     }

@@ -8,10 +8,10 @@ import android.view.SurfaceView;
 
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
+import com.daemin.enumclass.User;
 import com.daemin.event.ExcuteMethodEvent;
 
 import org.greenrobot.eventbus.EventBus;
-
 
 public class InitSurfaceView extends SurfaceView implements
 		SurfaceHolder.Callback {
@@ -21,8 +21,7 @@ public class InitSurfaceView extends SurfaceView implements
 	Context context;
 	private int xth, yth;
 	private boolean outOfTouchArea,destroyFlag;
-	private int mode;
-
+	private int mode,startTime, endTime, startDay, endDay,timeInterval,dayInterval;
 	public InitSurfaceView(Context context, int mode) {
 		super(context);
 		this.context = context;
@@ -30,16 +29,36 @@ public class InitSurfaceView extends SurfaceView implements
 		holder = getHolder();
 		holder.addCallback(this);
 		destroyFlag = false;
+		startTime = User.INFO.getStartTime();
+		endTime = User.INFO.getEndTime();
+		timeInterval = endTime - startTime;
+		startDay = User.INFO.getStartDay();
+		endDay = User.INFO.getEndDay();
+		dayInterval = endDay-startDay+1;
+
 	}
 	//week or month mode
 	public void setMode(int mode) {
 		this.mode = mode;
 	}
+	public void setDay(int startDay, int endDay) {
+		this.startDay = startDay;
+		this.endDay = endDay;
+		dayInterval = endDay-startDay+1;
+	}
+	public void setTime(int startTime, int endTime) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+		timeInterval = endTime - startTime;
+	}
+	public InitThread getInitThread() {
+		return initThread;
+	}
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		switch (mode){
 			case 0:
-				initThread = new InitWeekThread(holder, context);
+				initThread = new WeekTableThread(holder, context);
 				break;
 			case 1:
 				initThread = new InitMonthThread(holder, context);
@@ -87,7 +106,7 @@ public class InitSurfaceView extends SurfaceView implements
 				switch (event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
 						calXthYth(event);
-						if (xth > 0 && yth > 0 && yth < 30) {
+						if (xth > 0 && yth > 0 && yth < timeInterval+1) {
 							initThread.getDownXY(xth, yth);
 							outOfTouchArea = false;
 						} else {
@@ -97,7 +116,7 @@ public class InitSurfaceView extends SurfaceView implements
 					case MotionEvent.ACTION_MOVE:
 						if (!outOfTouchArea) {
 							calXthYth(event);
-							if (xth > 0 && yth > 0 && yth < 30) {
+							if (xth > 0 && yth > 0 && yth < timeInterval+1) {
 								initThread.getMoveXY(xth, yth);
 							}else{
 								EventBus.getDefault().post(new ExcuteMethodEvent("clearView"));
@@ -107,7 +126,7 @@ public class InitSurfaceView extends SurfaceView implements
 					case MotionEvent.ACTION_UP:
 						if (!outOfTouchArea) {
 							calXthYth(event);
-							if (xth > 0 && yth > 0 && yth < 30) {
+							if (xth > 0 && yth > 0 && yth < timeInterval+1) {
 								initThread.getActionUp();
 							}else{
 								EventBus.getDefault().post(new ExcuteMethodEvent("clearView"));
@@ -156,17 +175,13 @@ public class InitSurfaceView extends SurfaceView implements
 		switch (mode) {
 			case 0:
 				try{
-					//화면에 x축으로 15등분 중 몇번째에 위치하는지
-					xth = (Integer.parseInt(String.format("%.0f", event.getX()))) * 15 / initThread.getWidth();
-					if (xth % 2 == 0) {
-						xth -= 1;
-					}
-					//화면에 y축으로 32등분 중 몇번째에 위치하는지
-					yth = (Integer.parseInt(String.format("%.0f", event.getY()))) * 32 / initThread.getHeight();
-					if (yth % 2 == 0) {
-						//if (DrawMode.CURRENT.getMode() == 0 || DrawMode.CURRENT.getMode() == 3)
-						yth -= 1;
-					}
+					int width = initThread.getWidth();
+					int height = initThread.getHeight();
+					xth = (Integer.parseInt(String.format("%.0f", event.getX()-width/15)) * dayInterval /(width*14/15))+1;
+					//if (xth % 2 == 0) ++xth;
+					yth = (Integer.parseInt(String.format("%.0f", event.getY()-height/32))* timeInterval /(height*31/32))+1;
+					//if (yth % 2 == 0) ++yth;
+
 				}catch(Exception e){
 					e.printStackTrace();
 				}

@@ -67,6 +67,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:text="@string/setting_time_textsize"
             android:textSize="@dimen/textsize_xl" />
         <TextView

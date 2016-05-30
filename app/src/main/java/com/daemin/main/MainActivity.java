@@ -52,10 +52,10 @@ import com.daemin.event.SetBtUnivEvent;
 import com.daemin.event.SetCreditEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.setting.SettingFragment;
-import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 import com.daemin.widget.WidgetUpdateService;
+import com.daemin.timetable.InitSurfaceView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -64,7 +64,8 @@ import java.io.File;
 
 
 public class MainActivity extends FragmentActivity {
-    
+    @Override
+
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
             mDrawerLayout.closeDrawer(mLeftDrawer);
@@ -240,6 +241,7 @@ public class MainActivity extends FragmentActivity {
                 tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
                 switcher.setText(setMonthWeek());
                 Common.fetchWeekData();
+                initSurfaceView.getInitThread().setDate();
                 break;
             case 1:
                 Dates.NOW.setMonthData(--dayIndex);
@@ -256,6 +258,7 @@ public class MainActivity extends FragmentActivity {
                 tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
                 switcher.setText(setMonthWeek());
                 Common.fetchWeekData();
+                initSurfaceView.getInitThread().setDate();
                 break;
             case 1:
                 Dates.NOW.setMonthData(++dayIndex);
@@ -422,6 +425,9 @@ public class MainActivity extends FragmentActivity {
     }
     public static MainActivity getInstance() {
         return singleton;
+    }
+    public InitSurfaceView getInitSurfaceView() {
+        return initSurfaceView;
     }
     @Subscribe
     public void onEventMainThread(SetBtPlusEvent e) {

@@ -11,9 +11,8 @@ import android.widget.ToggleButton;
 import com.daemin.common.BasicFragment;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
-import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
-import com.daemin.working.MainActivity2;
+import com.daemin.main.MainActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,7 +28,7 @@ public class SettingCalendarFragment extends BasicFragment implements View.OnCli
         View root = super.onCreateView(inflater, container, savedInstanceState);
         EventBus.getDefault().post(new BackKeyEvent("SettingCalendarFragment",new String[]{"ibBack"},new String[]{"ibMenu"}));
         //ibBack = MainActivity.getInstance().getIbBack();
-        ibBack = MainActivity2.getInstance().getIbBack();
+        ibBack = MainActivity.getInstance().getIbBack();
         btHoliKo = (RelativeLayout) root.findViewById(R.id.btHoliKo);
         btLunar = (RelativeLayout) root.findViewById(R.id.btLunar);
         bt24 = (RelativeLayout) root.findViewById(R.id.bt24);

@@ -5,27 +5,21 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daemin.common.Common;
 import com.daemin.common.Convert;
 import com.daemin.common.NotInException;
+import com.daemin.event.UpdateNormalEvent;
+import com.daemin.timetable.R;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
-import com.daemin.event.UpdateNormalEvent;
-import com.daemin.main.MainActivity;
-import com.daemin.timetable.R;
-import com.daemin.working.PosState2;
-import com.daemin.working.TimePos2;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -177,30 +171,30 @@ public class DialWeekPicker extends Dialog {
             if(startHour!=endHour) {
                 if(endMin==0 || endMin==60) endMin=60;
                 else ++endHour;
-                TimePos2[] tp = new TimePos2[endHour - startHour];
+                TimePos[] tp = new TimePos[endHour - startHour];
                 int j = 0;
                 for (int i = startHour; i < endHour; i++) {
-                    tp[j] = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+                    tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
                     ++j;
                 }
                 int tpSize = tp.length;
                 for (int i = 0; i < tpSize; i++) {
                     if (i == 0) {
                         tp[i].setMin(startMin, 60);
-                        tp[i].setPosState(PosState2.PAINT);
+                        tp[i].setPosState(PosState.PAINT);
                     } else if (i == tpSize - 1) {
                         tp[i].setMin(0, endMin);
-                        tp[i].setPosState(PosState2.PAINT);
+                        tp[i].setPosState(PosState.PAINT);
                     } else {
-                        tp[i].setPosState(PosState2.PAINT);
+                        tp[i].setPosState(PosState.PAINT);
                     }
                     if(!Common.getTempTimePos().contains(tp[i].name()))
                         Common.getTempTimePos().add(tp[i].name());
                 }
             }else{
-                TimePos2 tp = TimePos2.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
+                TimePos tp = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
                 tp.setMin(startMin, endMin);
-                tp.setPosState(PosState2.PAINT);
+                tp.setPosState(PosState.PAINT);
             }
             if(endMin==60)endMin=0;
             EventBus.getDefault().post(new UpdateNormalEvent(

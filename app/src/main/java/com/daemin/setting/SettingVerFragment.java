@@ -14,15 +14,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.daemin.common.BasicFragment;
 import com.daemin.common.CustomJSONObjectRequest;
-import com.daemin.common.MyRequest;
 import com.daemin.common.MyVolley;
 import com.daemin.dialog.DialDefault;
 import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
-import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
-import com.daemin.working.MainActivity2;
+import com.daemin.main.MainActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -41,7 +39,7 @@ public class SettingVerFragment extends BasicFragment {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         EventBus.getDefault().post(new BackKeyEvent("SettingVerFragment", new String[]{"ibBack"}, new String[]{"ibMenu"}));
         //ibBack = MainActivity.getInstance().getIbBack();
-        ibBack = MainActivity2.getInstance().getIbBack();
+        ibBack = MainActivity.getInstance().getIbBack();
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

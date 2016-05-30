@@ -28,7 +28,7 @@
     <string name="weekofmonth">째주</string>
     <string name="wait1">등록대기중</string>
     <string name="wait2">등록대기중입니다</string>
-    <string name="QandA"><a href="http://plus.kakao.com/home/@timedao">소속 대학이 없는경우</a></string>
+    <string name="QandA"><a href="https://open.kakao.com/o/sqXjIpf">소속 대학이 없는경우</a></string>
     <string name="QandA2">문의하기</string>
     <!--권한-->
     <string name="permission_phonestate">사용자의 고유 아이디 생성을 위해\n폰 상태 권한이 필요합니다.</string>
@@ -65,6 +65,7 @@
     <string name="tvDialAlarm">알람설정</string>
     <string name="tvDialRepeat">반복설정</string>
     <string name="tvDialAddGroup">그룹추가</string>
+    <string name="tvTextSize">글자크기</string>
     <string name="btDialCancel">취소</string>
     <string name="btDialSetting">확인</string>
     <string name="overlapEnroll">+ 일정추가</string>
@@ -148,9 +149,9 @@
     <string name="setting_time_start">시작</string>
     <string name="setting_time_end">종료</string>
     <string name="setting_time_next">다음</string>
-    <string name="setting_time_week">요일 범위</string>
-    <string name="setting_time_time">시간 범위</string>
-    <string name="setting_time_textsize">글자 크기</string>
+    <string name="setting_time_week">요일범위</string>
+    <string name="setting_time_time">시간범위</string>
+    <string name="setting_time_textsize">글자크기</string>
     <string name="setting_time_day_error">시작일과 종료일을 확인하세요</string>
     <string name="setting_time_time_error">시작시간보다 종료시간이 커야합니다</string>
     <string name="setting_time_interval">시간 간격은 최대 15시간입니다</string>

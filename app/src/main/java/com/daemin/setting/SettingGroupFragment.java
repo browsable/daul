@@ -10,11 +10,9 @@ import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,16 +29,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.daemin.common.BasicFragment;
 import com.daemin.common.Common;
-import com.daemin.common.MyRequest;
 import com.daemin.common.MyVolley;
 import com.daemin.data.GroupListData;
 import com.daemin.enumclass.User;
 import com.daemin.event.BackKeyEvent;
 import com.daemin.event.ChangeFragEvent;
-import com.daemin.event.PostGroupListEvent;
-import com.daemin.main.MainActivity;
 import com.daemin.timetable.R;
-import com.daemin.working.MainActivity2;
+import com.daemin.main.MainActivity;
 import com.navercorp.volleyextensions.request.Jackson2Request;
 
 import org.greenrobot.eventbus.EventBus;
@@ -64,7 +59,7 @@ public class SettingGroupFragment extends BasicFragment {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         EventBus.getDefault().post(new BackKeyEvent("SettingGroupFragment", new String[]{"ibBack"}, new String[]{"ibMenu"}));
         //ibBack = MainActivity.getInstance().getIbBack();
-        ibBack = MainActivity2.getInstance().getIbBack();
+        ibBack = MainActivity.getInstance().getIbBack();
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

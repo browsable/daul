@@ -27,6 +27,7 @@ import com.daemin.enumclass.DayOfMonthPos;
 import com.daemin.enumclass.DayOfMonthPosState;
 import com.daemin.enumclass.PosState;
 import com.daemin.enumclass.TimePos;
+import com.daemin.enumclass.User;
 import com.daemin.event.SetTimeEvent;
 import com.daemin.timetable.R;
 
@@ -139,15 +140,17 @@ public class DialAddTimePicker extends Dialog {
         npMD.setMaxValue(MD.length - 1);
         npMD.setDisplayedValues(MD);
         npMD.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-        npStartHour.setMaxValue(22);
-        npStartHour.setMinValue(8);
-        npStartHour.setValue(8);
+        int startTime = User.INFO.getStartTime();
+        final int endTime = User.INFO.getEndTime();
+        npStartHour.setMaxValue(endTime-1);
+        npStartHour.setMinValue(startTime);
+        npStartHour.setValue(startTime);
         npStartMin.setMaxValue(59);
         npStartMin.setMinValue(0);
         npStartMin.setValue(0);
-        npEndHour.setMaxValue(23);
-        npEndHour.setMinValue(8);
-        npEndHour.setValue(9);
+        npEndHour.setMaxValue(endTime);
+        npEndHour.setMinValue(startTime);
+        npEndHour.setValue(startTime+1);
         npEndMin.setMaxValue(59);
         npEndMin.setMinValue(0);
         npEndMin.setValue(0);
@@ -172,7 +175,7 @@ public class DialAddTimePicker extends Dialog {
                     npEndMin.setMinValue(1);
                     npEndMin.setValue(1);
                 } else {
-                    if (newVal == 22) {
+                    if (newVal == endTime-1) {
                         npEndMin.setMaxValue(0);
                         npEndMin.setValue(0);
                     } else {
@@ -194,7 +197,7 @@ public class DialAddTimePicker extends Dialog {
                         npEndMin.setMinValue(0);
                         npEndMin.setMaxValue(59);
                         npEndMin.setValue(0);
-                        if (npStartHour.getValue() + 1 == 23) {
+                        if (npStartHour.getValue() + 1 == endTime) {
                             npEndMin.setMinValue(0);
                             npEndMin.setMaxValue(0);
                             npEndMin.setValue(0);
@@ -222,7 +225,7 @@ public class DialAddTimePicker extends Dialog {
                     npEndMin.setMaxValue(59);
                 } else {
                     npEndMin.setMinValue(0);
-                    if (newVal == 23) {
+                    if (newVal == endTime) {
                         npEndMin.setValue(0);
                         npEndMin.setMaxValue(0);
                     } else {

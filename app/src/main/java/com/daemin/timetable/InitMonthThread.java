@@ -20,6 +20,7 @@ import com.daemin.event.ExcuteMethodEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+
 @SuppressLint("DefaultLocale")
 public class InitMonthThread extends InitThread {
 	SurfaceHolder mholder;
@@ -82,6 +83,12 @@ public class InitMonthThread extends InitThread {
 	public void setRunning(boolean isLoop) {
 		this.isLoop = isLoop;
 	}
+
+	@Override
+	public void setDate() {
+
+	}
+
 	public int getWidth() {
 		return width;
 	}
@@ -138,9 +145,9 @@ public class InitMonthThread extends InitThread {
 		System.gc();
 	}
 
-	public void makeTimePos(int xth, int yth) {
+	public void makeTimePos(int xIndex, int yIndex) {
 		try{
-			DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xth, yth));
+			DayOfMonthPos DOMP = DayOfMonthPos.valueOf(Convert.getxyMergeForMonth(xIndex, yIndex));
 			if (DOMP.getPosState() == DayOfMonthPosState.NO_PAINT) {
 				DOMP.setPosState(DayOfMonthPosState.PAINT);
 				if(!Common.getTempTimePos().contains(DOMP.name()))
@@ -152,8 +159,8 @@ public class InitMonthThread extends InitThread {
 				if(downFlag) {
 					EventBus.getDefault().post(new CreateDialEvent(false));
 					Intent i = new Intent(context, DialEnroll.class);
-					i.putExtra("xth", xth);
-					i.putExtra("yth", yth);
+					i.putExtra("xIndex", xIndex);
+					i.putExtra("yIndex", yIndex);
 					i.putExtra("weekFlag", false);
 					context.startActivity(i);
 				}

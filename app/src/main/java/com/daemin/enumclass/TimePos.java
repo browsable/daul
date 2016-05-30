@@ -15,24 +15,21 @@ public enum TimePos {
     P1301(13, 1),P1303(13, 3),P1305(13, 5),P1307(13, 7),P1309(13, 9),P1311(13, 11),P1313(13, 13),P1315(13, 15),P1317(13, 17),P1319(13, 19),P1321(13, 21),P1323(13, 23),P1325(13, 25),P1327(13, 27),P1329(13, 29);
 
     private PosState posState;
-    private int xth;
-    public int yth,realStartYth;
-    public int startMin,realStartMin;
-    public int endMin;
-    private int posIndex;
-    private String title,second,place;
-    TimePos() {
-    }
-    TimePos(int xth, int yth) {
-        this.xth = xth;
-        this.yth = yth;
+    private int xIndex,yIndex,xth,yth; //index: 셋팅된 날짜, 시간에 맞는 인덱스 ,th: 좌표상 포지션
+    private int startMin;
+    private int endMin;
+    TimePos(int xIndex, int yIndex) {
+        this.xIndex = xIndex;
+        this.yIndex = yIndex;
         this.posState = PosState.NO_PAINT;
-        startMin =0;
-        endMin = 60;
-        title ="";
-        second="";
-        place="";
-        posIndex=0;
+        this.startMin =0;
+        this.endMin = 60;
+    }
+    public int getXIndex() {
+        return xIndex;
+    }
+    public int getYIndex() {
+        return yIndex;
     }
     public int getXth() {
         return xth;
@@ -47,40 +44,13 @@ public enum TimePos {
         if(endMin==60) return 0;
         else return endMin;
     }
-
+    public void setPos(int xth,int yth) {
+        this.xth = xth;
+        this.yth = yth;
+    }
     public void setMin(int startMin,int endMin) {
         this.startMin = startMin;
         this.endMin = endMin;
-    }
-    public void setInitText(){
-        this.title="";
-        this.second="";
-        this.place="";
-        this.posIndex=0;
-    }
-    public void setRealStart(int realStartYth, int realStartMin){
-        this.realStartYth = realStartYth;
-        this.realStartMin = realStartMin;
-    }
-    public void setText(String title, String place) {
-        if(this.title.equals("")){
-            if(title.length()>5){
-                this.title = title.substring(0,5);
-                this.second = title.substring(5);
-                if(this.second.length()>5){
-                    this.second = second.substring(0,5)+"..";
-                }
-                ++posIndex;
-            }else{
-                this.title = title;
-                this.second="";
-            }
-        }
-        if(this.place.equals("")){
-            ++posIndex;
-            if(place.length()>5) this.place = place.substring(0,6);
-            else this.place = place;
-        }
     }
     public void setPosState(PosState posState) {
         this.posState = posState;
@@ -88,7 +58,7 @@ public enum TimePos {
     public PosState getPosState() {
         return posState;
     }
-    public void drawTimePos(Canvas canvas, int width, int height) {
-        posState.drawTimePos(canvas, width, height,title, second, place,realStartYth, realStartMin, posIndex, xth, yth, startMin,endMin);
+    public void drawTimePos(Canvas canvas, int width, int height, int dayInterval, int timeInterval) {
+        posState.drawTimePos(canvas, width, height,dayInterval,timeInterval,xth, yth, startMin,endMin);
     }
 }

@@ -5,6 +5,7 @@ package com.daemin.timetable;
  */
 public abstract class InitThread extends Thread {
     public abstract void setRunning(boolean isLoop);
+    public abstract void setDate();
     public abstract void getDownXY(int xth, int yth);
     public abstract void getMoveXY(int xth, int yth);
     public abstract void getActionUp();

@@ -29,11 +29,8 @@ public enum User {
         groupListData=new ArrayList<>();
         overlapFlag = false;
         credit= getCredit();
-        textSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_xs);
         dateSize = context.getResources().getDimensionPixelSize(R.dimen.textsize_s);
         intervalSize = context.getResources().getDimensionPixelSize(R.dimen.margin_xxs);
-        editor.putInt("textSize", textSize).commit();
-        editor.putInt("dateSize", dateSize).commit();
     }
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -47,7 +44,7 @@ public enum User {
     public List<MyTime> weekData;
     public List<MyTime> monthData;
     public List<GroupListData.Data> groupListData;
-    public int groupPK, textSize, dateSize,intervalSize;
+    public int groupPK, dateSize,intervalSize;
     public boolean overlapFlag;
     public SharedPreferences.Editor getEditor() {
         return editor;
@@ -108,5 +105,8 @@ public enum User {
     }
     public int getEndTime(){
         return pref.getInt("endTime", 23);
+    }
+    public int getTextSize(){
+        return pref.getInt("textSize", 10);
     }
 }
