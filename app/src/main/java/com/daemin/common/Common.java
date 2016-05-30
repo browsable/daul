@@ -81,10 +81,10 @@ public class Common {
 		User.INFO.weekData.clear();
 		User.INFO.weekData.addAll(MyTimeRepo.getWeekTimes(AppController.getInstance(), week_startMillies, week_endMillies));
 		for(MyTime mt :User.INFO.weekData){
-			addWeek(mt.getName(),mt.getPlace(),mt.getTimetype(),mt.getDayofweek(),mt.getStarthour(),mt.getStartmin(), mt.getEndhour(), mt.getEndmin());
+			addWeek(mt.getTimetype(),mt.getDayofweek(),mt.getStarthour(),mt.getStartmin(), mt.getEndhour(), mt.getEndmin());
 		}
 	}
-	public static void addWeek(String title,String place,int timeType, int xth, int startHour,int startMin, int endHour, int endMin){
+	public static void addWeek(int timeType, int xth, int startHour,int startMin, int endHour, int endMin){
 		firstEnrollFlag=true;
 		if(endMin!=0) ++endHour;
 		else endMin = 60;
@@ -97,7 +97,9 @@ public class Common {
 
 			tp[j] = TimePos.valueOf(Convert.getxyMerge(xth,yth));
 			if (tp[j].getPosState() == PosState.NO_PAINT) {
-				if (i == startHour) {
+				if (i == startHour) {/*
+						if(xth>=2*User.INFO.getStartDay()+1&&xth<=2*User.INFO.getEndDay()+1)
+							tp[j].setText(title, place);*/
 					if (startMin != 0) tp[j].setMin(startMin, 60);
 				}
 				if (i == endHour - 1) {
@@ -107,6 +109,7 @@ public class Common {
 			}else if(tp[j].getPosState() == PosState.ENROLL) {
 					if (i == startHour) {
 						if (firstEnrollFlag||timeType!=1) {
+							//tp[j].setText(title, place);
 							if (startMin != 0) tp[j].setMin(startMin, 60);
 							firstEnrollFlag = false;
 						}

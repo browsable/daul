@@ -94,7 +94,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
         MyTime mt = getItem(position);
         String md;
         if (mt.getTimetype() == 0)
-            md = Dates.NOW.month + context.getResources().getString(R.string.month) + " " + mt.getDayofmonth() + context.getResources().getString(R.string.day);
+            md = mt.getMonthofyear() + context.getResources().getString(R.string.month) + " " + mt.getDayofmonth() + context.getResources().getString(R.string.day);
         else
             md = Convert.XthToDayOfWeek(mt.getDayofweek());
         holder.tvMD.setText(md);

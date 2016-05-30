@@ -105,13 +105,6 @@ public enum Dates {
         wData[6] = mdOfSat;
         return wData;
     }
-    public String[] getMData(){
-        String[] MData = new String[dayNumOfMonth];
-        for(int i=0; i<dayNumOfMonth; i++){
-            MData[i] =month+"."+mData[i+dayOfWeek+1];
-        }
-        return MData;
-    }
     public String[] getMonthDay(){
         int lastDay = LocalDate.now().dayOfMonth().withMaximumValue().getDayOfMonth();
         String[] MData = new String[lastDay];
@@ -223,6 +216,10 @@ public enum Dates {
         if(getMinusDayOfWeek(minus).withDayOfMonth(1).getDayOfWeek()==7) return getMinusDayOfWeek(minus).withDayOfMonth(1).plusDays(1).withDayOfWeek(6);
         else return getMinusDayOfWeek(minus).withDayOfMonth(1).withDayOfWeek(6);
     }
+    public int getDayOfWeekWithDate(int year, int month, int day) {
+        DateTime dt = new DateTime(year,month,day,8,0);
+        return dt.getDayOfWeek();
+    }
     //week
     public int getDayOfWeek() {
         int dayOfWeek = LocalDate.now().getDayOfWeek();
@@ -260,10 +257,10 @@ public enum Dates {
         setToday();
     }
     //month
-    public int getDayOfWeekOfLastMonth(){
+    /*public int getDayOfWeekOfLastMonth(){
         int dayOfWeek = LocalDate.now().minusMonths(1).dayOfMonth().withMaximumValue().getDayOfWeek();
         return dayOfWeek;
-    }
+    }*/
     public void setMonthData(int index) {
         todayIndex = index;
         year = LocalDate.now().plusMonths(index).getYear();

@@ -30,16 +30,9 @@ public enum PosState {
     ENROLL(){
         @Override
         public void drawTimePos(Canvas canvas, int width, int height, int dayInterval, int timeInterval, int xth, int yth, int startMin, int endMin) {
-            /*canvas.drawText(title, (width * 7 / 15) /dayInterval * (2*xth-1)+ width / 15,
-                    (height * 15 / 16) / timeInterval * (yth - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * startMin / 60+2*intervalSize, tp);
-            if(posIndex==2)canvas.drawText(second, (width * 7 / 15) /dayInterval * (2*xth-1)+ width / 15,
-                    (height * 15 / 16) / timeInterval * (yth - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * startMin / 60+2*intervalSize+(posIndex-1)*dateSize*9/10, tp);
-            canvas.drawText(place, (width * 7 / 15) /dayInterval * (2*xth-1)+ width / 15,
-                    (height * 15 / 16) / timeInterval * (yth - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * startMin / 60+2*intervalSize+posIndex*dateSize*9/10,tp);*/
         }
     };
     public Paint rp; // 사각형
-    public Paint tp;
     public int intervalSize;
     PosState() {
         intervalSize = User.INFO.intervalSize;

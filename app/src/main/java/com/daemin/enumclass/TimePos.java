@@ -52,6 +52,7 @@ public enum TimePos {
         this.startMin = startMin;
         this.endMin = endMin;
     }
+
     public void setPosState(PosState posState) {
         this.posState = posState;
     }

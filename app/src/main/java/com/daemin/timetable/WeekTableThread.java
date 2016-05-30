@@ -88,7 +88,11 @@ public class WeekTableThread extends InitThread {
         hpvp.setAlpha(70);
         tp = new Paint(Paint.ANTI_ALIAS_FLAG);
         tp.setTextAlign(Paint.Align.CENTER);
+        tp.setTextSize(textSize);
+        tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         rp = new Paint(Paint.ANTI_ALIAS_FLAG);
+        rp.setTextAlign(Paint.Align.CENTER);
+        rp.setTextSize(User.INFO.dateSize);
     }
 
     public void setRunning(boolean isLoop) {
@@ -119,7 +123,6 @@ public class WeekTableThread extends InitThread {
                 synchronized (mholder) {
                     drawScreen();
                     fetchWeekData();
-
                     for (TimePos ETP : TimePos.values()) {
                         ETP.drawTimePos(canvas, width, height,dayInterval,timeInterval);
                     }
@@ -212,16 +215,14 @@ public class WeekTableThread extends InitThread {
     }
 
     public void fetchWeekData() {
-        tp.setTextSize(textSize);
-        tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         for (MyTime mt : User.INFO.weekData) {
             rp.setColor(Color.parseColor(mt.getColor()));
             rp.setAlpha(130);
             int sTime = mt.getStarthour();
             int eTime = mt.getEndhour();
             int dayOfWeek = mt.getDayofweek()/2;
-            if(User.INFO.getStartTime()>sTime) sTime = startTime;
-            if(User.INFO.getEndTime()<eTime) eTime = endTime;
+            if(startTime>sTime) sTime = startTime;
+            if(endTime<eTime) eTime = endTime;
             String title = mt.getName();
             String first,second;
             int posIndex=0;
@@ -237,25 +238,26 @@ public class WeekTableThread extends InitThread {
                 first = title;
                 second="";
             }
-            if(!place.equals("")){
-                ++posIndex;
-                if(place.length()>5) place = place.substring(0,6);
-            }
+            ++posIndex;
+            if(place.length()>5) place = place.substring(0,6);
             try {
                 if(dayOfWeek>=startDay) {
                     dayOfWeek = dayOfWeek-startDay;
-                    int startHeight = (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(sTime) / 2 + 1) - 1) + height / 32 + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60+intervalSize;
+                    int startHeight = (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(sTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60;
                     canvas.drawRect((width * 14 / 15) / dayInterval * dayOfWeek + width / 15,
                             startHeight,
                             (width * 14 / 15) / dayInterval * (dayOfWeek + 1) + width / 15,
                             (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(eTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getEndmin() / 60, rp);
                     dayOfWeek = 2*dayOfWeek+1;
-                    canvas.drawText(first, (width * 7 / 15) /dayInterval * dayOfWeek+ width / 15,
-                            startHeight+textSize, tp);
-                    if(posIndex==2)canvas.drawText(second, (width * 7 / 15) /dayInterval * dayOfWeek+ width / 15,
-                            startHeight+textSize+(posIndex-1)*2*(textSize-intervalSize), tp);
-                    canvas.drawText(place, (width * 7 / 15) /dayInterval * dayOfWeek+ width / 15,
-                            startHeight+textSize+posIndex*2*(textSize-intervalSize),tp);
+                    if(sTime<endTime&&eTime>startTime) {
+                        canvas.drawText(first, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
+                                startHeight +intervalSize+ textSize, tp);
+                        if (posIndex == 2)
+                            canvas.drawText(second, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
+                                    startHeight +intervalSize+ textSize + (posIndex - 1) * 2 * (textSize - intervalSize), tp);
+                        canvas.drawText(place, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
+                                startHeight +intervalSize+ textSize + posIndex * 2 * (textSize - intervalSize), tp);
+                    }
                 }
             }catch (NotInException e){
             }
@@ -326,24 +328,24 @@ public class WeekTableThread extends InitThread {
         canvas.drawColor(Color.WHITE);
         canvas.drawLines(hp_hour, hp);
         canvas.drawLines(vp, hpvp);
-        tp.setTextSize(User.INFO.dateSize);
-        tp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+
+        rp.setColor(context.getResources().getColor(android.R.color.black));
         for(int i = 0; i<timeInterval+1; i++){
-            canvas.drawText(startTime+i+"", width / 40, hp_hour[4*i+1] + intervalSize, tp);
+            canvas.drawText(startTime+i+"", width / 40, hp_hour[4*i+1] + intervalSize, rp);
         }
+
         for(int i = 0; i<dayInterval+1; i++){
             if(day[i]==context.getString(R.string.day0)){
-                tp.setColor(context.getResources().getColor(R.color.red));
+                rp.setColor(context.getResources().getColor(R.color.red));
             }else if(day[i]==context.getString(R.string.day6)){
-                tp.setColor(context.getResources().getColor(R.color.blue));
+                rp.setColor(context.getResources().getColor(R.color.blue));
             }else {
-                tp.setColor(context.getResources().getColor(android.R.color.black));
+                rp.setColor(context.getResources().getColor(android.R.color.black));
             }
-            canvas.drawText(wData[startDay+i], (vp[4*i]+vp[4*(i+1)])/2, (height / 32 + intervalSize) * 7 / 16, tp);
-            canvas.drawText(day[i], (vp[4*i]+vp[4*(i+1)])/2, (height / 32 + intervalSize) * 15 / 16-1, tp);
+            canvas.drawText(wData[startDay+i], (vp[4*i]+vp[4*(i+1)])/2, (height / 32 + intervalSize) * 7 / 16, rp);
+            canvas.drawText(day[i], (vp[4*i]+vp[4*(i+1)])/2, (height / 32 + intervalSize) * 15 / 16-1, rp);
             if(i==dayInterval-1)break;
         }
-        tp.setColor(context.getResources().getColor(android.R.color.black));
         hp.setAlpha(40);
         if(Dates.NOW.isToday&&dayOfWeek>=startDay&&dayOfWeek<=endDay)canvas.drawRect((width * 14 / 15) / dayInterval * (dayOfWeek-startDay) + width / 15, ((height * 2) - 10) / 64 + intervalSize,
                 (width * 14 / 15) / dayInterval * (dayOfWeek+1-startDay) + width / 15, height * 62 / 64 + intervalSize, hp);

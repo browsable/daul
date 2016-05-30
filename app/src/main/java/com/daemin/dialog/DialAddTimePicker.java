@@ -278,7 +278,6 @@ public class DialAddTimePicker extends Dialog {
             TimePos[] tp = new TimePos[endHour - startHour];
             int j = 0;
             for (int i = startHour; i < endHour; i++) {
-
                     tp[j] = TimePos.valueOf(Convert.getxyMerge(2 * npMD.getValue() + 1, Convert.HourOfDayToYth(i)));
                 ++j;
             }

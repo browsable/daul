@@ -2,12 +2,16 @@ package com.daemin.dialog;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
@@ -19,6 +23,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,10 +34,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -65,7 +72,9 @@ import com.daemin.event.SetCreditEvent;
 import com.daemin.event.SetPlaceEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
+import com.daemin.event.SetTimeEvent;
 import com.daemin.event.UpdateNormalEvent;
+import com.daemin.main.MainActivity;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 import com.daemin.widget.WidgetUpdateService;
@@ -75,6 +84,7 @@ import com.daemin.enumclass.TimePos;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -944,15 +954,83 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 finish();
                 break;
             case R.id.btNew:
-                DialAddTimePicker datp = null;
-                switch (viewMode) {
-                    case 0:
-                        datp = new DialAddTimePicker(DialSchedule.this, Dates.NOW.getWData());
-                        break;
-                    case 1:
-                        datp = new DialAddTimePicker(DialSchedule.this, Dates.NOW.getMData());
-                        break;
-                }
+                DatePickerDialog datp = new DatePickerDialog(this, R.style.MyDialogTheme, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker arg0, int yearData, int monthData, int dayData) {
+                        year = yearData;
+                        month = monthData;
+                        day=dayData;
+                        TimePickerDialog startTpd = new TimePickerDialog(DialSchedule.this, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                startHour = hourOfDay;
+                                startMin = minute;
+                            }
+                        }, User.INFO.getStartTime(), 0, false);
+                        TextView tv = new TextView(DialSchedule.this);
+                        tv.setText(getString(R.string.setting_time_start));
+                        tv.setTextColor(getResources().getColor(android.R.color.white));
+                        tv.setTypeface(null, Typeface.BOLD);
+                        tv.setGravity(Gravity.CENTER);
+                        tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
+                        startTpd.setCustomTitle(tv);
+                        startTpd.show();
+
+                        startTpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                final TimePickerDialog endTpd = new TimePickerDialog(DialSchedule.this, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        endHour = hourOfDay;
+                                        endMin = minute;
+                                    }
+                                }, User.INFO.getStartTime()+1, 0, false);
+                                TextView tv = new TextView(DialSchedule.this);
+                                tv.setText(getString(R.string.setting_time_end));
+                                tv.setTextColor(getResources().getColor(android.R.color.white));
+                                tv.setTypeface(null, Typeface.BOLD);
+                                tv.setGravity(Gravity.CENTER);
+                                tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
+                                endTpd.setCustomTitle(tv);
+                                endTpd.show();
+                                endTpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        normalList.add(new BottomNormalData(
+                                                (month+1)+"."+day,
+                                                Convert.IntToString(startHour),
+                                                Convert.IntToString(startMin),
+                                                Convert.IntToString(endHour),
+                                                Convert.IntToString(endMin), day));
+                                        normalAdapter.notifyDataSetChanged();
+                                       /* if((startHour!=0||endHour!=0))
+                                           addWeek(2*(Dates.NOW.getDayOfWeekWithDate(year,month+1,day)+User.INFO.getStartDay()-1)+1,startHour,startMin,endHour,endMin);*/
+                                        /*if(startTime<endTime) {
+                                            if (endTime-startTime>15){
+                                                int endTime = startTime+15;
+                                                User.INFO.getEditor().putInt("startTime", startTime).commit();
+                                                User.INFO.getEditor().putInt("endTime", endTime).commit();
+                                                Toast.makeText(getActivity(), getString(R.string.setting_time_interval), Toast.LENGTH_SHORT).show();
+                                                tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
+                                            }
+                                            else{
+                                                User.INFO.getEditor().putInt("startTime", startTime).commit();
+                                                User.INFO.getEditor().putInt("endTime", endTime).commit();
+                                                tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
+                                            }
+                                            MainActivity.getInstance().getInitSurfaceView().setTime(startTime,endTime);
+                                        }else{
+                                            if(startTime!=0&&endTime!=0)
+                                                Toast.makeText(getActivity(), getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
+                                        }*/
+                                    }
+                                });
+
+                            }
+                        });
+                    }
+                }, LocalDate.now().getYear(), LocalDate.now().getMonthOfYear()-1, LocalDate.now().getDayOfMonth());
                 datp.show();
                 break;
             case R.id.btPlace:
@@ -979,7 +1057,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 break;
         }
     }
-
     public void setRandomColor() {
         Random mRand = new Random();
         int nResult = mRand.nextInt(18) + 1;
@@ -1128,7 +1205,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private AutoCompleteTextView actvUniv, actvDep, actvGrade, actvSub, actvProf;
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
-    private int dy, mPosY, screenHeight, viewMode, repeatType, brightness;
+    private int dy, mPosY, screenHeight, viewMode, repeatType, brightness, startHour,endHour, startMin, endMin, year,month,day;
     private boolean widgetFlag, overlapEnrollFlag, weekFlag, subOverlapFlag;
     // Progress Dialog
     private ProgressDialog pDialog;
