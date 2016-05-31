@@ -83,6 +83,8 @@ public class DialDefault extends Dialog {
                             goToPlayMarket();
                             break;
                         case 1: //시간표 초기화
+                            User.INFO.credit=0.0f;
+                            User.INFO.getEditor().putFloat("credit", 0.0f).commit();
                             MyTimeRepo.clearMyTime(context);
                             break;
                         case 2: //과목시간표 초기화

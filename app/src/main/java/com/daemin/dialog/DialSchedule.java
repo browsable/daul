@@ -23,7 +23,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -72,9 +71,6 @@ import com.daemin.event.SetCreditEvent;
 import com.daemin.event.SetPlaceEvent;
 import com.daemin.event.SetRepeatEvent;
 import com.daemin.event.SetShareEvent;
-import com.daemin.event.SetTimeEvent;
-import com.daemin.event.UpdateNormalEvent;
-import com.daemin.main.MainActivity;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 import com.daemin.widget.WidgetUpdateService;
@@ -229,13 +225,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                 position = pos;
+                final int xth = Integer.parseInt(((TextView) view.findViewById(R.id.tvXth)).getText().toString());
+                final int sHour = Integer.parseInt(((TextView) view.findViewById(R.id.tvStartHour)).getText().toString());
+                final int sMin = Integer.parseInt(((TextView) view.findViewById(R.id.tvStartMin)).getText().toString());
+                final int eHour = Integer.parseInt(((TextView) view.findViewById(R.id.tvEndHour)).getText().toString());
+                final int eMin = Integer.parseInt(((TextView) view.findViewById(R.id.tvEndMin)).getText().toString());
                 switch (viewMode) {
                     case 0:
-                        final int xth = Integer.parseInt(((TextView) view.findViewById(R.id.tvXth)).getText().toString());
-                        final int sHour = Integer.parseInt(((TextView) view.findViewById(R.id.tvStartHour)).getText().toString());
-                        final int sMin = Integer.parseInt(((TextView) view.findViewById(R.id.tvStartMin)).getText().toString());
-                        final int eHour = Integer.parseInt(((TextView) view.findViewById(R.id.tvEndHour)).getText().toString());
-                        final int eMin = Integer.parseInt(((TextView) view.findViewById(R.id.tvEndMin)).getText().toString());
                         TimePickerDialog startTpd = new TimePickerDialog(DialSchedule.this, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -295,10 +291,80 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         startTpd.show();
                         break;
                     case 1:
-                        beforeYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
-                        String xth2 = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-                        DialMonthPicker dmp = new DialMonthPicker(DialSchedule.this, position, xth2);
-                        dmp.show();
+                        beforeMD = ((TextView) view.findViewById(R.id.tvMD)).getText().toString();
+                        TimePickerDialog startTpd2 = new TimePickerDialog(DialSchedule.this, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                startHour = hourOfDay;
+                                startMin = minute;
+                                final TimePickerDialog endTpd = new TimePickerDialog(DialSchedule.this, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        endHour = hourOfDay;
+                                        endMin = minute;
+                                        if(startHour<endHour) {
+                                            normalList.remove(position);
+                                            normalList.add(position, new BottomNormalData(
+                                                    Dates.NOW.year+"",
+                                                    beforeMD,
+                                                    Convert.IntToString(startHour),
+                                                    Convert.IntToString(startMin),
+                                                    Convert.IntToString(endHour),
+                                                    Convert.IntToString(endMin), xth));
+                                            normalAdapter.notifyDataSetChanged();
+                                        }else if(startHour == endHour){
+                                            if(startMin<endMin) {
+                                                normalList.remove(position);
+                                                normalList.add(position, new BottomNormalData(
+                                                        Dates.NOW.year+"",
+                                                        beforeMD,
+                                                        Convert.IntToString(startHour),
+                                                        Convert.IntToString(startMin),
+                                                        Convert.IntToString(endHour),
+                                                        Convert.IntToString(endMin), xth));
+                                                normalAdapter.notifyDataSetChanged();
+                                            }else{
+                                                Toast.makeText(DialSchedule.this, getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }else{
+                                            Toast.makeText(DialSchedule.this, getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }, eHour, eMin, false);
+                                TextView tv = new TextView(DialSchedule.this);
+                                tv.setText(getString(R.string.setting_time_end));
+                                tv.setTextColor(getResources().getColor(android.R.color.white));
+                                tv.setTypeface(null, Typeface.BOLD);
+                                tv.setGravity(Gravity.CENTER);
+                                tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
+                                endTpd.setCustomTitle(tv);
+                                endTpd.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                            dialog.cancel();
+                                        }
+                                    }
+                                });
+                                endTpd.show();
+                            }
+                        }, sHour, sMin, false);
+                        startTpd2.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                    dialog.cancel();
+                                }
+                            }
+                        });
+                        TextView tv2 = new TextView(DialSchedule.this);
+                        tv2.setText(getString(R.string.setting_time_start));
+                        tv2.setTextColor(getResources().getColor(android.R.color.white));
+                        tv2.setTypeface(null, Typeface.BOLD);
+                        tv2.setGravity(Gravity.CENTER);
+                        tv2.setBackgroundColor(getResources().getColor(R.color.maincolor));
+                        startTpd2.setCustomTitle(tv2);
+                        startTpd2.show();
                         break;
                 }
             }
@@ -316,9 +382,9 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                             removeWeek(Integer.parseInt(xth), Integer.parseInt(startHour), Integer.parseInt(endHour), Integer.parseInt(endMin));
                             break;
                         case 1:
-                            String tvYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
+                            String tvMD = ((TextView) view.findViewById(R.id.tvMD)).getText().toString();
                             String xth2 = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-                            removeMonth(Integer.parseInt(xth2), Integer.parseInt(tvYMD.split("\\.")[1]));
+                            removeMonth(Integer.parseInt(xth2), Integer.parseInt(tvMD.split("\\.")[1]));
                             break;
                     }
                 }
@@ -366,14 +432,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         normalList.clear();
         int startYth = 0, startMin = 0, endYth = 0, endMin = 0, tmpXth = 0;
         int tmpStartYth = 0, tmpStartMin = 0, tmpEndYth = 0, tmpEndMin = 0;
-        String YMD = "";
+        String MD = "";
 
         for (TimePos ETP : TimePos.values()) {
             if (ETP.getPosState() == PosState.PAINT) {
                 if (tmpXth != ETP.getXIndex()) {
 
                     tmpXth = ETP.getXIndex();
-                    YMD = Dates.NOW.getwMonthDay(tmpXth);
+                    MD = Dates.NOW.getwMonthDay(tmpXth);
                     tmpStartYth = tmpStartMin = tmpEndYth = tmpEndMin = 0;
                 }
                 if (tmpEndYth != ETP.getYIndex()) {
@@ -382,7 +448,15 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     tmpEndMin = endMin = ETP.getEndMin();
                     if (endMin != 0) tmpEndYth = endYth = startYth;
                     else tmpEndYth = endYth = startYth + 2;
-                    normalList.add(new BottomNormalData(YMD,
+                    int year;
+                    int titleMonth = Dates.NOW.month;
+                    int monthOfYear = Dates.NOW.getMonthWithDayIndex(ETP.getXth());
+                    if (monthOfYear != titleMonth && titleMonth == 1)
+                        year = Dates.NOW.year - 1;
+                    else year = Dates.NOW.year;
+                    normalList.add(new BottomNormalData(
+                            year+"",
+                            MD,
                             Convert.YthToHourOfDay(startYth),
                             Convert.IntToString(startMin),
                             Convert.YthToHourOfDay(endYth),
@@ -396,7 +470,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     tmpEndMin = endMin = ETP.getEndMin();
                     if (endMin != 0) tmpEndYth = endYth = ETP.getYIndex();
                     else tmpEndYth = endYth = ETP.getYIndex() + 2;
-                    normalList.add(new BottomNormalData(YMD,
+                    int year;
+                    int titleMonth = Dates.NOW.month;
+                    int monthOfYear = Dates.NOW.getMonthWithDayIndex(ETP.getXth());
+                    if (monthOfYear != titleMonth && titleMonth == 1)
+                        year = Dates.NOW.year - 1;
+                    else year = Dates.NOW.year;
+                    normalList.add(new BottomNormalData(
+                            year+"", MD,
                             Convert.YthToHourOfDay(startYth),
                             Convert.IntToString(startMin),
                             Convert.YthToHourOfDay(endYth),
@@ -413,13 +494,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     public void updateMonthList() {
         normalList.clear();
         int tmpXth, tmpYth;
-        String YMD;
+        String MD;
         for (DayOfMonthPos DOMP : DayOfMonthPos.values()) {
             if (DOMP.getPosState() == DayOfMonthPosState.PAINT) {
                 tmpXth = DOMP.getXth();
                 tmpYth = DOMP.getYth();
-                YMD = Dates.NOW.month + "." + Dates.NOW.getmMonthDay(tmpXth - 1, 7 * (tmpYth - 1));
-                normalList.add(new BottomNormalData(YMD, User.INFO.getStartTime() + "", "00", (User.INFO.getStartTime() + 1) + "", "00", tmpXth));
+                MD = Dates.NOW.month + "." + Dates.NOW.getmMonthDay(tmpXth - 1, 7 * (tmpYth - 1));
+                normalList.add(new BottomNormalData(Dates.NOW.year+"",MD, User.INFO.getStartTime() + "", "00", (User.INFO.getStartTime() + 1) + "", "00", tmpXth));
             }
         }
         normalAdapter.notifyDataSetChanged();
@@ -556,21 +637,13 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             }
             if(endMin==60)endMin=0;
             normalList.remove(position);
-            if (viewMode == 0) {
-                normalList.add(position, new BottomNormalData(
-                        Dates.NOW.getwMonthDay(xth),
-                        Convert.IntToString(startHour),
-                        Convert.IntToString(startMin),
-                        Convert.IntToString(endHour),
-                        Convert.IntToString(endMin), xth));
-            } else {
-                normalList.add(position, new BottomNormalData(
-                        beforeYMD,
-                        Convert.IntToString(startHour),
-                        Convert.IntToString(startMin),
-                        Convert.IntToString(endHour),
-                        Convert.IntToString(endMin), xth));
-            }
+            normalList.add(position, new BottomNormalData(
+                    Dates.NOW.year+"",
+                    Dates.NOW.getwMonthDay(xth),
+                    Convert.IntToString(startHour),
+                    Convert.IntToString(startMin),
+                    Convert.IntToString(endHour),
+                    Convert.IntToString(endMin), xth));
             normalAdapter.notifyDataSetChanged();
     }
     public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin) {
@@ -814,13 +887,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         long nowMilis = Dates.NOW.getNowMillis();
         for (int i = 0; i < repeatNum; i++) {
             for (BottomNormalData d : normalList) {
-                String[] tmp = d.getYMD().split("\\.");
-                int year;
-                int titleMonth = Dates.NOW.month;
+                String[] tmp = d.getMD().split("\\.");
+                int year = Integer.parseInt(d.getYear());
+               /* int titleMonth = Dates.NOW.month;
                 int monthOfYear = Integer.parseInt(tmp[0]);
                 if (monthOfYear != titleMonth && titleMonth == 1)
                     year = Dates.NOW.year - 1;
-                else year = Dates.NOW.year;
+                else year = Dates.NOW.year;*/
+                int monthOfYear = Integer.parseInt(tmp[0]);
                 int dayOfMonth = Integer.parseInt(tmp[1]);
                 int startHour = Integer.parseInt(d.getStartHour());
                 int startMin = Integer.parseInt(d.getStartMin());
@@ -1076,6 +1150,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 DatePickerDialog datp = new DatePickerDialog(this, R.style.MyDialogTheme, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker arg0, int yearData, int monthData, int dayData) {
+                        year= yearData;
                         month = monthData;
                         day = dayData;
                         TimePickerDialog startTpd = new TimePickerDialog(DialSchedule.this, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
@@ -1090,6 +1165,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                         endMin = minute;
                                         if(startHour<endHour) {
                                             normalList.add(new BottomNormalData(
+                                                    year+"",
                                                     (month + 1) + "." + day,
                                                     Convert.IntToString(startHour),
                                                     Convert.IntToString(startMin),
@@ -1100,6 +1176,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                         }else if(startHour == endHour){
                                             if(startMin<endMin) {
                                                 normalList.add(new BottomNormalData(
+                                                        year+"",
                                                         (month + 1) + "." + day,
                                                         Convert.IntToString(startHour),
                                                         Convert.IntToString(startMin),
@@ -1326,7 +1403,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private HorizontalListAdapter hoAdapter;
     private Window window;
     private GradientDrawable gd;
-    private String colorName, subId, groupName, ttVersion, beforeYMD; //ttVersion: 학기버전
+    private String colorName, subId, groupName, ttVersion, beforeMD; //ttVersion: 학기버전
     private WindowManager.LayoutParams lp;
     private ArrayList<BottomNormalData> normalList;
     private ArrayAdapter<String> univAdapter;
@@ -1336,7 +1413,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private AutoCompleteTextView actvUniv, actvDep, actvGrade, actvSub, actvProf;
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
-    private int dy, mPosY, screenHeight, viewMode, repeatType, brightness, startHour, endHour, startMin, endMin, month, day, position;
+    private int dy, mPosY, screenHeight, viewMode, repeatType, brightness, startHour, endHour, startMin, endMin, year,month, day, position;
     private boolean widgetFlag, overlapEnrollFlag, weekFlag, subOverlapFlag, btNewFlag;
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -1393,21 +1470,6 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     @Subscribe
     public void onEventMainThread(ClearNormalEvent e) {
         normalList.clear();
-        normalAdapter.notifyDataSetChanged();
-    }
-
-    @Subscribe
-    public void onEventMainThread(UpdateNormalEvent e) {
-        normalList.remove(e.getPosition());
-        if (viewMode == 0) {
-            normalList.add(e.getPosition(), new BottomNormalData(
-                    Dates.NOW.getwMonthDay(e.getXth()), e.getStartHour(), e.getStartMin(),
-                    e.getEndHour(), e.getEndMin(), e.getXth()));
-        } else {
-            normalList.add(e.getPosition(), new BottomNormalData(
-                    beforeYMD, e.getStartHour(), e.getStartMin(),
-                    e.getEndHour(), e.getEndMin(), e.getXth()));
-        }
         normalAdapter.notifyDataSetChanged();
     }
 

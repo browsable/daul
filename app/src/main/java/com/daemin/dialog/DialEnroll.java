@@ -24,14 +24,11 @@ import com.daemin.event.EditCheckEvent;
 import com.daemin.event.EditRepeatEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RemoveEnrollEvent;
-import com.daemin.event.SetTimeEvent;
-import com.daemin.event.SetTimeForCheckEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.joda.time.DateTime;
 
 import java.util.HashMap;
 import java.util.List;
@@ -146,8 +143,6 @@ public class DialEnroll extends Activity {
     }
 
     private int xIndex, yIndex, startHour, startMin, dayOfMonth,monthOfYear,year;
-    private int editStartHour, editStartMin, editEndHour, editEndMin,editDay, editXth;
-    private long editStartMillis,editEndMillis;
     private Boolean weekFlag;
     private TextView tvMonthDay;
     private Button btDialCancel;
@@ -156,7 +151,6 @@ public class DialEnroll extends Activity {
     private HashMap enrollList;
     private LinearLayout llNewEnroll;
     private EnrollAdapter enrollAdapter;
-    private MyTime m;
     @Subscribe
     public void onEventMainThread(RemoveEnrollEvent e) {
         MyTime mt = (MyTime) enrollList.get(e.getId());
@@ -170,46 +164,6 @@ public class DialEnroll extends Activity {
     @Subscribe
     public void onEventMainThread(EditRepeatEvent e) {
         enrollAdapter.getItem(e.getPosition()).setRepeat(e.toString());
-    }
-   /* public void onEventMainThread(EditAlarmEvent e) {
-        e.getTvAlarmType().setText(e.);
-        MyTime m = enrollAdapter.getItem(e.getPosition());
-        m.setAlarm(Convert.Alarm(m.getStartmillis(), e.getTime()));
-        Log.i("test Edit start", m.getStartmillis() + "");
-        Log.i("test Edit type", e.getTime() + "");
-        Log.i("test Edit alarm", Convert.Alarm(m.getStartmillis(), e.getTime()) + "");
-    }
-
-*/
-   @Subscribe
-   public void onEventMainThread(SetTimeEvent e) {
-        m = enrollAdapter.getItem(e.getPosition());
-        editStartHour = e.getStartHour();
-        editStartMin = e.getStartMin();
-        editEndHour = e.getEndHour();
-        editEndMin = e.getEndMin();
-        editDay = e.getDayIndex();
-        if(e.getTimeType()!=0) {
-            editDay = Integer.parseInt(Dates.NOW.getwMonthDay(editDay).split("\\.")[1]);
-        }
-        DateTime startDt = Dates.NOW.getDateTimeMillis(year, monthOfYear, editDay, editStartHour, editStartMin);
-        DateTime endDt = Dates.NOW.getDateTimeMillis(year, monthOfYear, editDay, editEndHour, editEndMin);
-        editStartMillis = startDt.getMillis();
-        editEndMillis = endDt.getMillis();
-        editXth = Convert.dayOfWeekTowXth(startDt.getDayOfWeek());
-    }
-    @Subscribe
-    public void onEventMainThread(SetTimeForCheckEvent e) {
-        m.setYear(year);
-        m.setMonthofyear(monthOfYear);
-        m.setDayofmonth(editDay);
-        m.setDayofweek(editXth);
-        m.setStartmillis(editStartMillis);
-        m.setEndmillis(editEndMillis);
-        m.setStarthour(editStartHour);
-        m.setStartmin(editStartMin);
-        m.setEndhour(editEndHour);
-        m.setEndmin(editEndMin);
     }
     @Subscribe
     public void onEventMainThread(EditCheckEvent e) {

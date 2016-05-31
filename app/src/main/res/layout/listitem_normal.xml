@@ -32,14 +32,12 @@
             android:paddingLeft="@dimen/margin_xs"
             android:paddingRight="@dimen/margin_xs"
             android:paddingTop="@dimen/margin_xxxs">
-
             <TextView
-                android:id="@+id/tvYMD"
+                android:id="@+id/tvMD"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/transparency"
-                android:text="hi"
                 android:textSize="@dimen/textsize_default" />
 
             <LinearLayout

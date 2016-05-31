@@ -29,7 +29,7 @@ public class BottomNormalListAdapter extends ArrayAdapter<BottomNormalData> {
         if (convertView == null) {
             holder = new Holder();
             convertView = mInflater.inflate(R.layout.listitem_normal, parent, false);
-            holder.tvYMD = (TextView) convertView.findViewById(R.id.tvYMD);
+            holder.tvMD = (TextView) convertView.findViewById(R.id.tvMD);
             holder.tvStartHour = (TextView) convertView.findViewById(R.id.tvStartHour);
             holder.tvStartMin = (TextView) convertView.findViewById(R.id.tvStartMin);
             holder.tvEndHour = (TextView) convertView.findViewById(R.id.tvEndHour);
@@ -42,7 +42,7 @@ public class BottomNormalListAdapter extends ArrayAdapter<BottomNormalData> {
         }
         if(position==0) holder.headLine.setVisibility(View.VISIBLE);
         // Populate the text
-        holder.tvYMD.setText(getItem(position).getYMD());
+        holder.tvMD.setText(getItem(position).getMD());
         holder.tvStartHour.setText(getItem(position).getStartHour());
         holder.tvStartMin.setText(getItem(position).getStartMin());
         holder.tvEndHour.setText(getItem(position).getEndHour());
@@ -54,7 +54,7 @@ public class BottomNormalListAdapter extends ArrayAdapter<BottomNormalData> {
 
     /** View holder for the views we need access to */
     private static class Holder {
-        public TextView tvYMD;
+        public TextView tvMD;
         public TextView tvStartHour;
         public TextView tvStartMin;
         public TextView tvEndHour;
