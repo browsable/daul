@@ -265,7 +265,6 @@ public class WeekTableThread extends InitThread {
     }
 
     public void drawScreen() {
-
         if (initFlag) {
             hp_hour = new float[timeLength];
             hp_hour[0] = width / 20;

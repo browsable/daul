@@ -110,7 +110,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#9973C8BA" />
+        android:background="#9973C8BA"
+        />
     <ImageView
         android:id="@+id/ivWeek"
         android:layout_width="match_parent"
