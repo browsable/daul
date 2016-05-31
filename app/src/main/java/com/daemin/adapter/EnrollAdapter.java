@@ -33,12 +33,12 @@ import com.daemin.enumclass.User;
 import com.daemin.event.EditCheckEvent;
 import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.event.SetCreditEvent;
+import com.daemin.event.SetEnrollBtCancelGoneEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +54,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
     private Boolean editFlag;
     private long nowMilis;
     private long exAlarm;
-    private int year,month, day, startHour, startMin, endHour, endMin;
+    private int year, month, day, startHour, startMin, endHour, endMin;
 
     public EnrollAdapter(Context context, List<MyTime> values) {
         super(context, R.layout.listitem_enroll, values);
@@ -137,6 +137,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
         holder.btEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EventBus.getDefault().post(new SetEnrollBtCancelGoneEvent());
                 editFlag = true;
                 int position = Integer.parseInt(holder.tvPosition.getText().toString());
                 holder.gd.setColor(Color.parseColor(getItem(position).getColor()));
@@ -174,33 +175,64 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 if (editFlag) {
                     final int position = Integer.parseInt(holder.tvPosition.getText().toString());
                     final MyTime mt = getItem(position);
-                    final int timeType = mt.getTimetype();
+                    int startYear;
+                    int startMonth;
+                    int startDay;
+                    if(mt.getTimetype()==0) {
+                       startYear = mt.getYear();
+                       startMonth = mt.getMonthofyear() - 1;
+                       startDay= mt.getDayofmonth();
+                    }else{
+                        String md = Dates.NOW.getwMonthDay(mt.getDayofweek());
+                        String[] tmp = md.split("\\.");
+                        startYear = Dates.NOW.year;
+                        startMonth = Integer.parseInt(tmp[0])-1;
+                        startDay= Integer.parseInt(tmp[1]);
+                    }
+                    DatePickerDialog datp = new DatePickerDialog(context, R.style.MyDialogTheme, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker arg0, int yearData, int monthData, int dayData) {
+                            year = yearData;
+                            month = monthData + 1;
+                            day = dayData;
+                            TimePickerDialog startTpd = new TimePickerDialog(context, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                                @Override
+                                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                    startHour = hourOfDay;
+                                    startMin = minute;
+                                    final TimePickerDialog endTpd = new TimePickerDialog(context, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                                        @Override
+                                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                            endHour = hourOfDay;
+                                            endMin = minute;
+                                            if (startHour < endHour) {
+                                                holder.tvMD.setText(month + context.getResources().getString(R.string.month)
+                                                        + day
+                                                        + context.getResources().getString(R.string.day));
 
-                        DatePickerDialog datp = new DatePickerDialog(context, R.style.MyDialogTheme, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker arg0, int yearData, int monthData, int dayData) {
-                                year = yearData;
-                                month = monthData+1;
-                                day = dayData;
-                                TimePickerDialog startTpd = new TimePickerDialog(context, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
-                                    @Override
-                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                        startHour = hourOfDay;
-                                        startMin = minute;
-                                        final TimePickerDialog endTpd = new TimePickerDialog(context, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
-                                            @Override
-                                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                                endHour = hourOfDay;
-                                                endMin = minute;
-                                                int dayOfWeek = Dates.NOW.getDayOfWeekWithDate(year, month, day);
-                                                if (startHour < endHour) {
-                                                    if (timeType == 0) {
-                                                        holder.tvMD.setText(month + context.getResources().getString(R.string.month)
-                                                                + day
-                                                                + context.getResources().getString(R.string.day));
-                                                    } else {
-                                                        holder.tvMD.setText(Convert.XthToDayOfWeek(2*dayOfWeek+1));
-                                                    }
+                                                String time = Convert.IntToString(startHour) + ":"
+                                                        + Convert.IntToString(startMin) + "~"
+                                                        + Convert.IntToString(endHour) + ":"
+                                                        + Convert.IntToString(endMin);
+                                                holder.tvTime.setText(time);
+                                                DateTime startDt = Dates.NOW.getDateTimeMillis(year, month, day, startHour, startMin);
+                                                DateTime endDt = Dates.NOW.getDateTimeMillis(year, month, day, endHour, endMin);
+                                                mt.setYear(year);
+                                                mt.setMonthofyear(month);
+                                                mt.setDayofmonth(day);
+                                                mt.setDayofweek(Convert.dayOfWeekTowXth(startDt.getDayOfWeek()));
+                                                mt.setStartmillis(startDt.getMillis());
+                                                mt.setEndmillis(endDt.getMillis());
+                                                mt.setStarthour(startHour);
+                                                mt.setStartmin(startMin);
+                                                mt.setEndhour(endHour);
+                                                mt.setEndmin(endMin);
+                                            } else if (startHour == endHour) {
+                                                if (startMin < endMin) {
+                                                    holder.tvMD.setText((month + 1) + context.getResources().getString(R.string.month)
+                                                            + day
+                                                            + context.getResources().getString(R.string.day));
+
                                                     String time = Convert.IntToString(startHour) + ":"
                                                             + Convert.IntToString(startMin) + "~"
                                                             + Convert.IntToString(endHour) + ":"
@@ -218,86 +250,60 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                                                     mt.setStartmin(startMin);
                                                     mt.setEndhour(endHour);
                                                     mt.setEndmin(endMin);
-                                                } else if (startHour == endHour) {
-                                                    if (startMin < endMin) {
-                                                        if (timeType == 0) {
-                                                            holder.tvMD.setText((month+1) + context.getResources().getString(R.string.month)
-                                                                    + day
-                                                                    + context.getResources().getString(R.string.day));
-                                                        } else {
-                                                            holder.tvMD.setText(Convert.XthToDayOfWeek(2*dayOfWeek+1));
-                                                        }
-                                                        String time = Convert.IntToString(startHour) + ":"
-                                                                + Convert.IntToString(startMin) + "~"
-                                                                + Convert.IntToString(endHour) + ":"
-                                                                + Convert.IntToString(endMin);
-                                                        holder.tvTime.setText(time);
-                                                        DateTime startDt = Dates.NOW.getDateTimeMillis(year, month, day, startHour, startMin);
-                                                        DateTime endDt = Dates.NOW.getDateTimeMillis(year, month, day, endHour, endMin);
-                                                        mt.setYear(year);
-                                                        mt.setMonthofyear(month);
-                                                        mt.setDayofmonth(day);
-                                                        mt.setDayofweek(Convert.dayOfWeekTowXth(startDt.getDayOfWeek()));
-                                                        mt.setStartmillis(startDt.getMillis());
-                                                        mt.setEndmillis(endDt.getMillis());
-                                                        mt.setStarthour(startHour);
-                                                        mt.setStartmin(startMin);
-                                                        mt.setEndhour(endHour);
-                                                        mt.setEndmin(endMin);
-                                                    } else {
-                                                        Toast.makeText(context, context.getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
-                                                    }
                                                 } else {
                                                     Toast.makeText(context, context.getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
                                                 }
+                                            } else {
+                                                Toast.makeText(context, context.getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
                                             }
-                                        }, mt.getEndhour(), mt.getEndmin(), false);
-                                        TextView tv = new TextView(context);
-                                        tv.setText(context.getString(R.string.setting_time_end));
-                                        tv.setTextColor(context.getResources().getColor(android.R.color.white));
-                                        tv.setTypeface(null, Typeface.BOLD);
-                                        tv.setGravity(Gravity.CENTER);
-                                        tv.setBackgroundColor(context.getResources().getColor(R.color.maincolor));
-                                        endTpd.setCustomTitle(tv);
-                                        endTpd.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                                    dialog.cancel();
-                                                }
-                                            }
-                                        });
-                                        endTpd.show();
-                                    }
-                                }, mt.getStarthour(), mt.getStartmin(), false);
-                                startTpd.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                            dialog.cancel();
                                         }
-                                    }
-                                });
-                                TextView tv = new TextView(context);
-                                tv.setText(context.getString(R.string.setting_time_start));
-                                tv.setTextColor(context.getResources().getColor(android.R.color.white));
-                                tv.setTypeface(null, Typeface.BOLD);
-                                tv.setGravity(Gravity.CENTER);
-                                tv.setBackgroundColor(context.getResources().getColor(R.color.maincolor));
-                                startTpd.setCustomTitle(tv);
-                                startTpd.show();
-                            }
-                        }, mt.getYear(), mt.getMonthofyear()-1, mt.getDayofmonth());
-                        datp.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                    dialog.cancel();
+                                    }, mt.getEndhour(), mt.getEndmin(), false);
+                                    TextView tv = new TextView(context);
+                                    tv.setText(context.getString(R.string.setting_time_end));
+                                    tv.setTextColor(context.getResources().getColor(android.R.color.white));
+                                    tv.setTypeface(null, Typeface.BOLD);
+                                    tv.setGravity(Gravity.CENTER);
+                                    tv.setBackgroundColor(context.getResources().getColor(R.color.maincolor));
+                                    endTpd.setCustomTitle(tv);
+                                    endTpd.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                                dialog.cancel();
+                                            }
+                                        }
+                                    });
+                                    endTpd.show();
                                 }
+                            }, mt.getStarthour(), mt.getStartmin(), false);
+                            startTpd.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                        dialog.cancel();
+                                    }
+                                }
+                            });
+                            TextView tv = new TextView(context);
+                            tv.setText(context.getString(R.string.setting_time_start));
+                            tv.setTextColor(context.getResources().getColor(android.R.color.white));
+                            tv.setTypeface(null, Typeface.BOLD);
+                            tv.setGravity(Gravity.CENTER);
+                            tv.setBackgroundColor(context.getResources().getColor(R.color.maincolor));
+                            startTpd.setCustomTitle(tv);
+                            startTpd.show();
+                        }
+                    }, startYear, startMonth,startDay);
+                    datp.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                dialog.cancel();
                             }
-                        });
-                        datp.show();
-                    }
+                        }
+                    });
+                    datp.show();
+                }
             }
         });
         holder.btAlarm.setOnClickListener(new View.OnClickListener() {
@@ -451,7 +457,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                                                 AddSchedule(m, title, place, memo, colorName, mt.getRepeat(), alarmType, first.getStarthour(), first.getStartmin(), first.getEndhour(), first.getEndmin());
                                                 ++i;
                                             }
-                                        }else {
+                                        } else {
                                             for (MyTime m : MyTimeRepo.getMyTimeForTimeCode(context, mt.getTimecode())) {
                                                 AddSchedule(m, title, place, memo, colorName, mt.getRepeat(), alarmType, m.getStarthour(), m.getStartmin(), m.getEndhour(), m.getEndmin());
                                                 ++i;
@@ -513,7 +519,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
         for (int i = 0; i < repeatNum; i++) {
             MyTime myTime;
             if (timeType == 0) {
-                /*int month = mt.getMonthofyear();
+                int month = mt.getMonthofyear();
                 if (month != titleMonth && titleMonth == 1)
                     year = Dates.NOW.year - 1;
                 else year = Dates.NOW.year;
@@ -522,14 +528,13 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 DateTime endDt = Dates.NOW.getDateMillisWithRepeat(year, month, day, endHour, endMin, repeatType, repeatPeriod * i);
                 int xth = Convert.dayOfWeekTowXth(startDt.getDayOfWeek());
                 long startMillis = startDt.getMillis();
-                long alarmMillies = Convert.getAlarmMillis(startMillis, alarmType);*/
-                long alarmMillies = Convert.getAlarmMillis(mt.getStartmillis(), alarmType);
+                long alarmMillies = Convert.getAlarmMillis(startMillis, alarmType);
                 myTime = new MyTime(null,
                         String.valueOf(nowMilis), 0,
                         title,
-                        mt.getYear(), mt.getMonthofyear(), mt.getDayofmonth(),
-                        mt.getDayofweek(), mt.getStarthour(), mt.getStartmin(), mt.getEndhour(), mt.getEndmin(),
-                        mt.getStartmillis(), mt.getEndmillis() - 1,
+                        startDt.getYear(), startDt.getMonthOfYear(), startDt.getDayOfMonth(),
+                        xth, startHour, startMin, endHour, endMin,
+                        startMillis, endDt.getMillis() - 1,
                         memo,
                         place,
                         User.INFO.latitude, User.INFO.longitude,
@@ -537,11 +542,11 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                         alarmMillies,
                         repeat,
                         colorName);
-                if(alarmMillies!=0&&alarmMillies>=System.currentTimeMillis()){
+                if (alarmMillies != 0 && alarmMillies >= System.currentTimeMillis()) {
                     Common.registerAlarm(context, alarmMillies, alarmMillies, title, place, memo, 0);
                 }
             } else {
-                String[] tmp= Dates.NOW.getwMonthDay(mt.getDayofweek()).split("\\.");
+                String[] tmp = Dates.NOW.getwMonthDay(mt.getDayofweek()).split("\\.");
                 int month = Integer.parseInt(tmp[0]);
                 if (month != titleMonth && titleMonth == 1)
                     year = Dates.NOW.year - 1;
@@ -549,7 +554,7 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                 int day = Integer.parseInt(tmp[1]);
                 long startMillis = Dates.NOW.getDateMillis(year, month, day, startHour, startMin);
                 long endMillis = Dates.NOW.getDateMillis(year, month, day, endHour, endMin);
-                long alarmMillies = Convert.getAlarmMillis(startMillis,alarmType);
+                long alarmMillies = Convert.getAlarmMillis(startMillis, alarmType);
                 myTime = new MyTime(null,
                         mt.getTimecode(), 1,
                         mt.getName(),
@@ -564,9 +569,9 @@ public class EnrollAdapter extends ArrayAdapter<MyTime> {
                         alarmMillies,
                         repeat,
                         colorName);
-                if(alarmMillies!=0&&alarmMillies>=System.currentTimeMillis()){
-                    Log.i("test pass register", alarmMillies+"");
-                    Log.i("test pass register", System.currentTimeMillis()+"");
+                if (alarmMillies != 0 && alarmMillies >= System.currentTimeMillis()) {
+                    Log.i("test pass register", alarmMillies + "");
+                    Log.i("test pass register", System.currentTimeMillis() + "");
                     Common.registerAlarm(context, alarmMillies, alarmMillies, title, place, memo, 1);
                 }
             }

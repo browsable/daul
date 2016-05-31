@@ -24,6 +24,7 @@ import com.daemin.event.EditCheckEvent;
 import com.daemin.event.EditRepeatEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RemoveEnrollEvent;
+import com.daemin.event.SetEnrollBtCancelGoneEvent;
 import com.daemin.repository.MyTimeRepo;
 import com.daemin.timetable.R;
 
@@ -178,6 +179,9 @@ public class DialEnroll extends Activity {
         }
         finish();
     }
-
+    @Subscribe
+    public void onEventMainThread(SetEnrollBtCancelGoneEvent e) {
+       btDialCancel.setVisibility(View.GONE);
+    }
 
 }
