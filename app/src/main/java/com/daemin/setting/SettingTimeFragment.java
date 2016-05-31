@@ -76,37 +76,10 @@ public class SettingTimeFragment extends BasicFragment {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         startTime = hourOfDay;
-                    }
-                }, startTime, 0, false);
-                TextView tv = new TextView(getActivity());
-                tv.setText(getString(R.string.setting_time_start));
-                tv.setTextColor(getResources().getColor(android.R.color.white));
-                tv.setTypeface(null, Typeface.BOLD);
-                tv.setGravity(Gravity.CENTER);
-                tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
-                startTpd.setCustomTitle(tv);
-                startTpd.show();
-
-                startTpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
                         final TimePickerDialog endTpd = new TimePickerDialog(getActivity(), R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 endTime = hourOfDay;
-                            }
-                        }, endTime, 0, false);
-                        TextView tv = new TextView(getActivity());
-                        tv.setText(getString(R.string.setting_time_end));
-                        tv.setTextColor(getResources().getColor(android.R.color.white));
-                        tv.setTypeface(null, Typeface.BOLD);
-                        tv.setGravity(Gravity.CENTER);
-                        tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
-                        endTpd.setCustomTitle(tv);
-                        endTpd.show();
-                        endTpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
                                 if(startTime<endTime) {
                                     if (endTime-startTime>15){
                                         int endTime = startTime+15;
@@ -126,10 +99,41 @@ public class SettingTimeFragment extends BasicFragment {
                                         Toast.makeText(getActivity(), getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
                                 }
                             }
+                        }, endTime, 0, false);
+                        TextView tv = new TextView(getActivity());
+                        tv.setText(getString(R.string.setting_time_end));
+                        tv.setTextColor(getResources().getColor(android.R.color.white));
+                        tv.setTypeface(null, Typeface.BOLD);
+                        tv.setGravity(Gravity.CENTER);
+                        tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
+                        endTpd.setCustomTitle(tv);
+                        endTpd.show();
+                        endTpd.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                    dialog.cancel();
+                                }
+                            }
                         });
-
+                    }
+                }, startTime, 0, false);
+                startTpd.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_NEGATIVE) {
+                            dialog.cancel();
+                        }
                     }
                 });
+                TextView tv = new TextView(getActivity());
+                tv.setText(getString(R.string.setting_time_start));
+                tv.setTextColor(getResources().getColor(android.R.color.white));
+                tv.setTypeface(null, Typeface.BOLD);
+                tv.setGravity(Gravity.CENTER);
+                tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
+                startTpd.setCustomTitle(tv);
+                startTpd.show();
             }
         });
 

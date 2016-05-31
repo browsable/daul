@@ -227,16 +227,72 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         lvTime.setAdapter(normalAdapter);
         lvTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                position = pos;
                 switch (viewMode) {
                     case 0:
-                        String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-                        String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
-                        String startMin = ((TextView) view.findViewById(R.id.tvStartMin)).getText().toString();
-                        String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
-                        String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
-                        DialWeekPicker dwp = new DialWeekPicker(DialSchedule.this, position, xth, startHour, startMin, endHour, endMin);
-                        dwp.show();
+                        final int xth = Integer.parseInt(((TextView) view.findViewById(R.id.tvXth)).getText().toString());
+                        final int sHour = Integer.parseInt(((TextView) view.findViewById(R.id.tvStartHour)).getText().toString());
+                        final int sMin = Integer.parseInt(((TextView) view.findViewById(R.id.tvStartMin)).getText().toString());
+                        final int eHour = Integer.parseInt(((TextView) view.findViewById(R.id.tvEndHour)).getText().toString());
+                        final int eMin = Integer.parseInt(((TextView) view.findViewById(R.id.tvEndMin)).getText().toString());
+                        TimePickerDialog startTpd = new TimePickerDialog(DialSchedule.this, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                startHour = hourOfDay;
+                                startMin = minute;
+                                final TimePickerDialog endTpd = new TimePickerDialog(DialSchedule.this, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        endHour = hourOfDay;
+                                        endMin = minute;
+                                        if(startHour<endHour) {
+                                            weekSetting(position, xth, startHour, startMin, endHour, endMin);
+                                        }else if(startHour == endHour){
+                                            if(startMin<endMin) {
+                                                weekSetting(position, xth, startHour, startMin, endHour, endMin);
+                                            }else{
+                                                Toast.makeText(DialSchedule.this, getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }else{
+                                            Toast.makeText(DialSchedule.this, getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }, eHour, eMin, false);
+                                TextView tv = new TextView(DialSchedule.this);
+                                tv.setText(getString(R.string.setting_time_end));
+                                tv.setTextColor(getResources().getColor(android.R.color.white));
+                                tv.setTypeface(null, Typeface.BOLD);
+                                tv.setGravity(Gravity.CENTER);
+                                tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
+                                endTpd.setCustomTitle(tv);
+                                endTpd.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                            dialog.cancel();
+                                        }
+                                    }
+                                });
+                                endTpd.show();
+                            }
+                        }, sHour, sMin, false);
+                        startTpd.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                    dialog.cancel();
+                                }
+                            }
+                        });
+                        TextView tv = new TextView(DialSchedule.this);
+                        tv.setText(getString(R.string.setting_time_start));
+                        tv.setTextColor(getResources().getColor(android.R.color.white));
+                        tv.setTypeface(null, Typeface.BOLD);
+                        tv.setGravity(Gravity.CENTER);
+                        tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
+                        startTpd.setCustomTitle(tv);
+                        startTpd.show();
                         break;
                     case 1:
                         beforeYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
@@ -250,19 +306,21 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         lvTime.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> arg0, View view,
                                            int pos, long id) {
-                switch (viewMode) {
-                    case 0:
-                        String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
-                        String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
-                        String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
-                        String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-                        removeWeek(Integer.parseInt(xth), Integer.parseInt(startHour), Integer.parseInt(endHour), Integer.parseInt(endMin));
-                        break;
-                    case 1:
-                        String tvYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
-                        String xth2 = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
-                        removeMonth(Integer.parseInt(xth2), Integer.parseInt(tvYMD.split("\\.")[1]));
-                        break;
+                if(!btNewFlag) {
+                    switch (viewMode) {
+                        case 0:
+                            String startHour = ((TextView) view.findViewById(R.id.tvStartHour)).getText().toString();
+                            String endHour = ((TextView) view.findViewById(R.id.tvEndHour)).getText().toString();
+                            String endMin = ((TextView) view.findViewById(R.id.tvEndMin)).getText().toString();
+                            String xth = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
+                            removeWeek(Integer.parseInt(xth), Integer.parseInt(startHour), Integer.parseInt(endHour), Integer.parseInt(endMin));
+                            break;
+                        case 1:
+                            String tvYMD = ((TextView) view.findViewById(R.id.tvYMD)).getText().toString();
+                            String xth2 = ((TextView) view.findViewById(R.id.tvXth)).getText().toString();
+                            removeMonth(Integer.parseInt(xth2), Integer.parseInt(tvYMD.split("\\.")[1]));
+                            break;
+                    }
                 }
                 normalList.remove(pos);
                 normalAdapter.notifyDataSetChanged();
@@ -290,7 +348,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 tp.setMin(0, 60);
                 tp.setPosState(PosState.NO_PAINT);
             }
-        }catch (NotInException e){
+        } catch (NotInException e) {
 
         }
     }
@@ -304,6 +362,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     }
 
     public void updateWeekList() {
+        btNewFlag=false;
         normalList.clear();
         int startYth = 0, startMin = 0, endYth = 0, endMin = 0, tmpXth = 0;
         int tmpStartYth = 0, tmpStartMin = 0, tmpEndYth = 0, tmpEndMin = 0;
@@ -313,7 +372,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             if (ETP.getPosState() == PosState.PAINT) {
                 if (tmpXth != ETP.getXIndex()) {
 
-                    tmpXth =ETP.getXIndex();
+                    tmpXth = ETP.getXIndex();
                     YMD = Dates.NOW.getwMonthDay(tmpXth);
                     tmpStartYth = tmpStartMin = tmpEndYth = tmpEndMin = 0;
                 }
@@ -360,7 +419,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 tmpXth = DOMP.getXth();
                 tmpYth = DOMP.getYth();
                 YMD = Dates.NOW.month + "." + Dates.NOW.getmMonthDay(tmpXth - 1, 7 * (tmpYth - 1));
-                normalList.add(new BottomNormalData(YMD, User.INFO.getStartTime()+"", "00", (User.INFO.getStartTime()+1)+"", "00", tmpXth));
+                normalList.add(new BottomNormalData(YMD, User.INFO.getStartTime() + "", "00", (User.INFO.getStartTime() + 1) + "", "00", tmpXth));
             }
         }
         normalAdapter.notifyDataSetChanged();
@@ -453,36 +512,96 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
 
     }
-
-    public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin) {
-            if (endMin != 0) ++endHour;
-            else endMin = 60;
-            TimePos[] tp = new TimePos[endHour - startHour];
-            int j = 0;
-            for (int i = startHour; i < endHour; i++) {
-                try {
-                    tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
-                    if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
-                    if (i == endHour - 1) tp[j].setMin(0, endMin);
-                    if (tp[j].getPosState() == PosState.NO_PAINT) {
-                        tp[j].setPosState(PosState.PAINT);
-                    } else if (tp[j].getPosState() == PosState.ENROLL) {
-                        List<MyTime> mtList = MyTimeRepo.overLapCheck(this, xth, startHour, startMin, endHour, endMin);
-                        if (mtList.size() == 0) {
-                            tp[j].setPosState(PosState.PAINT);
-                        } else {
-                            if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
-                            if (i == endHour - 1) tp[j].setMin(0, endMin);
-                            else if (i != startHour) tp[j].setMin(startMin, endMin);
-                            tp[j].setPosState(PosState.OVERLAP);
-                            User.INFO.overlapFlag = true;
+    private void weekSetting(int position, int xth, int startHour, int startMin, int endHour, int endMin) {
+            if(startHour!=endHour) {
+                if(endMin==0 || endMin==60) endMin=60;
+                else ++endHour;
+                TimePos[] tp = new TimePos[endHour - startHour];
+                int j = 0;
+                for (int i = startHour; i < endHour; i++) {
+                    try {
+                        tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+                    } catch (NotInException e) {
+                        try {
+                            tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(User.INFO.getStartTime())));
+                        } catch (NotInException e1) {
+                            e1.printStackTrace();
                         }
                     }
-                    Common.getTempTimePos().add(tp[j].name());
                     ++j;
-                } catch (NotInException e) {
-
                 }
+                int tpSize = tp.length;
+                for (int i = 0; i < tpSize; i++) {
+                    if (i == 0) {
+                        tp[i].setMin(startMin, 60);
+                        tp[i].setPosState(PosState.PAINT);
+                    } else if (i == tpSize - 1) {
+                        tp[i].setMin(0, endMin);
+                        tp[i].setPosState(PosState.PAINT);
+                    } else {
+                        tp[i].setPosState(PosState.PAINT);
+                    }
+                    if(!Common.getTempTimePos().contains(tp[i].name()))
+                        Common.getTempTimePos().add(tp[i].name());
+                }
+            }else{
+                TimePos tp = null;
+                try {
+                    tp = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
+                } catch (NotInException e) {
+                    e.printStackTrace();
+                }
+                tp.setMin(startMin, endMin);
+                tp.setPosState(PosState.PAINT);
+            }
+            if(endMin==60)endMin=0;
+            normalList.remove(position);
+            if (viewMode == 0) {
+                normalList.add(position, new BottomNormalData(
+                        Dates.NOW.getwMonthDay(xth),
+                        Convert.IntToString(startHour),
+                        Convert.IntToString(startMin),
+                        Convert.IntToString(endHour),
+                        Convert.IntToString(endMin), xth));
+            } else {
+                normalList.add(position, new BottomNormalData(
+                        beforeYMD,
+                        Convert.IntToString(startHour),
+                        Convert.IntToString(startMin),
+                        Convert.IntToString(endHour),
+                        Convert.IntToString(endMin), xth));
+            }
+            normalAdapter.notifyDataSetChanged();
+    }
+    public void addWeek(int xth, int startHour, int startMin, int endHour, int endMin) {
+        if (endMin != 0) ++endHour;
+        else endMin = 60;
+        TimePos[] tp = new TimePos[endHour - startHour];
+        int j = 0;
+        for (int i = startHour; i < endHour; i++) {
+            try {
+                tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
+                if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
+                if (i == endHour - 1) tp[j].setMin(0, endMin);
+                if (tp[j].getPosState() == PosState.NO_PAINT) {
+                    tp[j].setPosState(PosState.PAINT);
+                } else if (tp[j].getPosState() == PosState.ENROLL) {
+                    List<MyTime> mtList = MyTimeRepo.overLapCheck(this, xth, startHour, startMin, endHour, endMin);
+                    if (mtList.size() == 0) {
+                        tp[j].setPosState(PosState.PAINT);
+                    } else {
+                        if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
+                        if (i == endHour - 1) tp[j].setMin(0, endMin);
+                        else if (i != startHour) tp[j].setMin(startMin, endMin);
+                        tp[j].setPosState(PosState.OVERLAP);
+                        User.INFO.overlapFlag = true;
+                    }
+                }
+                Common.getTempTimePos().add(tp[j].name());
+                ++j;
+            } catch (NotInException e) {
+
+            }
         }
     }
 
@@ -545,7 +664,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         }
                         String credit = ((TextView) view.findViewById(R.id.credit)).getText().toString();
                         User.INFO.credit += Float.parseFloat(credit);
-                        tvCreditSum.setText(User.INFO.credit+"");
+                        tvCreditSum.setText(User.INFO.credit + "");
                     } catch (Exception e) {
                         Toast.makeText(DialSchedule.this, getResources().getString(R.string.time_error), Toast.LENGTH_SHORT).show();
                     }
@@ -722,14 +841,14 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         startDt.getYear(), startDt.getMonthOfYear(), startDt.getDayOfMonth(),
                         xth, startHour, startMin, endHour, endMin,
                         startMillis, endDt.getMillis() - 1,
-                        memo,place,
+                        memo, place,
                         User.INFO.latitude, User.INFO.longitude,
                         Convert.Share(tvShare.getText().toString()),
                         alarmTime,
                         repeat,
                         colorName);
-                if(alarmTime!=0&&alarmTime>=System.currentTimeMillis())
-                    Common.registerAlarm(this,alarmTime,alarmTime,title,place,memo,0);
+                if (alarmTime != 0 && alarmTime >= System.currentTimeMillis())
+                    Common.registerAlarm(this, alarmTime, alarmTime, title, place, memo, 0);
                 MyTimeRepo.insertOrUpdate(this, myTime);
 
             }
@@ -772,7 +891,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         R.color.gray));
                 btUniv.setTextColor(getResources().getColor(
                         android.R.color.white));
-                tvCreditSum.setText(User.INFO.getCredit()+"");
+                tvCreditSum.setText(User.INFO.getCredit() + "");
                 if (groupName.equals("") || ttVersion.equals(getResources().getString(R.string.wait1))) { //학교를 한번도 선택한 적 없거나 등록대기중
                     univList = new ArrayList<>();
                     for (GroupListData.Data d : User.INFO.groupListData) {
@@ -957,16 +1076,71 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 DatePickerDialog datp = new DatePickerDialog(this, R.style.MyDialogTheme, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker arg0, int yearData, int monthData, int dayData) {
-                        year = yearData;
                         month = monthData;
-                        day=dayData;
+                        day = dayData;
                         TimePickerDialog startTpd = new TimePickerDialog(DialSchedule.this, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 startHour = hourOfDay;
                                 startMin = minute;
+                                final TimePickerDialog endTpd = new TimePickerDialog(DialSchedule.this, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        endHour = hourOfDay;
+                                        endMin = minute;
+                                        if(startHour<endHour) {
+                                            normalList.add(new BottomNormalData(
+                                                    (month + 1) + "." + day,
+                                                    Convert.IntToString(startHour),
+                                                    Convert.IntToString(startMin),
+                                                    Convert.IntToString(endHour),
+                                                    Convert.IntToString(endMin), day));
+                                            normalAdapter.notifyDataSetChanged();
+                                            btNewFlag=true;
+                                        }else if(startHour == endHour){
+                                            if(startMin<endMin) {
+                                                normalList.add(new BottomNormalData(
+                                                        (month + 1) + "." + day,
+                                                        Convert.IntToString(startHour),
+                                                        Convert.IntToString(startMin),
+                                                        Convert.IntToString(endHour),
+                                                        Convert.IntToString(endMin), day));
+                                                normalAdapter.notifyDataSetChanged();
+                                                btNewFlag=true;
+                                            }else{
+                                                Toast.makeText(DialSchedule.this, getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }else{
+                                            Toast.makeText(DialSchedule.this, getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }, User.INFO.getStartTime() + 1, 0, false);
+                                TextView tv = new TextView(DialSchedule.this);
+                                tv.setText(getString(R.string.setting_time_end));
+                                tv.setTextColor(getResources().getColor(android.R.color.white));
+                                tv.setTypeface(null, Typeface.BOLD);
+                                tv.setGravity(Gravity.CENTER);
+                                tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
+                                endTpd.setCustomTitle(tv);
+                                endTpd.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                            dialog.cancel();
+                                        }
+                                    }
+                                });
+                                endTpd.show();
                             }
                         }, User.INFO.getStartTime(), 0, false);
+                        startTpd.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                    dialog.cancel();
+                                }
+                            }
+                        });
                         TextView tv = new TextView(DialSchedule.this);
                         tv.setText(getString(R.string.setting_time_start));
                         tv.setTextColor(getResources().getColor(android.R.color.white));
@@ -976,61 +1150,16 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                         startTpd.setCustomTitle(tv);
                         startTpd.show();
 
-                        startTpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                final TimePickerDialog endTpd = new TimePickerDialog(DialSchedule.this, R.style.MyDialogTheme, new TimePickerDialog.OnTimeSetListener() {
-                                    @Override
-                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                        endHour = hourOfDay;
-                                        endMin = minute;
-                                    }
-                                }, User.INFO.getStartTime()+1, 0, false);
-                                TextView tv = new TextView(DialSchedule.this);
-                                tv.setText(getString(R.string.setting_time_end));
-                                tv.setTextColor(getResources().getColor(android.R.color.white));
-                                tv.setTypeface(null, Typeface.BOLD);
-                                tv.setGravity(Gravity.CENTER);
-                                tv.setBackgroundColor(getResources().getColor(R.color.maincolor));
-                                endTpd.setCustomTitle(tv);
-                                endTpd.show();
-                                endTpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                    @Override
-                                    public void onDismiss(DialogInterface dialog) {
-                                        normalList.add(new BottomNormalData(
-                                                (month+1)+"."+day,
-                                                Convert.IntToString(startHour),
-                                                Convert.IntToString(startMin),
-                                                Convert.IntToString(endHour),
-                                                Convert.IntToString(endMin), day));
-                                        normalAdapter.notifyDataSetChanged();
-                                       /* if((startHour!=0||endHour!=0))
-                                           addWeek(2*(Dates.NOW.getDayOfWeekWithDate(year,month+1,day)+User.INFO.getStartDay()-1)+1,startHour,startMin,endHour,endMin);*/
-                                        /*if(startTime<endTime) {
-                                            if (endTime-startTime>15){
-                                                int endTime = startTime+15;
-                                                User.INFO.getEditor().putInt("startTime", startTime).commit();
-                                                User.INFO.getEditor().putInt("endTime", endTime).commit();
-                                                Toast.makeText(getActivity(), getString(R.string.setting_time_interval), Toast.LENGTH_SHORT).show();
-                                                tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
-                                            }
-                                            else{
-                                                User.INFO.getEditor().putInt("startTime", startTime).commit();
-                                                User.INFO.getEditor().putInt("endTime", endTime).commit();
-                                                tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
-                                            }
-                                            MainActivity.getInstance().getInitSurfaceView().setTime(startTime,endTime);
-                                        }else{
-                                            if(startTime!=0&&endTime!=0)
-                                                Toast.makeText(getActivity(), getString(R.string.setting_time_time_error), Toast.LENGTH_SHORT).show();
-                                        }*/
-                                    }
-                                });
-
-                            }
-                        });
                     }
-                }, LocalDate.now().getYear(), LocalDate.now().getMonthOfYear()-1, LocalDate.now().getDayOfMonth());
+                }, LocalDate.now().getYear(), LocalDate.now().getMonthOfYear() - 1, LocalDate.now().getDayOfMonth());
+                datp.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.btDialCancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_NEGATIVE) {
+                            dialog.cancel();
+                        }
+                    }
+                });
                 datp.show();
                 break;
             case R.id.btPlace:
@@ -1057,6 +1186,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 break;
         }
     }
+
     public void setRandomColor() {
         Random mRand = new Random();
         int nResult = mRand.nextInt(18) + 1;
@@ -1155,6 +1285,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         dragToggle.setOnTouchListener(this);
         subOverlapFlag = true;
         User.INFO.overlapFlag = false;
+        btNewFlag = false;
         ttVersion = "";
         brightness = 100;
         dy = 0;
@@ -1205,8 +1336,8 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
     private AutoCompleteTextView actvUniv, actvDep, actvGrade, actvSub, actvProf;
     private DatabaseHandler db;
     private BackPressCloseHandler backPressCloseHandler;
-    private int dy, mPosY, screenHeight, viewMode, repeatType, brightness, startHour,endHour, startMin, endMin, year,month,day;
-    private boolean widgetFlag, overlapEnrollFlag, weekFlag, subOverlapFlag;
+    private int dy, mPosY, screenHeight, viewMode, repeatType, brightness, startHour, endHour, startMin, endMin, month, day, position;
+    private boolean widgetFlag, overlapEnrollFlag, weekFlag, subOverlapFlag, btNewFlag;
     // Progress Dialog
     private ProgressDialog pDialog;
 
@@ -1215,47 +1346,56 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         finish();
         EventBus.getDefault().post(new SetBtPlusEvent(true));
     }
+
     @Subscribe
     public void onEventMainThread(SetAlarmEvent e) {
         tvAlarm.setText(e.getTime());
     }
+
     @Subscribe
     public void onEventMainThread(SetShareEvent e) {
         tvShare.setText(e.getShare());
     }
+
     @Subscribe
     public void onEventMainThread(SetCreditEvent e) {
         Float credit = Float.parseFloat(db.getCredit(e.getSubtitle()));
-        User.INFO.credit= User.INFO.getCredit() - credit;
-        if(User.INFO.credit<0f) User.INFO.credit=0f;
-        tvCreditSum.setText(User.INFO.credit+"");
+        User.INFO.credit = User.INFO.getCredit() - credit;
+        if (User.INFO.credit < 0f) User.INFO.credit = 0f;
+        tvCreditSum.setText(User.INFO.credit + "");
         User.INFO.getEditor().putFloat("credit", User.INFO.credit).commit();
     }
+
     @Subscribe
     public void onEventMainThread(SetRepeatEvent e) {
         repeatType = e.getRepeatType();
         tvRepeat.setText(e.toString());
     }
+
     @Subscribe
     public void onEventMainThread(SetPlaceEvent e) {
         etPlace.setText(e.getPlace());
     }
+
     @Subscribe
     public void onEventMainThread(SetColorEvent e) {
         colorName = getResources().getString(e.getResColor());
         gd.setColor(getResources().getColor(e.getResColor()));
         gd.invalidateSelf();
     }
+
     @Subscribe
     public void onEventMainThread(BottomNormalData e) {
         normalList.add(e);
         normalAdapter.notifyDataSetChanged();
     }
+
     @Subscribe
     public void onEventMainThread(ClearNormalEvent e) {
         normalList.clear();
         normalAdapter.notifyDataSetChanged();
     }
+
     @Subscribe
     public void onEventMainThread(UpdateNormalEvent e) {
         normalList.remove(e.getPosition());
@@ -1270,6 +1410,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
         }
         normalAdapter.notifyDataSetChanged();
     }
+
     @Subscribe
     public void onEventMainThread(ExcuteMethodEvent e) {
         try {
@@ -1279,6 +1420,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
             ex.printStackTrace();
         }
     }
+
     @Subscribe
     public void onEventMainThread(PostGroupListEvent e) {
         univList.clear();
