@@ -50,8 +50,8 @@ public class DialTextSizePicker extends Dialog {
         window.setGravity(Gravity.CENTER);
         setLayout();
         tvDialText.setTextSize(textSize);
-        npTextSize.setMaxValue(20);
-        npTextSize.setMinValue(10);
+        npTextSize.setMaxValue(25);
+        npTextSize.setMinValue(5);
         npTextSize.setValue(textSize);
         npTextSize.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override

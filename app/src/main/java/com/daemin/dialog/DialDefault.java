@@ -53,7 +53,7 @@ public class DialDefault extends Dialog {
                 android.graphics.Color.TRANSPARENT));
         layoutParams = window.getAttributes();
         dm = getContext().getResources().getDisplayMetrics();
-        layoutParams.width = dm.widthPixels * 2 / 3;
+        layoutParams.width = dm.widthPixels * 3 / 4;
         window.setAttributes(layoutParams);
         window.setGravity(Gravity.CENTER);
         setLayout();

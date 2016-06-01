@@ -55,6 +55,7 @@ public class WeekCaptureView extends ImageView {
         dayLength = (dayInterval+1)*4;
         day = new String[dayInterval];
         wData = Dates.NOW.getWData();
+
         Common.fetchWeekData();
         int j=0;
         try {
@@ -140,7 +141,7 @@ public class WeekCaptureView extends ImageView {
             try {
                 if(dayOfWeek>=startDay) {
                     dayOfWeek = dayOfWeek-startDay;
-                    int startHeight = (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(sTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60;
+                    float startHeight = (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(sTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60;
                     canvas.drawRect((width * 14 / 15) / dayInterval * dayOfWeek + width / 15,
                             startHeight,
                             (width * 14 / 15) / dayInterval * (dayOfWeek + 1) + width / 15,
@@ -151,9 +152,9 @@ public class WeekCaptureView extends ImageView {
                                 startHeight +intervalSize/6+ textSize, tp);
                         if (posIndex == 2)
                             canvas.drawText(second, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
-                                    startHeight +intervalSize/6+ textSize + (posIndex - 1) * 2 * (textSize - intervalSize*2/3), tp);
+                                    startHeight +intervalSize/6+ textSize + (posIndex - 1) * 2 * (intervalSize*2/3), tp);
                         canvas.drawText(place, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
-                                startHeight +intervalSize/6+ textSize + posIndex * 2 * (textSize - intervalSize*2/3), tp);
+                                startHeight +intervalSize/6+ textSize + posIndex * 2 * (intervalSize*2/3), tp);
                     }
                 }
             }catch (NotInException e){
@@ -211,9 +212,9 @@ public class WeekCaptureView extends ImageView {
         hp_hour[2] = width;
         hp_hour[3] = height / 32 + intervalSize;
         hp_hour[timeLength - 4] = width / 20;
-        hp_hour[timeLength - 3] = height * 31 / 32 + intervalSize;
+        hp_hour[timeLength - 3] = height * 31 / 32 + intervalSize*2/3;
         hp_hour[timeLength - 2] = width;
-        hp_hour[timeLength - 1] = height * 31 / 32 + intervalSize;
+        hp_hour[timeLength - 1] = height * 31 / 32 + intervalSize*2/3;
 
         if (timeInterval != 1) {
             for (int i = 4; i < timeLength - 4; i++) {
@@ -237,7 +238,7 @@ public class WeekCaptureView extends ImageView {
         vp[0] =  width / 15;
         vp[1] = height / 32 + intervalSize;
         vp[2] = width / 15;
-        vp[3] = height * 31 / 32 + intervalSize;
+        vp[3] = height * 31 / 32 + intervalSize*2/3;
         if (dayInterval != 1) {
             for (int i = 4; i < dayLength; i++) {
                 switch (i % 4) {
@@ -251,7 +252,7 @@ public class WeekCaptureView extends ImageView {
                         vp[i] = (width*14 / 15)/dayInterval * (i / 4)+ width / 15;
                         break;
                     case 3:
-                        vp[i] = height * 31 / 32 + intervalSize;
+                        vp[i] = height * 31 / 32 + intervalSize*2/3;
                         break;
                 }
             }
@@ -259,7 +260,7 @@ public class WeekCaptureView extends ImageView {
             vp[4] =  width;
             vp[5] = height / 32 + intervalSize;
             vp[6] = width;
-            vp[7] = height * 31 / 32 + intervalSize;
+            vp[7] = height * 31 / 32 + intervalSize*2/3;
         }
     canvas.drawColor(Color.WHITE);
     canvas.drawLines(hp_hour, hp);
@@ -287,7 +288,7 @@ public class WeekCaptureView extends ImageView {
     }
     hp.setAlpha(40);
     if(Dates.NOW.isToday&&dayOfWeek>=startDay&&dayOfWeek<=endDay)canvas.drawRect((width * 14 / 15) / dayInterval * (dayOfWeek-startDay) + width / 15, ((height * 2) - 10) / 64 + intervalSize,
-            (width * 14 / 15) / dayInterval * (dayOfWeek+1-startDay) + width / 15, height * 62 / 64 + intervalSize, hp);
+            (width * 14 / 15) / dayInterval * (dayOfWeek+1-startDay) + width / 15, height * 62 / 64 + intervalSize*2/3, hp);
     hp.setAlpha(100);
     }
 }

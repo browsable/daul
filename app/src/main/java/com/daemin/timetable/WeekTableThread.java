@@ -122,10 +122,10 @@ public class WeekTableThread extends InitThread {
                 height = canvas.getHeight();
                 synchronized (mholder) {
                     drawScreen();
-                    fetchWeekData();
                     for (TimePos ETP : TimePos.values()) {
                         ETP.drawTimePos(canvas, width, height,dayInterval,timeInterval);
                     }
+                    fetchWeekData();
                 }
             } catch (Exception e) {
             } finally {
