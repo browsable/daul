@@ -72,7 +72,10 @@ public class WeekCaptureView extends ImageView {
                 ++y;
                 z=1;
             }
-        } catch (NotInException e) {
+        } catch (IllegalArgumentException e){
+
+        }
+        catch (NotInException e) {
             e.printStackTrace();
         }
 
@@ -149,15 +152,18 @@ public class WeekCaptureView extends ImageView {
                     dayOfWeek = 2*dayOfWeek+1;
                     if(sTime<endTime&&eTime>startTime) {
                         canvas.drawText(first, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
-                                startHeight +intervalSize/6+ textSize, tp);
+                                startHeight + textSize, tp);
                         if (posIndex == 2)
                             canvas.drawText(second, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
-                                    startHeight +intervalSize/6+ textSize + (posIndex - 1) * 2 * (intervalSize*2/3), tp);
+                                    startHeight + textSize + (posIndex - 1) * textSize*11/10, tp);
                         canvas.drawText(place, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
-                                startHeight +intervalSize/6+ textSize + posIndex * 2 * (intervalSize*2/3), tp);
+                                startHeight  + textSize + posIndex * textSize*11/10, tp);
                     }
                 }
-            }catch (NotInException e){
+            }catch (IllegalArgumentException e){
+
+            }
+            catch (NotInException e){
             }
         }
     }

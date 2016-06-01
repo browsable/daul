@@ -98,7 +98,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:onClick="mOnClick"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     android:orientation="horizontal">
 
                     <ImageView

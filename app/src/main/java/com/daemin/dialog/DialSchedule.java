@@ -414,7 +414,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 tp.setMin(0, 60);
                 tp.setPosState(PosState.NO_PAINT);
             }
-        } catch (NotInException e) {
+        }catch (IllegalArgumentException e){
+
+        }
+        catch (NotInException e) {
 
         }
     }
@@ -602,10 +605,16 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 for (int i = startHour; i < endHour; i++) {
                     try {
                         tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(i)));
-                    } catch (NotInException e) {
+                    } catch (IllegalArgumentException e){
+
+                    }
+                    catch (NotInException e) {
                         try {
                             tp[j] = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(User.INFO.getStartTime())));
-                        } catch (NotInException e1) {
+                        } catch (IllegalArgumentException e1){
+
+                        }
+                        catch (NotInException e1) {
                             e1.printStackTrace();
                         }
                     }
@@ -629,7 +638,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 TimePos tp = null;
                 try {
                     tp = TimePos.valueOf(Convert.getxyMerge(xth, Convert.HourOfDayToYth(startHour)));
-                } catch (NotInException e) {
+                } catch (IllegalArgumentException e){
+
+                }
+                catch (NotInException e) {
                     e.printStackTrace();
                 }
                 tp.setMin(startMin, endMin);
@@ -672,7 +684,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 }
                 Common.getTempTimePos().add(tp[j].name());
                 ++j;
-            } catch (NotInException e) {
+            }catch (IllegalArgumentException e){
+
+            }
+            catch (NotInException e) {
 
             }
         }

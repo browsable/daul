@@ -82,17 +82,13 @@ public class SettingTimeFragment extends BasicFragment {
                                 endTime = hourOfDay;
                                 if(startTime<endTime) {
                                     if (endTime-startTime>15){
-                                        int endTime = startTime+15;
-                                        User.INFO.getEditor().putInt("startTime", startTime).commit();
-                                        User.INFO.getEditor().putInt("endTime", endTime).commit();
                                         Toast.makeText(getActivity(), getString(R.string.setting_time_interval), Toast.LENGTH_SHORT).show();
-                                        tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
+                                        endTime = startTime+15;
+
                                     }
-                                    else{
-                                        User.INFO.getEditor().putInt("startTime", startTime).commit();
-                                        User.INFO.getEditor().putInt("endTime", endTime).commit();
-                                        tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
-                                    }
+                                    tvTime.setText(startTime + getString(R.string.hour) + " ~ " + endTime + getString(R.string.hour));
+                                    User.INFO.getEditor().putInt("startTime", startTime).commit();
+                                    User.INFO.getEditor().putInt("endTime", endTime).commit();
                                     MainActivity.getInstance().getInitSurfaceView().setTime(startTime,endTime);
                                 }else{
                                     if(startTime!=0&&endTime!=0)

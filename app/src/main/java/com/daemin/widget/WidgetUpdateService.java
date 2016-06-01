@@ -181,7 +181,6 @@ public class WidgetUpdateService extends Service {
                             views.setInt(llID, "setBackgroundResource", R.color.transmaincolor);
                         }
                     }else{
-                        views.setInt(llID, "setBackgroundResource", android.R.color.white);
                         views.setInt(llID, "setBackgroundResource", R.drawable.bt_click);
                     }
                     int j = i % 7;
@@ -203,7 +202,7 @@ public class WidgetUpdateService extends Service {
                     views.setOnClickPendingIntent(llID, dP);
                     views.setTextViewText(tvID, Dates.NOW.mData[i]);
                     views.setTextColor(tvID, getResources().getColor(R.color.middlegray));
-                    views.setInt(llID, "setBackgroundResource", R.color.whitesmoke);
+                    views.setInt(llID, "setBackgroundResource", android.R.color.white);
                 }
 
             }
@@ -360,7 +359,7 @@ public class WidgetUpdateService extends Service {
                     views.setOnClickPendingIntent(llID, dP);
                     views.setTextViewText(tvID, Dates.NOW.mData[i]);
                     views.setTextColor(tvID, getResources().getColor(R.color.middlegray));
-                    views.setInt(llID, "setBackgroundResource", R.color.whitesmoke);
+                    views.setInt(llID, "setBackgroundResource", android.R.color.white);
                 }
 
             }

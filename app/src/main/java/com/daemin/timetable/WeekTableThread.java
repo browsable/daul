@@ -75,7 +75,9 @@ public class WeekTableThread extends InitThread {
                 ++y;
                 z=1;
             }
-        } catch (NotInException e) {
+        }catch (IllegalArgumentException e){
+        }
+        catch (NotInException e) {
             e.printStackTrace();
         }
 
@@ -251,15 +253,18 @@ public class WeekTableThread extends InitThread {
                     dayOfWeek = 2*dayOfWeek+1;
                     if(sTime<endTime&&eTime>startTime) {
                         canvas.drawText(first, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
-                                startHeight +intervalSize+ textSize, tp);
+                                startHeight + textSize, tp);
                         if (posIndex == 2)
                             canvas.drawText(second, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
-                                    startHeight +intervalSize+ textSize + (posIndex - 1) * 2 * (textSize - intervalSize), tp);
+                                    startHeight + textSize + (posIndex - 1) * textSize*11/10, tp);
                         canvas.drawText(place, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
-                                startHeight +intervalSize+ textSize + posIndex * 2 * (textSize - intervalSize), tp);
+                                startHeight + textSize + posIndex * textSize*11/10, tp);
                     }
                 }
-            }catch (NotInException e){
+            }catch (IllegalArgumentException e){
+
+            }
+            catch (NotInException e){
             }
         }
     }

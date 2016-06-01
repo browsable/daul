@@ -16,6 +16,7 @@ import com.daemin.event.SetExpandableEvent;
 import com.daemin.timetable.R;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,7 +168,7 @@ public class CommunityFragment2 extends BasicFragment{
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
-
+    @Subscribe
     public void onEventMainThread(SetExpandableEvent e) {
         if (expListView.isGroupExpanded(e.getGroupPosition()))
             expListView.collapseGroup(e.getGroupPosition());

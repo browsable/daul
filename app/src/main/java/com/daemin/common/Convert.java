@@ -1,5 +1,7 @@
 package com.daemin.common;
 
+import android.util.Log;
+
 import com.daemin.enumclass.User;
 
 public class Convert {
