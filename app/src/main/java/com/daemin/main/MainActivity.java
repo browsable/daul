@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -56,6 +57,7 @@ import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 import com.daemin.widget.WidgetUpdateService;
 import com.daemin.timetable.InitSurfaceView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,7 +67,6 @@ import java.io.File;
 
 public class MainActivity extends FragmentActivity {
     @Override
-
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
             mDrawerLayout.closeDrawer(mLeftDrawer);
@@ -118,6 +119,13 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics.setAnalyticsCollectionEnabled(true);
+        mFirebaseAnalytics.setUserId(User.INFO.getUserPK());
+        Bundle params = new Bundle();
+        params.putString("user name", User.INFO.getUserPK());
+        params.putString("connect time ", Dates.NOW.getDatefromMillis(Dates.NOW.getNowMillis()));
+        mFirebaseAnalytics.logEvent("user action",params);
         singleton = this;
         viewMode = User.INFO.getViewMode();
         String groupName = User.INFO.getGroupName();
@@ -419,6 +427,7 @@ public class MainActivity extends FragmentActivity {
     private static MainActivity singleton;
     private int viewMode;
     private static int dayIndex;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public ImageButton getIbBack() {
         return ibBack;

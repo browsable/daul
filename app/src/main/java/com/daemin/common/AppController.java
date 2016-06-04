@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.daemin.enumclass.User;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import timedao.DaoMaster;
 import timedao.DaoSession;

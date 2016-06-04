@@ -107,6 +107,6 @@ public enum User {
         return pref.getInt("endTime", 23);
     }
     public int getTextSize(){
-        return pref.getInt("textSize", 8);
+        return pref.getInt("textSize", 10);
     }
 }

@@ -123,6 +123,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:text="@string/setting_opensrc_firebase_title"
+            android:textSize="@dimen/textsize_l"
+            android:textStyle="bold"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_opensrc_firebase_content"
+            android:textSize="@dimen/textsize_default"
+            android:ellipsize="marquee"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="@string/setting_opensrc_asl_title"
             android:textSize="@dimen/textsize_l"
             android:textStyle="bold"

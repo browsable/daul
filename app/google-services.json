@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "58630432853",
+    "firebase_url": "https://daul-1090.firebaseio.com",
+    "project_id": "daul-1090",
+    "storage_bucket": "daul-1090.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58630432853:android:8a4f4f4cba99720b",
+        "android_client_info": {
+          "package_name": "com.daemin.timetable"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58630432853-b4941th6mi3e9d8nku58nl866lgohloq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.daemin.timetable",
+            "certificate_hash": "7E1A37A83592098513F6B3B6A82506355955035C"
+          }
+        },
+        {
+          "client_id": "58630432853-qdtureoo7jt07mdn2mp8aaccd3u2j8kc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.daemin.timetable",
+            "certificate_hash": "0A273158854F0E7CD64BB5074BB9D6A031B1861F"
+          }
+        },
+        {
+          "client_id": "58630432853-bi0coh6svqda4l3tdo6f5m6arfr84duo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqKyv4ioAwnSthralv5bkM2YxXFQmc7nI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58630432853-bi0coh6svqda4l3tdo6f5m6arfr84duo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

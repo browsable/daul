@@ -222,9 +222,17 @@ public class WeekTableThread extends InitThread {
             rp.setAlpha(130);
             int sTime = mt.getStarthour();
             int eTime = mt.getEndhour();
+            int sMin = mt.getStartmin();
+            int eMin = mt.getEndmin();
             int dayOfWeek = mt.getDayofweek()/2;
-            if(startTime>sTime) sTime = startTime;
-            if(endTime<eTime) eTime = endTime;
+            if(startTime>sTime){
+                sTime = startTime;
+                sMin = 0;
+            }
+            if(endTime<eTime){
+                eTime = endTime;
+                eMin = 0;
+            }
             String title = mt.getName();
             String first,second;
             int posIndex=0;
@@ -245,11 +253,11 @@ public class WeekTableThread extends InitThread {
             try {
                 if(dayOfWeek>=startDay) {
                     dayOfWeek = dayOfWeek-startDay;
-                    int startHeight = (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(sTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getStartmin() / 60;
+                    int startHeight = (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(sTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * sMin / 60;
                     canvas.drawRect((width * 14 / 15) / dayInterval * dayOfWeek + width / 15,
                             startHeight,
                             (width * 14 / 15) / dayInterval * (dayOfWeek + 1) + width / 15,
-                            (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(eTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * mt.getEndmin() / 60, rp);
+                            (height * 15 / 16) / timeInterval * ((Convert.HourOfDayToYth(eTime) / 2 + 1) - 1) + height / 32 + intervalSize + ((height * 15 / 16) / timeInterval) * eMin / 60, rp);
                     dayOfWeek = 2*dayOfWeek+1;
                     if(sTime<endTime&&eTime>startTime) {
                         canvas.drawText(first, (width * 7 / 15) / dayInterval * dayOfWeek + width / 15,
