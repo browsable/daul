@@ -189,6 +189,8 @@ public class Common {
 						DayOfMonthPos.valueOf(t).setPosState(DayOfMonthPosState.NO_PAINT);
 					}
 					break;
+				default:
+					break;
 			}
 		}
 		Common.getTempTimePos().clear();

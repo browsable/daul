@@ -80,10 +80,11 @@ public class MyTimeRepo {
         return qb.orderAsc(MyTimeDao.Properties.Timecode).list();
     }
 
-    public static List<MyTime> getMonthTimesForDayList(Context context,int year,int month) {
+    public static List<MyTime> getOneDayTimesForDayList(Context context,int year,int month,int day) {
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
         qb.where(qb.and(MyTimeDao.Properties.Year.eq(year),
-                MyTimeDao.Properties.Monthofyear.eq(month)));
+                MyTimeDao.Properties.Monthofyear.eq(month),
+                MyTimeDao.Properties.Dayofmonth.eq(day)));
         return qb.orderAsc(MyTimeDao.Properties.Startmillis).list();
     }
 

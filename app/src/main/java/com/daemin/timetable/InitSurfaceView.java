@@ -63,6 +63,9 @@ public class InitSurfaceView extends SurfaceView implements
 			case 1:
 				initThread = new InitMonthThread(holder, context);
 				break;
+			case 2:
+				initThread = new InitMonthThread(holder, context);
+				break;
 		}
 		initThread.setRunning(true);
 		destroyFlag = false;

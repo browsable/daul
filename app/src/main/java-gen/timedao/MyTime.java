@@ -39,7 +39,8 @@ public class MyTime {
     public MyTime() {
     }
 
-    public MyTime(int monthofyear, int dayofmonth, int dayofweek) {
+    public MyTime(int year, int monthofyear, int dayofmonth, int dayofweek) {
+        this.year = year;
         this.monthofyear = monthofyear;
         this.dayofmonth = dayofmonth;
         this.dayofweek = dayofweek;

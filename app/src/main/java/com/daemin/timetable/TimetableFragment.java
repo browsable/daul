@@ -37,7 +37,7 @@ public class TimetableFragment extends BasicFragment {
 	private PullToRefreshListView listView;
 	static LinkedList<MyTime> myTimeList;
     DayListAdapter adapter;
-    int year, month,preMonth,lastMonth;
+    int year,preYear, lastYear, month,preMonth,lastMonth;
 	public TimetableFragment() {
 		super(R.layout.fragment_timetable, "TimetableFragment");
 	}
@@ -58,8 +58,8 @@ public class TimetableFragment extends BasicFragment {
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
 		if (!TAG.equals("")) { //주,월 제외 - 일 모드일때만 실행
-            year=Dates.NOW.year;
             myTimeList = new LinkedList<>();
+            preYear=lastYear=year=Dates.NOW.year;
             preMonth=lastMonth=month=Dates.NOW.month;
 			listView = (PullToRefreshListView) root.findViewById(R.id.listView);
 			listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
@@ -84,17 +84,9 @@ public class TimetableFragment extends BasicFragment {
 			ListView actualListView = listView.getRefreshableView();
 			// Need to use the Actual ListView when registering for Context Menu
 			registerForContextMenu(actualListView);
-
-            myTimeList.addFirst(new MyTime(month, 0,0));
-            int firstDayOfWeek = Dates.NOW.getFirstDayOfWeek();
-            for(int i=1; i<=31; i++){
-                myTimeList.add(new MyTime(month, i, 2*firstDayOfWeek+1));
-                ++firstDayOfWeek;
-                if(firstDayOfWeek==6) firstDayOfWeek=0;
-            }
-            //myTimeList.addAll(MyTimeRepo.getMonthTimesForDayList(getActivity(),year,month));
+            new GetDataTask().execute();
             adapter = new DayListAdapter(getActivity(), myTimeList);
-			listView.setAdapter(adapter);
+            listView.setAdapter(adapter);
 			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -105,6 +97,29 @@ public class TimetableFragment extends BasicFragment {
 
 		return root;
 	}
+    private void prepareData(int year, int month){
+        int firstDayOfWeek = Dates.NOW.getFirstDayOfWeek(year, month);
+        for(int i=1; i<=Dates.NOW.getDayNumOfMonth(year, month); i++){
+            myTimeList.addLast(new MyTime(year, month, i, 2*firstDayOfWeek+1));
+            ++firstDayOfWeek;
+            if(firstDayOfWeek==7) firstDayOfWeek=0;
+        }
+    }
+    private class GetDataTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void params) {
+            myTimeList.addFirst(new MyTime(year, month, 0,0));
+            prepareData(year, month);
+            adapter.notifyDataSetChanged();
+            listView.onRefreshComplete();
+            return;
+        }
+    }
 	private class GetDataPreTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -114,17 +129,18 @@ public class TimetableFragment extends BasicFragment {
 		@Override
 		protected void onPostExecute(Void params) {
             if(preMonth==1) {
-                --year;
+                --preYear;
                 preMonth=12;
             }
             else --preMonth;
-            List<MyTime> list = MyTimeRepo.getMonthTimesForDayList(getActivity(),year,preMonth);
-            Collections.reverse(list);
-            for(MyTime mt : list)
-                myTimeList.addFirst(mt);
-            myTimeList.addFirst(new MyTime(preMonth,0,0));
+            int firstDayOfWeek = Dates.NOW.getFirstDayOfWeek(preYear, preMonth);
+            for(int i=Dates.NOW.getDayNumOfMonth(preYear, preMonth);i>=1; i--){
+                myTimeList.addFirst(new MyTime(preYear,preMonth, i, 2*firstDayOfWeek+1));
+                ++firstDayOfWeek;
+                if(firstDayOfWeek==7) firstDayOfWeek=0;
+            }
+            myTimeList.addFirst(new MyTime(preYear,preMonth,0,0));
             adapter.notifyDataSetChanged();
-			// Call onRefreshComplete when the list has been refreshed.
 			listView.onRefreshComplete();
 			return;
 		}
@@ -138,17 +154,13 @@ public class TimetableFragment extends BasicFragment {
         @Override
         protected void onPostExecute(Void params) {
             if(lastMonth==12) {
-                ++year;
+                ++lastYear;
                 lastMonth=1;
             }
             else ++lastMonth;
-            myTimeList.addLast(new MyTime(lastMonth,0,0));
-            for(MyTime mt : MyTimeRepo.getMonthTimesForDayList(getActivity(),year,lastMonth))
-                myTimeList.addLast(mt);
-
+            myTimeList.addLast(new MyTime(lastYear,lastMonth,0,0));
+            prepareData(lastYear, lastMonth);
             adapter.notifyDataSetChanged();
-
-            // Call onRefreshComplete when the list has been refreshed.
             listView.onRefreshComplete();
             return;
         }
@@ -167,9 +179,10 @@ public class TimetableFragment extends BasicFragment {
     @Subscribe
     public void onEventMainThread(RemoveEnrollEvent e) {
         myTimeList.clear();
+        preYear=lastYear=year=Dates.NOW.year;
         preMonth=lastMonth=month=Dates.NOW.month;
-        myTimeList.addFirst(new MyTime(month, 0,0));
-        myTimeList.addAll(MyTimeRepo.getMonthTimesForDayList(getActivity(), Dates.NOW.year,Dates.NOW.month));
+        myTimeList.addFirst(new MyTime(year,month, 0,0));
+        prepareData(year,month);
         adapter.notifyDataSetChanged();
         listView.onRefreshComplete();
     }

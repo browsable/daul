@@ -34,6 +34,7 @@ import android.widget.ViewSwitcher;
 import com.daemin.area.AreaFragment;
 import com.daemin.common.BackPressCloseHandler;
 import com.daemin.common.Common;
+import com.daemin.common.Convert;
 import com.daemin.common.DatabaseHandler;
 import com.daemin.common.MyRequest;
 import com.daemin.common.RoundedCornerNetworkImageView;
@@ -386,7 +387,7 @@ public class MainActivity extends FragmentActivity {
                                     listMode=true;
                                     btMode.setText(R.string.day);
                                     changeSetting();
-                                    changeFragment(TimetableFragment.class, Dates.NOW.month+getString(R.string.month));
+                                    changeFragment(TimetableFragment.class, Dates.NOW.month+getString(R.string.month)+" "+Dates.NOW.getDayOfMonth()+getString(R.string.day) +" " +Convert.XthToDayOfWeek(2*Dates.NOW.getDayOfWeek()+1));
                                 }
                                 if(!initSurfaceView.isDestroyed()){
                                     initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());

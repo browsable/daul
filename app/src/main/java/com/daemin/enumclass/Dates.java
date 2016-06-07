@@ -143,10 +143,13 @@ public enum Dates {
     public int getYear() {
         return getLastDayOfWeek().getYear();
     }
-    public int getFirstDayOfWeek() {
-        int FirstDayOfWeek = LocalDate.now().withDayOfMonth(1).getDayOfWeek();
+    public int getFirstDayOfWeek(int year, int month) {
+        int FirstDayOfWeek = LocalDate.now().withYear(year).withMonthOfYear(month).withDayOfMonth(1).getDayOfWeek();
         if (FirstDayOfWeek == 7) FirstDayOfWeek=0;
         return FirstDayOfWeek;
+    }
+    public int getDayNumOfMonth(int year, int month){
+        return LocalDate.now().withYear(year).withMonthOfYear(month).dayOfMonth().withMaximumValue().getDayOfMonth();
     }
     public int getDayOfMonth(){ return LocalDate.now().getDayOfMonth();}
     public void setToday(){

@@ -6,6 +6,6 @@
    <solid 
        android:color="#73C8BA"/>
    <size 
-       android:width="20dp"
-        android:height="20dp"/>
+       android:width="@dimen/margin_xl"
+        android:height="@dimen/margin_xl"/>
 </shape>
