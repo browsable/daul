@@ -39,8 +39,10 @@ public class MyTime {
     public MyTime() {
     }
 
-    public MyTime(Long id) {
-        this.id = id;
+    public MyTime(int monthofyear, int dayofmonth, int dayofweek) {
+        this.monthofyear = monthofyear;
+        this.dayofmonth = dayofmonth;
+        this.dayofweek = dayofweek;
     }
 
     public MyTime(Long id, String timecode, int timetype, String name, Integer year, Integer monthofyear, Integer dayofmonth, int dayofweek, int starthour, int startmin, int endhour, int endmin, Long startmillis, Long endmillis, String memo, String place, Double lat, Double lng, Integer share, Long alarm, String repeat, String color) {

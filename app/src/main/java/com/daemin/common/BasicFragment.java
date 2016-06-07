@@ -11,7 +11,7 @@ import android.widget.LinearLayout.LayoutParams;
 @SuppressLint("ValidFragment")
 public class BasicFragment extends Fragment {
 	private final String KEY_LAYOUT_ID = "Basic:LayoutId";
-	protected String TAG = "BasicFragment";
+	public String TAG = "BasicFragment";
 	
 	protected int layoutId = 0;
 	protected Typeface normalTypeface;

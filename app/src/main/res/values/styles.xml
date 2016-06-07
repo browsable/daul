@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppBaseTheme" parent="android:Theme.Material" tools:targetApi="lollipop">
+    <style name="AppBaseTheme" parent="android:Theme.Material.Light.NoActionBar" tools:targetApi="lollipop">
     </style>
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/maincolor</item>
         <item name="android:windowBackground">@drawable/timepicker_bg</item>
     </style>
-    </resources>
+</resources>

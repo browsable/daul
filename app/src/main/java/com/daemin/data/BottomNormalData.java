@@ -16,8 +16,13 @@ public class BottomNormalData {
         this.MD = MD;
         this.startHour = startHour;
         this.startMin = startMin;
-        this.endHour = endHour;
-        this.endMin = endMin;
+        if(endHour.equals("0") || endHour.equals("24")) {
+            this.endHour ="23";
+            this.endMin = "59";
+        }else{
+            this.endHour = endHour;
+            this.endMin = endMin;
+        }
         this.xth = xth;
     }
 
@@ -26,18 +31,6 @@ public class BottomNormalData {
     }
     public void setYear(String year) {
         this.year = year;
-    }
-    public void setEndMin(String endMin) {
-        this.endMin = endMin;
-    }
-    public void setEndHour(String endHour) {
-        this.endHour = endHour;
-    }
-    public void setStartMin(String startMin) {
-        this.startMin = startMin;
-    }
-    public void setStartHour(String startHour) {
-        this.startHour = startHour;
     }
     public String getEndMin() {
         return endMin;

@@ -80,6 +80,7 @@ public class SettingTimeFragment extends BasicFragment {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 endTime = hourOfDay;
+                                if(endTime==0)endTime=24;
                                 if(startTime<endTime) {
                                     if (endTime-startTime>15){
                                         Toast.makeText(getActivity(), getString(R.string.setting_time_interval), Toast.LENGTH_SHORT).show();

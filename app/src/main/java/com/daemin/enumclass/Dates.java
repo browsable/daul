@@ -143,6 +143,11 @@ public enum Dates {
     public int getYear() {
         return getLastDayOfWeek().getYear();
     }
+    public int getFirstDayOfWeek() {
+        int FirstDayOfWeek = LocalDate.now().withDayOfMonth(1).getDayOfWeek();
+        if (FirstDayOfWeek == 7) FirstDayOfWeek=0;
+        return FirstDayOfWeek;
+    }
     public int getDayOfMonth(){ return LocalDate.now().getDayOfMonth();}
     public void setToday(){
         if(todayIndex==0) isToday = true;
@@ -152,14 +157,26 @@ public enum Dates {
         return new DateTime().getMillis();
     }
     public long getDateMillis(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour) {
+        if(hourOfDay==24) {
+            hourOfDay =23;
+            minuteOfHour = 59;
+        }
         DateTime dt = new DateTime(year,monthOfYear,dayOfMonth,hourOfDay,minuteOfHour);
         return dt.getMillis();
     }
     public DateTime getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour) {
+        if(hourOfDay==24) {
+            hourOfDay =23;
+            minuteOfHour = 59;
+        }
         DateTime dt = new DateTime(year,monthOfYear,dayOfMonth,hourOfDay,minuteOfHour);
         return dt;
     }
     public DateTime getDateMillisWithRepeat(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int repeatType, int repeatPeriod) {
+        if(hourOfDay==24) {
+            hourOfDay =23;
+            minuteOfHour = 59;
+        }
         LocalDate ld = new LocalDate(year, monthOfYear, dayOfMonth);
         switch (repeatType){
             case 2: //주

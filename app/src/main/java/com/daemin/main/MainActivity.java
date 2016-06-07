@@ -2,6 +2,8 @@ package com.daemin.main;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -14,7 +16,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -28,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 import android.widget.ViewSwitcher;
 
 import com.daemin.area.AreaFragment;
@@ -48,6 +48,7 @@ import com.daemin.event.ChangeFragEvent;
 import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.FinishDialogEvent;
+import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
 import com.daemin.event.SetCreditEvent;
@@ -289,16 +290,22 @@ public class MainActivity extends FragmentActivity {
                 }
                 break;
             case R.id.btTimetable:
-                backKeyName = "";
-                EventBus.getDefault().post(new ClearNormalEvent());
                 btMode.setVisibility(View.VISIBLE);
-                llTitle.setVisibility(View.VISIBLE);
-                tvTitle.setVisibility(View.GONE);
-                btPlus.setVisibility(View.VISIBLE);
-                changeFragment(TimetableFragment.class, "");
-                flSurface.setVisibility(View.VISIBLE);
-                frame_container.setVisibility(View.GONE);
-                initSurfaceView.setVisibility(View.VISIBLE);
+                if(listMode) {
+                    btMode.setText(R.string.day);
+                    changeSetting();
+                    changeFragment(TimetableFragment.class, Dates.NOW.month+getString(R.string.month));
+                }else{
+                    backKeyName = "";
+                    EventBus.getDefault().post(new ClearNormalEvent());
+                    llTitle.setVisibility(View.VISIBLE);
+                    tvTitle.setVisibility(View.GONE);
+                    btPlus.setVisibility(View.VISIBLE);
+                    changeFragment(TimetableFragment.class, "");
+                    flSurface.setVisibility(View.VISIBLE);
+                    frame_container.setVisibility(View.GONE);
+                    initSurfaceView.setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.btFriend:
                 checkContactsPermission();
@@ -324,40 +331,72 @@ public class MainActivity extends FragmentActivity {
             case R.id.btMode:
                 EventBus.getDefault().post(new FinishDialogEvent());
                 EventBus.getDefault().post(new ClearNormalEvent());
-                llTitle.setVisibility(View.VISIBLE);
                 initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
                 dayIndex = 0;
                 Common.stateFilter(viewMode);
-                if (btMode.isChecked()) {
-                    viewMode = 1;
-                    initSurfaceView.setMode(viewMode);
-                    EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
-                    Dates.NOW.setMonthData(0);
-                    switcher.setText("");
-                    switcher.setText(setYearMonth());
-                    tvTitleYear.setVisibility(View.GONE);
-                    DrawMode.CURRENT.setMode(0);
-                    changeFragment(TimetableFragment.class, "");
-                    flSurface.setVisibility(View.VISIBLE);
-                    frame_container.setVisibility(View.GONE);
-                }else{
-                    viewMode = 0;
-                    initSurfaceView.setMode(viewMode);
-                    Dates.NOW.setWeekData(0);
-                    EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
-                    tvTitleYear.setVisibility(View.VISIBLE);
-                    tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
-                    switcher.setText("");
-                    switcher.setText(setMonthWeek());
-                    changeFragment(TimetableFragment.class, "");
-                    flSurface.setVisibility(View.VISIBLE);
-                    frame_container.setVisibility(View.GONE);
-                }
-                if(!initSurfaceView.isDestroyed()){
-                    initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
-                }
-                User.INFO.getEditor().putInt("viewMode", viewMode).commit();
-                initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
+                final CharSequence[] items = {getString(R.string.week), getString(R.string.month), getString(R.string.day)};
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_Material_Light_Dialog);
+                builder.setItems(items, new DialogInterface.OnClickListener(){    // 목록 클릭시 설정
+                            public void onClick(DialogInterface dialog, int index){
+                                if(index==0){ //주
+                                    backKeyName = "";
+                                    listMode=false;
+                                    llTitle.setVisibility(View.VISIBLE);
+                                    tvTitle.setVisibility(View.GONE);
+                                    btPlus.setVisibility(View.VISIBLE);
+                                    flSurface.setVisibility(View.VISIBLE);
+                                    frame_container.setVisibility(View.GONE);
+                                    initSurfaceView.setVisibility(View.VISIBLE);
+                                    btMode.setText(R.string.week);
+                                    viewMode = 0;
+                                    initSurfaceView.setMode(viewMode);
+                                    Dates.NOW.setWeekData(0);
+                                    EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
+                                    tvTitleYear.setVisibility(View.VISIBLE);
+                                    tvTitleYear.setText(Dates.NOW.year + getString(R.string.year));
+                                    switcher.setText("");
+                                    switcher.setText(setMonthWeek());
+                                    changeFragment(TimetableFragment.class, "");
+                                    flSurface.setVisibility(View.VISIBLE);
+                                    frame_container.setVisibility(View.GONE);
+                                }else if(index==1){ //월
+                                    backKeyName = "";
+                                    listMode=false;
+                                    llTitle.setVisibility(View.VISIBLE);
+                                    tvTitle.setVisibility(View.GONE);
+                                    btPlus.setVisibility(View.VISIBLE);
+                                    flSurface.setVisibility(View.VISIBLE);
+                                    frame_container.setVisibility(View.GONE);
+                                    initSurfaceView.setVisibility(View.VISIBLE);
+                                    btMode.setText(R.string.month);
+                                    viewMode = 1;
+                                    initSurfaceView.setMode(viewMode);
+                                    EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
+                                    Dates.NOW.setMonthData(0);
+                                    switcher.setText("");
+                                    switcher.setText(setYearMonth());
+                                    tvTitleYear.setVisibility(View.GONE);
+                                    DrawMode.CURRENT.setMode(0);
+                                    changeFragment(TimetableFragment.class, "");
+                                    flSurface.setVisibility(View.VISIBLE);
+                                    frame_container.setVisibility(View.GONE);
+
+                                }else{ //일
+                                    EventBus.getDefault().post(new RemoveEnrollEvent(0L));
+                                    listMode=true;
+                                    btMode.setText(R.string.day);
+                                    changeSetting();
+                                    changeFragment(TimetableFragment.class, Dates.NOW.month+getString(R.string.month));
+                                }
+                                if(!initSurfaceView.isDestroyed()){
+                                    initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
+                                }
+                                User.INFO.getEditor().putInt("viewMode", viewMode).commit();
+                                initSurfaceView.surfaceCreated(initSurfaceView.getHolder());
+                            }
+                        });
+                AlertDialog dialog = builder.create();    // 알림창 객체 생성
+                dialog.show();    // 알림창 띄우기*/
                 break;
             case R.id.btBack:
                 Common.stateFilter(viewMode);
@@ -379,6 +418,7 @@ public class MainActivity extends FragmentActivity {
         backKeyName = "";
         mContent = null;
         dialogFlag = true;
+        listMode = false;
         DrawMode.CURRENT.setMode(0);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
@@ -393,7 +433,7 @@ public class MainActivity extends FragmentActivity {
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitleYear = (TextView) findViewById(R.id.tvTitleYear);
         btPlus = (Button) findViewById(R.id.btPlus);
-        btMode = (ToggleButton) findViewById(R.id.btMode);
+        btMode = (Button) findViewById(R.id.btMode);
         ivProfile = (RoundedCornerNetworkImageView) findViewById(R.id.ivProfile);
         //ivProfile.setImageUrl(SAMPLE_IMAGE_URL, MyVolley.getImageLoader());
         switcher = (TextSwitcher) findViewById(R.id.switcher);
@@ -402,10 +442,11 @@ public class MainActivity extends FragmentActivity {
         initSurfaceView = new InitSurfaceView(this, viewMode);
         flSurface.addView(initSurfaceView);
         backPressCloseHandler = new BackPressCloseHandler(this);
-        if(viewMode==1){
-            btMode.setChecked(true);
+        if(viewMode==0){
+            btMode.setText(R.string.week);
             EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
-        }else{
+        }else if(viewMode==1){
+            btMode.setText(R.string.month);
             EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
         }
     }
@@ -416,13 +457,13 @@ public class MainActivity extends FragmentActivity {
     private LinearLayout mLeftDrawer, llTitle;
     private ImageButton ibBack;
     private TextView tvTitle, tvTitleYear;
-    private Button btPlus;
-    private ToggleButton btMode;
+    private Button btPlus, btMode;
+    //private ToggleButton btMode;
     private FrameLayout flSurface, frame_container;
     private Fragment mContent;
     private BackPressCloseHandler backPressCloseHandler;
     private String backKeyName;
-    private Boolean dialogFlag, widget5_5,widget4_4;
+    private Boolean dialogFlag, widget5_5,widget4_4,listMode;
     private TextSwitcher switcher;
     private static MainActivity singleton;
     private int viewMode;

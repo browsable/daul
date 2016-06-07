@@ -18,7 +18,7 @@
 	<dimen name="margin_xxs">4dp</dimen>
 	<dimen name="margin_xxxs">2dp</dimen>
 
-	
+	<dimen name="textsize_xxxxl">26sp</dimen>
 	<dimen name="textsize_xxxl">20sp</dimen>
 	<dimen name="textsize_xxl">18sp</dimen>
 	<dimen name="textsize_xl">16sp</dimen>
@@ -29,4 +29,6 @@
 	<dimen name="textsize_xs">8sp</dimen>
 	<dimen name="textsize_xxs">6sp</dimen>
 	<dimen name="textsize_xxxs">4sp</dimen>
+
+
 </resources>

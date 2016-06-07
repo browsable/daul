@@ -66,6 +66,12 @@ public class MyTimeRepo {
         return qb.list();
     }
 
+    public static List<MyTime> getMonthTimes(Context context, long week_startMillies, long week_endMillies) {
+        QueryBuilder qb = getMyTimeDao(context).queryBuilder();
+        qb.where(qb.or(MyTimeDao.Properties.Startmillis.between(week_startMillies, week_endMillies),
+                MyTimeDao.Properties.Timetype.eq(1), MyTimeDao.Properties.Repeat.eq(1)));
+        return qb.orderAsc(MyTimeDao.Properties.Timecode).list();
+    }
 
     public static List<MyTime> getWeekTimes(Context context, long week_startMillies, long week_endMillies) {
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
@@ -74,11 +80,10 @@ public class MyTimeRepo {
         return qb.orderAsc(MyTimeDao.Properties.Timecode).list();
     }
 
-    public static List<MyTime> getMonthTimes(Context context, long month_startMillies, long month_endMillies) {
+    public static List<MyTime> getMonthTimesForDayList(Context context,int year,int month) {
         QueryBuilder qb = getMyTimeDao(context).queryBuilder();
-        qb.where(qb.and(MyTimeDao.Properties.Startmillis.between(month_startMillies, month_endMillies),
-                MyTimeDao.Properties.Timetype.eq(0)
-        ));
+        qb.where(qb.and(MyTimeDao.Properties.Year.eq(year),
+                MyTimeDao.Properties.Monthofyear.eq(month)));
         return qb.orderAsc(MyTimeDao.Properties.Startmillis).list();
     }
 

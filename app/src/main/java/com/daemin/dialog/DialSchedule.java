@@ -23,6 +23,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -242,6 +243,10 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                         endHour = hourOfDay;
                                         endMin = minute;
+                                        if(endHour==0 || endHour==24) {
+                                            endHour =23;
+                                            endMin = 59;
+                                        }
                                         if(startHour<endHour) {
                                             weekSetting(position, xth, startHour, startMin, endHour, endMin);
                                         }else if(startHour == endHour){
@@ -681,6 +686,7 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                     if (mtList.size() == 0) {
                         tp[j].setPosState(PosState.PAINT);
                     } else {
+                        Log.i("test","test");
                         if (i == startHour && startMin != 0) tp[j].setMin(startMin, 60);
                         if (i == endHour - 1) tp[j].setMin(0, endMin);
                         else if (i != startHour) tp[j].setMin(startMin, endMin);
