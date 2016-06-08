@@ -10,11 +10,11 @@
     </style>
 
     <style name="textAppearanceSmall" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/dimgray</item>
+        <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/margin_default</item>
     </style>
     <style name="textAppearanceLarge" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/dimgray</item>
+        <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/margin_l</item>
     </style>
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">

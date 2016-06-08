@@ -466,10 +466,10 @@ public class MainActivity extends FragmentActivity {
         backPressCloseHandler = new BackPressCloseHandler(this);
         if(viewMode==0){
             btMode.setText(R.string.week);
-            EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
-        }else if(viewMode==1){
-            btMode.setText(R.string.month);
             EventBus.getDefault().postSticky(new SetBtUnivEvent(true));
+        }else{
+            btMode.setText(R.string.month);
+            EventBus.getDefault().postSticky(new SetBtUnivEvent(false));
         }
     }
     private static final String SAMPLE_IMAGE_URL = "http://hernia.cafe24.com/android/test2.png";
