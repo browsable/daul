@@ -90,11 +90,9 @@ public class DayListAdapter  extends ArrayAdapter<MyTime> {
             {
                 if (!first) content+="\n";
                 String name = mt.getName();
-                if(name.length()>11)name = name.substring(0,11)+"..";
+                if(name.length()>15)name = name.substring(0,15)+"..";
                 content += Convert.IntToString(mt.getStarthour()) + ":"
-                        + Convert.IntToString(mt.getStartmin()) + " ~ "
-                        + Convert.IntToString(mt.getEndhour()) + ":"
-                        + Convert.IntToString(mt.getEndmin()) + "   " + name;
+                        + Convert.IntToString(mt.getStartmin()) + "   " + name;
                 first = false;
             }
             holder.tvContent.setText(content);

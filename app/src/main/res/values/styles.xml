@@ -1,5 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppBaseTheme" parent="android:Theme.Material.Light.NoActionBar" tools:targetApi="lollipop">
+    <style name="AppBaseTheme" parent="android:Theme.NoTitleBar">
+        <item name="popupMenuStyle">@style/MyPopupMenu</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/textAppearanceLarge</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/textAppearanceSmall</item>
+    </style>
+
+    <style name="MyPopupMenu" parent="@style/Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@android:color/white</item>
+    </style>
+
+    <style name="textAppearanceSmall" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/dimgray</item>
+        <item name="android:textSize">@dimen/margin_default</item>
+    </style>
+    <style name="textAppearanceLarge" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/dimgray</item>
+        <item name="android:textSize">@dimen/margin_l</item>
     </style>
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/maincolor</item>

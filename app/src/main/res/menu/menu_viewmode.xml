@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/week"
+        android:orderInCategory="100"
+        android:title="@string/week" />
+    <item
+        android:id="@+id/month"
+        android:orderInCategory="100"
+        android:title="@string/month" />
+    <item
+        android:id="@+id/day"
+        android:orderInCategory="100"
+        android:title="@string/day" />
+</menu>
