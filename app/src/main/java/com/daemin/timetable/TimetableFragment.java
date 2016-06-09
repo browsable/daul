@@ -3,33 +3,23 @@ package com.daemin.timetable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.daemin.adapter.DayListAdapter;
-import com.daemin.adapter.EventListAdapter;
 import com.daemin.common.BasicFragment;
-import com.daemin.common.Convert;
-import com.daemin.data.EventlistData;
 import com.daemin.enumclass.Dates;
 import com.daemin.event.RefreshDayListEvent;
-import com.daemin.event.RemoveEnrollEvent;
-import com.daemin.event.SetExpandableEvent;
-import com.daemin.repository.MyTimeRepo;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 
 import timedao.MyTime;
 
@@ -110,12 +100,12 @@ public class TimetableFragment extends BasicFragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            myTimeList.addFirst(new MyTime(year, month, 0,0));
-            prepareData(year, month);
             return null;
         }
         @Override
         protected void onPostExecute(Void params) {
+            myTimeList.addFirst(new MyTime(year, month, 0,0));
+            prepareData(year, month);
             adapter.notifyDataSetChanged();
             listView.onRefreshComplete();
             return;
@@ -125,22 +115,22 @@ public class TimetableFragment extends BasicFragment {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-                if(preMonth==1) {
-                    --preYear;
-                    preMonth=12;
-                }
-                else --preMonth;
-                int firstDayOfWeek = Dates.NOW.getFirstDayOfWeek(preYear, preMonth);
-                myTimeList.add(0,new MyTime(preYear,preMonth,0,0));
-                for(int i=1;i<=Dates.NOW.getDayNumOfMonth(preYear, preMonth); i++){
-                    myTimeList.add(i,new MyTime(preYear,preMonth, i, 2*firstDayOfWeek+1));
-                    ++firstDayOfWeek;
-                    if(firstDayOfWeek==7) firstDayOfWeek=0;
-                }
             return null;
         }
 		@Override
 		protected void onPostExecute(Void params) {
+            if(preMonth==1) {
+                --preYear;
+                preMonth=12;
+            }
+            else --preMonth;
+            int firstDayOfWeek = Dates.NOW.getFirstDayOfWeek(preYear, preMonth);
+            myTimeList.add(0,new MyTime(preYear,preMonth,0,0));
+            for(int i=1;i<=Dates.NOW.getDayNumOfMonth(preYear, preMonth); i++){
+                myTimeList.add(i,new MyTime(preYear,preMonth, i, 2*firstDayOfWeek+1));
+                ++firstDayOfWeek;
+                if(firstDayOfWeek==7) firstDayOfWeek=0;
+            }
             adapter.notifyDataSetChanged();
             listView.onRefreshComplete();
 			return;
@@ -150,6 +140,10 @@ public class TimetableFragment extends BasicFragment {
 
         @Override
         protected Void doInBackground(Void... params) {
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void params) {
             if(lastMonth==12) {
                 ++lastYear;
                 lastMonth=1;
@@ -157,11 +151,6 @@ public class TimetableFragment extends BasicFragment {
             else ++lastMonth;
             myTimeList.addLast(new MyTime(lastYear,lastMonth,0,0));
             prepareData(lastYear, lastMonth);
-
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void params) {
             adapter.notifyDataSetChanged();
             listView.onRefreshComplete();
             return;

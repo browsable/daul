@@ -2,6 +2,7 @@ package com.daemin.common;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -9,7 +10,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.daemin.data.GroupListData;
-import com.daemin.dialog.DialDefault;
 import com.daemin.enumclass.User;
 import com.daemin.event.PostGroupListEvent;
 import com.daemin.timetable.R;
@@ -25,17 +25,20 @@ import org.json.JSONObject;
 public class MyRequest {
     public static RequestQueue requestQueue = MyVolley.getRequestQueue();
     public static Context context = AppController.getInstance();
-    private static String KEY_STATUS = "status";
-    public static final String GET_VERSION = "http://timenuri.com/ajax/app/get_version";
+    private static String KEY_STATUS = "Version";
+    //public static final String GET_VERSION = "http://timenuri.com/ajax/app/get_version";
+    public static final String GET_VERSION = "http://52.192.204.226:8080/ver/Android";
     public static void getVersionFromServer(final Context context) {
+        Log.i("server test" , "test");
         CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET, GET_VERSION, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            if (response.getString(KEY_STATUS).equals("Success")) {
+                            /*if (response.getString(KEY_STATUS).equals("Success")) {
                                 JSONObject data = response.getJSONObject("data");
-                                User.INFO.appServerVer = data.getString("appversion");
+                                User.INFO.appServerVer = data.getString("Version");
+                                Log.i("server" ,  data.getString("Version"));
                                 if (!User.INFO.appVer.equals(User.INFO.appServerVer)) {
                                     DialDefault dd = new DialDefault(context,
                                             context.getResources().getString(R.string.update_title),
@@ -45,11 +48,16 @@ public class MyRequest {
                                 }
                             } else {
                                 Toast.makeText(context, "Something went wrong.Please try again..", Toast.LENGTH_LONG).show();
-                            }
+                            }*/
+                            String version = response.getString("Version");
+
+                            Log.i("server test" , version);
                         } catch (JSONException e) {
+                            Log.i("server test", "error");
                             e.printStackTrace();
                         }
                     }
+
                 }, new Response.ErrorListener() {
 
             @Override

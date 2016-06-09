@@ -2,8 +2,6 @@ package com.daemin.main;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -53,16 +51,15 @@ import com.daemin.event.ClearNormalEvent;
 import com.daemin.event.CreateDialEvent;
 import com.daemin.event.FinishDialogEvent;
 import com.daemin.event.RefreshDayListEvent;
-import com.daemin.event.RemoveEnrollEvent;
 import com.daemin.event.SetBtPlusEvent;
 import com.daemin.event.SetBtUnivEvent;
 import com.daemin.event.SetCreditEvent;
 import com.daemin.friend.FriendFragment;
 import com.daemin.setting.SettingFragment;
+import com.daemin.timetable.InitSurfaceView;
 import com.daemin.timetable.R;
 import com.daemin.timetable.TimetableFragment;
 import com.daemin.widget.WidgetUpdateService;
-import com.daemin.timetable.InitSurfaceView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.greenrobot.eventbus.EventBus;
@@ -296,13 +293,13 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.btTimetable:
                 btMode.setVisibility(View.VISIBLE);
+                backKeyName = "";
                 if(listMode) {
                     changeSetting();
                     changeFragment(TimetableFragment.class, Dates.NOW.month+getString(R.string.month)+" "+Dates.NOW.getDayOfMonth()+getString(R.string.day) +" " +Convert.XthToDayOfWeek(2*Dates.NOW.getDayOfWeek()+1));
                     btMode.setText(R.string.day);
                     EventBus.getDefault().post(new RefreshDayListEvent());
                 }else{
-                    backKeyName = "";
                     EventBus.getDefault().post(new ClearNormalEvent());
                     llTitle.setVisibility(View.VISIBLE);
                     tvTitle.setVisibility(View.GONE);
@@ -337,7 +334,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.btMode:
                 EventBus.getDefault().post(new FinishDialogEvent());
                 EventBus.getDefault().post(new ClearNormalEvent());
-                //initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
+                initSurfaceView.surfaceDestroyed(initSurfaceView.getHolder());
                 dayIndex = 0;
                 Common.stateFilter(viewMode);
                 PopupMenu popup = new PopupMenu(MainActivity.this, btMode);
@@ -368,10 +365,10 @@ public class MainActivity extends FragmentActivity {
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
+            backKeyName = "";
             switch (menuItem.getItemId()) {
                 case R.id.week:
                     listMode = false;
-                    backKeyName = "";
                     llTitle.setVisibility(View.VISIBLE);
                     tvTitle.setVisibility(View.GONE);
                     btPlus.setVisibility(View.VISIBLE);
@@ -398,7 +395,6 @@ public class MainActivity extends FragmentActivity {
                     return true;
                 case R.id.month:
                     listMode = false;
-                    backKeyName = "";
                     llTitle.setVisibility(View.VISIBLE);
                     tvTitle.setVisibility(View.GONE);
                     btPlus.setVisibility(View.VISIBLE);

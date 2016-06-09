@@ -42,7 +42,9 @@ public class InitMonthThread extends InitThread {
 	public InitMonthThread(SurfaceHolder holder, Context context) {
 		this.mholder = holder;
 		this.context = context;
-		Common.fetchMonthData();
+		try {
+			Common.fetchMonthData();
+		}catch(NullPointerException e){}
 		sun=context.getResources().getString(R.string.day0);
 		mon=context.getResources().getString(R.string.day1);
 		tue=context.getResources().getString(R.string.day2);
