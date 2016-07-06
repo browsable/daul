@@ -142,7 +142,11 @@ public class Common {
 		User.INFO.monthData.clear();
 		User.INFO.monthData.addAll(MyTimeRepo.getMonthTimes(AppController.getInstance(), month_startMillies, month_endMillies));
 		for (MyTime mt :User.INFO.monthData){
-			addMonth(mt.getName(), mt.getColor(), mt.getDayofweek(), mt.getDayofmonth());
+			try {
+				addMonth(mt.getName(), mt.getColor(), mt.getDayofweek(), mt.getDayofmonth());
+			}catch (NullPointerException e){
+				continue;
+			}
 		}
 	}
 	public static void addMonth(String title, String color, int xth, int dayOfMonth){

@@ -124,6 +124,7 @@ public class WidgetUpdateService extends Service {
         long month_startMillies = Dates.NOW.getDateMillis(year, month, 1, 8, 0);
         long month_endMillies = Dates.NOW.getDateMillis(year, month, Dates.NOW.dayNumOfMonth, 23, 0);
         for (MyTime mt : MyTimeRepo.getMonthTimes(this, month_startMillies, month_endMillies)){
+            try{
             int dayCnt = mt.getDayofmonth()+Dates.NOW.dayOfWeek;
             int lID = getResources().getIdentifier("l" + dayCnt, "id", "com.daemin.timetable");
             if(enrollCntHash.containsKey(lID)){
@@ -141,6 +142,9 @@ public class WidgetUpdateService extends Service {
                 tv.setTextViewText(R.id.widget_item, mt.getName());
                 views.addView(lID, tv);
                 WidgetIDRepo.insertOrUpdate(this, new WidgetID(lID));
+            }
+            }catch (NullPointerException e){
+                continue;
             }
         }
     }

@@ -921,8 +921,12 @@ public class DialSchedule extends Activity implements View.OnClickListener, View
                 if (monthOfYear != titleMonth && titleMonth == 1)
                     year = Dates.NOW.year - 1;
                 else year = Dates.NOW.year;*/
-                int monthOfYear = Integer.parseInt(tmp[0]);
-                int dayOfMonth = Integer.parseInt(tmp[1]);
+                int monthOfYear;
+                int dayOfMonth;
+                try {
+                    monthOfYear = Integer.parseInt(tmp[0]);
+                    dayOfMonth = Integer.parseInt(tmp[1]);
+                }catch(NumberFormatException e){break;}
                 int startHour = Integer.parseInt(d.getStartHour());
                 int startMin = Integer.parseInt(d.getStartMin());
                 int endHour = Integer.parseInt(d.getEndHour());
